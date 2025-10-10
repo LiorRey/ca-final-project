@@ -11,16 +11,16 @@ import { AdminIndex } from "./pages/AdminIndex.jsx";
 import { CarDetails } from "./pages/CarDetails";
 import { UserDetails } from "./pages/UserDetails";
 
-import { AppHeader } from "./cmps/AppHeader";
-import { AppFooter } from "./cmps/AppFooter";
-import { UserMsg } from "./cmps/UserMsg.jsx";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { UserMessage } from "./components/UserMessage.jsx";
 import { LoginSignup, Login, Signup } from "./pages/LoginSignup.jsx";
 
 export function App() {
   return (
     <div className="main-container">
-      <AppHeader />
-      <UserMsg />
+      <Header />
+      <UserMessage />
 
       <main>
         <Routes>
@@ -41,7 +41,7 @@ export function App() {
           </Route>
         </Routes>
       </main>
-      <AppFooter />
+      <Footer />
     </div>
   );
 }

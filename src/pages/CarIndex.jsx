@@ -13,8 +13,8 @@ import { showSuccessMsg, showErrorMsg } from "../services/event-bus-service";
 import { carService } from "../services/car/";
 import { userService } from "../services/user/";
 
-import { CarList } from "../cmps/CarList";
-import { CarFilter } from "../cmps/CarFilter";
+import { CarList } from "../components/CarList";
+import { CarFilter } from "../components/CarFilter";
 
 export function CarIndex() {
   const [filterBy, setFilterBy] = useState(carService.getDefaultFilter());

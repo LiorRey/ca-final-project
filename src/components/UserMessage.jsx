@@ -5,7 +5,7 @@ import {
   SOCKET_EVENT_REVIEW_ABOUT_YOU,
 } from "../services/socket-service";
 
-export function UserMsg() {
+export function UserMessage() {
   const [msg, setMsg] = useState(null);
   const timeoutIdRef = useRef();
 

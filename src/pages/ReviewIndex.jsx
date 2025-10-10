@@ -13,8 +13,8 @@ import {
   SOCKET_EVENT_REVIEW_ADDED,
   SOCKET_EVENT_REVIEW_REMOVED,
 } from "../services/socket-service";
-import { ReviewList } from "../cmps/ReviewList";
-import { ReviewEdit } from "../cmps/ReviewEdit";
+import { ReviewList } from "../components/ReviewList";
+import { ReviewEdit } from "../components/ReviewEdit";
 
 export function ReviewIndex() {
   const loggedInUser = useSelector(storeState => storeState.userModule.user);

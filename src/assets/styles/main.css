@@ -6,23 +6,25 @@
 @import "basics/base";
 @import "basics/forms";
 
-@import "RootCmp";
+@import "components/AboutUs";
+@import "components/HomePage";
+@import "components/UserDetails";
+@import "components/LoginSignup";
+@import "components/Chat";
 
-@import "cmps/AboutUs";
-@import "cmps/HomePage";
-@import "cmps/UserDetails";
-@import "cmps/LoginSignup";
-@import "cmps/Chat";
+@import "components/Header";
+@import "components/Footer";
+@import "components/UserMessage";
 
-@import "cmps/AppHeader";
-@import "cmps/AppFooter";
-@import "cmps/UserMsg";
+@import "components/car/CarIndex";
+@import "components/car/CarList";
+@import "components/car/CarPreview";
+@import "components/car/CarFilter";
 
-@import "cmps/car/CarIndex";
-@import "cmps/car/CarList";
-@import "cmps/car/CarPreview";
-@import "cmps/car/CarFilter";
+@import "components/review/ReviewEdit";
+@import "components/review/ReviewList";
+@import "components/review/ReviewPreview";
 
-@import "cmps/review/ReviewEdit";
-@import "cmps/review/ReviewList";
-@import "cmps/review/ReviewPreview";
+.main-container > main {
+  min-height: calc(100vh - 9rem);
+}
