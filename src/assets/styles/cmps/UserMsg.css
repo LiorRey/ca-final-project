@@ -1,0 +1,40 @@
+.user-msg {
+  position: fixed;
+  top: 70px;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0.2em;
+  padding-inline-end: 1.5em;
+  background-color: var(--gray3);
+
+  color: white;
+  font-size: 0.9em;
+
+  opacity: 0;
+  translate: 150%;
+  transition: 600ms;
+
+  &.visible {
+    opacity: 1;
+    translate: 0;
+  }
+
+  &.success {
+    background-color: var(--success);
+  }
+
+  &.error {
+    background-color: var(--error);
+  }
+
+  & button {
+    background-color: var(--gray1);
+    padding: 1px 6px;
+    border: 0;
+    border-radius: 50%;
+    color: var(--gray4);
+  }
+}

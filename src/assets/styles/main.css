@@ -1,0 +1,28 @@
+@import "setup/var";
+@import "setup/typography";
+
+@import "basics/helpers";
+@import "basics/layout";
+@import "basics/base";
+@import "basics/forms";
+
+@import "RootCmp";
+
+@import "cmps/AboutUs";
+@import "cmps/HomePage";
+@import "cmps/UserDetails";
+@import "cmps/LoginSignup";
+@import "cmps/Chat";
+
+@import "cmps/AppHeader";
+@import "cmps/AppFooter";
+@import "cmps/UserMsg";
+
+@import "cmps/car/CarIndex";
+@import "cmps/car/CarList";
+@import "cmps/car/CarPreview";
+@import "cmps/car/CarFilter";
+
+@import "cmps/review/ReviewEdit";
+@import "cmps/review/ReviewList";
+@import "cmps/review/ReviewPreview";

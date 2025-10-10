@@ -1,0 +1,13 @@
+.car-preview {
+  color: var(--gray2);
+
+  > header {
+    font-size: 1.2em;
+    color: var(--gray1);
+  }
+
+  & p {
+    margin-block: 0 0.2rem;
+    font-size: 0.9em;
+  }
+}
