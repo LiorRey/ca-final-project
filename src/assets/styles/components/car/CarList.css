@@ -1,0 +1,22 @@
+.car-list {
+  --min-column-size: 220px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min-column-size), 1fr));
+  gap: 0.5em;
+
+  & li {
+    display: grid;
+    grid-template-columns: max-content auto;
+    padding: 0.5em;
+    background-color: var(--clr2);
+
+    .actions {
+      justify-self: end;
+
+      & button {
+        padding: 0.3em 0.5em;
+      }
+    }
+  }
+}

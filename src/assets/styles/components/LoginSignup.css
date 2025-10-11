@@ -1,0 +1,49 @@
+.login-form,
+.signup-form {
+  display: grid;
+  width: min(80%, 300px);
+  margin: auto;
+
+  padding: 1em;
+  background-color: var(--clr4);
+}
+
+.signup-form {
+  > input {
+    width: 100%;
+    margin: 0.4em 0;
+  }
+
+  .admin-toggle {
+    display: flex;
+    align-items: center;
+    justify-self: start;
+
+    > span {
+      font-size: 0.8em;
+    }
+  }
+}
+
+.login-page nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+
+  margin-block: 100px 0.5em;
+
+  > a {
+    font-size: 0.8em;
+    color: var(--clr4);
+
+    &:hover {
+      color: var(--clr1);
+    }
+
+    &.active {
+      text-decoration: underline;
+      color: var(--clr2);
+    }
+  }
+}

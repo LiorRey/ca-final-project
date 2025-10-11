@@ -1,0 +1,30 @@
+@import "setup/var";
+@import "setup/typography";
+
+@import "basics/helpers";
+@import "basics/layout";
+@import "basics/base";
+@import "basics/forms";
+
+@import "components/AboutUs";
+@import "components/HomePage";
+@import "components/UserDetails";
+@import "components/LoginSignup";
+@import "components/Chat";
+
+@import "components/Header";
+@import "components/Footer";
+@import "components/UserMessage";
+
+@import "components/car/CarIndex";
+@import "components/car/CarList";
+@import "components/car/CarPreview";
+@import "components/car/CarFilter";
+
+@import "components/review/ReviewEdit";
+@import "components/review/ReviewList";
+@import "components/review/ReviewPreview";
+
+.main-container > main {
+  min-height: calc(100vh - 9rem);
+}

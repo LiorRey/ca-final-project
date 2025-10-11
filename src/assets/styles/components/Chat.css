@@ -1,0 +1,33 @@
+.chat {
+  & li {
+    padding-inline-start: 0.3em;
+    font-size: 0.9em;
+  }
+
+  li:nth-child(odd) {
+    background-color: whitesmoke;
+  }
+
+  form {
+    display: flex;
+    gap: 1em;
+
+    > input {
+      flex-grow: 1;
+    }
+  }
+}
+
+.chat-options {
+  display: flex;
+  gap: 1em;
+
+  padding: 0.5em;
+  background-color: var(--clr4);
+
+  accent-color: black;
+
+  label:last-of-type {
+    margin-inline-start: auto;
+  }
+}

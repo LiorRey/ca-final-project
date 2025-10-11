@@ -1,35 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { Routes, Route } from "react-router";
 
-function App() {
-  const [count, setCount] = useState(0)
+import { HomePage } from "./pages/HomePage";
+import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
+import { CarIndex } from "./pages/CarIndex.jsx";
+import { ReviewIndex } from "./pages/ReviewIndex.jsx";
+import { ChatApp } from "./pages/Chat.jsx";
+import { AdminIndex } from "./pages/AdminIndex.jsx";
 
+import { CarDetails } from "./pages/CarDetails";
+import { UserDetails } from "./pages/UserDetails";
+
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { UserMessage } from "./components/UserMessage.jsx";
+import { LoginSignup, Login, Signup } from "./pages/LoginSignup.jsx";
+
+export function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="main-container">
+      <Header />
+      <UserMessage />
 
-export default App
+      <main>
+        <Routes>
+          <Route path="" element={<HomePage />} />
+          <Route path="about" element={<AboutUs />}>
+            <Route path="team" element={<AboutTeam />} />
+            <Route path="vision" element={<AboutVision />} />
+          </Route>
+          <Route path="car" element={<CarIndex />} />
+          <Route path="car/:carId" element={<CarDetails />} />
+          <Route path="user/:id" element={<UserDetails />} />
+          <Route path="review" element={<ReviewIndex />} />
+          <Route path="chat" element={<ChatApp />} />
+          <Route path="admin" element={<AdminIndex />} />
+          <Route path="auth" element={<LoginSignup />}>
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+          </Route>
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
