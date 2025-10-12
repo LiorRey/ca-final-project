@@ -1,0 +1,56 @@
+.board-index {
+  height: 100%;
+}
+
+/* Board */
+.board-container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  width: 100%;
+}
+
+.board-canvas {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.lists-list {
+  display: grid;
+  padding: 1rem;
+  grid-auto-flow: column;
+  grid-auto-columns: 350px;
+  width: max-content;
+  min-width: 100%;
+  gap: 0.5rem;
+}
+
+/* List */
+.list-container {
+  max-width: 350px;
+  border: 1px solid var(--black);
+  border-radius: 6px;
+  padding: 2rem;
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 350px;
+}
+
+/* Card */
+.card-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--black);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: left;
+}
