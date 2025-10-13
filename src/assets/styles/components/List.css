@@ -1,0 +1,48 @@
+/* List */
+.list-container {
+  max-width: 350px;
+  border: 1px solid var(--black);
+  border-radius: 6px;
+  background-color: var(--gray4);
+  color: var(--gray1);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.list-header h2 {
+  margin: 0;
+  padding: 0.25rem 0.5rem 0 0.25rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.cards-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+  gap: 10px;
+  max-width: 350px;
+}
+
+.list-footer {
+  display: flex;
+  justify-content: left;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+}
+
+.list-footer button {
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: var(--gray1);
+  background-color: transparent;
+}
+
+.list-footer button:hover {
+  background-color: var(--gray3);
+}

@@ -10,17 +10,29 @@ body {
   color: --var(clr2);
 }
 
+button {
+  cursor: pointer;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  margin: 0 0 0.6em;
+  margin: 0;
 }
 
 p {
-  margin: 0 0 1em;
+  margin: 0;
+}
+
+span {
+  margin: 0;
+  padding: 0;
 }
 
 a {
@@ -35,6 +47,7 @@ a:hover {
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 input {

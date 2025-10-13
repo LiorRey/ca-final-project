@@ -1,0 +1,86 @@
+.board-index {
+  height: 100%;
+}
+
+/* Board */
+.board-container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(-180deg, var(--clr2), var(--clr1));
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 166, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 166, 255, 0.2);
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+}
+
+.board-title {
+  margin: 0;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--gray1);
+}
+
+.board-canvas {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  user-select: none;
+}
+
+/* Custom scrollbar styling */
+.board-canvas::-webkit-scrollbar {
+  height: 8px;
+}
+
+.board-canvas::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.board-canvas::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.board-canvas::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.lists-list {
+  display: grid;
+  padding: 1rem;
+  grid-auto-flow: column;
+  grid-auto-columns: 350px;
+  width: max-content;
+  min-width: 100%;
+  gap: 0.75rem;
+}
+
+.add-list-button {
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--gray1);
+  background: var(--clr2);
+  border: 1px solid var(--gray1);
+  border-radius: 6px;
+}
+
+.board-header-right {
+  display: flex;
+  gap: 0.5rem;
+}

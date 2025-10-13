@@ -19,6 +19,13 @@
   }
 }
 
+.pl-2 {
+  padding-left: 2rem;
+}
+.pr-2 {
+  padding-right: 2rem;
+}
+
 /* Simple and useful CSS Debugging Technique */
 .debug * {
   outline: 1px solid gold;

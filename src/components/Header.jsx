@@ -19,11 +19,13 @@ export function Header() {
   }
 
   return (
-    <header className="app-header full">
+    <header className="app-header">
       <nav>
         <NavLink to="/" className="logo">
-          E2E Demo
+          Trello
         </NavLink>
+    
+        <input className="search-input" type="text" placeholder="Search" />
         <NavLink to="about">About</NavLink>
         <NavLink to="boards">Boards</NavLink>
         <NavLink to="chat">Chat</NavLink>
@@ -36,6 +38,7 @@ export function Header() {
             Login
           </NavLink>
         )}
+
         {user && (
           <div className="user-info">
             <Link to={`user/${user._id}`}>

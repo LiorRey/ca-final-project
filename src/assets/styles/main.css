@@ -4,7 +4,7 @@
 @import "basics/helpers";
 @import "basics/layout";
 @import "basics/base";
-@import "basics/forms";
+@import "basics/specials";
 
 @import "components/AboutUs";
 @import "components/HomePage";
@@ -20,11 +20,10 @@
 @import "components/car/CarList";
 @import "components/car/CarPreview";
 @import "components/car/CarFilter";
+@import "components/Board";
+@import "components/List";
+@import "components/Card";
 
 @import "components/review/ReviewEdit";
 @import "components/review/ReviewList";
 @import "components/review/ReviewPreview";
-
-.main-container > main {
-  min-height: calc(100vh - 9rem);
-}

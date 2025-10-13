@@ -1,3 +1,12 @@
+import BoardDetails from "./BoardDetails";
+
+import { carService } from "../services/car/car-service-local";
+
 export function BoardIndex() {
-  return <h1>BoardIndex</h1>;
+  const boardObject = carService.getBoardObject();
+  return (
+    <section className="board-index">
+      <BoardDetails board={boardObject} />
+    </section>
+  );
 }

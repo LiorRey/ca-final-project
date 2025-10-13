@@ -6,7 +6,6 @@ export function CarPreview({ car }) {
       <header>
         <Link to={`/car/${car._id}`}>{car.vendor}</Link>
       </header>
-
       <p>
         Speed: <span>{car.speed.toLocaleString()} Km/h</span>
       </p>

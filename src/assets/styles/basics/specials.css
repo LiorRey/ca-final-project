@@ -1,0 +1,19 @@
+/* dots button */
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  border-radius: 20%;
+  background-color: transparent;
+  box-sizing: border-box;
+  > svg {
+    width: 16px;
+    height: 16px;
+    color: var(--gray1);
+  }
+}
+
+.icon-button:hover {
+  background-color: var(--gray3);
+}
