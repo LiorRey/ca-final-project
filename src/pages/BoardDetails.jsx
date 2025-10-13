@@ -1,9 +1,5 @@
-import React from "react";
 import { Ellipsis, ListFilter, Star, LockKeyhole } from "lucide-react";
 import { Footer } from "../components/Footer";
-
-import { userService } from "../services/user";
-
 import List from "../components/List";
 
 export default function BoardDetails({ board }) {

@@ -36,6 +36,7 @@ export function Header() {
             Login
           </NavLink>
         )}
+
         {user && (
           <div className="user-info">
             <Link to={`user/${user._id}`}>

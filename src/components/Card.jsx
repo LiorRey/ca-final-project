@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Card({ card, onRemoveCard, onUpdateCard }) {
   function onRemoveCard() {
     onRemoveCard(card.id);
@@ -22,7 +20,6 @@ export default function Card({ card, onRemoveCard, onUpdateCard }) {
         ))}
       </div>
       <h3 className="card-title">{card.title}</h3>
-
       <div className="card-footer">
         <p>{card.description}</p>
       </div>

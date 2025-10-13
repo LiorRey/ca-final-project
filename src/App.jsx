@@ -1,18 +1,13 @@
-import React from "react";
 import { Routes, Route } from "react-router";
-
 import { HomePage } from "./pages/HomePage";
 import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
 import { BoardIndex } from "./pages/BoardIndex.jsx";
 import { ReviewIndex } from "./pages/ReviewIndex.jsx";
 import { ChatApp } from "./pages/Chat.jsx";
 import { AdminIndex } from "./pages/AdminIndex.jsx";
-
 import BoardDetails from "./pages/BoardDetails";
 import { UserDetails } from "./pages/UserDetails";
-
 import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import { UserMessage } from "./components/UserMessage.jsx";
 import { LoginSignup, Login, Signup } from "./pages/LoginSignup.jsx";
 
@@ -21,7 +16,6 @@ export function App() {
     <div className="main-container">
       <Header />
       <UserMessage />
-
       <main>
         <Routes>
           <Route path="/" element={<HomePage />} />

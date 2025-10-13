@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Card from "./Card";
 import { Ellipsis } from "lucide-react";
+
 export default function List({ list, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
 
@@ -9,6 +10,7 @@ export default function List({ list, onRemoveList, onUpdateList }) {
   }, [list.cards]);
 
   async function onAddCard() {}
+
   async function onRemoveCard(cardId) {
     await onRemoveList(list.id);
   }
@@ -25,7 +27,6 @@ export default function List({ list, onRemoveList, onUpdateList }) {
           <Ellipsis />
         </button>
       </div>
-
       <ul className="cards-list">
         {cards.map(card => (
           <li key={card.id}>
