@@ -1,19 +1,53 @@
 :root {
   --clr1: #ce2e6c;
-  --clr2: #4f3a65;
-  --clr3: #574f7d;
-  --clr4: #95adbe;
-  --clr5: #dff0ea;
+  --clr2: #633a8e;
+  --clr3: #595471;
+  --clr4: #9cbed6;
+  --clr5: #f0f5f3;
+  --clr6: #00416f;
+
+  /* Neon Colors */
+  --pink-neon: #ff00ff;
+  --cyan-neon: #00ffff;
+  --yellow-neon: #ffff00;
+  --red-neon: #ff0000;
+  --green-neon: #00ff00;
+  --blue-neon: #0000ff;
+  --purple-neon: #800080;
+
+  /* transparent Colors */
+  --t-blue: rgba(0, 0, 255, 0.5);
+  --t-cyan: rgba(0, 255, 255, 0.5);
+  --t-yellow: rgba(255, 255, 0, 0.5);
+  --t-red: rgba(255, 0, 0, 0.5);
+  --t-green: rgba(0, 255, 0, 0.5);
+  --t-purple: rgba(128, 0, 128, 0.5);
 
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
   --gray1: #ddd;
   --gray2: #aaa;
-  --gray3: #777;
-  --gray4: #333;
-
+  --gray3: #242528;
+  --gray4: #101204;
   --black: #000;
 
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
+
+  /* Label Colors */
+  --label-red-bg: rgb(86, 1, 8);
+  --label-red-border: rgb(146, 1, 14);
+  --label-red-text: rgb(255, 220, 223);
+
+  --label-green-bg: rgb(15, 92, 46);
+  --label-green-border: rgb(25, 120, 60);
+  --label-green-text: rgb(220, 255, 223);
+
+  --label-orange-bg: rgb(120, 60, 0);
+  --label-orange-border: rgb(160, 80, 0);
+  --label-orange-text: rgb(255, 240, 220);
+
+  --label-blue-bg: rgb(0, 60, 120);
+  --label-blue-border: rgb(0, 80, 160);
+  --label-blue-text: rgb(220, 240, 255);
 }

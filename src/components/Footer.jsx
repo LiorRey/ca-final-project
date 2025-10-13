@@ -1,18 +1,44 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { Inbox, Calendar1, Columns3, SquareKanban } from "lucide-react";
 
 export function Footer() {
-  const count = useSelector(storeState => storeState.userModule.count);
+  return (
+    <footer className="app-footer">
+      <div className="footer-content">
+        <FooterButton>
+          <Inbox />
+          Inbox
+        </FooterButton>
+        <FooterButton>
+          <Calendar1 />
+          Planer
+        </FooterButton>
+        <FooterButton>
+          <Columns3 />
+          Board
+        </FooterButton>
+        <FooterButton>
+          <SquareKanban />
+          Switch Board
+        </FooterButton>
+      </div>
+    </footer>
+  );
+}
+
+function FooterButton(props) {
+  const [isActive, setIsActive] = useState(false);
+
+  function onToggle() {
+    setIsActive(!isActive);
+  }
 
   return (
-    <footer className="app-footer full">
-      <p>Coffeerights &copy; </p>
-      <p>Count: {count}</p>
-
-      {import.meta.env.VITE_LOCAL ? (
-        <span className="local-services">Local Services</span>
-      ) : (
-        <span className="remote-services">Remote Services</span>
-      )}
-    </footer>
+    <button
+      className={`footer-button ${isActive ? "active" : ""}`}
+      onClick={onToggle}
+    >
+      {props.children}
+    </button>
   );
 }

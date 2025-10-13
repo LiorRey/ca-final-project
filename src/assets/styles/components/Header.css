@@ -1,30 +1,43 @@
 .app-header {
   display: flex;
-  min-height: 3.5rem;
+  width: 100%;
 
-  background-color: var(--clr4);
+  background: var(--gray3);
   padding: 0.8rem 1rem;
 
   & nav {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
     width: 100%;
+    color: var(--gray1);
     align-items: center;
     gap: 1em;
-
     font-size: 0.8em;
+
+    .search-input {
+      height: 100%;
+      width: 100%;
+      max-width: 700px;
+      justify-self: center;
+      border: none;
+      border-radius: 0.5em;
+      padding: 0.5em;
+    }
 
     .active {
       color: var(--clr1);
     }
 
     .logo {
-      font-size: 1.4em;
+      font-size: 2em;
       font-weight: bold;
       margin-inline-end: 2em;
+      color: white;
     }
 
     .login-link {
       margin-inline-start: auto;
+      color: white;
     }
 
     & button {

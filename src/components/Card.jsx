@@ -11,16 +11,21 @@ export default function Card({ card, onRemoveCard, onUpdateCard }) {
 
   return (
     <section className="card-container">
-      <h3>{card.title}</h3>
-      <p>{card.description}</p>
-      <button onClick={onRemoveCard}>Remove</button>
-      <button onClick={onUpdateCard}>Update</button>
-      <p>
-        {card.createdAt ? new Date(card.createdAt).toLocaleDateString() : "N/A"}
-      </p>
-      <p>
-        {card.updatedAt ? new Date(card.updatedAt).toLocaleDateString() : "N/A"}
-      </p>
+      <div className="card-labels">
+        {card.labels.map(label => (
+          <div
+            key={`${card.id}-${label}`}
+            className={`card-label ${label.color}`}
+          >
+            {label.name}
+          </div>
+        ))}
+      </div>
+      <h3 className="card-title">{card.title}</h3>
+
+      <div className="card-footer">
+        <p>{card.description}</p>
+      </div>
     </section>
   );
 }

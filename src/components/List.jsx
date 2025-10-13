@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
+import { Ellipsis } from "lucide-react";
 export default function List({ list, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
 
@@ -18,7 +19,12 @@ export default function List({ list, onRemoveList, onUpdateList }) {
 
   return (
     <section className="list-container">
-      <h2>{list.title}</h2>
+      <div className="list-header">
+        <h2>{list.name}</h2>
+        <button className="icon-button">
+          <Ellipsis />
+        </button>
+      </div>
 
       <ul className="cards-list">
         {cards.map(card => (
@@ -32,6 +38,9 @@ export default function List({ list, onRemoveList, onUpdateList }) {
           </li>
         ))}
       </ul>
+      <div className="list-footer">
+        <button>+ Add Card</button>
+      </div>
     </section>
   );
 }

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Ellipsis, ListFilter, Star, LockKeyhole } from "lucide-react";
+import { Footer } from "../components/Footer";
 
 import { userService } from "../services/user";
 
@@ -13,11 +15,22 @@ export default function BoardDetails({ board }) {
 
   return (
     <section className="board-container">
-      <header>
-        <h2 className="pl-2">Board</h2>
-        {userService.getLoggedinUser() && (
-          <button onClick={onAddCar}>Add a List</button>
-        )}
+      <header className="board-header">
+        <h2 className="board-title">{board.name}</h2>
+        <div className="board-header-right">
+          <button className="icon-button">
+            <ListFilter />
+          </button>
+          <button className="icon-button">
+            <Star />
+          </button>
+          <button className="icon-button">
+            <LockKeyhole />
+          </button>
+          <button className="icon-button">
+            <Ellipsis />
+          </button>
+        </div>
       </header>
       <div className="board-canvas">
         <ul className="lists-list">
@@ -31,12 +44,18 @@ export default function BoardDetails({ board }) {
               />
             </li>
           ))}
+          <li>
+            <AddListButton />
+          </li>
         </ul>
+        <nav className="board-footer">
+          <Footer />
+        </nav>
       </div>
     </section>
   );
 }
 
-function ListFilter() {
-  return <section>ListFilter</section>;
+function AddListButton() {
+  return <button className="add-list-button">+ Add a List</button>;
 }

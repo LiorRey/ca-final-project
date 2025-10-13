@@ -19,15 +19,15 @@ export function Header() {
   }
 
   return (
-    <header className="app-header full">
+    <header className="app-header">
       <nav>
         <NavLink to="/" className="logo">
-          E2E Demo
+          Trello
         </NavLink>
-        <NavLink to="about">About</NavLink>
+
         <NavLink to="board">Boards</NavLink>
-        <NavLink to="chat">Chat</NavLink>
-        <NavLink to="review">Review</NavLink>
+
+        <input className="search-input" type="text" placeholder="Search" />
 
         {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
 
