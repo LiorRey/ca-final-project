@@ -6,14 +6,13 @@ import { Header } from "./components/Header.jsx";
 import { UserMessage } from "./components/UserMessage.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs.jsx";
-import { BoardIndex } from "./pages/BoardIndex.jsx";
-import { BoardDetails } from "./pages/BoardDetails.jsx";
+import BoardIndex from "./pages/BoardIndex";
+import BoardDetails from "./pages/BoardDetails";
 import { CardDetails } from "./pages/CardDetails.jsx";
 import { UserDetails } from "./pages/UserDetails.jsx";
 import { ChatApp } from "./pages/Chat.jsx";
 import { AdminIndex } from "./pages/AdminIndex.jsx";
 import { LoginSignup, Login, Signup } from "./pages/LoginSignup.jsx";
-import { Footer } from "./components/Footer.jsx";
 
 export function App() {
   return (
