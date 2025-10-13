@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 
-export function AppFooter() {
+export function Footer() {
   const count = useSelector(storeState => storeState.userModule.count);
 
   return (

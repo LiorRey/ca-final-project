@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router";
 import { Provider } from "react-redux";
 
 import { store } from "./store/store.js";
-import { AppHeader } from "./components/AppHeader.jsx";
+import { Header } from "./components/Header.jsx";
 import { UserMessage } from "./components/UserMessage.jsx";
 import { HomePage } from "./pages/HomePage.jsx";
 import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs.jsx";
@@ -13,13 +13,13 @@ import { UserDetails } from "./pages/UserDetails.jsx";
 import { ChatApp } from "./pages/Chat.jsx";
 import { AdminIndex } from "./pages/AdminIndex.jsx";
 import { LoginSignup, Login, Signup } from "./pages/LoginSignup.jsx";
-import { AppFooter } from "./components/AppFooter.jsx";
+import { Footer } from "./components/Footer.jsx";
 
 export function App() {
   return (
     <Provider store={store}>
       <div className="main-container">
-        <AppHeader />
+        <Header />
         <UserMessage />
 
         <main>
@@ -32,7 +32,7 @@ export function App() {
             <Route path="board" element={<BoardIndex />} />
             <Route path="board/:boardId" element={<BoardDetails />} />
             <Route
-              path="board/:boardId/:groupId/:cardId"
+              path="board/:boardId/:listId/:cardId"
               element={<CardDetails />}
             />
             <Route path="user/:userId" element={<UserDetails />} />
@@ -44,7 +44,7 @@ export function App() {
             </Route>
           </Routes>
         </main>
-        <AppFooter />
+        <Footer />
       </div>
     </Provider>
   );
