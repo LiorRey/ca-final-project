@@ -25,7 +25,7 @@ export function Header() {
           E2E Demo
         </NavLink>
         <NavLink to="about">About</NavLink>
-        <NavLink to="car">Cars</NavLink>
+        <NavLink to="boards">Boards</NavLink>
         <NavLink to="chat">Chat</NavLink>
         <NavLink to="review">Review</NavLink>
 

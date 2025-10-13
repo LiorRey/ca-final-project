@@ -38,8 +38,8 @@ src/
 
 ### Core Components
 
-- `AppHeader` - Navigation and user menu
-- `AppFooter` - Footer with service status
+- `Header` - Navigation and user menu
+- `Footer` - Footer with service status
 - `UserMsg` - Toast notifications
 - `CarList` - Grid display of cars with actions
 - `CarFilter` - Search and filter interface
