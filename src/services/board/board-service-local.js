@@ -15,60 +15,54 @@ export const boardService = {
 window.cs = boardService;
 
 async function query() {
-  return await storageService.query(BOARDS_STORAGE_KEY);
+  try {
+    return await storageService.query(BOARDS_STORAGE_KEY);
+  } catch (error) {
+    console.log("Cannot load boards:", error);
+    return null;
+  }
 }
 
 function getById(boardId) {
-  let board = null;
-
   try {
-    board = storageService.get(BOARDS_STORAGE_KEY, boardId);
+    return storageService.get(BOARDS_STORAGE_KEY, boardId);
   } catch (error) {
     console.log("Cannot get board:", error);
+    return null;
   }
-
-  return board;
 }
 
 async function save(board) {
-  let savedBoard = null;
-
   try {
-    const boardToSave = { ...board };
-
     if (board._id) {
-      savedBoard = await storageService.put(BOARDS_STORAGE_KEY, boardToSave);
+      return await storageService.put(BOARDS_STORAGE_KEY, { ...board });
     } else {
-      savedBoard = await storageService.post(BOARDS_STORAGE_KEY, boardToSave);
+      return await storageService.post(BOARDS_STORAGE_KEY, { ...board });
     }
-
-    return savedBoard;
   } catch (error) {
     console.log("Cannot save board:", error);
+    return null;
   }
 }
 
 async function updateBoard(board, listId, cardId, { key, value }) {
-  let prevValue = "";
-  let activity = {};
+  let prevValue;
 
   try {
-    if (!board || !key) throw "No board or key provided";
+    if (!board || !key) throw new Error("No board or key provided");
 
-    const listIndex = board.lists.findIndex(list => list.id === listId);
-    if (listIndex !== -1) {
-      const cardIndex = board.lists[listIndex].cards.findIndex(
-        card => card.id === cardId
-      );
+    const list = board.lists?.find(l => l.id === listId);
+    if (list) {
+      const card = list.cards?.find(c => c.id === cardId);
 
-      if (cardIndex !== -1) {
+      if (card) {
         // Update a Card field
-        prevValue = board.lists[listIndex].cards[cardIndex][key];
-        board.lists[listIndex].cards[cardIndex][key] = value;
+        prevValue = card[key];
+        card[key] = value;
       } else {
         // Update a List field
-        prevValue = board.lists[listIndex][key];
-        board.lists[listIndex][key] = value;
+        prevValue = list[key];
+        list[key] = value;
       }
     } else {
       // Update a Board field
@@ -76,10 +70,10 @@ async function updateBoard(board, listId, cardId, { key, value }) {
       board[key] = value;
     }
   } catch (error) {
-    console.log("Cannot save board:", error);
+    console.log("Cannot update board:", error);
   } finally {
     if (board && key) {
-      activity = createActivity(
+      const activity = createActivity(
         board._id,
         listId || null,
         cardId || null,
@@ -92,6 +86,8 @@ async function updateBoard(board, listId, cardId, { key, value }) {
       board.activities.unshift(activity);
     }
   }
+
+  return board;
 }
 
 async function remove(boardId) {
@@ -182,17 +178,84 @@ function _createBoard() {
         name: "Done",
         cards: [],
       },
+      // New demo lists
+      {
+        id: "list-5",
+        name: "Review",
+        cards: [
+          {
+            id: "card-21",
+            title: "Code review login feature",
+            description: "Review pull request #12",
+            labels: [{ name: "backend", color: "yellow" }],
+            assignedTo: ["user-4"],
+            createdAt: "1760391200000",
+          },
+          {
+            id: "card-22",
+            title: "Review API endpoints",
+            description: "Check REST endpoints documentation",
+            labels: [{ name: "frontend", color: "blue" }],
+            assignedTo: ["user-2"],
+            createdAt: "1760391210000",
+          },
+          {
+            id: "card-23",
+            title: "UI/UX review",
+            description: "Check design consistency",
+            labels: [{ name: "design", color: "purple" }],
+            assignedTo: ["user-5"],
+            createdAt: "1760391220000",
+          },
+        ],
+      },
+      {
+        id: "list-6",
+        name: "Blocked",
+        cards: [
+          {
+            id: "card-31",
+            title: "Waiting for API approval",
+            description: "Cannot proceed until backend confirms endpoints",
+            labels: [{ name: "backend", color: "red" }],
+            assignedTo: ["user-3"],
+            createdAt: "1760391230000",
+          },
+        ],
+      },
+      {
+        id: "list-7",
+        name: "Ideas",
+        cards: [
+          {
+            id: "card-41",
+            title: "New dashboard layout",
+            description: "Sketch initial dashboard ideas",
+            labels: [{ name: "design", color: "purple" }],
+            assignedTo: ["user-5"],
+            createdAt: "1760391240000",
+          },
+          {
+            id: "card-42",
+            title: "Integrate notifications",
+            description: "Consider push notifications for events",
+            labels: [{ name: "frontend", color: "blue" }],
+            assignedTo: ["user-1"],
+            createdAt: "1760391250000",
+          },
+        ],
+      },
     ],
     activities: [
       {
         id: "activity-1",
         type: "card_created",
         userId: "user-1",
-        cardId: "card-1",
+        cardId: "card-12",
         message: "User created card 'Set up project repo' in 'To Do'",
         previousData: null,
         currentData: {
-          id: "card-1",
+          id: "card-12",
           title: "Set up project repo",
           listId: "list-1",
         },
@@ -200,27 +263,120 @@ function _createBoard() {
       },
       {
         id: "activity-2",
-        type: "card_moved",
+        type: "card_created",
         userId: "user-2",
-        cardId: "card-3",
-        message: "User moved 'Design login page' from 'To Do' to 'In Progress'",
-        previousData: { listId: "list-1" },
-        currentData: { listId: "list-2" },
+        cardId: "card-13",
+        message: "User created card 'Define API endpoints' in 'To Do'",
+        previousData: null,
+        currentData: {
+          id: "card-13",
+          title: "Define API endpoints",
+          listId: "list-1",
+        },
         timestamp: "1760391185949",
       },
       {
         id: "activity-3",
-        type: "card_updated",
+        type: "card_created",
         userId: "user-3",
-        cardId: "card-2",
-        message: "User changed description of 'Define API endpoints'",
-        previousData: { description: "Draft API" },
+        cardId: "card-7",
+        message: "User created card 'Design login page' in 'In Progress'",
+        previousData: null,
         currentData: {
-          description: "Draft a list of REST endpoints for backend",
+          id: "card-7",
+          title: "Design login page",
+          listId: "list-4",
         },
         timestamp: "1760391195759",
       },
+      // New activities for "Review" list
+      {
+        id: "activity-4",
+        type: "card_created",
+        userId: "user-4",
+        cardId: "card-21",
+        message: "User created card 'Code review login feature' in 'Review'",
+        previousData: null,
+        currentData: {
+          id: "card-21",
+          title: "Code review login feature",
+          listId: "list-5",
+        },
+        timestamp: "1760391260000",
+      },
+      {
+        id: "activity-5",
+        type: "card_created",
+        userId: "user-2",
+        cardId: "card-22",
+        message: "User created card 'Review API endpoints' in 'Review'",
+        previousData: null,
+        currentData: {
+          id: "card-22",
+          title: "Review API endpoints",
+          listId: "list-5",
+        },
+        timestamp: "1760391270000",
+      },
+      {
+        id: "activity-6",
+        type: "card_created",
+        userId: "user-5",
+        cardId: "card-23",
+        message: "User created card 'UI/UX review' in 'Review'",
+        previousData: null,
+        currentData: {
+          id: "card-23",
+          title: "UI/UX review",
+          listId: "list-5",
+        },
+        timestamp: "1760391280000",
+      },
+      // Activity for "Blocked" list
+      {
+        id: "activity-7",
+        type: "card_created",
+        userId: "user-3",
+        cardId: "card-31",
+        message: "User created card 'Waiting for API approval' in 'Blocked'",
+        previousData: null,
+        currentData: {
+          id: "card-31",
+          title: "Waiting for API approval",
+          listId: "list-6",
+        },
+        timestamp: "1760391290000",
+      },
+      // Activities for "Ideas" list
+      {
+        id: "activity-8",
+        type: "card_created",
+        userId: "user-5",
+        cardId: "card-41",
+        message: "User created card 'New dashboard layout' in 'Ideas'",
+        previousData: null,
+        currentData: {
+          id: "card-41",
+          title: "New dashboard layout",
+          listId: "list-7",
+        },
+        timestamp: "1760391300000",
+      },
+      {
+        id: "activity-9",
+        type: "card_created",
+        userId: "user-1",
+        cardId: "card-42",
+        message: "User created card 'Integrate notifications' in 'Ideas'",
+        previousData: null,
+        currentData: {
+          id: "card-42",
+          title: "Integrate notifications",
+          listId: "list-7",
+        },
+        timestamp: "1760391310000",
+      },
     ],
-    listOrder: ["list-1", "list-4", "list-3"],
+    listOrder: ["list-1", "list-4", "list-3", "list-5", "list-6", "list-7"],
   };
 }
