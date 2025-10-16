@@ -1,57 +1,36 @@
 import { userService } from "../../services/user";
 
-export const INCREMENT = "INCREMENT";
-export const DECREMENT = "DECREMENT";
-export const CHANGE_COUNT = "CHANGE_COUNT";
+export const SET_USERS = "SET_USERS";
 export const SET_USER = "SET_USER";
 export const SET_WATCHED_USER = "SET_WATCHED_USER";
-export const REMOVE_USER = "REMOVE_USER";
-export const SET_USERS = "SET_USERS";
-export const SET_SCORE = "SET_SCORE";
+export const DELETE_USER = "DELETE_USER";
+export const SET_LOADING = "SET_LOADING";
+export const SET_ERROR = "SET_ERROR";
 
 const initialState = {
-  count: 10,
-  user: userService.getLoggedinUser(),
   users: [],
+  currentUser: userService.getLoggedinUser(),
   watchedUser: null,
+  isLoading: false,
+  error: null,
 };
 
 export function userReducer(state = initialState, action) {
-  var newState = state;
   switch (action.type) {
-    case INCREMENT:
-      newState = { ...state, count: state.count + 1 };
-      break;
-    case DECREMENT:
-      newState = { ...state, count: state.count - 1 };
-      break;
-    case CHANGE_COUNT:
-      newState = { ...state, count: state.count + action.diff };
-      break;
-    case SET_USER:
-      newState = { ...state, user: action.user };
-      break;
-    case SET_WATCHED_USER:
-      newState = { ...state, watchedUser: action.user };
-      break;
-    case REMOVE_USER:
-      newState = {
-        ...state,
-        users: state.users.filter(user => user._id !== action.userId),
-      };
-      break;
     case SET_USERS:
-      newState = { ...state, users: action.users };
-      break;
-    case SET_SCORE:
-      const user = { ...state.user, score: action.score };
-      newState = { ...state, user };
-      userService.saveLoggedinUser(user);
-      break;
+      return { ...state, users: action.payload };
+    case SET_USER:
+      return { ...state, currentUser: action.payload };
+    case SET_WATCHED_USER:
+      return { ...state, watchedUser: action.payload };
+    case DELETE_USER:
+      const users = state.users.filter(user => user._id !== action.payload);
+      return { ...state, users };
+    case SET_LOADING:
+      return { ...state, isLoading: action.payload };
+    case SET_ERROR:
+      return { ...state, error: action.payload };
     default:
+      return state;
   }
-  // For debug:
-  // window.userState = newState
-  // console.log('State:', newState)
-  return newState;
 }
