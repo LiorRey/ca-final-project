@@ -1,7 +1,12 @@
 .main-container {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100vh;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+}
+
+.main-container main {
+  height: 100%;
+  overflow: hidden;
 }
 
 .sample-grid-layout {

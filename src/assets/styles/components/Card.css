@@ -2,6 +2,12 @@
 .card-container {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--black);
   background-color: var(--gray3);
   color: var(--gray1);
@@ -10,8 +16,36 @@
   text-align: left;
 }
 
-.card-container:hover {
+.card-content:hover {
   border: 1px solid var(--gray1);
+}
+
+.floating-card-content {
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  border: 1px solid var(--black);
+  background-color: var(--gray3);
+  color: var(--gray1);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.card-edit-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card-container:hover .card-edit-button {
+  opacity: 1;
+}
+
+.card-edit-button:hover {
+  background-color: var(--black);
 }
 
 .card-header {
@@ -79,6 +113,44 @@
   gap: 0.5rem;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
+  > svg {
+    font-size: 16px;
+  }
+}
+
+.empty-card-footer {
+  width: 16px;
+  height: 16px;
+  background-color: var(--gray3);
+  border-radius: 0.5rem;
+}
+
+.card-popover {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: transparent;
+  color: var(--gray1);
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  transform: translateY(-0.4rem);
+}
+
+.card-popover-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0 0 1rem;
+  background-color: transparent;
+}
+
+.card-menu-button {
+  display: flex;
+  justify-content: start;
+  gap: 0.5rem;
+  border-radius: 0.2rem;
+  color: black;
+  padding: 0.5rem;
+  background-color: var(--gray1);
   > svg {
     font-size: 16px;
   }
