@@ -2,7 +2,7 @@
 .list-container {
   max-width: 350px;
   border: 1px solid var(--black);
-  border-radius: 6px;
+  border-radius: 10px;
   background-color: var(--gray4);
   color: var(--gray1);
 }
@@ -17,8 +17,8 @@
 .list-header h2 {
   margin: 0;
   padding: 0.25rem 0.5rem 0 0.25rem;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1em;
+  font-weight: 500;
 }
 
 .cards-list {

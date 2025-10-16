@@ -21,18 +21,11 @@
   padding: 0.5rem 0.5rem 0 0.5rem;
 }
 
-.card-title {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 0.2rem 0.25rem;
-}
-
 .card-labels {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 0.2rem 0.25rem;
+  padding: 0.25rem 0.25rem;
 }
 
 .card-label {
@@ -41,8 +34,8 @@
   justify-content: center;
   border-radius: 0.5rem;
   padding: 0.2rem 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.65rem;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   overflow: hidden;
@@ -72,7 +65,21 @@
   color: var(--label-red-text);
 }
 
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.15em;
+  font-weight: normal;
+  padding: 0.25rem 0.5rem 0.5rem 0.5rem;
+}
+
 .card-footer {
-  padding: 0.2rem 0.25rem;
-  font-size: 0.8rem;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.75rem;
+  > svg {
+    font-size: 16px;
+  }
 }

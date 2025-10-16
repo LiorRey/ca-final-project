@@ -1,8 +1,15 @@
-import { Ellipsis, ListFilter, Star, LockKeyhole } from "lucide-react";
 import { Footer } from "../components/Footer";
-import List from "../components/List";
+import { List } from "../components/List";
+import { AddRounded } from "@mui/icons-material";
 
-export default function BoardDetails({ board }) {
+import {
+  MoreHoriz,
+  Sort,
+  StarBorderRounded,
+  LockOutlineRounded,
+} from "@mui/icons-material";
+
+export function BoardDetails({ board }) {
   async function onRemoveList(listId) {}
 
   async function onAddList() {}
@@ -15,16 +22,16 @@ export default function BoardDetails({ board }) {
         <h2 className="board-title">{board.name}</h2>
         <div className="board-header-right">
           <button className="icon-button">
-            <ListFilter />
+            <Sort />
           </button>
           <button className="icon-button">
-            <Star />
+            <StarBorderRounded />
           </button>
           <button className="icon-button">
-            <LockKeyhole />
+            <LockOutlineRounded />
           </button>
           <button className="icon-button">
-            <Ellipsis />
+            <MoreHoriz />
           </button>
         </div>
       </header>
@@ -53,5 +60,9 @@ export default function BoardDetails({ board }) {
 }
 
 function AddListButton() {
-  return <button className="add-list-button">+ Add a List</button>;
+  return (
+    <button className="add-list-button">
+      <AddRounded /> Add a List
+    </button>
+  );
 }

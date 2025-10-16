@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import Card from "./Card";
-import { Ellipsis } from "lucide-react";
+import { Card } from "./Card";
+import { MoreHoriz } from "@mui/icons-material";
+import { AddRounded } from "@mui/icons-material";
 
-export default function List({ list, onRemoveList, onUpdateList }) {
+export function List({ list, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function List({ list, onRemoveList, onUpdateList }) {
       <div className="list-header">
         <h2>{list.name}</h2>
         <button className="icon-button">
-          <Ellipsis />
+          <MoreHoriz />
         </button>
       </div>
       <ul className="cards-list">
@@ -40,7 +41,9 @@ export default function List({ list, onRemoveList, onUpdateList }) {
         ))}
       </ul>
       <div className="list-footer">
-        <button>+ Add Card</button>
+        <button className="add-card-button">
+          <AddRounded /> Add Card
+        </button>
       </div>
     </section>
   );
