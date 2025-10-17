@@ -7,10 +7,8 @@ _createBoards();
 export const boardService = {
   query,
   getById,
-  save,
-  updateBoard,
   remove,
-  createActivity,
+  updateBoardWithActivity,
 };
 window.cs = boardService;
 
@@ -19,7 +17,8 @@ async function query() {
     return await storageService.query(BOARDS_STORAGE_KEY);
   } catch (error) {
     console.log("Cannot load boards:", error);
-    return null;
+
+    throw error;
   }
 }
 
@@ -28,11 +27,138 @@ function getById(boardId) {
     return storageService.get(BOARDS_STORAGE_KEY, boardId);
   } catch (error) {
     console.log("Cannot get board:", error);
-    return null;
+
+    throw error;
   }
 }
 
-async function save(board) {
+async function remove(boardId) {
+  try {
+    await storageService.remove(BOARDS_STORAGE_KEY, boardId);
+  } catch (error) {
+    console.log("Cannot remove board:", error);
+
+    throw error;
+  }
+}
+
+async function updateBoardWithActivity(
+  board,
+  { key, value },
+  listId = null,
+  cardId = null
+) {
+  try {
+    if (!board || !key) throw new Error("Board and key are required");
+
+    let { board: updatedBoard, prevValue } = _applyBoardUpdate(
+      board,
+      { key, value },
+      listId,
+      cardId
+    );
+
+    updatedBoard = _addBoardActivity(
+      updatedBoard,
+      key,
+      value,
+      prevValue,
+      listId,
+      cardId
+    );
+
+    return _save(updatedBoard);
+  } catch (error) {
+    console.error("Cannot update board:", error);
+
+    throw error;
+  }
+}
+
+function _applyBoardUpdate(
+  board,
+  { key, value },
+  listId = null,
+  cardId = null
+) {
+  try {
+    let prevValue;
+
+    if (cardId) {
+      if (!listId) throw new Error("Card update requires listId");
+
+      const list = board.lists?.find(l => l.id === listId);
+      if (!list) throw new Error("List not found");
+
+      const card = list.cards?.find(c => c.id === cardId);
+      if (!card) throw new Error("Card not found");
+
+      prevValue = card[key];
+      card[key] = value;
+    } else if (listId) {
+      const list = board.lists?.find(l => l.id === listId);
+      if (!list) throw new Error("List not found");
+
+      prevValue = list[key];
+      list[key] = value;
+    } else {
+      prevValue = board[key];
+      board[key] = value;
+    }
+
+    return { board, prevValue };
+  } catch (error) {
+    console.warn("Board updated failed:", error.message);
+
+    throw error;
+  }
+}
+
+function _addBoardActivity(
+  board,
+  key,
+  value,
+  prevValue,
+  listId = null,
+  cardId = null
+) {
+  const activity = _createActivity(
+    board._id,
+    key,
+    value,
+    prevValue,
+    listId,
+    cardId
+  );
+
+  board.activities = board.activities || [];
+  board.activities.unshift(activity);
+
+  return board;
+}
+
+function _createActivity(
+  boardId,
+  key,
+  value,
+  prevValue,
+  listId = null,
+  cardId = null
+) {
+  return {
+    id: makeId(),
+    type: "activity",
+    createdAt: Date.now(),
+    board: boardId,
+    list: listId,
+    card: cardId,
+    key,
+    value,
+    prevValue,
+  };
+}
+
+async function _save(board) {
   try {
     if (board._id) {
       return await storageService.put(BOARDS_STORAGE_KEY, { ...board });
@@ -41,75 +167,9 @@ async function save(board) {
     }
   } catch (error) {
     console.log("Cannot save board:", error);
-    return null;
+
+    throw error;
   }
-}
-
-async function updateBoard(board, listId, cardId, { key, value }) {
-  let prevValue;
-
-  try {
-    if (!board || !key) throw new Error("No board or key provided");
-
-    const list = board.lists?.find(l => l.id === listId);
-    if (list) {
-      const card = list.cards?.find(c => c.id === cardId);
-
-      if (card) {
-        // Update a Card field
-        prevValue = card[key];
-        card[key] = value;
-      } else {
-        // Update a List field
-        prevValue = list[key];
-        list[key] = value;
-      }
-    } else {
-      // Update a Board field
-      prevValue = board[key];
-      board[key] = value;
-    }
-  } catch (error) {
-    console.log("Cannot update board:", error);
-  } finally {
-    if (board && key) {
-      const activity = createActivity(
-        board._id,
-        listId || null,
-        cardId || null,
-        key,
-        value,
-        prevValue
-      );
-
-      board.activities = board.activities || [];
-      board.activities.unshift(activity);
-    }
-  }
-
-  return board;
-}
-
-async function remove(boardId) {
-  try {
-    await storageService.remove(BOARDS_STORAGE_KEY, boardId);
-  } catch (error) {
-    console.log("Cannot remove board:", error);
-  }
-}
-
-function createActivity(boardId, listId, cardId, key, value, prevValue) {
-  return {
-    id: `a-${makeId()}`,
-    createdAt: Date.now(),
-    // byMember: { username: 'logged-user' },
-    board: boardId,
-    list: listId,
-    card: cardId,
-    key,
-    value,
-    prevValue,
-  };
 }
 
 function _createBoards() {
@@ -124,18 +184,20 @@ function _createBoards() {
 
 function _createBoard() {
   return {
-    id: `b-${makeId()}`,
+    id: makeId(),
+    type: "board",
     name: "Project Alpha",
     description: "Main development board for Project Alpha",
     createdAt: "1760391084016",
     updatedAt: "1760391111653",
     lists: [
       {
-        id: "list-1",
+        id: makeId(),
+        type: "list",
         name: "To Do",
         cards: [
           {
-            id: "card-12",
+            id: makeId(),
             title: "Set up project repo",
             description: "Initialize repository and push base structure",
             labels: [
@@ -147,7 +209,7 @@ function _createBoard() {
             dueDate: "1760391142172",
           },
           {
-            id: "card-13",
+            id: makeId(),
             title: "Define API endpoints",
             description: "Draft a list of REST endpoints for backend",
             labels: [{ name: "frontend", color: "blue" }],
@@ -157,11 +219,12 @@ function _createBoard() {
         ],
       },
       {
-        id: "list-4",
+        id: makeId(),
+        type: "list",
         name: "In Progress",
         cards: [
           {
-            id: "card-7",
+            id: makeId(),
             title: "Design login page",
             description: "Create wireframe for login and register screens",
             labels: [
@@ -174,17 +237,19 @@ function _createBoard() {
         ],
       },
       {
-        id: "list-3",
+        id: makeId(),
+        type: "list",
         name: "Done",
         cards: [],
       },
       // New demo lists
       {
-        id: "list-5",
+        id: makeId(),
+        type: "list",
         name: "Review",
         cards: [
           {
-            id: "card-21",
+            id: makeId(),
             title: "Code review login feature",
             description: "Review pull request #12",
             labels: [{ name: "backend", color: "yellow" }],
@@ -192,7 +257,7 @@ function _createBoard() {
             createdAt: "1760391200000",
           },
           {
-            id: "card-22",
+            id: makeId(),
             title: "Review API endpoints",
             description: "Check REST endpoints documentation",
             labels: [{ name: "frontend", color: "blue" }],
@@ -200,7 +265,7 @@ function _createBoard() {
             createdAt: "1760391210000",
           },
           {
-            id: "card-23",
+            id: makeId(),
             title: "UI/UX review",
             description: "Check design consistency",
             labels: [{ name: "design", color: "purple" }],
@@ -210,11 +275,12 @@ function _createBoard() {
         ],
       },
       {
-        id: "list-6",
+        id: makeId(),
+        type: "list",
         name: "Blocked",
         cards: [
           {
-            id: "card-31",
+            id: makeId(),
             title: "Waiting for API approval",
             description: "Cannot proceed until backend confirms endpoints",
             labels: [{ name: "backend", color: "red" }],
@@ -224,11 +290,12 @@ function _createBoard() {
         ],
       },
       {
-        id: "list-7",
+        id: makeId(),
+        type: "list",
         name: "Ideas",
         cards: [
           {
-            id: "card-41",
+            id: makeId(),
             title: "New dashboard layout",
             description: "Sketch initial dashboard ideas",
             labels: [{ name: "design", color: "purple" }],
@@ -236,7 +303,7 @@ function _createBoard() {
             createdAt: "1760391240000",
           },
           {
-            id: "card-42",
+            id: makeId(),
             title: "Integrate notifications",
             description: "Consider push notifications for events",
             labels: [{ name: "frontend", color: "blue" }],
@@ -248,8 +315,9 @@ function _createBoard() {
     ],
     activities: [
       {
-        id: "activity-1",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-1",
         cardId: "card-12",
         message: "User created card 'Set up project repo' in 'To Do'",
@@ -262,8 +330,9 @@ function _createBoard() {
         timestamp: "1760391167252",
       },
       {
-        id: "activity-2",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-2",
         cardId: "card-13",
         message: "User created card 'Define API endpoints' in 'To Do'",
@@ -276,8 +345,9 @@ function _createBoard() {
         timestamp: "1760391185949",
       },
       {
-        id: "activity-3",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-3",
         cardId: "card-7",
         message: "User created card 'Design login page' in 'In Progress'",
@@ -291,8 +361,9 @@ function _createBoard() {
       },
       // New activities for "Review" list
       {
-        id: "activity-4",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-4",
         cardId: "card-21",
         message: "User created card 'Code review login feature' in 'Review'",
@@ -305,8 +376,9 @@ function _createBoard() {
         timestamp: "1760391260000",
       },
       {
-        id: "activity-5",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-2",
         cardId: "card-22",
         message: "User created card 'Review API endpoints' in 'Review'",
@@ -319,8 +391,9 @@ function _createBoard() {
         timestamp: "1760391270000",
       },
       {
-        id: "activity-6",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-5",
         cardId: "card-23",
         message: "User created card 'UI/UX review' in 'Review'",
@@ -334,8 +407,9 @@ function _createBoard() {
       },
       // Activity for "Blocked" list
       {
-        id: "activity-7",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-3",
         cardId: "card-31",
         message: "User created card 'Waiting for API approval' in 'Blocked'",
@@ -349,8 +423,9 @@ function _createBoard() {
       },
       // Activities for "Ideas" list
       {
-        id: "activity-8",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-5",
         cardId: "card-41",
         message: "User created card 'New dashboard layout' in 'Ideas'",
@@ -363,8 +438,9 @@ function _createBoard() {
         timestamp: "1760391300000",
       },
       {
-        id: "activity-9",
-        type: "card_created",
+        id: makeId(),
+        type: "activity",
+        activityType: "card_created",
         userId: "user-1",
         cardId: "card-42",
         message: "User created card 'Integrate notifications' in 'Ideas'",
