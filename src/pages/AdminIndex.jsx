@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { loadUsers, removeUser } from "../store/actions/user-actions";
+import { loadUsers, deleteUser } from "../store/actions/user-actions";
 import { useNavigate } from "react-router";
 
 export function AdminIndex() {
@@ -23,7 +23,7 @@ export function AdminIndex() {
           {users.map(user => (
             <li key={user._id}>
               <pre>{JSON.stringify(user, null, 2)}</pre>
-              <button onClick={() => removeUser(user._id)}>
+              <button onClick={() => deleteUser(user._id)}>
                 Remove {user.username}
               </button>
             </li>
