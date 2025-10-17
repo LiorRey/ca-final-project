@@ -1,87 +1,105 @@
+import {
+  SET_USERS,
+  SET_USER,
+  SET_WATCHED_USER,
+  DELETE_USER,
+  SET_LOADING,
+  SET_ERROR,
+} from "../reducers/user-reducer";
+
+import { store } from "../store";
 import { userService } from "../../services/user";
 import { socketService } from "../../services/socket-service";
-import { store } from "../store";
-
-import { showErrorMsg } from "../../services/event-bus-service";
-import { LOADING_DONE, LOADING_START } from "../reducers/system-reducer";
-import {
-  REMOVE_USER,
-  SET_USER,
-  SET_USERS,
-  SET_WATCHED_USER,
-} from "../reducers/user-reducer";
 
 export async function loadUsers() {
   try {
-    store.dispatch({ type: LOADING_START });
+    store.dispatch(setLoading(true));
     const users = await userService.getUsers();
-    store.dispatch({ type: SET_USERS, users });
-  } catch (err) {
-    console.log("UserActions: err in loadUsers", err);
+    store.dispatch(setUsers(users));
+  } catch (error) {
+    store.dispatch(setError(`Error loading users: ${error.message}`));
   } finally {
-    store.dispatch({ type: LOADING_DONE });
+    store.dispatch(setLoading(false));
   }
 }
 
-export async function removeUser(userId) {
+export async function deleteUser(userId) {
   try {
     await userService.remove(userId);
-    store.dispatch({ type: REMOVE_USER, userId });
-  } catch (err) {
-    console.log("UserActions: err in removeUser", err);
+    store.dispatch(deleteUserAction(userId));
+  } catch (error) {
+    store.dispatch(setError(`Error deleting user: ${error.message}`));
+    throw error;
   }
 }
 
 export async function login(credentials) {
   try {
     const user = await userService.login(credentials);
-    store.dispatch({
-      type: SET_USER,
-      user,
-    });
+    store.dispatch(setUser(user));
     socketService.login(user._id);
     return user;
-  } catch (err) {
-    console.log("Cannot login", err);
-    throw err;
+  } catch (error) {
+    store.dispatch(setError(`Error logging in: ${error.message}`));
+    throw error;
   }
 }
 
 export async function signup(credentials) {
   try {
     const user = await userService.signup(credentials);
-    store.dispatch({
-      type: SET_USER,
-      user,
-    });
+    store.dispatch(setUser(user));
     socketService.login(user._id);
     return user;
-  } catch (err) {
-    console.log("Cannot signup", err);
-    throw err;
+  } catch (error) {
+    store.dispatch(setError(`Error signing up: ${error.message}`));
+    throw error;
   }
 }
 
 export async function logout() {
   try {
     await userService.logout();
-    store.dispatch({
-      type: SET_USER,
-      user: null,
-    });
+    store.dispatch(setUser(null));
     socketService.logout();
-  } catch (err) {
-    console.log("Cannot logout", err);
-    throw err;
+  } catch (error) {
+    store.dispatch(setError(`Error logging out: ${error.message}`));
+    throw error;
   }
 }
 
 export async function loadUser(userId) {
   try {
+    store.dispatch(setLoading(true));
     const user = await userService.getById(userId);
-    store.dispatch({ type: SET_WATCHED_USER, user });
-  } catch (err) {
-    showErrorMsg("Cannot load user");
-    console.log("Cannot load user", err);
+    store.dispatch(setWatchedUser(user));
+  } catch (error) {
+    store.dispatch(setError(`Error loading user: ${error.message}`));
+  } finally {
+    store.dispatch(setLoading(false));
   }
+}
+
+function setUsers(users) {
+  return { type: SET_USERS, payload: users };
+}
+
+function setUser(user) {
+  return { type: SET_USER, payload: user };
+}
+
+function setWatchedUser(user) {
+  return { type: SET_WATCHED_USER, payload: user };
+}
+
+function deleteUserAction(userId) {
+  return { type: DELETE_USER, payload: userId };
+}
+
+function setLoading(isLoading) {
+  return { type: SET_LOADING, payload: isLoading };
+}
+
+function setError(error) {
+  return { type: SET_ERROR, payload: error };
 }

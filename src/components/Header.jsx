@@ -5,7 +5,7 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import { logout } from "../store/actions/user-actions";
 
 export function Header() {
-  const user = useSelector(storeState => storeState.userModule.user);
+  const user = useSelector(storeState => storeState.users.currentUser);
   const navigate = useNavigate();
 
   async function onLogout() {
