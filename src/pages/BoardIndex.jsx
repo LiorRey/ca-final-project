@@ -1,8 +1,8 @@
-import BoardDetails from "./BoardDetails";
+import { BoardDetails } from "./BoardDetails";
 
 import { carService } from "../services/car/car-service-local";
 
-export default function BoardIndex() {
+export function BoardIndex() {
   const boardObject = carService.getBoardObject();
   return (
     <section className="board-index">

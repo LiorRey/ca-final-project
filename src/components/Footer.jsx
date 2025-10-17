@@ -1,24 +1,31 @@
 import { useState } from "react";
-import { Inbox, Calendar1, Columns3, SquareKanban } from "lucide-react";
-
+import {
+  InboxRounded,
+  CalendarMonthRounded,
+  ViewWeekOutlined,
+  ViewKanbanOutlined,
+  LibraryBooksOutlined,
+} from "@mui/icons-material";
 export function Footer() {
   return (
     <footer className="app-footer">
       <div className="footer-content">
         <FooterButton>
-          <Inbox />
+          <InboxRounded />
           Inbox
         </FooterButton>
         <FooterButton>
-          <Calendar1 />
+          <CalendarMonthRounded />
           Planer
         </FooterButton>
         <FooterButton>
-          <Columns3 />
+          <ViewWeekOutlined />
           Board
         </FooterButton>
+        <span className="footer-separator" />
         <FooterButton>
-          <SquareKanban />
+          {/* <ViewKanbanOutlined /> */}
+          <LibraryBooksOutlined />
           Switch Board
         </FooterButton>
       </div>

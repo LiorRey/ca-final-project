@@ -1,4 +1,10 @@
-export default function Card({ card, onRemoveCard, onUpdateCard }) {
+import {
+  ChatRounded,
+  NotesRounded,
+  RemoveRedEyeOutlined,
+} from "@mui/icons-material";
+
+export function Card({ card, onRemoveCard, onUpdateCard }) {
   function onRemoveCard() {
     onRemoveCard(card.id);
   }
@@ -21,7 +27,9 @@ export default function Card({ card, onRemoveCard, onUpdateCard }) {
       </div>
       <h3 className="card-title">{card.title}</h3>
       <div className="card-footer">
-        <p>{card.description}</p>
+        <RemoveRedEyeOutlined />
+        <ChatRounded />
+        <NotesRounded />
       </div>
     </section>
   );
