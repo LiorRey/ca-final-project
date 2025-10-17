@@ -17,7 +17,7 @@ import { ReviewList } from "../components/ReviewList";
 import { ReviewEdit } from "../components/ReviewEdit";
 
 export function ReviewIndex() {
-  const loggedInUser = useSelector(storeState => storeState.userModule.user);
+  const loggedInUser = useSelector(storeState => storeState.users.currentUser);
   const reviews = useSelector(storeState => storeState.reviewModule.reviews);
 
   const dispatch = useDispatch();

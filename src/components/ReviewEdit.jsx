@@ -6,7 +6,7 @@ import { addReview } from "../store/actions/review-actions";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function ReviewEdit() {
-  const users = useSelector(storeState => storeState.userModule.users);
+  const users = useSelector(storeState => storeState.users.currentUsers);
   const [reviewToEdit, setReviewToEdit] = useState({
     txt: "",
     aboutUserId: "",
