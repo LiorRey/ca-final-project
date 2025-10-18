@@ -2,7 +2,7 @@ import {
   SET_BOARDS,
   ADD_BOARD,
   UPDATE_BOARD,
-  REMOVE_BOARD,
+  DELETE_BOARD,
   SET_BOARD,
   SET_LOADING,
   SET_ERROR,
@@ -37,10 +37,7 @@ export async function loadBoard(boardId) {
 
 export async function createBoard(board) {
   try {
-    const newBoard = await boardService.updateBoardWithActivity(board, {
-      key: "created board",
-      value: "",
-    });
+    const newBoard = await boardService.save(board);
     store.dispatch(addBoard(newBoard));
     return newBoard;
   } catch (error) {
@@ -49,9 +46,17 @@ export async function createBoard(board) {
   }
 }
 
-export async function updateBoard(board) {
+export async function updateBoard(
+  board,
+  { listId = null, cardId = null, key, value }
+) {
   try {
-    const updatedBoard = await boardService.updateBoardWithActivity(board);
+    const updatedBoard = await boardService.updateBoardWithActivity(board, {
+      listId,
+      cardId,
+      key,
+      value,
+    });
     store.dispatch(editBoard(updatedBoard));
     return updatedBoard;
   } catch (error) {
@@ -60,10 +65,10 @@ export async function updateBoard(board) {
   }
 }
 
-export async function removeBoard(boardId) {
+export async function deleteBoard(boardId) {
   try {
     await boardService.remove(boardId);
-    store.dispatch(deleteBoard(boardId));
+    store.dispatch(deleteBoardAction(boardId));
   } catch (error) {
     store.dispatch(setError(`Error removing board: ${error.message}`));
     throw error;
@@ -82,8 +87,8 @@ export function editBoard(board) {
   return { type: UPDATE_BOARD, payload: board };
 }
 
-export function deleteBoard(boardId) {
-  return { type: REMOVE_BOARD, payload: boardId };
+export function deleteBoardAction(boardId) {
+  return { type: DELETE_BOARD, payload: boardId };
 }
 
 export function setBoard(board) {

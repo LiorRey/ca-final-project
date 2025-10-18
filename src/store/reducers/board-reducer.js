@@ -1,6 +1,6 @@
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
-export const REMOVE_BOARD = "REMOVE_BOARD";
+export const DELETE_BOARD = "DELETE_BOARD";
 export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
 export const SET_LOADING = "boards/SET_LOADING";
@@ -19,7 +19,7 @@ export function boardReducer(state = initialState, action) {
       return { ...state, boards: action.payload };
     case SET_BOARD:
       return { ...state, board: action.payload };
-    case REMOVE_BOARD:
+    case DELETE_BOARD:
       const boards = state.boards.filter(board => board._id !== action.payload);
       return { ...state, boards };
     case ADD_BOARD:
