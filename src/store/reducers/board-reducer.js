@@ -3,8 +3,8 @@ export const SET_BOARD = "SET_BOARD";
 export const REMOVE_BOARD = "REMOVE_BOARD";
 export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
-export const SET_LOADING = "SET_LOADING";
-export const SET_ERROR = "SET_ERROR";
+export const SET_LOADING = "boards/SET_LOADING";
+export const SET_ERROR = "boards/SET_ERROR";
 
 const initialState = {
   boards: [],
