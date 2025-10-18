@@ -1,5 +1,19 @@
 import { faker } from "@faker-js/faker";
 import { generateMultipleUsers } from "../user/user-data-generator.js";
+const PROJECT_TYPES = [
+  "Project Alpha",
+  "Beta Release",
+  "Mobile App Development",
+  "Website Redesign",
+  "API Integration",
+  "Database Migration",
+  "User Dashboard",
+  "E-commerce Platform",
+  "Marketing Campaign",
+  "Product Launch",
+  "Research & Development",
+  "Client Portal",
+];
 
 export function generateCard(options = {}, availableUsers = []) {
   const cardId = crypto.randomUUID();
@@ -123,24 +137,9 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
 
   const activities = generateBoardActivities(boardId, lists, 5);
 
-  const projectTypes = [
-    "Project Alpha",
-    "Beta Release",
-    "Mobile App Development",
-    "Website Redesign",
-    "API Integration",
-    "Database Migration",
-    "User Dashboard",
-    "E-commerce Platform",
-    "Marketing Campaign",
-    "Product Launch",
-    "Research & Development",
-    "Client Portal",
-  ];
-
   const board = {
     _id: boardId,
-    name: faker.helpers.arrayElement(projectTypes),
+    name: faker.helpers.arrayElement(PROJECT_TYPES),
     description: faker.company.catchPhrase() + " - " + faker.lorem.sentence(),
     createdAt,
     updatedAt,
@@ -286,24 +285,9 @@ export function generateBoardWithUsers(
 
   const activities = generateBoardActivities(boardId, lists, 8, users);
 
-  const projectTypes = [
-    "Project Alpha",
-    "Beta Release",
-    "Mobile App Development",
-    "Website Redesign",
-    "API Integration",
-    "Database Migration",
-    "User Dashboard",
-    "E-commerce Platform",
-    "Marketing Campaign",
-    "Product Launch",
-    "Research & Development",
-    "Client Portal",
-  ];
-
   const board = {
     _id: boardId,
-    name: faker.helpers.arrayElement(projectTypes),
+    name: faker.helpers.arrayElement(PROJECT_TYPES),
     description: faker.company.catchPhrase() + " - " + faker.lorem.sentence(),
     createdAt,
     updatedAt,
