@@ -16,7 +16,7 @@ function getEmptyBoard() {
   };
 }
 
-const service = VITE_LOCAL === local; // "true" ? local : remote;
+const service = VITE_LOCAL === "true" ? local : local; // "true" ? local : remote;
 export const boardService = { getEmptyBoard, ...service };
 
 // Easy access to this service from the dev tools console

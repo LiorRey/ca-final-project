@@ -1,12 +1,25 @@
+import { useState, useEffect } from "react";
 import { BoardDetails } from "./BoardDetails";
-
-import { carService } from "../services/car/car-service-local";
+import { boardService } from "../services/board";
 
 export function BoardIndex() {
-  const boardObject = carService.getBoardObject();
+  const [board, setBoard] = useState(null);
+
+  useEffect(() => {
+    fetchBoard();
+  }, []);
+
+  async function fetchBoard() {
+    const boards = await boardService.query();
+    setBoard(boards[0]);
+    console.log("🚀 ~ fetchBoard ~ boards[0]:", boards[0]);
+  }
+
+  if (!board) return <div>Loading board...</div>;
+
   return (
     <section className="board-index">
-      <BoardDetails board={boardObject} />
+      <BoardDetails board={board} />
     </section>
   );
 }
