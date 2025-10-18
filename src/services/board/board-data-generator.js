@@ -19,38 +19,25 @@ export function generateCard(options = {}, availableUsers = []) {
   const cardId = crypto.randomUUID();
   const createdAt = faker.date.past({ years: 1 }).getTime();
 
-  const labelColors = [
-    "blue",
-    "green",
-    "red",
-    "yellow",
-    "purple",
-    "orange",
-    "pink",
-    "gray",
-  ];
-  const labelTypes = [
-    "frontend",
-    "backend",
-    "design",
-    "testing",
-    "documentation",
-    "bug",
-    "feature",
-    "enhancement",
-    "priority:high",
-    "priority:medium",
-    "priority:low",
-    "urgent",
-    "review",
-    "blocked",
+  const labelOptions = [
+    { name: "frontend", color: "blue" },
+    { name: "backend", color: "green" },
+    { name: "design", color: "purple" },
+    { name: "testing", color: "orange" },
+    { name: "documentation", color: "gray" },
+    { name: "bug", color: "red" },
+    { name: "feature", color: "blue" },
+    { name: "enhancement", color: "green" },
+    { name: "priority:high", color: "red" },
+    { name: "priority:medium", color: "yellow" },
+    { name: "priority:low", color: "gray" },
+    { name: "urgent", color: "red" },
+    { name: "review", color: "orange" },
+    { name: "blocked", color: "red" },
   ];
 
   const numLabels = faker.number.int({ min: 0, max: 4 });
-  const labels = Array.from({ length: numLabels }, () => ({
-    name: faker.helpers.arrayElement(labelTypes),
-    color: faker.helpers.arrayElement(labelColors),
-  }));
+  const labels = faker.helpers.arrayElements(labelOptions, numLabels);
 
   const numAssignees = faker.number.int({
     min: 0,

@@ -12,7 +12,6 @@ export function BoardIndex() {
   async function fetchBoard() {
     const boards = await boardService.query();
     setBoard(boards[0]);
-    console.log("🚀 ~ fetchBoard ~ boards[0]:", boards[0]);
   }
 
   if (!board) return <div>Loading board...</div>;
