@@ -9,7 +9,7 @@ import {
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
-import { boardService } from "../../services/board/board-service-local";
+import { boardService } from "../../services/board";
 
 export async function loadBoards() {
   try {
