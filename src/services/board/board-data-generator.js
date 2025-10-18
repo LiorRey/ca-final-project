@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { generateMultipleUsers } from "../user/user-data-generator.js";
 
 export function generateCard(options = {}, availableUsers = []) {
-  const cardId = faker.string.uuid();
+  const cardId = crypto.randomUUID();
   const createdAt = faker.date.past({ years: 1 }).getTime();
 
   const labelColors = [
@@ -98,7 +98,7 @@ export function generateList(cardCount = 3, options = {}, availableUsers = []) {
   );
 
   const list = {
-    id: `list-${faker.string.uuid()}`,
+    id: crypto.randomUUID(),
     name: faker.helpers.arrayElement(listNames),
     cards,
     ...options,
@@ -108,7 +108,7 @@ export function generateList(cardCount = 3, options = {}, availableUsers = []) {
 }
 
 export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
-  const boardId = faker.string.uuid();
+  const boardId = crypto.randomUUID();
   const createdAt = faker.date.past({ years: 2 }).getTime();
   const updatedAt = faker.date
     .between({ from: createdAt, to: Date.now() })
@@ -192,7 +192,7 @@ export function generateActivity(
   }
 
   const activity = {
-    id: faker.string.uuid(),
+    id: crypto.randomUUID(),
     type: type,
     createdAt: faker.date.recent({ days: 30 }).getTime(),
     byMember,
@@ -269,7 +269,7 @@ export function generateBoardWithUsers(
 
   const users = generateMultipleUsers(userCount, { includeAdmin });
 
-  const boardId = faker.string.uuid();
+  const boardId = crypto.randomUUID();
   const createdAt = faker.date.past({ years: 2 }).getTime();
   const updatedAt = faker.date
     .between({ from: createdAt, to: Date.now() })
