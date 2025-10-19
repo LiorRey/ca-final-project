@@ -1,0 +1,54 @@
+.card-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+}
+
+.card-label.blue {
+  background-color: var(--label-blue-bg);
+  border: 1px solid var(--label-blue-border);
+  color: var(--label-blue-text);
+}
+
+.card-label.green {
+  background-color: var(--label-green-bg);
+  border: 1px solid var(--label-green-border);
+  color: var(--label-green-text);
+}
+
+.card-label.orange {
+  background-color: var(--label-orange-bg);
+  border: 1px solid var(--label-orange-border);
+  color: var(--label-orange-text);
+}
+
+.card-label.red {
+  background-color: var(--label-red-bg);
+  border: 1px solid var(--label-red-border);
+  color: var(--label-red-text);
+}
+
+.card-label.purple {
+  background-color: var(--label-purple-bg);
+  border: 1px solid var(--label-purple-border);
+  color: var(--label-purple-text);
+}
+
+.card-label.yellow {
+  background-color: var(--label-yellow-bg);
+  border: 1px solid var(--label-yellow-border);
+  color: var(--label-yellow-text);
+}
+
+.card-label.gray {
+  background-color: var(--label-gray-bg);
+  border: 1px solid var(--label-gray-border);
+  color: var(--label-gray-text);
+}

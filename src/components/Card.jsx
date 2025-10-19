@@ -37,17 +37,21 @@ export function Card({ card, onRemoveCard, onUpdateCard }) {
         className={`${open ? "floating-card-content" : "card-content"}`}
         sx={open ? { zIndex: theme => theme.zIndex.modal + 1 } : {}}
       >
-        <div className="card-labels">
-          {card.labels.map(label => (
-            <div
-              key={`${card.id}-${label.name}-${label.color}`}
-              className={`card-label ${label.color}`}
-            >
-              {label.name}
-            </div>
-          ))}
-        </div>
-        <h3 className="card-title">{card.title}</h3>
+        {card.labels.length > 0 && (
+          <div className="card-labels">
+            {card.labels.map(label => (
+              <div
+                key={`${card.id}-${label.name}`}
+                className={`card-label ${label.color}`}
+              >
+                {label.name}
+              </div>
+            ))}
+          </div>
+        )}
+        <h3 className={`card-title ${card.labels.length === 0 ? "mr-2" : ""}`}>
+          {card.title}
+        </h3>
         {open ? (
           <div className="card-footer">
             <div className="empty-card-footer" />
