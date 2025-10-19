@@ -1,20 +1,16 @@
-import { AddRounded } from "@mui/icons-material";
-import {
-  MoreHoriz,
-  Sort,
-  StarBorderRounded,
-  LockOutlineRounded,
-} from "@mui/icons-material";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import Sort from "@mui/icons-material/Sort";
+import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
+import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 
 import { updateBoard } from "../store/actions/board-actions";
-import { List } from "../components/List";
 import { Footer } from "../components/Footer";
+import { List } from "../components/List";
+import { AddList } from "../components/AddList";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function BoardDetails({ board }) {
   async function onRemoveList(listId) {}
-
-  async function onAddList() {}
 
   async function onUpdateList(list, { cardId = null, key, value }) {
     try {
@@ -26,6 +22,14 @@ export function BoardDetails({ board }) {
       showErrorMsg(`Unable to update the list: ${list.name}`);
     }
   }
+  function onSubmitAddList(newList) {
+    updateBoard(board, {
+      key: "lists",
+      value: [...board.lists, newList],
+    });
+  }
+
+  if (!board) return <div>Loading board...</div>;
 
   return (
     <section className="board-container">
@@ -59,7 +63,7 @@ export function BoardDetails({ board }) {
             </li>
           ))}
           <li>
-            <AddListButton />
+            <AddList onSubmit={onSubmitAddList} />
           </li>
         </ul>
         <nav className="board-footer">
@@ -67,13 +71,5 @@ export function BoardDetails({ board }) {
         </nav>
       </div>
     </section>
-  );
-}
-
-function AddListButton() {
-  return (
-    <button className="add-list-button">
-      <AddRounded /> Add a List
-    </button>
   );
 }
