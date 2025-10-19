@@ -28,7 +28,16 @@ export function boardReducer(state = initialState, action) {
       const updatedBoards = state.boards.map(board =>
         board._id === action.payload._id ? action.payload : board
       );
-      return { ...state, boards: updatedBoards };
+      const updatedCurrentBoard =
+        state.board && state.board._id === action.payload._id
+          ? action.payload
+          : state.board;
+
+      return {
+        ...state,
+        boards: updatedBoards,
+        board: updatedCurrentBoard,
+      };
     case SET_LOADING:
       return { ...state, isLoading: action.payload };
     case SET_ERROR:
