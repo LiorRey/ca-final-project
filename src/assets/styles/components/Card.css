@@ -21,6 +21,9 @@
 }
 
 .floating-card-content {
+  display: inline-block;
+  position: relative;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   border-radius: 6px;
@@ -29,6 +32,26 @@
   color: var(--gray1);
   padding: 0.5rem;
   text-align: left;
+}
+
+.card-save-button {
+  position: absolute;
+  bottom: -2.5rem;
+  left: 0;
+  background: #8fb8f6;
+  color: black;
+  border: 1px solid var(--black);
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  transition: 0.2s ease;
+}
+
+.card-save-button:hover {
+  background: #6f9ce6;
 }
 
 .card-edit-button {
@@ -60,6 +83,25 @@
   font-size: 1.15em;
   font-weight: normal;
   padding: 0.25rem 0.5rem 0.5rem 0.3rem;
+  word-break: break-word;
+}
+
+.card-title-input {
+  display: block;
+  word-break: break-all;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--gray1);
+  font-family: inherit;
+  font-size: 1.15em;
+  font-weight: normal;
+  padding: 0.25rem 0.5rem 0.5rem 0.3rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  resize: none;
+  field-sizing: content; /* auto-grow/shrink to content check if works cross-browser*/
 }
 
 .card-footer {

@@ -21,6 +21,8 @@ export default function CardPopover({
     >
       <Popover
         disableScrollLock
+        disableEnforceFocus
+        disableAutoFocus
         className="card-popover"
         id={id}
         open={open}
