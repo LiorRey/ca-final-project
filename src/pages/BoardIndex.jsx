@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { BoardDetails } from "./BoardDetails";
 import { boardService } from "../services/board";
+import { loadBoard } from "../store/actions/board-actions";
 
 export function BoardIndex() {
-  const [board, setBoard] = useState(null);
+  const board = useSelector(state => state.boards.board);
 
   useEffect(() => {
     fetchBoard();
@@ -11,7 +13,7 @@ export function BoardIndex() {
 
   async function fetchBoard() {
     const boards = await boardService.query();
-    setBoard(boards[0]);
+    await loadBoard(boards[0]._id);
   }
 
   if (!board) return <div>Loading board...</div>;
