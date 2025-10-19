@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
@@ -9,7 +10,9 @@ import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
-export function BoardDetails({ board }) {
+export function BoardDetails() {
+  const board = useSelector(state => state.boards.board);
+
   async function onRemoveList(listId) {}
 
   async function onUpdateList(list, { cardId = null, key, value }) {
