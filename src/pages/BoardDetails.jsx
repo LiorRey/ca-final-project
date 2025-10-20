@@ -12,9 +12,6 @@ import {
 export function BoardDetails({ board }) {
   async function onRemoveList(listId) {}
 
-<<<<<<< Updated upstream
-  async function onAddList() {}
-=======
   async function onUpdateList(list) {
     updateBoard(board, {
       listId: list.id,
@@ -22,7 +19,6 @@ export function BoardDetails({ board }) {
       value: [...list.cards],
     });
   }
->>>>>>> Stashed changes
 
   async function onUpdateList(list) {}
 
