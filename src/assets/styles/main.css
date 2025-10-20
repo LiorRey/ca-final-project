@@ -23,6 +23,7 @@
 @import "components/Board";
 @import "components/List";
 @import "components/Card";
+@import "components/Label";
 
 @import "components/review/ReviewEdit";
 @import "components/review/ReviewList";

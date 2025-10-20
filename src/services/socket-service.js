@@ -16,9 +16,13 @@ const SOCKET_EMIT_LOGOUT = "unset-user-socket";
 
 const baseUrl = process.env.NODE_ENV === "production" ? "" : "//localhost:3030";
 
+// Temporarily disabled socket setup to prevent connection errors
+/*
 export const socketService =
-  VITE_LOCAL === "true" ? createDummySocketService() : createSocketService();
+   VITE_LOCAL === "true" ? createDummySocketService() : createSocketService();
+ */
 
+export const socketService = createDummySocketService();
 // for debugging from console
 if (DEV) window.socketService = socketService;
 

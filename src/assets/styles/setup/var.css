@@ -51,6 +51,18 @@
   --label-blue-border: rgb(0, 80, 160);
   --label-blue-text: rgb(220, 240, 255);
 
+  --label-purple-bg: rgb(60, 0, 120);
+  --label-purple-border: rgb(80, 0, 160);
+  --label-purple-text: rgb(240, 220, 255);
+
+  --label-yellow-bg: rgb(120, 100, 0);
+  --label-yellow-border: rgb(160, 140, 0);
+  --label-yellow-text: rgb(255, 255, 220);
+
+  --label-gray-bg: rgb(60, 60, 60);
+  --label-gray-border: rgb(100, 100, 100);
+  --label-gray-text: rgb(220, 220, 220);
+
   /* Button Colors */
   --button-soft-blue-bg: rgb(102, 157, 241);
   --button-very-soft-blue-bg: rgb(143, 184, 246);
