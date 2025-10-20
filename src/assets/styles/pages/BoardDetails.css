@@ -1,0 +1,22 @@
+.add-list-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--gray1);
+  background: var(--clr2);
+  border: 1px solid var(--gray1);
+  border-radius: 8px;
+  > svg {
+    width: 16px;
+    height: 16px;
+    color: var(--gray1);
+  }
+}
+
+.add-list-button:hover {
+  background-color: var(--gray3);
+}
