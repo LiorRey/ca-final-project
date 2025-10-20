@@ -27,6 +27,7 @@ export function Card({ card, onRemoveCard, onUpdateCard }) {
   function handleSave() {
     card.title = title;
     handleClose();
+    onUpdateCard({ ...card, title });
   }
 
   function handleDelete() {

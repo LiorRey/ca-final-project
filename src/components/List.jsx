@@ -20,7 +20,8 @@ export function List({ list, onRemoveList, onUpdateList }) {
   }
 
   async function onUpdateCard(card) {
-    await onUpdateList(card);
+    setCards(prev => [...prev, card]);
+    await onUpdateList({ ...list, cards });
   }
 
   const handleMoreClick = event => {
