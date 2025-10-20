@@ -1,24 +1,32 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { BoardDetails } from "./BoardDetails";
 import { boardService } from "../services/board";
+import { loadBoard, loadBoards } from "../store/actions/board-actions";
 
 export function BoardIndex() {
-  const [board, setBoard] = useState(null);
+  const boards = useSelector(state => state.boards.boards);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchBoard();
+    loadBoards();
   }, []);
+
+  useEffect(() => {
+    if (boards.length === 0) return;
+
+    navigate(`/board/${boards[0]._id}`);
+  }, [boards]);
 
   async function fetchBoard() {
     const boards = await boardService.query();
-    setBoard(boards[0]);
+    await loadBoard(boards[0]._id);
   }
-
-  if (!board) return <div>Loading board...</div>;
 
   return (
     <section className="board-index">
-      <BoardDetails board={board} />
+      <BoardDetails />
     </section>
   );
 }

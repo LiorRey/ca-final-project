@@ -68,7 +68,9 @@
 
 .list-footer {
   display: flex;
-  justify-content: left;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
 }
 
@@ -77,8 +79,60 @@
   border-radius: 6px;
   color: var(--gray1);
   background-color: transparent;
+  width: 100%;
+  justify-content: start;
 }
 
 .list-footer button:hover {
   background-color: var(--gray3);
+}
+
+.add-card-actions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-title-input {
+  width: 100%;
+  padding: 0.25rem 0.5rem 0.75rem 0.5rem;
+  border: none;
+  color: var(--gray1);
+  background-color: transparent;
+  font-size: 0.9em;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.card-actions .add-card-contained-button {
+  width: fit-content;
+  padding: 0.4rem 0.75rem 0.3rem 0.75rem;
+  color: var(--button-black-text);
+  background-color: var(--button-soft-blue-bg);
+  text-transform: none;
+
+  &:hover {
+    background-color: var(--button-very-soft-blue-bg);
+  }
+}
+
+.card-actions .icon-button {
+  width: auto;
+  padding: 4px 8px;
+  color: var(--gray2);
+  font-size: 1.2em;
+  padding: 0.35rem 0.75rem;
+
+  &:hover {
+    color: var(--gray1);
+    background-color: var(--gray3);
+  }
 }

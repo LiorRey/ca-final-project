@@ -1,26 +1,45 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import Sort from "@mui/icons-material/Sort";
+import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
+import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
+
+import { loadBoard, updateBoard } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
-import { AddRounded } from "@mui/icons-material";
+import { AddList } from "../components/AddList";
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
-import {
-  MoreHoriz,
-  Sort,
-  StarBorderRounded,
-  LockOutlineRounded,
-} from "@mui/icons-material";
+export function BoardDetails() {
+  const params = useParams();
+  const board = useSelector(state => state.boards.board);
 
-export function BoardDetails({ board }) {
+  useEffect(() => {
+    loadBoard(params.boardId);
+  }, [params.boardId]);
+
   async function onRemoveList(listId) {}
 
-  async function onUpdateList(list) {
+  async function onUpdateList(list, { cardId = null, key, value }) {
+    try {
+      const options = { listId: list.id, cardId, key, value };
+      updateBoard(board, options);
+      showSuccessMsg(`The list ${list.name} updated successfully!`);
+    } catch (error) {
+      console.error("List update failed:", error);
+      showErrorMsg(`Unable to update the list: ${list.name}`);
+    }
+  }
+  function onSubmitAddList(newList) {
     updateBoard(board, {
-      listId: list.id,
-      key: "cards",
-      value: [...list.cards],
+      key: "lists",
+      value: [...board.lists, newList],
     });
   }
 
-  async function onUpdateList(list) {}
+  if (!board) return <div>Loading board...</div>;
 
   return (
     <section className="board-container">
@@ -54,7 +73,7 @@ export function BoardDetails({ board }) {
             </li>
           ))}
           <li>
-            <AddListButton />
+            <AddList onSubmit={onSubmitAddList} />
           </li>
         </ul>
         <nav className="board-footer">
@@ -62,13 +81,5 @@ export function BoardDetails({ board }) {
         </nav>
       </div>
     </section>
-  );
-}
-
-function AddListButton() {
-  return (
-    <button className="add-list-button">
-      <AddRounded /> Add a List
-    </button>
   );
 }

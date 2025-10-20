@@ -14,6 +14,7 @@ export const boardService = {
   updateBoardWithActivity,
   clearData,
   reCreateBoards,
+  getEmptyList,
 };
 window.bs = boardService;
 
@@ -76,6 +77,14 @@ async function updateBoardWithActivity(
 
     throw error;
   }
+}
+
+export function getEmptyList() {
+  return {
+    id: crypto.randomUUID(),
+    name: "",
+    cards: [],
+  };
 }
 
 function _applyBoardUpdate(
