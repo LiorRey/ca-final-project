@@ -1,17 +1,24 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 
-import { updateBoard } from "../store/actions/board-actions";
+import { loadBoard, updateBoard } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function BoardDetails() {
+  const params = useParams();
   const board = useSelector(state => state.boards.board);
+
+  useEffect(() => {
+    loadBoard(params.boardId);
+  }, [params.boardId]);
 
   async function onRemoveList(listId) {}
 
