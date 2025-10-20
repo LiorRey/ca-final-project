@@ -41,12 +41,10 @@ export function List({ list, onRemoveList, onUpdateList }) {
   };
 
   const handleEditList = () => {
-    // Implement edit list functionality
     handleClose();
   };
 
   const handleDeleteList = () => {
-    // Implement delete list functionality
     onRemoveList(list.id);
     handleClose();
   };
