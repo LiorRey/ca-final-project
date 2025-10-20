@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
 import Button from "@mui/material/Button";
@@ -8,11 +8,14 @@ import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 
 import { Card } from "./Card";
+import { boardService } from "../services/board";
 
 export function List({ list, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
+  const [newCardTitle, setNewCardTitle] = useState("");
+  const listContentRef = useRef(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -50,11 +53,40 @@ export function List({ list, onRemoveList, onUpdateList }) {
 
   const handleShowingAddCardActions = () => {
     setIsAddingCard(true);
+    _scrollListContentToBottom();
   };
 
   const handleHidingAddCardActions = () => {
     setIsAddingCard(false);
+    setNewCardTitle("");
   };
+
+  function handleAddCardTitleChange({ target }) {
+    setNewCardTitle(target.value);
+  }
+
+  const handleAddCard = () => {
+    const newCard = {
+      ...boardService.getEmptyCard(),
+      title: newCardTitle,
+      createdAt: Date.now(),
+    };
+
+    const updatedCards = [...cards, newCard];
+    setCards(updatedCards);
+    onUpdateList(list.id, list.name, "cards", updatedCards);
+
+    _scrollListContentToBottom();
+    setNewCardTitle("");
+  };
+
+  function _scrollListContentToBottom() {
+    setTimeout(() => {
+      if (listContentRef.current) {
+        listContentRef.current.scrollTop = listContentRef.current.scrollHeight;
+      }
+    }, 0);
+  }
 
   return (
     <section className="list-container">
@@ -64,7 +96,7 @@ export function List({ list, onRemoveList, onUpdateList }) {
           <MoreHoriz />
         </button>
       </div>
-      <div className="list-content-container">
+      <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
           {cards.map(card => (
             <li key={card.id}>
@@ -97,6 +129,8 @@ export function List({ list, onRemoveList, onUpdateList }) {
                 placeholder="Enter a title or paste a link"
                 className="card-title-input"
                 autoFocus
+                value={newCardTitle}
+                onChange={handleAddCardTitleChange}
               />
             </Box>
             <div className="card-actions">
@@ -104,6 +138,7 @@ export function List({ list, onRemoveList, onUpdateList }) {
                 className="add-card-contained-button"
                 variant="contained"
                 size="large"
+                onClick={handleAddCard}
               >
                 Add card
               </Button>
