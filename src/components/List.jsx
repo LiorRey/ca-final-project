@@ -74,7 +74,10 @@ export function List({ list, onRemoveList, onUpdateList }) {
 
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
-    onUpdateList(list.id, list.name, "cards", updatedCards);
+
+    const updatedList = { ...list, cards };
+    const options = { key: "cards", value: updatedCards };
+    onUpdateList(updatedList, options);
 
     _scrollListContentToBottom();
     setNewCardTitle("");

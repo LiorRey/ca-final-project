@@ -16,14 +16,14 @@ export function BoardDetails({ board }) {
 
   async function onAddList() {}
 
-  async function onUpdateList(listId, listName, key, value) {
+  async function onUpdateList(list, { cardId = null, key, value }) {
     try {
-      const options = { listId, cardId: null, key, value };
+      const options = { listId: list.id, cardId, key, value };
       updateBoard(board, options);
-      showSuccessMsg(`The list ${listName} updated successfully!`);
+      showSuccessMsg(`The list ${list.name} updated successfully!`);
     } catch (error) {
       console.error("List update failed:", error);
-      showErrorMsg(`Unable to update the list: ${listName}`);
+      showErrorMsg(`Unable to update the list: ${list.name}`);
     }
   }
 
