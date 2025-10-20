@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import AddRounded from "@mui/icons-material/AddRounded";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Popover from "@mui/material/Popover";
+import MenuList from "@mui/material/MenuList";
+import MenuItem from "@mui/material/MenuItem";
+
 import { Card } from "./Card";
-import { MoreHoriz } from "@mui/icons-material";
-import { AddRounded } from "@mui/icons-material";
-import { Popover, MenuItem, MenuList } from "@mui/material";
 
 export function List({ list, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isAddingCard, setIsAddingCard] = useState(false);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -42,6 +48,14 @@ export function List({ list, onRemoveList, onUpdateList }) {
     handleClose();
   };
 
+  const handleShowingAddCardActions = () => {
+    setIsAddingCard(true);
+  };
+
+  const handleHidingAddCardActions = () => {
+    setIsAddingCard(false);
+  };
+
   return (
     <section className="list-container">
       <div className="list-header">
@@ -65,9 +79,43 @@ export function List({ list, onRemoveList, onUpdateList }) {
         </ul>
       </div>
       <div className="list-footer">
-        <button className="add-card-button">
-          <AddRounded /> Add Card
-        </button>
+        {!isAddingCard ? (
+          <button
+            className="add-card-card-button"
+            onClick={handleShowingAddCardActions}
+          >
+            <AddRounded /> Add a card
+          </button>
+        ) : (
+          <section className="add-card-actions-container">
+            <Box
+              className={`${open ? "floating-card-content" : "card-content"}`}
+              sx={open ? { zIndex: theme => theme.zIndex.modal + 1 } : {}}
+            >
+              <input
+                type="text"
+                placeholder="Enter a title or paste a link"
+                className="card-title-input"
+                autoFocus
+              />
+            </Box>
+            <div className="card-actions">
+              <Button
+                className="add-card-contained-button"
+                variant="contained"
+                size="large"
+              >
+                Add card
+              </Button>
+              <button
+                className="icon-button"
+                onClick={handleHidingAddCardActions}
+              >
+                ✕
+              </button>
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Temporary List popover (using MUI Popover) */}

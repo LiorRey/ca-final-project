@@ -50,4 +50,9 @@
   --label-blue-bg: rgb(0, 60, 120);
   --label-blue-border: rgb(0, 80, 160);
   --label-blue-text: rgb(220, 240, 255);
+
+  /* Button Colors */
+  --button-soft-blue-bg: rgb(102, 157, 241);
+  --button-very-soft-blue-bg: rgb(143, 184, 246);
+  --button-black-text: rgb(21, 21, 23);
 }
