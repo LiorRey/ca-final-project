@@ -17,7 +17,7 @@
   background-color: var(--gray3);
 }
 
-.add-card-button {
+.add-card-card-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,9 +31,10 @@
     height: 16px;
     color: var(--gray1);
     margin-bottom: 0.05em;
+    margin-inline-end: 0.2em;
   }
 }
 
-.add-card-button:hover {
+.add-card-card-button:hover {
   background-color: var(--gray3);
 }

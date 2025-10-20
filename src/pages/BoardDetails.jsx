@@ -1,7 +1,4 @@
-import { Footer } from "../components/Footer";
-import { List } from "../components/List";
 import { AddRounded } from "@mui/icons-material";
-
 import {
   MoreHoriz,
   Sort,
@@ -9,12 +6,26 @@ import {
   LockOutlineRounded,
 } from "@mui/icons-material";
 
+import { updateBoard } from "../store/actions/board-actions";
+import { List } from "../components/List";
+import { Footer } from "../components/Footer";
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
+
 export function BoardDetails({ board }) {
   async function onRemoveList(listId) {}
 
   async function onAddList() {}
 
-  async function onUpdateList(list) {}
+  async function onUpdateList(list, { cardId = null, key, value }) {
+    try {
+      const options = { listId: list.id, cardId, key, value };
+      updateBoard(board, options);
+      showSuccessMsg(`The list ${list.name} updated successfully!`);
+    } catch (error) {
+      console.error("List update failed:", error);
+      showErrorMsg(`Unable to update the list: ${list.name}`);
+    }
+  }
 
   return (
     <section className="board-container">
