@@ -9,12 +9,16 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { Card } from "./Card";
 import { boardService } from "../services/board";
+import { CardModal } from "./CardModal";
 
 export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+
   const listContentRef = useRef(null);
   const open = Boolean(anchorEl);
 
@@ -22,7 +26,14 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     setCards(list.cards);
   }, [list.cards]);
 
-  async function onAddCard() {}
+  function handleOpenModal(card) {
+    setSelectedCard(card);
+    setOpenModal(true);
+  }
+  function handleCloseModal() {
+    setOpenModal(false);
+    setSelectedCard(null);
+  }
 
   async function onRemoveCard(cardId) {
     await onRemoveList(list.id);
@@ -195,6 +206,12 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
           <MenuItem onClick={handleDeleteList}>Delete List</MenuItem>
         </MenuList>
       </Popover>
+      <CardModal
+        listTitle={list.name}
+        card={selectedCard}
+        onClose={handleCloseModal}
+        open={openModal}
+      />
     </section>
   );
 }

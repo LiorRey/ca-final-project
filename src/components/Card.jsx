@@ -10,12 +10,18 @@ import CardPopover from "./CardPopover";
 
 import { Box } from "@mui/material";
 import { useState } from "react";
+import { CardModal } from "./CardModal";
 
 export function Card({ card, labels = [], onRemoveCard, onUpdateCard }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
 
+  function handleClickCard() {
+    onClickCard(card);
+  }
+
   function handleClick(e) {
+    e.stopPropagation();
     setAnchorEl(e.currentTarget);
   }
 
@@ -71,8 +77,13 @@ export function Card({ card, labels = [], onRemoveCard, onUpdateCard }) {
           </button>
         </Box>
       ) : (
+<<<<<<< HEAD
         <Box className="card-content">
           {labels.length > 0 && (
+=======
+        <Box className="card-content" onClick={handleClickCard}>
+          {card.labels.length > 0 && (
+>>>>>>> 840ef24 (feat: Created a simple modal for a card)
             <div className="card-labels">
               {labels.map(label => (
                 <div
