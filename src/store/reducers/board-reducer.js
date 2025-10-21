@@ -1,3 +1,5 @@
+import { getDefaultFilter } from "../../services/filter-service";
+
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
@@ -13,11 +15,7 @@ const initialState = {
   board: null,
   isLoading: false,
   error: null,
-  filterBy: {
-    labels: [],
-    title: "",
-    includeNoLabels: false,
-  },
+  filterBy: getDefaultFilter(),
 };
 
 export function boardReducer(state = initialState, action) {

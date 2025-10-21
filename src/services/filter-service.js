@@ -23,3 +23,11 @@ export function getFilteredBoard(board, filterBy) {
     })),
   };
 }
+
+export function getDefaultFilter() {
+  return {
+    labels: [],
+    title: "",
+    includeNoLabels: false,
+  };
+}
