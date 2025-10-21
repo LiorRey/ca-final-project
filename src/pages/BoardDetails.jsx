@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
@@ -15,6 +15,7 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 export function BoardDetails() {
   const params = useParams();
   const board = useSelector(state => state.boards.board);
+  const boardCanvasRef = useRef(null);
 
   useEffect(() => {
     loadBoard(params.boardId);
@@ -37,6 +38,24 @@ export function BoardDetails() {
       key: "lists",
       value: [...board.lists, newList],
     });
+
+    scrollHorizontallyBoardCanvasToEnd(true);
+  }
+
+  function scrollHorizontallyBoardCanvasToEnd(isAfterListAdd = false) {
+    setTimeout(
+      () => {
+        const el = boardCanvasRef.current;
+        if (el) {
+          const scrollTarget = el.scrollWidth - el.clientWidth + 100;
+          el.scrollTo({
+            left: scrollTarget,
+            behavior: "smooth",
+          });
+        }
+      },
+      isAfterListAdd ? 500 : 0
+    );
   }
 
   if (!board) return <div>Loading board...</div>;
@@ -60,7 +79,7 @@ export function BoardDetails() {
           </button>
         </div>
       </header>
-      <div className="board-canvas">
+      <div className="board-canvas" ref={boardCanvasRef}>
         <ul className="lists-list">
           {board.lists.map(list => (
             <li key={list.id}>
@@ -73,7 +92,12 @@ export function BoardDetails() {
             </li>
           ))}
           <li>
-            <AddList onSubmit={onSubmitAddList} />
+            <AddList
+              onSubmit={onSubmitAddList}
+              scrollHorizontallyBoardCanvasToEnd={
+                scrollHorizontallyBoardCanvasToEnd
+              }
+            />
           </li>
         </ul>
         <nav className="board-footer">

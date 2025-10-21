@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { boardService } from "../services/board";
 
-export function AddList({ onSubmit }) {
+export function AddList({ onSubmit, scrollHorizontallyBoardCanvasToEnd }) {
   const [showAddList, setShowAddList] = useState(true);
   const [listName, setListName] = useState("");
 
@@ -44,11 +44,18 @@ export function AddList({ onSubmit }) {
             />
           </div>
           <Button onClick={onSubmitAddList}>Add List</Button>
-          <IconButton aria-label="close" onClick={() => setShowAddList(true)}>
+          <IconButton
+            aria-label="close"
+            onClick={() => {
+              setShowAddList(true);
+              setListName("");
+            }}
+          >
             <CloseIcon />
           </IconButton>
         </div>
       )}
+      {!showAddList && scrollHorizontallyBoardCanvasToEnd()}
     </>
   );
 }
