@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Popover from "@mui/material/Popover";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
@@ -10,8 +10,18 @@ import { useCardFilters } from "../hooks/useCardFilters";
 
 export function FilterMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [localTitle, setLocalTitle] = useState("");
   const anchorRef = useRef(null);
-  const { filters, updateFilter, clearAllFilters } = useCardFilters();
+  const { filters, updateFilterDebounced, clearAllFilters } = useCardFilters();
+
+  useEffect(() => {
+    setLocalTitle(filters.title || "");
+  }, [filters.title]);
+
+  const handleClearFilters = () => {
+    setLocalTitle("");
+    clearAllFilters();
+  };
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -22,7 +32,9 @@ export function FilterMenu() {
   };
 
   const handleTitleChange = event => {
-    updateFilter("title", event.target.value);
+    const value = event.target.value;
+    setLocalTitle(value);
+    updateFilterDebounced("title", value);
   };
 
   const hasActiveFilters = () => {
@@ -66,7 +78,7 @@ export function FilterMenu() {
               fullWidth
               size="small"
               placeholder="Enter card title..."
-              value={filters.title || ""}
+              value={localTitle}
               onChange={handleTitleChange}
             />
           </Box>
@@ -75,7 +87,7 @@ export function FilterMenu() {
             <Button
               variant="outlined"
               size="small"
-              onClick={clearAllFilters}
+              onClick={handleClearFilters}
               disabled={!hasActiveFilters()}
             >
               Clear All
