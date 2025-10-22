@@ -101,16 +101,25 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
       </div>
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
-          {cards.map(card => (
-            <li key={card.id}>
-              <Card
-                key={card.id}
-                card={card}
-                onRemoveCard={onRemoveCard}
-                onUpdateCard={onUpdateCard}
-              />
-            </li>
-          ))}
+          {cards.map(card => {
+            const cardLabels =
+              boardLabels && card.labels && card.labels.length > 0
+                ? card.labels
+                    .map(labelId => boardLabels.find(l => l.id === labelId))
+                    .filter(Boolean)
+                : [];
+            return (
+              <li key={card.id}>
+                <Card
+                  key={card.id}
+                  card={card}
+                  labels={cardLabels}
+                  onRemoveCard={onRemoveCard}
+                  onUpdateCard={onUpdateCard}
+                />
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="list-footer">
