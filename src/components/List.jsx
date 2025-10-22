@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 
-export function List({ list, onRemoveList, onUpdateList }) {
+export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
