@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
@@ -43,9 +43,12 @@ export function BoardDetails() {
     });
   }
 
-  if (!board) return <div>Loading board...</div>;
+  const filteredBoard = useMemo(() => {
+    if (!board) return null;
+    return getFilteredBoard(board, filters);
+  }, [board, filters]);
 
-  const filteredBoard = getFilteredBoard(board, filters);
+  if (!board) return <div>Loading board...</div>;
 
   return (
     <section className="board-container">
