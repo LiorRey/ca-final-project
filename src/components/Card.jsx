@@ -11,7 +11,7 @@ import CardPopover from "./CardPopover";
 import { Box } from "@mui/material";
 import { useState } from "react";
 
-export function Card({ card, onRemoveCard, onUpdateCard }) {
+export function Card({ card, labels = [], onRemoveCard, onUpdateCard }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
 
@@ -45,14 +45,14 @@ export function Card({ card, onRemoveCard, onUpdateCard }) {
           className="floating-card-content"
           sx={{ zIndex: theme => theme.zIndex.modal + 2 }}
         >
-          {card.labels.length > 0 && (
+          {labels.length > 0 && (
             <div className="card-labels">
-              {card.labels.map(label => (
+              {labels.map(label => (
                 <div
-                  key={`${card.id}-${label.name}`}
+                  key={`${card.id}-${label.id}`}
                   className={`card-label ${label.color}`}
                 >
-                  {label.name}
+                  {label.title}
                 </div>
               ))}
             </div>
@@ -72,22 +72,20 @@ export function Card({ card, onRemoveCard, onUpdateCard }) {
         </Box>
       ) : (
         <Box className="card-content">
-          {card.labels.length > 0 && (
+          {labels.length > 0 && (
             <div className="card-labels">
-              {card.labels.map(label => (
+              {labels.map(label => (
                 <div
-                  key={`${card.id}-${label.name}`}
+                  key={`${card.id}-${label.id}`}
                   className={`card-label ${label.color}`}
                 >
-                  {label.name}
+                  {label.title}
                 </div>
               ))}
             </div>
           )}
 
-          <h3
-            className={`card-title ${card.labels.length === 0 ? "mr-2" : ""}`}
-          >
+          <h3 className={`card-title ${labels.length === 0 ? "mr-2" : ""}`}>
             {card.title}
           </h3>
 
