@@ -6,6 +6,8 @@ import {
   SET_BOARD,
   SET_LOADING,
   SET_ERROR,
+  SET_FILTERS,
+  CLEAR_ALL_FILTERS,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -101,4 +103,12 @@ export function setLoading(isLoading) {
 
 export function setError(error) {
   return { type: SET_ERROR, payload: error };
+}
+
+export function setFilters(filterBy) {
+  return { type: SET_FILTERS, payload: filterBy };
+}
+
+export function clearAllFilters() {
+  return { type: CLEAR_ALL_FILTERS };
 }

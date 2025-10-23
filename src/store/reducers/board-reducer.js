@@ -1,3 +1,5 @@
+import { getDefaultFilter } from "../../services/filter-service";
+
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
@@ -5,12 +7,15 @@ export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
 export const SET_LOADING = "boards/SET_LOADING";
 export const SET_ERROR = "boards/SET_ERROR";
+export const SET_FILTERS = "boards/SET_FILTERS";
+export const CLEAR_ALL_FILTERS = "boards/CLEAR_ALL_FILTERS";
 
 const initialState = {
   boards: [],
   board: null,
   isLoading: false,
   error: null,
+  filterBy: getDefaultFilter(),
 };
 
 export function boardReducer(state = initialState, action) {
@@ -30,6 +35,16 @@ export function boardReducer(state = initialState, action) {
       return { ...state, isLoading: action.payload };
     case SET_ERROR:
       return { ...state, error: action.payload };
+    case SET_FILTERS:
+      return {
+        ...state,
+        filterBy: { ...state.filterBy, ...action.payload },
+      };
+    case CLEAR_ALL_FILTERS:
+      return {
+        ...state,
+        filterBy: getDefaultFilter(),
+      };
     default:
       return state;
   }
