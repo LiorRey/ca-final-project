@@ -67,6 +67,7 @@ export function BoardDetails() {
               <List
                 key={list.id}
                 list={list}
+                boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
               />

@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 
-export function List({ list, onRemoveList, onUpdateList }) {
+export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
@@ -101,16 +101,25 @@ export function List({ list, onRemoveList, onUpdateList }) {
       </div>
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
-          {cards.map(card => (
-            <li key={card.id}>
-              <Card
-                key={card.id}
-                card={card}
-                onRemoveCard={onRemoveCard}
-                onUpdateCard={onUpdateCard}
-              />
-            </li>
-          ))}
+          {cards.map(card => {
+            const cardLabels =
+              boardLabels && card.labels && card.labels.length > 0
+                ? card.labels
+                    .map(labelId => boardLabels.find(l => l.id === labelId))
+                    .filter(Boolean)
+                : [];
+            return (
+              <li key={card.id}>
+                <Card
+                  key={card.id}
+                  card={card}
+                  labels={cardLabels}
+                  onRemoveCard={onRemoveCard}
+                  onUpdateCard={onUpdateCard}
+                />
+              </li>
+            );
+          })}
         </ul>
       </div>
       <div className="list-footer">

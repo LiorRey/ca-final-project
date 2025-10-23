@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { generateMultipleUsers } from "../user/user-data-generator.js";
+
 const PROJECT_TYPES = [
   "Project Alpha",
   "Beta Release",
@@ -15,29 +16,49 @@ const PROJECT_TYPES = [
   "Client Portal",
 ];
 
-export function generateCard(options = {}, availableUsers = []) {
+const LABEL_OPTIONS = [
+  { title: "frontend", color: "blue" },
+  { title: "backend", color: "green" },
+  { title: "design", color: "purple" },
+  { title: "testing", color: "orange" },
+  { title: "documentation", color: "gray" },
+  { title: "bug", color: "red" },
+  { title: "feature", color: "blue" },
+  { title: "enhancement", color: "green" },
+  { title: "priority:high", color: "red" },
+  { title: "priority:medium", color: "yellow" },
+  { title: "priority:low", color: "gray" },
+  { title: "urgent", color: "red" },
+  { title: "review", color: "orange" },
+  { title: "blocked", color: "red" },
+];
+
+function generateBoardLabels() {
+  const numLabels = faker.number.int({ min: 3, max: 8 });
+  return faker.helpers
+    .arrayElements(LABEL_OPTIONS, numLabels)
+    .map(({ title, color }) => ({
+      id: crypto.randomUUID(),
+      title,
+      color,
+    }));
+}
+
+export function generateCard(
+  options = {},
+  availableUsers = [],
+  boardLabels = []
+) {
   const cardId = crypto.randomUUID();
   const createdAt = faker.date.past({ years: 1 }).getTime();
 
-  const labelOptions = [
-    { name: "frontend", color: "blue" },
-    { name: "backend", color: "green" },
-    { name: "design", color: "purple" },
-    { name: "testing", color: "orange" },
-    { name: "documentation", color: "gray" },
-    { name: "bug", color: "red" },
-    { name: "feature", color: "blue" },
-    { name: "enhancement", color: "green" },
-    { name: "priority:high", color: "red" },
-    { name: "priority:medium", color: "yellow" },
-    { name: "priority:low", color: "gray" },
-    { name: "urgent", color: "red" },
-    { name: "review", color: "orange" },
-    { name: "blocked", color: "red" },
-  ];
-
   const numLabels = faker.number.int({ min: 0, max: 4 });
-  const labels = faker.helpers.arrayElements(labelOptions, numLabels);
+  const labels = boardLabels.length
+    ? faker.helpers.arrayElements(
+        boardLabels.map(l => l.id),
+        numLabels
+      )
+    : [];
 
   const numAssignees = faker.number.int({
     min: 0,
@@ -76,7 +97,12 @@ export function generateCard(options = {}, availableUsers = []) {
   return card;
 }
 
-export function generateList(cardCount = 3, options = {}, availableUsers = []) {
+export function generateList(
+  cardCount = 3,
+  options = {},
+  availableUsers = [],
+  boardLabels = []
+) {
   const listNames = [
     "To Do",
     "In Progress",
@@ -95,7 +121,7 @@ export function generateList(cardCount = 3, options = {}, availableUsers = []) {
   ];
 
   const cards = Array.from({ length: cardCount }, () =>
-    generateCard({}, availableUsers)
+    generateCard({}, availableUsers, boardLabels)
   );
 
   const list = {
@@ -115,9 +141,11 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
     .between({ from: createdAt, to: Date.now() })
     .getTime();
 
+  const boardLabels = generateBoardLabels();
+
   const lists = Array.from({ length: listCount }, () => {
     const cardCount = faker.number.int({ min: 0, max: cardsPerList * 2 });
-    return generateList(cardCount);
+    return generateList(cardCount, {}, [], boardLabels);
   });
 
   const listOrder = lists.map(list => list.id);
@@ -130,6 +158,7 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
     description: faker.company.catchPhrase() + " - " + faker.lorem.sentence(),
     createdAt,
     updatedAt,
+    labels: boardLabels,
     lists,
     activities,
     listOrder,
@@ -263,9 +292,11 @@ export function generateBoardWithUsers(
 
   const owner = faker.helpers.arrayElement(users);
 
+  const boardLabels = generateBoardLabels();
+
   const lists = Array.from({ length: listCount }, () => {
     const cardCount = faker.number.int({ min: 0, max: cardsPerList * 2 });
-    return generateList(cardCount, {}, users);
+    return generateList(cardCount, {}, users, boardLabels);
   });
 
   const listOrder = lists.map(list => list.id);
@@ -278,6 +309,7 @@ export function generateBoardWithUsers(
     description: faker.company.catchPhrase() + " - " + faker.lorem.sentence(),
     createdAt,
     updatedAt,
+    labels: boardLabels,
     createdBy: {
       _id: owner._id,
       username: owner.username,
@@ -356,7 +388,7 @@ export function generateMultipleBoardsWithUsers(count = 5, options = {}) {
 
       board.lists = Array.from({ length: listCount }, () => {
         const cardCount = faker.number.int({ min: 0, max: cardsPerList * 2 });
-        return generateList(cardCount, {}, boardUsers);
+        return generateList(cardCount, {}, boardUsers, board.labels);
       });
       board.activities = generateBoardActivities(
         board._id,
