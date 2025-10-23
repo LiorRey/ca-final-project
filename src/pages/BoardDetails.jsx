@@ -39,23 +39,24 @@ export function BoardDetails() {
       value: [...board.lists, newList],
     });
 
-    scrollHorizontallyBoardCanvasToEnd(true);
+    const applyDelay = true;
+    scrollBoardToEnd(applyDelay);
   }
 
-  function scrollHorizontallyBoardCanvasToEnd(isAfterListAdd = false) {
-    setTimeout(
-      () => {
-        const el = boardCanvasRef.current;
-        if (el) {
-          const scrollTarget = el.scrollWidth - el.clientWidth + 100;
-          el.scrollTo({
-            left: scrollTarget,
-            behavior: "smooth",
-          });
-        }
-      },
-      isAfterListAdd ? 500 : 0
-    );
+  function scrollBoardToEnd(applyDelay = false) {
+    const DELAY_AFTER_LIST_ADD_MS = 400;
+    const delay = applyDelay ? DELAY_AFTER_LIST_ADD_MS : 0;
+
+    setTimeout(() => {
+      const el = boardCanvasRef.current;
+      if (el) {
+        const scrollTarget = el.scrollWidth - el.clientWidth + 100;
+        el.scrollTo({
+          left: scrollTarget,
+          behavior: "smooth",
+        });
+      }
+    }, delay);
   }
 
   if (!board) return <div>Loading board...</div>;
@@ -94,9 +95,7 @@ export function BoardDetails() {
           <li>
             <AddList
               onSubmit={onSubmitAddList}
-              scrollHorizontallyBoardCanvasToEnd={
-                scrollHorizontallyBoardCanvasToEnd
-              }
+              scrollBoardToEnd={scrollBoardToEnd}
             />
           </li>
         </ul>

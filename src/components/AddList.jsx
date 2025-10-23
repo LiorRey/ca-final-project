@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -8,22 +8,32 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { boardService } from "../services/board";
 
-export function AddList({ onSubmit, scrollHorizontallyBoardCanvasToEnd }) {
+export function AddList({ onSubmit, scrollBoardToEnd }) {
   const [showAddList, setShowAddList] = useState(true);
   const [listName, setListName] = useState("");
+  const textFieldRef = useRef(null);
 
   function onSubmitAddList() {
     if (!listName) return;
     const newList = boardService.getEmptyList();
     newList.name = listName;
     onSubmit(newList);
+
     setListName("");
-    setShowAddList(true);
+    setShowAddList(false);
   }
+
+  useEffect(() => {
+    setListName("");
+    if (!showAddList) {
+      scrollBoardToEnd();
+      textFieldRef.current?.focus();
+    }
+  }, [showAddList, scrollBoardToEnd]);
 
   return (
     <>
-      {showAddList && (
+      {showAddList ? (
         <Button
           startIcon={<AddIcon />}
           className="add-list-button"
@@ -31,8 +41,7 @@ export function AddList({ onSubmit, scrollHorizontallyBoardCanvasToEnd }) {
         >
           Add another list
         </Button>
-      )}
-      {!showAddList && (
+      ) : (
         <div className="add-list-container">
           <div>
             <TextField
@@ -41,21 +50,15 @@ export function AddList({ onSubmit, scrollHorizontallyBoardCanvasToEnd }) {
               value={listName}
               placeholder="Enter list name"
               onChange={e => setListName(e.target.value)}
+              inputRef={textFieldRef}
             />
           </div>
           <Button onClick={onSubmitAddList}>Add List</Button>
-          <IconButton
-            aria-label="close"
-            onClick={() => {
-              setShowAddList(true);
-              setListName("");
-            }}
-          >
+          <IconButton aria-label="close" onClick={() => setShowAddList(true)}>
             <CloseIcon />
           </IconButton>
         </div>
       )}
-      {!showAddList && scrollHorizontallyBoardCanvasToEnd()}
     </>
   );
 }
