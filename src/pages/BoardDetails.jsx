@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
@@ -12,28 +12,30 @@ import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import { useScrollToEnd } from "../hooks/useScrollToEnd";
+import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function BoardDetails() {
   const params = useParams();
   const board = useSelector(state => state.boards.board);
   const [boardCanvasRef, scrollBoardToEnd] = useScrollToEnd();
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
-  const isInitialMount = useRef(true);
+  const didLoadOnce = useRef(false);
 
   useEffect(() => {
+    didLoadOnce.current = false;
     loadBoard(params.boardId);
   }, [params.boardId]);
 
-  useLayoutEffect(() => {
-    if (board?.lists?.length) {
-      if (isInitialMount.current) {
-        isInitialMount.current = false;
-        return;
-      }
+  useEffectUpdate(() => {
+    if (!board?.lists?.length) return;
 
-      scrollBoardToEnd({ horizontal: true });
+    if (!didLoadOnce.current) {
+      didLoadOnce.current = true;
+      return;
     }
-  }, [board?.lists?.length, scrollBoardToEnd]);
+
+    scrollBoardToEnd({ horizontal: true });
+  }, [board?.lists?.length]);
 
   async function onRemoveList(listId) {}
 

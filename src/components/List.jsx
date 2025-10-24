@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
 import Button from "@mui/material/Button";
@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 import { useScrollToEnd } from "../hooks/useScrollToEnd";
+import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function List({
   list,
@@ -29,15 +30,15 @@ export function List({
     setCards(list.cards);
   }, [list.cards]);
 
-  useLayoutEffect(() => {
-    scrollListToEnd();
-  }, [cards.length, scrollListToEnd]);
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isAddingCard) {
       newCardInputRef.current?.focus();
     }
   }, [isAddingCard]);
+
+  useEffectUpdate(() => {
+    scrollListToEnd();
+  }, [cards.length, scrollListToEnd]);
 
   async function onAddCard() {}
 
