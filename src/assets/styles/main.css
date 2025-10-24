@@ -27,6 +27,7 @@
 @import "components/Board";
 @import "components/List";
 @import "components/Card";
+@import "components/FilterMenu";
 
 @import "components/review/ReviewEdit";
 @import "components/review/ReviewList";
