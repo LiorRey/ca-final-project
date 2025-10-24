@@ -8,16 +8,21 @@ import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
-import { CardModal } from "./CardModal";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
+export function List({
+  list,
+  boardId,
+  boardLabels,
+  onRemoveList,
+  onUpdateList,
+}) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const listContentRef = useRef(null);
   const open = Boolean(anchorEl);
 
@@ -26,12 +31,9 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   }, [list.cards]);
 
   function handleOpenModal(card) {
-    setSelectedCard(card);
-    setOpenModal(true);
-  }
-  function handleCloseModal() {
-    setOpenModal(false);
-    setSelectedCard(null);
+    navigate(`/board/${boardId}/${list.id}/${card.id}`, {
+      state: { backgroundLocation: location },
+    });
   }
 
   async function onRemoveCard(cardId) {
@@ -75,7 +77,7 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     setNewCardTitle(target.value);
   }
 
-  const handleAddCard = () => {
+  function handleAddCard() {
     const newCard = {
       ...boardService.getEmptyCard(),
       title: newCardTitle,
@@ -91,14 +93,6 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
 
     _scrollListContentToBottom();
     setNewCardTitle("");
-  };
-
-  function getCardLabels(card) {
-    return card && card.labels && boardLabels && card.labels.length > 0
-      ? card.labels
-          .map(labelId => boardLabels.find(l => l.id === labelId))
-          .filter(Boolean)
-      : [];
   }
 
   function _scrollListContentToBottom() {
@@ -213,15 +207,6 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
           <MenuItem onClick={handleDeleteList}>Delete List</MenuItem>
         </MenuList>
       </Popover>
-
-      {/* Card Modal will be moved out of here */}
-      <CardModal
-        listTitle={list.name}
-        cardLabels={getCardLabels(selectedCard)}
-        card={selectedCard}
-        onClose={handleCloseModal}
-        isOpen={openModal}
-      />
     </section>
   );
 }
