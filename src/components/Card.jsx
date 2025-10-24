@@ -77,13 +77,8 @@ export function Card({ card, labels = [], onRemoveCard, onUpdateCard }) {
           </button>
         </Box>
       ) : (
-<<<<<<< HEAD
         <Box className="card-content">
           {labels.length > 0 && (
-=======
-        <Box className="card-content" onClick={handleClickCard}>
-          {card.labels.length > 0 && (
->>>>>>> 840ef24 (feat: Created a simple modal for a card)
             <div className="card-labels">
               {labels.map(label => (
                 <div
