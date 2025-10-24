@@ -11,10 +11,12 @@ import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
+import { useState } from "react";
 
 export function BoardDetails() {
   const params = useParams();
   const board = useSelector(state => state.boards.board);
+  const [labelsIsOpen, setLabelsIsOpen] = useState(false);
 
   useEffect(() => {
     loadBoard(params.boardId);
@@ -67,6 +69,8 @@ export function BoardDetails() {
               <List
                 key={list.id}
                 list={list}
+                labelsIsOpen={labelsIsOpen}
+                setLabelsIsOpen={setLabelsIsOpen}
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}

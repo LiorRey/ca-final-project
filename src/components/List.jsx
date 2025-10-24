@@ -10,7 +10,14 @@ import { Card } from "./Card";
 import { boardService } from "../services/board";
 import { CardModal } from "./CardModal";
 
-export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
+export function List({
+  list,
+  boardLabels,
+  labelsIsOpen,
+  setLabelsIsOpen,
+  onRemoveList,
+  onUpdateList,
+}) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false);
@@ -135,6 +142,8 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
                   onClickCard={card => handleOpenModal(card)}
                   onRemoveCard={onRemoveCard}
                   onUpdateCard={onUpdateCard}
+                  labelsIsOpen={labelsIsOpen}
+                  setLabelsIsOpen={setLabelsIsOpen}
                 />
               </li>
             );
