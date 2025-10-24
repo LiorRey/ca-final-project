@@ -69,3 +69,44 @@ object {
   max-width: 100%;
   display: block;
 }
+
+textarea {
+  display: block;
+  word-break: break-all;
+  border: none;
+  outline: none;
+  background: none;
+  color: var(--gray1);
+  font-family: inherit;
+  font-size: 1.15em;
+  font-weight: normal;
+  padding: 0.25rem 0.5rem 0.5rem 0.3rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+  resize: none;
+  border: 1px solid var(--gray2);
+  field-sizing: content; /* auto-grow/shrink to content check if works cross-browser*/
+}
+
+::-webkit-scrollbar {
+  width: 5px; /* Make scrollbar thinner */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray3); /* Track color */
+  border-radius: 3px;
+  border: 1px solid var(--gray3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray2); /* Thumb color */
+  border-radius: 3px;
+  border: 1px solid var(--gray3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray3); /* Hover color */
+  border-radius: 3px;
+  border: 1px solid var(--gray2);
+}

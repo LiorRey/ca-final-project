@@ -20,13 +20,17 @@
 @import "components/car/CarList";
 @import "components/car/CarPreview";
 @import "components/car/CarFilter";
+
+@import "components/label/ModalLabel";
+@import "components/label/CardLabel";
+
 @import "components/Board";
 @import "components/List";
 @import "components/Card";
-@import "components/Label";
 
 @import "components/review/ReviewEdit";
 @import "components/review/ReviewList";
 @import "components/review/ReviewPreview";
+@import "components/CardModal";
 
 @import "pages/BoardDetails";
