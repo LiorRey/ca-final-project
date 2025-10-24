@@ -31,7 +31,7 @@ export function List({
   }, [list.cards]);
 
   function handleOpenModal(card) {
-    navigate(`/board/${boardId}/${list.id}/${card.id}`, {
+    navigate(`${list.id}/${card.id}`, {
       state: { backgroundLocation: location },
     });
   }

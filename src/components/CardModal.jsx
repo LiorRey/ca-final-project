@@ -11,6 +11,7 @@ export function CardModal({
   card,
   onClose,
   isOpen,
+  onDeleteCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
 
@@ -36,7 +37,7 @@ export function CardModal({
               <button className="icon-button">
                 <AddIcon /> Add label
               </button>
-              <button className="icon-button">
+              <button className="icon-button" onClick={onDeleteCard}>
                 <DeleteIcon /> Delete
               </button>
               <button className="icon-button">

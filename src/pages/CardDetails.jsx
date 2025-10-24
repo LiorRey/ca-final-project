@@ -2,16 +2,16 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { CardModal } from "../components/CardModal";
 import { useState, useEffect } from "react";
+import { updateBoard } from "../store/actions/board-actions";
 
 export function CardDetails() {
   const { boardId, listId, cardId } = useParams();
-  const board = useSelector(s => s.boards.board);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const navigate = useNavigate();
+  const board = useSelector(s => s.boards.board);
   const list = board?.lists?.find(l => l.id === listId);
   const card = list?.cards?.find(c => c.id === cardId);
-  const labels = board?.labels?.filter(l => card.labels.includes(l.id));
-
-  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     setModalOpen(true);
@@ -22,17 +22,37 @@ export function CardDetails() {
     navigate(`/board/${boardId}`);
   }
 
+  function handleDeleteCard() {
+    try {
+      const options = {
+        listId: list.id,
+        key: "cards",
+        value: list.cards.filter(c => c.id !== card.id),
+      };
+      updateBoard(board, options);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Card delete failed:", error);
+    }
+  }
+
   if (!card) {
-    console.log("Card not found, redirecting to board");
-    navigate(`/board/${boardId}`);
     return null;
   }
 
+  const cardLabels =
+    board.labels && card.labels && card.labels.length > 0
+      ? card.labels
+          .map(labelId => board.labels.find(l => l.id === labelId))
+          .filter(Boolean)
+      : [];
+
   return (
     <CardModal
-      listTitle={list.title}
-      cardLabels={labels}
+      cardLabels={cardLabels}
+      listTitle={list.name}
       card={card}
+      onDeleteCard={handleDeleteCard}
       onClose={handleCloseModal}
       isOpen={modalOpen}
     />
