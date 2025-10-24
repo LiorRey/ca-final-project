@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { setFilters, clearAllFilters } from "../store/actions/board-actions";
+import { debounce } from "../services/util-service";
 
 export const useCardFilters = () => {
   const dispatch = useDispatch();
@@ -10,6 +11,14 @@ export const useCardFilters = () => {
     (filterType, value) => {
       dispatch(setFilters({ [filterType]: value }));
     },
+    [dispatch]
+  );
+
+  const updateFilterDebounced = useMemo(
+    () =>
+      debounce((filterType, value) => {
+        dispatch(setFilters({ [filterType]: value }));
+      }, 300),
     [dispatch]
   );
 
@@ -29,6 +38,7 @@ export const useCardFilters = () => {
   return {
     filters,
     updateFilter,
+    updateFilterDebounced,
     removeFilter,
     clearAllFilters: handleClearAllFilters,
   };

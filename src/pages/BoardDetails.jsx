@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
@@ -10,11 +10,15 @@ import { loadBoard, updateBoard } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
+import { FilterMenu } from "../components/FilterMenu";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
+import { getFilteredBoard } from "../services/filter-service";
+import { useCardFilters } from "../hooks/useCardFilters";
 
 export function BoardDetails() {
   const params = useParams();
   const board = useSelector(state => state.boards.board);
+  const { filters } = useCardFilters();
 
   useEffect(() => {
     loadBoard(params.boardId);
@@ -39,6 +43,11 @@ export function BoardDetails() {
     });
   }
 
+  const filteredBoard = useMemo(() => {
+    if (!board) return null;
+    return getFilteredBoard(board, filters);
+  }, [board, filters]);
+
   if (!board) return <div>Loading board...</div>;
 
   return (
@@ -46,6 +55,7 @@ export function BoardDetails() {
       <header className="board-header">
         <h2 className="board-title">{board.name}</h2>
         <div className="board-header-right">
+          <FilterMenu />
           <button className="icon-button">
             <Sort />
           </button>
@@ -62,7 +72,7 @@ export function BoardDetails() {
       </header>
       <div className="board-canvas">
         <ul className="lists-list">
-          {board.lists.map(list => (
+          {filteredBoard.lists.map(list => (
             <li key={list.id}>
               <List
                 key={list.id}
