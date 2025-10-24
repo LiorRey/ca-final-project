@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { Modal, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AddIcon from "@mui/icons-material/Add";
 
-export function CardModal({ listTitle, card, onClose, open }) {
+export function CardModal({
+  listTitle,
+  cardLabels = [],
+  card,
+  onClose,
+  isOpen,
+}) {
   const [openSection, setOpenSection] = useState(false);
 
   function handleCommentSection() {
@@ -16,7 +21,7 @@ export function CardModal({ listTitle, card, onClose, open }) {
   if (!card) return null;
 
   return (
-    <Modal open={open} onClose={onClose} disableAutoFocus>
+    <Modal open={isOpen} onClose={onClose} disableAutoFocus>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
           {listTitle}{" "}
@@ -38,16 +43,16 @@ export function CardModal({ listTitle, card, onClose, open }) {
                 <AttachFileIcon /> Attach
               </button>
             </div>
-            {card.labels.length > 0 && (
+            {cardLabels && cardLabels.length > 0 && (
               <>
                 <h3 className="labels-title">Labels</h3>
                 <div className="modal-labels">
-                  {card.labels.map(label => (
+                  {cardLabels.map(label => (
                     <div
                       className={`modal-label ${label.color}`}
                       key={label.id}
                     >
-                      {label.name}
+                      {label.title}
                     </div>
                   ))}
                   <button className="add-label-button">+</button>

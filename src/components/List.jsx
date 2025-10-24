@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
-
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 import { CardModal } from "./CardModal";
@@ -94,6 +93,14 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     setNewCardTitle("");
   };
 
+  function getCardLabels(card) {
+    return card && card.labels && boardLabels && card.labels.length > 0
+      ? card.labels
+          .map(labelId => boardLabels.find(l => l.id === labelId))
+          .filter(Boolean)
+      : [];
+  }
+
   function _scrollListContentToBottom() {
     setTimeout(() => {
       if (listContentRef.current) {
@@ -125,6 +132,7 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
                   key={card.id}
                   card={card}
                   labels={cardLabels}
+                  onClickCard={card => handleOpenModal(card)}
                   onRemoveCard={onRemoveCard}
                   onUpdateCard={onUpdateCard}
                 />
@@ -176,7 +184,6 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
         )}
       </div>
 
-      {/* Temporary List popover (using MUI Popover) */}
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -206,11 +213,14 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
           <MenuItem onClick={handleDeleteList}>Delete List</MenuItem>
         </MenuList>
       </Popover>
+
+      {/* Card Modal will be moved out of here */}
       <CardModal
         listTitle={list.name}
+        cardLabels={getCardLabels(selectedCard)}
         card={selectedCard}
         onClose={handleCloseModal}
-        open={openModal}
+        isOpen={openModal}
       />
     </section>
   );

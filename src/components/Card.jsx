@@ -3,16 +3,18 @@ import {
   NotesRounded,
   RemoveRedEyeOutlined,
   DriveFileRenameOutline,
-  SaveSharp,
 } from "@mui/icons-material";
-
 import CardPopover from "./CardPopover";
-
 import { Box } from "@mui/material";
 import { useState } from "react";
-import { CardModal } from "./CardModal";
 
-export function Card({ card, labels = [], onRemoveCard, onUpdateCard }) {
+export function Card({
+  card,
+  labels = [],
+  onClickCard,
+  onRemoveCard,
+  onUpdateCard,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
 
@@ -77,7 +79,7 @@ export function Card({ card, labels = [], onRemoveCard, onUpdateCard }) {
           </button>
         </Box>
       ) : (
-        <Box className="card-content">
+        <Box className="card-content" onClick={handleClickCard}>
           {labels.length > 0 && (
             <div className="card-labels">
               {labels.map(label => (
