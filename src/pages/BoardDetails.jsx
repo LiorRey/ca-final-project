@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
@@ -11,15 +11,29 @@ import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
+import { useScrollToEnd } from "../hooks/useScrollToEnd";
 
 export function BoardDetails() {
   const params = useParams();
   const board = useSelector(state => state.boards.board);
-  const boardCanvasRef = useRef(null);
+  const [boardCanvasRef, scrollBoardToEnd] = useScrollToEnd();
+  const [activeAddCardListId, setActiveAddCardListId] = useState(null);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     loadBoard(params.boardId);
   }, [params.boardId]);
+
+  useLayoutEffect(() => {
+    if (board?.lists?.length) {
+      if (isInitialMount.current) {
+        isInitialMount.current = false;
+        return;
+      }
+
+      scrollBoardToEnd({ horizontal: true });
+    }
+  }, [board?.lists?.length, scrollBoardToEnd]);
 
   async function onRemoveList(listId) {}
 
@@ -33,30 +47,12 @@ export function BoardDetails() {
       showErrorMsg(`Unable to update the list: ${list.name}`);
     }
   }
-  function onSubmitAddList(newList) {
+
+  function onAddList(newList) {
     updateBoard(board, {
       key: "lists",
       value: [...board.lists, newList],
     });
-
-    const applyDelay = true;
-    scrollBoardToEnd(applyDelay);
-  }
-
-  function scrollBoardToEnd(applyDelay = false) {
-    const DELAY_AFTER_LIST_ADD_MS = 400;
-    const delay = applyDelay ? DELAY_AFTER_LIST_ADD_MS : 0;
-
-    setTimeout(() => {
-      const el = boardCanvasRef.current;
-      if (el) {
-        const scrollTarget = el.scrollWidth - el.clientWidth + 100;
-        el.scrollTo({
-          left: scrollTarget,
-          behavior: "smooth",
-        });
-      }
-    }, delay);
   }
 
   if (!board) return <div>Loading board...</div>;
@@ -89,13 +85,15 @@ export function BoardDetails() {
                 list={list}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
+                isAddingCard={activeAddCardListId === list.id}
+                onSetAddingCard={setActiveAddCardListId}
               />
             </li>
           ))}
           <li>
             <AddList
-              onSubmit={onSubmitAddList}
-              scrollBoardToEnd={scrollBoardToEnd}
+              onAddList={onAddList}
+              onScrollToEnd={() => scrollBoardToEnd({ horizontal: true })}
             />
           </li>
         </ul>

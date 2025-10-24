@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
 import Button from "@mui/material/Button";
@@ -9,18 +9,35 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { Card } from "./Card";
 import { boardService } from "../services/board";
+import { useScrollToEnd } from "../hooks/useScrollToEnd";
 
-export function List({ list, onRemoveList, onUpdateList }) {
+export function List({
+  list,
+  onRemoveList,
+  onUpdateList,
+  isAddingCard,
+  onSetAddingCard,
+}) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isAddingCard, setIsAddingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
-  const listContentRef = useRef(null);
+  const newCardInputRef = useRef(null);
+  const [listContentRef, scrollListToEnd] = useScrollToEnd();
   const open = Boolean(anchorEl);
 
   useEffect(() => {
     setCards(list.cards);
   }, [list.cards]);
+
+  useLayoutEffect(() => {
+    scrollListToEnd();
+  }, [cards.length, scrollListToEnd]);
+
+  useLayoutEffect(() => {
+    if (isAddingCard) {
+      newCardInputRef.current?.focus();
+    }
+  }, [isAddingCard]);
 
   async function onAddCard() {}
 
@@ -52,20 +69,21 @@ export function List({ list, onRemoveList, onUpdateList }) {
   };
 
   const handleShowingAddCardActions = () => {
-    setIsAddingCard(true);
-    _scrollListContentToBottom();
+    setNewCardTitle("");
+    onSetAddingCard(list.id);
   };
 
   const handleHidingAddCardActions = () => {
-    setIsAddingCard(false);
     setNewCardTitle("");
+    onSetAddingCard(null);
   };
 
-  function handleAddCardTitleChange({ target }) {
-    setNewCardTitle(target.value);
-  }
-
   const handleAddCard = () => {
+    if (!newCardTitle) {
+      handleHidingAddCardActions();
+      return;
+    }
+
     const newCard = {
       ...boardService.getEmptyCard(),
       title: newCardTitle,
@@ -75,21 +93,12 @@ export function List({ list, onRemoveList, onUpdateList }) {
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
 
-    const updatedList = { ...list, cards };
     const options = { key: "cards", value: updatedCards };
-    onUpdateList(updatedList, options);
+    onUpdateList(list, options);
 
-    _scrollListContentToBottom();
     setNewCardTitle("");
+    newCardInputRef.current?.focus();
   };
-
-  function _scrollListContentToBottom() {
-    setTimeout(() => {
-      if (listContentRef.current) {
-        listContentRef.current.scrollTop = listContentRef.current.scrollHeight;
-      }
-    }, 0);
-  }
 
   return (
     <section className="list-container">
@@ -128,12 +137,12 @@ export function List({ list, onRemoveList, onUpdateList }) {
               sx={open ? { zIndex: theme => theme.zIndex.modal + 1 } : {}}
             >
               <input
+                ref={newCardInputRef}
                 type="text"
-                placeholder="Enter a title or paste a link"
                 className="card-title-input"
-                autoFocus
                 value={newCardTitle}
-                onChange={handleAddCardTitleChange}
+                onChange={e => setNewCardTitle(e.target.value)}
+                placeholder="Enter a title or paste a link"
               />
             </Box>
             <div className="card-actions">

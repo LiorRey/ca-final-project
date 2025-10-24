@@ -8,36 +8,48 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { boardService } from "../services/board";
 
-export function AddList({ onSubmit, scrollBoardToEnd }) {
-  const [showAddList, setShowAddList] = useState(true);
-  const [listName, setListName] = useState("");
+export function AddList({ onAddList, onScrollToEnd }) {
+  const [showAddList, setShowAddList] = useState(false);
+  const [newListName, setNewListName] = useState("");
   const textFieldRef = useRef(null);
 
-  function onSubmitAddList() {
-    if (!listName) return;
-    const newList = boardService.getEmptyList();
-    newList.name = listName;
-    onSubmit(newList);
-
-    setListName("");
-    setShowAddList(false);
+  function handleShowAddList() {
+    setShowAddList(true);
+    onScrollToEnd();
   }
 
+  function handleAddList() {
+    if (!newListName) {
+      handleCloseAddListActions();
+      return;
+    }
+
+    const newList = boardService.getEmptyList();
+    newList.name = newListName;
+    onAddList(newList);
+
+    setNewListName("");
+    textFieldRef.current?.focus();
+  }
+
+  const handleCloseAddListActions = () => {
+    setNewListName("");
+    setShowAddList(false);
+  };
+
   useEffect(() => {
-    setListName("");
-    if (!showAddList) {
-      scrollBoardToEnd();
+    if (showAddList) {
       textFieldRef.current?.focus();
     }
-  }, [showAddList, scrollBoardToEnd]);
+  }, [showAddList]);
 
   return (
     <>
-      {showAddList ? (
+      {!showAddList ? (
         <Button
           startIcon={<AddIcon />}
           className="add-list-button"
-          onClick={() => setShowAddList(false)}
+          onClick={handleShowAddList}
         >
           Add another list
         </Button>
@@ -47,14 +59,14 @@ export function AddList({ onSubmit, scrollBoardToEnd }) {
             <TextField
               id="outlined-basic"
               variant="outlined"
-              value={listName}
+              value={newListName}
               placeholder="Enter list name"
-              onChange={e => setListName(e.target.value)}
+              onChange={e => setNewListName(e.target.value)}
               inputRef={textFieldRef}
             />
           </div>
-          <Button onClick={onSubmitAddList}>Add List</Button>
-          <IconButton aria-label="close" onClick={() => setShowAddList(true)}>
+          <Button onClick={handleAddList}>Add List</Button>
+          <IconButton aria-label="close" onClick={handleCloseAddListActions}>
             <CloseIcon />
           </IconButton>
         </div>
