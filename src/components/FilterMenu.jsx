@@ -22,8 +22,13 @@ export function FilterMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [localTitle, setLocalTitle] = useState("");
   const anchorRef = useRef(null);
-  const { filters, updateFilterDebounced, updateFilter, clearAllFilters } =
-    useCardFilters();
+  const {
+    filters,
+    updateFilterDebounced,
+    updateFilter,
+    clearAllFilters,
+    hasActiveFilters,
+  } = useCardFilters();
   const memberOptions = useMemo(
     () => getMembersFilterOptions(members),
     [members]
@@ -97,12 +102,6 @@ export function FilterMenu() {
       </li>
     );
   }
-
-  const hasActiveFilters = () => {
-    return (
-      filters.title?.trim() || filters?.members?.length || !!filters.noMembers
-    );
-  };
 
   function handleMembersAutocompleteChange(_, selected) {
     let newMembers = selected.map(m => m.id);

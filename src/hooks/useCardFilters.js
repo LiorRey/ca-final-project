@@ -35,11 +35,18 @@ export const useCardFilters = () => {
     dispatch(clearAllFilters());
   }, [dispatch]);
 
+  function hasActiveFilters() {
+    return (
+      filters.title?.trim() || filters?.members?.length || !!filters.noMembers
+    );
+  }
+
   return {
     filters,
     updateFilter,
     updateFilterDebounced,
     removeFilter,
     clearAllFilters: handleClearAllFilters,
+    hasActiveFilters,
   };
 };
