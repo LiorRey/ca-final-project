@@ -14,16 +14,17 @@ import { FilterMenu } from "../components/FilterMenu";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import { getFilteredBoard } from "../services/filter-service";
 import { useCardFilters } from "../hooks/useCardFilters";
-import { useScrollToEnd } from "../hooks/useScrollToEnd";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function BoardDetails() {
+  const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const params = useParams();
   const board = useSelector(state => state.boards.board);
   const { filters } = useCardFilters();
-  const [boardCanvasRef, scrollBoardToEnd] = useScrollToEnd();
-  const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const didLoadOnce = useRef(false);
+  const boardCanvasRef = useRef(null);
+  const scrollBoardToEnd = useScrollTo(boardCanvasRef);
 
   useEffect(() => {
     didLoadOnce.current = false;
@@ -38,8 +39,8 @@ export function BoardDetails() {
       return;
     }
 
-    scrollBoardToEnd({ horizontal: true });
-  }, [board?.lists?.length]);
+    scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL });
+  }, [board?.lists?.length, scrollBoardToEnd]);
 
   async function onRemoveList(listId) {}
 
@@ -106,7 +107,9 @@ export function BoardDetails() {
           <li>
             <AddList
               onAddList={onAddList}
-              onScrollToEnd={() => scrollBoardToEnd({ horizontal: true })}
+              onScrollToEnd={() =>
+                scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
+              }
             />
           </li>
         </ul>

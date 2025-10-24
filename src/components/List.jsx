@@ -9,7 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { CardModal } from "./CardModal";
 import { boardService } from "../services/board";
-import { useScrollToEnd } from "../hooks/useScrollToEnd";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function List({
@@ -26,7 +26,8 @@ export function List({
   const [openModal, setOpenModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const newCardInputRef = useRef(null);
-  const [listContentRef, scrollListToEnd] = useScrollToEnd();
+  const listContentRef = useRef(null);
+  const scrollListToEnd = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export function List({
   }, [isAddingCard]);
 
   useEffectUpdate(() => {
-    scrollListToEnd();
+    scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL });
   }, [cards.length, scrollListToEnd]);
 
   async function onRemoveCard(cardId) {
