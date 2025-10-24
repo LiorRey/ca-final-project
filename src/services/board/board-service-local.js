@@ -2,6 +2,7 @@ import { storageService } from "../async-storage-service";
 import { loadFromStorage, makeId, saveToStorage } from "../util-service";
 import boardDataGenerator from "./board-data-generator";
 import { USER_STORAGE_KEY } from "../user/user-service-local.js";
+import { getFilteredBoard } from "../filter-service";
 
 const BOARDS_STORAGE_KEY = "boardDB";
 _createBoards();
@@ -28,9 +29,10 @@ async function query() {
   }
 }
 
-function getById(boardId) {
+async function getById(boardId, filterBy = {}) {
   try {
-    return storageService.get(BOARDS_STORAGE_KEY, boardId);
+    const board = await storageService.get(BOARDS_STORAGE_KEY, boardId);
+    return getFilteredBoard(board, filterBy);
   } catch (error) {
     console.log("Cannot get board:", error);
 

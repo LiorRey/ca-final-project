@@ -21,8 +21,8 @@ export function BoardDetails() {
   const { filters } = useCardFilters();
 
   useEffect(() => {
-    loadBoard(params.boardId);
-  }, [params.boardId]);
+    loadBoard(params.boardId, filters);
+  }, [params.boardId, filters]);
 
   async function onRemoveList(listId) {}
 
@@ -42,11 +42,6 @@ export function BoardDetails() {
       value: [...board.lists, newList],
     });
   }
-
-  const filteredBoard = useMemo(() => {
-    if (!board) return null;
-    return getFilteredBoard(board, filters);
-  }, [board, filters]);
 
   if (!board) return <div>Loading board...</div>;
 
@@ -72,7 +67,7 @@ export function BoardDetails() {
       </header>
       <div className="board-canvas">
         <ul className="lists-list">
-          {filteredBoard.lists.map(list => (
+          {board.lists.map(list => (
             <li key={list.id}>
               <List
                 key={list.id}
