@@ -63,3 +63,38 @@ export function getMembersFilterOptions(members) {
     username: member.username,
   }));
 }
+
+export function parseFiltersFromSearchParams(searchParams) {
+  const filterBy = getDefaultFilter();
+  for (const [key, value] of searchParams.entries()) {
+    if (!(key in filterBy)) continue;
+
+    if (typeof filterBy[key] === "boolean") {
+      filterBy[key] = value === "1";
+    } else if (Array.isArray(filterBy[key])) {
+      filterBy[key] = value
+        .split(",")
+        .map(v => v.trim())
+        .filter(v => v);
+    } else {
+      filterBy[key] = value;
+    }
+  }
+
+  return filterBy;
+}
+
+export function serializeFiltersToSearchParams(filterBy) {
+  const searchParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(filterBy)) {
+    if (Array.isArray(value) && value.length > 0) {
+      searchParams.set(key, value.join(","));
+    } else if (typeof value === "boolean" && value) {
+      searchParams.set(key, "1");
+    } else if (typeof value === "string" && value) {
+      searchParams.set(key, value);
+    }
+  }
+
+  return searchParams;
+}
