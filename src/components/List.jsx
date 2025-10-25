@@ -9,7 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 import { CardModal } from "./CardModal";
-import { SquareIconButton } from "./SquareIconButton";
+import { SquareIconButton } from "./ui/buttons/SquareIconButton";
+import Close from "@mui/icons-material/Close";
+import { ListActionsMenu } from "./ListActionsMenu";
 
 export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
@@ -187,31 +189,13 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
         )}
       </div>
 
-      <Popover
-        open={open}
+      <ListActionsMenu
         anchorEl={anchorEl}
+        isOpen={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              mt: 1,
-              backgroundColor: "#2B2C2F",
-              color: "#BFC1C4",
-              boxShadow: "0px 8px 12px #091e4226, 0px 0px 1px #091e424f",
-              borderRadius: "0.5rem",
-            },
-          },
-        }}
-      >
-        <MenuList>
-          <MenuItem onClick={handleEditList}>Edit List</MenuItem>
-          <MenuItem onClick={handleDeleteList}>Delete List</MenuItem>
-        </MenuList>
-      </Popover>
+        onEditList={handleEditList}
+        onDeleteList={handleDeleteList}
+      />
 
       {/* Card Modal will be moved out of here */}
       <CardModal
