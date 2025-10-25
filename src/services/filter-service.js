@@ -66,21 +66,19 @@ export function getMembersFilterOptions(members) {
 
 export function parseFiltersFromSearchParams(searchParams) {
   const filterBy = getDefaultFilter();
+  for (const [key, value] of searchParams.entries()) {
+    if (!(key in filterBy)) continue;
 
-  if (searchParams.has("title")) {
-    filterBy.title = searchParams.get("title");
-  }
-
-  if (searchParams.has("noMembers")) {
-    filterBy.noMembers = searchParams.get("noMembers") === "1";
-  }
-
-  if (searchParams.has("members")) {
-    const membersParam = searchParams.get("members");
-    filterBy.members = membersParam
-      .split(",")
-      .map(id => id.trim())
-      .filter(id => id);
+    if (typeof filterBy[key] === "boolean") {
+      filterBy[key] = value === "1";
+    } else if (Array.isArray(filterBy[key])) {
+      filterBy[key] = value
+        .split(",")
+        .map(v => v.trim())
+        .filter(v => v);
+    } else {
+      filterBy[key] = value;
+    }
   }
 
   return filterBy;
@@ -88,17 +86,14 @@ export function parseFiltersFromSearchParams(searchParams) {
 
 export function serializeFiltersToSearchParams(filterBy) {
   const searchParams = new URLSearchParams();
-
-  if (filterBy.title) {
-    searchParams.set("title", filterBy.title);
-  }
-
-  if (filterBy.noMembers) {
-    searchParams.set("noMembers", "1");
-  }
-
-  if (filterBy.members && filterBy.members.length > 0) {
-    searchParams.set("members", filterBy.members.join(","));
+  for (const [key, value] of Object.entries(filterBy)) {
+    if (Array.isArray(value) && value.length > 0) {
+      searchParams.set(key, value.join(","));
+    } else if (typeof value === "boolean" && value) {
+      searchParams.set(key, "1");
+    } else if (typeof value === "string" && value) {
+      searchParams.set(key, value);
+    }
   }
 
   return searchParams;
