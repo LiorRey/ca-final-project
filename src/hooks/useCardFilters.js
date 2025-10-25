@@ -14,6 +14,13 @@ export const useCardFilters = () => {
     [dispatch]
   );
 
+  const updateFilters = useCallback(
+    filterObj => {
+      dispatch(setFilters(filterObj));
+    },
+    [dispatch]
+  );
+
   const updateFilterDebounced = useMemo(
     () =>
       debounce((filterType, value) => {
@@ -44,6 +51,7 @@ export const useCardFilters = () => {
   return {
     filters,
     updateFilter,
+    updateFilters,
     updateFilterDebounced,
     removeFilter,
     clearAllFilters: handleClearAllFilters,
