@@ -15,6 +15,7 @@
 @import "components/Header";
 @import "components/Footer";
 @import "components/UserMessage";
+@import "components/Popover";
 
 @import "components/car/CarIndex";
 @import "components/car/CarList";
