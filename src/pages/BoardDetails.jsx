@@ -25,8 +25,8 @@ export function BoardDetails() {
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
 
   useEffect(() => {
-    loadBoard(params.boardId);
-  }, [params.boardId]);
+    loadBoard(params.boardId, filters);
+  }, [params.boardId, filters]);
 
   async function onRemoveList(listId) {}
 
@@ -52,11 +52,6 @@ export function BoardDetails() {
     );
   }
 
-  const filteredBoard = useMemo(() => {
-    if (!board) return null;
-    return getFilteredBoard(board, filters);
-  }, [board, filters]);
-
   if (!board) return <div>Loading board...</div>;
 
   return (
@@ -81,7 +76,7 @@ export function BoardDetails() {
       </header>
       <div className="board-canvas" ref={boardCanvasRef}>
         <ul className="lists-list">
-          {filteredBoard.lists.map(list => (
+          {board.lists.map(list => (
             <li key={list.id}>
               <List
                 key={list.id}
