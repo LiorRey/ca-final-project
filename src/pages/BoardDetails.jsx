@@ -34,6 +34,11 @@ export function BoardDetails() {
     loadBoard(params.boardId, filters);
   }, [params.boardId, filters]);
 
+  useEffect(() => {
+    const filterBy = serializeFiltersToSearchParams(filters);
+    setSearchParams(filterBy);
+  }, [filters, setSearchParams]);
+
   async function onRemoveList(listId) {}
 
   async function onUpdateList(list, { cardId = null, key, value }) {
