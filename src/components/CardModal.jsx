@@ -11,6 +11,7 @@ export function CardModal({
   card,
   onClose,
   isOpen,
+  onDeleteCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
 
@@ -21,7 +22,7 @@ export function CardModal({
   if (!card) return null;
 
   return (
-    <Modal open={isOpen} onClose={onClose} disableAutoFocus>
+    <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
           {listTitle}{" "}
@@ -36,7 +37,7 @@ export function CardModal({
               <button className="icon-button">
                 <AddIcon /> Add label
               </button>
-              <button className="icon-button">
+              <button className="icon-button" onClick={onDeleteCard}>
                 <DeleteIcon /> Delete
               </button>
               <button className="icon-button">
@@ -65,9 +66,9 @@ export function CardModal({
                 className="description-input"
                 placeholder="Add a description"
                 spellCheck="false"
-              >
-                {card.description}
-              </textarea>
+                value={card.description}
+                onChange={e => setDescription(e.target.value)}
+              />
             </div>
           </section>
           <aside
