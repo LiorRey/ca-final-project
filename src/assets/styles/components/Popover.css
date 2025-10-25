@@ -1,0 +1,33 @@
+.MuiPaper-root.popover-paper {
+  width: 304px;
+  margin-top: 8px;
+  background-color: #2b2c2f;
+  color: #bfc1c4;
+  box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+  border-radius: 0.5rem;
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  border-bottom: 1px solid #444;
+  min-width: 200px;
+}
+
+.popover-header-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.popover-header-close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
