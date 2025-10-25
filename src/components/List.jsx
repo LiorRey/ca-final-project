@@ -195,18 +195,14 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
           vertical: "bottom",
           horizontal: "left",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
         slotProps={{
           paper: {
             sx: {
-              backgroundColor: "black",
-              color: "white",
-              boxShadow: "none",
-              borderRadius: "5px",
-              border: "1px solid white",
+              mt: 1,
+              backgroundColor: "#2B2C2F",
+              color: "#BFC1C4",
+              boxShadow: "0px 8px 12px #091e4226, 0px 0px 1px #091e424f",
+              borderRadius: "0.5rem",
             },
           },
         }}
