@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
@@ -12,13 +13,22 @@ import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
-import { getFilteredBoard } from "../services/filter-service";
+import {
+  parseFiltersFromSearchParams,
+  serializeFiltersToSearchParams,
+} from "../services/filter-service";
 import { useCardFilters } from "../hooks/useCardFilters";
 
 export function BoardDetails() {
   const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
-  const { filters } = useCardFilters();
+  const { filters, updateFilters } = useCardFilters();
+
+  useEffect(() => {
+    const filterBy = parseFiltersFromSearchParams(searchParams);
+    updateFilters(filterBy);
+  }, []);
 
   useEffect(() => {
     loadBoard(params.boardId, filters);
