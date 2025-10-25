@@ -26,6 +26,7 @@
   border-radius: 20%;
   background-color: transparent;
   box-sizing: border-box;
+  font-size: 15px;
   > svg {
     width: 16px;
     height: 16px;

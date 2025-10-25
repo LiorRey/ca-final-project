@@ -8,43 +8,54 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { boardService } from "../services/board";
 
-export function AddList({ onSubmit }) {
-  const [showAddList, setShowAddList] = useState(true);
-  const [listName, setListName] = useState("");
+export function AddList({ onAddList }) {
+  const [showAddList, setShowAddList] = useState(false);
+  const [newListName, setNewListName] = useState("");
 
-  function onSubmitAddList() {
-    if (!listName) return;
+  function handleAddList() {
+    if (!newListName) {
+      handleHideAddList();
+      return;
+    }
+
     const newList = boardService.getEmptyList();
-    newList.name = listName;
-    onSubmit(newList);
-    setListName("");
-    setShowAddList(true);
+    newList.name = newListName;
+    onAddList(newList);
+
+    setNewListName("");
+  }
+
+  function handleHideAddList() {
+    setNewListName("");
+    setShowAddList(false);
   }
 
   return (
     <>
-      {showAddList && (
+      {!showAddList ? (
         <Button
           startIcon={<AddIcon />}
           className="add-list-button"
-          onClick={() => setShowAddList(false)}
+          onClick={() => setShowAddList(true)}
         >
           Add another list
         </Button>
-      )}
-      {!showAddList && (
+      ) : (
         <div className="add-list-container">
           <div>
             <TextField
               id="outlined-basic"
               variant="outlined"
-              value={listName}
+              value={newListName}
               placeholder="Enter list name"
-              onChange={e => setListName(e.target.value)}
+              onChange={e => setNewListName(e.target.value)}
+              autoFocus
             />
           </div>
-          <Button onClick={onSubmitAddList}>Add List</Button>
-          <IconButton aria-label="close" onClick={() => setShowAddList(true)}>
+          <Button onClick={handleAddList} onMouseDown={e => e.preventDefault()}>
+            Add List
+          </Button>
+          <IconButton aria-label="close" onClick={handleHideAddList}>
             <CloseIcon />
           </IconButton>
         </div>
