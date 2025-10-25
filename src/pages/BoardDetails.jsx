@@ -15,32 +15,18 @@ import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import { getFilteredBoard } from "../services/filter-service";
 import { useCardFilters } from "../hooks/useCardFilters";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
-import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const params = useParams();
   const board = useSelector(state => state.boards.board);
   const { filters } = useCardFilters();
-  const didLoadOnce = useRef(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
 
   useEffect(() => {
-    didLoadOnce.current = false;
     loadBoard(params.boardId);
   }, [params.boardId]);
-
-  useEffectUpdate(() => {
-    if (!board?.lists?.length) return;
-
-    if (!didLoadOnce.current) {
-      didLoadOnce.current = true;
-      return;
-    }
-
-    scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL });
-  }, [board?.lists?.length, scrollBoardToEnd]);
 
   async function onRemoveList(listId) {}
 
@@ -55,11 +41,15 @@ export function BoardDetails() {
     }
   }
 
-  function onAddList(newList) {
-    updateBoard(board, {
+  async function onAddList(newList) {
+    await updateBoard(board, {
       key: "lists",
       value: [...board.lists, newList],
     });
+
+    requestAnimationFrame(() =>
+      scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
+    );
   }
 
   const filteredBoard = useMemo(() => {
@@ -100,17 +90,12 @@ export function BoardDetails() {
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 isAddingCard={activeAddCardListId === list.id}
-                onSetAddingCard={setActiveAddCardListId}
+                setActiveAddCardListId={setActiveAddCardListId}
               />
             </li>
           ))}
           <li>
-            <AddList
-              onAddList={onAddList}
-              onScrollToEnd={() =>
-                scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
-              }
-            />
+            <AddList onAddList={onAddList} />
           </li>
         </ul>
         <nav className="board-footer">

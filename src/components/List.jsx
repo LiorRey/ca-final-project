@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,7 +9,6 @@ import { Card } from "./Card";
 import { CardModal } from "./CardModal";
 import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
-import { useEffectUpdate } from "../hooks/useEffectUpdate";
 
 export function List({
   list,
@@ -18,14 +16,13 @@ export function List({
   onRemoveList,
   onUpdateList,
   isAddingCard,
-  onSetAddingCard,
+  setActiveAddCardListId,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newCardTitle, setNewCardTitle] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const newCardInputRef = useRef(null);
   const listContentRef = useRef(null);
   const scrollListToEnd = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
@@ -33,16 +30,6 @@ export function List({
   useEffect(() => {
     setCards(list.cards);
   }, [list.cards]);
-
-  useEffect(() => {
-    if (isAddingCard) {
-      newCardInputRef.current?.focus();
-    }
-  }, [isAddingCard]);
-
-  useEffectUpdate(() => {
-    scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL });
-  }, [cards.length, scrollListToEnd]);
 
   async function onRemoveCard(cardId) {
     await onRemoveList(list.id);
@@ -54,36 +41,39 @@ export function List({
     await onUpdateList(list, options);
   }
 
-  const handleMoreClick = event => {
+  function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
-  };
+  }
 
-  const handleClose = () => {
+  function handleClose() {
     setAnchorEl(null);
-  };
+  }
 
-  const handleEditList = () => {
+  function handleEditList() {
     handleClose();
-  };
+  }
 
-  const handleDeleteList = () => {
+  function handleDeleteList() {
     onRemoveList(list.id);
     handleClose();
-  };
+  }
 
-  const handleShowingAddCardActions = () => {
+  function handleShowAddCard() {
     setNewCardTitle("");
-    onSetAddingCard(list.id);
-  };
+    setActiveAddCardListId(list.id);
+    requestAnimationFrame(() =>
+      scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL })
+    );
+  }
 
-  const handleHidingAddCardActions = () => {
+  function handleHideAddCard() {
     setNewCardTitle("");
-    onSetAddingCard(null);
-  };
+    setActiveAddCardListId(null);
+  }
 
-  const handleAddCard = () => {
+  function handleAddCard() {
     if (!newCardTitle) {
-      handleHidingAddCardActions();
+      handleHideAddCard();
       return;
     }
 
@@ -100,8 +90,10 @@ export function List({
     onUpdateList(list, options);
 
     setNewCardTitle("");
-    newCardInputRef.current?.focus();
-  };
+    requestAnimationFrame(() =>
+      scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL })
+    );
+  }
 
   function handleOpenModal(card) {
     setSelectedCard(card);
@@ -155,40 +147,32 @@ export function List({
       </div>
       <div className="list-footer">
         {!isAddingCard ? (
-          <button
-            className="add-card-card-button"
-            onClick={handleShowingAddCardActions}
-          >
+          <button className="add-card-card-button" onClick={handleShowAddCard}>
             <AddRounded /> Add a card
           </button>
         ) : (
-          <section className="add-card-actions-container">
-            <Box
-              className={`${open ? "floating-card-content" : "card-content"}`}
-              sx={open ? { zIndex: theme => theme.zIndex.modal + 1 } : {}}
-            >
+          <section className="add-card-container">
+            <div className="card-content">
               <input
-                ref={newCardInputRef}
                 type="text"
                 className="card-title-input"
                 value={newCardTitle}
                 onChange={e => setNewCardTitle(e.target.value)}
                 placeholder="Enter a title or paste a link"
+                autoFocus
               />
-            </Box>
-            <div className="card-actions">
+            </div>
+            <div className="add-card-buttons-container">
               <Button
                 className="add-card-contained-button"
                 variant="contained"
                 size="large"
                 onClick={handleAddCard}
+                onMouseDown={e => e.preventDefault()}
               >
                 Add card
               </Button>
-              <button
-                className="icon-button"
-                onClick={handleHidingAddCardActions}
-              >
+              <button className="icon-button" onClick={handleHideAddCard}>
                 ✕
               </button>
             </div>

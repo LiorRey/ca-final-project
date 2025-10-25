@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
@@ -8,19 +8,13 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { boardService } from "../services/board";
 
-export function AddList({ onAddList, onScrollToEnd }) {
+export function AddList({ onAddList }) {
   const [showAddList, setShowAddList] = useState(false);
   const [newListName, setNewListName] = useState("");
-  const textFieldRef = useRef(null);
-
-  function handleShowAddList() {
-    setShowAddList(true);
-    onScrollToEnd();
-  }
 
   function handleAddList() {
     if (!newListName) {
-      handleCloseAddListActions();
+      handleHideAddList();
       return;
     }
 
@@ -29,19 +23,12 @@ export function AddList({ onAddList, onScrollToEnd }) {
     onAddList(newList);
 
     setNewListName("");
-    textFieldRef.current?.focus();
   }
 
-  const handleCloseAddListActions = () => {
+  function handleHideAddList() {
     setNewListName("");
     setShowAddList(false);
-  };
-
-  useEffect(() => {
-    if (showAddList) {
-      textFieldRef.current?.focus();
-    }
-  }, [showAddList]);
+  }
 
   return (
     <>
@@ -49,7 +36,7 @@ export function AddList({ onAddList, onScrollToEnd }) {
         <Button
           startIcon={<AddIcon />}
           className="add-list-button"
-          onClick={handleShowAddList}
+          onClick={() => setShowAddList(true)}
         >
           Add another list
         </Button>
@@ -62,11 +49,13 @@ export function AddList({ onAddList, onScrollToEnd }) {
               value={newListName}
               placeholder="Enter list name"
               onChange={e => setNewListName(e.target.value)}
-              inputRef={textFieldRef}
+              autoFocus
             />
           </div>
-          <Button onClick={handleAddList}>Add List</Button>
-          <IconButton aria-label="close" onClick={handleCloseAddListActions}>
+          <Button onClick={handleAddList} onMouseDown={e => e.preventDefault()}>
+            Add List
+          </Button>
+          <IconButton aria-label="close" onClick={handleHideAddList}>
             <CloseIcon />
           </IconButton>
         </div>
