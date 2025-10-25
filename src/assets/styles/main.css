@@ -27,6 +27,7 @@
 
 @import "components/Board";
 @import "components/List";
+@import "components/ListActionsMenu";
 @import "components/Card";
 @import "components/FilterMenu";
 
