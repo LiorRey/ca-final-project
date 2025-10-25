@@ -9,6 +9,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 import { CardModal } from "./CardModal";
+import { SquareIconButton } from "./SquareIconButton";
 
 export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
@@ -113,9 +114,11 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     <section className="list-container">
       <div className="list-header">
         <h2>{list.name}</h2>
-        <button className="icon-button" onClick={handleMoreClick}>
-          <MoreHoriz />
-        </button>
+        <SquareIconButton
+          icon={<MoreHoriz />}
+          onClick={handleMoreClick}
+          selected={open}
+        />
       </div>
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
