@@ -9,6 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { boardService } from "../services/board";
 import { CardModal } from "./CardModal";
+import { SquareIconButton } from "./ui/buttons/SquareIconButton";
+import Close from "@mui/icons-material/Close";
+import { ListActionsMenu } from "./ListActionsMenu";
 
 export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
   const [cards, setCards] = useState(list.cards);
@@ -113,9 +116,11 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     <section className="list-container">
       <div className="list-header">
         <h2>{list.name}</h2>
-        <button className="icon-button" onClick={handleMoreClick}>
-          <MoreHoriz />
-        </button>
+        <SquareIconButton
+          icon={<MoreHoriz />}
+          onClick={handleMoreClick}
+          selected={open}
+        />
       </div>
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
@@ -184,35 +189,13 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
         )}
       </div>
 
-      <Popover
-        open={open}
+      <ListActionsMenu
         anchorEl={anchorEl}
+        isOpen={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              backgroundColor: "black",
-              color: "white",
-              boxShadow: "none",
-              borderRadius: "5px",
-              border: "1px solid white",
-            },
-          },
-        }}
-      >
-        <MenuList>
-          <MenuItem onClick={handleEditList}>Edit List</MenuItem>
-          <MenuItem onClick={handleDeleteList}>Delete List</MenuItem>
-        </MenuList>
-      </Popover>
+        onEditList={handleEditList}
+        onDeleteList={handleDeleteList}
+      />
 
       {/* Card Modal will be moved out of here */}
       <CardModal
