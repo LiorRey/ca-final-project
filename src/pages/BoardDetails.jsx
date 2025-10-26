@@ -14,6 +14,7 @@ import { FilterMenu } from "../components/FilterMenu";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import { getFilteredBoard } from "../services/filter-service";
 import { useCardFilters } from "../hooks/useCardFilters";
+import { LabelMenu } from "../components/LabelMenu";
 
 export function BoardDetails() {
   const params = useParams();
@@ -66,6 +67,7 @@ export function BoardDetails() {
         </div>
       </header>
       <div className="board-canvas">
+        <LabelMenu boardLabels={board.labels} />
         <ul className="lists-list">
           {board.lists.map(list => (
             <li key={list.id}>

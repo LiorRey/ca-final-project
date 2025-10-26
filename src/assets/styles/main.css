@@ -23,6 +23,8 @@
 
 @import "components/label/ModalLabel";
 @import "components/label/CardLabel";
+@import "components/label/LabelMenu";
+@import "components/label/LabelMenuItem";
 
 @import "components/Board";
 @import "components/List";
