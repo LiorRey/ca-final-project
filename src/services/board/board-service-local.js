@@ -16,6 +16,7 @@ export const boardService = {
   clearData,
   reCreateBoards,
   getEmptyList,
+  copyList,
 };
 window.bs = boardService;
 
@@ -27,6 +28,34 @@ async function query() {
 
     throw error;
   }
+}
+
+export function copyList(board, listId, newName) {
+  const originalListIndex = board.lists.findIndex(l => l.id === listId);
+  if (originalListIndex === -1) throw new Error("List not found");
+
+  const listToCopy = board.lists[originalListIndex];
+
+  const clonedCards = listToCopy.cards.map(card => ({
+    ...card,
+    id: crypto.randomUUID(),
+  }));
+
+  const clonedList = {
+    ...listToCopy,
+    id: crypto.randomUUID(),
+    name: newName,
+    cards: clonedCards,
+  };
+
+  // insert the cloned list right after the original list
+  const updatedLists = [
+    ...board.lists.slice(0, originalListIndex + 1),
+    clonedList,
+    ...board.lists.slice(originalListIndex + 1),
+  ];
+
+  return updatedLists;
 }
 
 async function getById(boardId, filterBy = {}) {
