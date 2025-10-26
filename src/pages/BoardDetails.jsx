@@ -44,6 +44,19 @@ export function BoardDetails() {
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
 
+  function onCopyList(listId, newName) {
+    try {
+      const updatedLists = boardService.copyList(board, listId, newName);
+      updateBoard(board, {
+        key: "lists",
+        value: updatedLists,
+      });
+    } catch (error) {
+      console.error("List copy failed:", error);
+      showErrorMsg(`Unable to copy the list: ${listId}`);
+    }
+  }
+
   async function onRemoveList(listId) {}
 
   async function onUpdateList(list, { cardId = null, key, value }) {
@@ -102,6 +115,7 @@ export function BoardDetails() {
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
+                onCopyList={onCopyList}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
               />
