@@ -1,41 +1,38 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
+import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Popover from "@mui/material/Popover";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
-import { boardService } from "../services/board";
 import { CardModal } from "./CardModal";
-import { SquareIconButton } from "./ui/buttons/SquareIconButton";
-import Close from "@mui/icons-material/Close";
 import { ListActionsMenu } from "./ListActionsMenu";
+import { SquareIconButton } from "./ui/buttons/SquareIconButton";
+import { boardService } from "../services/board";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 
-export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
+export function List({
+  list,
+  boardLabels,
+  onRemoveList,
+  onUpdateList,
+  isAddingCard,
+  setActiveAddCardListId,
+}) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isAddingCard, setIsAddingCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-
   const listContentRef = useRef(null);
+  const scrollListToEnd = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
     setCards(list.cards);
   }, [list.cards]);
-
-  function handleOpenModal(card) {
-    setSelectedCard(card);
-    setOpenModal(true);
-  }
-  function handleCloseModal() {
-    setOpenModal(false);
-    setSelectedCard(null);
-  }
 
   async function onRemoveCard(cardId) {
     await onRemoveList(list.id);
@@ -47,38 +44,42 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     await onUpdateList(list, options);
   }
 
-  const handleMoreClick = event => {
+  function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleEditList = () => {
-    handleClose();
-  };
-
-  const handleDeleteList = () => {
-    onRemoveList(list.id);
-    handleClose();
-  };
-
-  const handleShowingAddCardActions = () => {
-    setIsAddingCard(true);
-    _scrollListContentToBottom();
-  };
-
-  const handleHidingAddCardActions = () => {
-    setIsAddingCard(false);
-    setNewCardTitle("");
-  };
-
-  function handleAddCardTitleChange({ target }) {
-    setNewCardTitle(target.value);
   }
 
-  const handleAddCard = () => {
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  function handleEditList() {
+    handleClose();
+  }
+
+  function handleDeleteList() {
+    onRemoveList(list.id);
+    handleClose();
+  }
+
+  function handleShowAddCard() {
+    setNewCardTitle("");
+    setActiveAddCardListId(list.id);
+    requestAnimationFrame(() =>
+      scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL })
+    );
+  }
+
+  function handleHideAddCard() {
+    setNewCardTitle("");
+    setActiveAddCardListId(null);
+  }
+
+  function handleAddCard() {
+    if (!newCardTitle) {
+      handleHideAddCard();
+      return;
+    }
+
     const newCard = {
       ...boardService.getEmptyCard(),
       title: newCardTitle,
@@ -88,13 +89,24 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
 
-    const updatedList = { ...list, cards };
     const options = { key: "cards", value: updatedCards };
-    onUpdateList(updatedList, options);
+    onUpdateList(list, options);
 
-    _scrollListContentToBottom();
     setNewCardTitle("");
-  };
+    requestAnimationFrame(() =>
+      scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL })
+    );
+  }
+
+  function handleOpenModal(card) {
+    setSelectedCard(card);
+    setOpenModal(true);
+  }
+
+  function handleCloseModal() {
+    setOpenModal(false);
+    setSelectedCard(null);
+  }
 
   function getCardLabels(card) {
     return card && card.labels && boardLabels && card.labels.length > 0
@@ -102,14 +114,6 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
           .map(labelId => boardLabels.find(l => l.id === labelId))
           .filter(Boolean)
       : [];
-  }
-
-  function _scrollListContentToBottom() {
-    setTimeout(() => {
-      if (listContentRef.current) {
-        listContentRef.current.scrollTop = listContentRef.current.scrollHeight;
-      }
-    }, 0);
   }
 
   return (
@@ -148,40 +152,32 @@ export function List({ list, boardLabels, onRemoveList, onUpdateList }) {
       </div>
       <div className="list-footer">
         {!isAddingCard ? (
-          <button
-            className="add-card-card-button"
-            onClick={handleShowingAddCardActions}
-          >
+          <button className="add-card-card-button" onClick={handleShowAddCard}>
             <AddRounded /> Add a card
           </button>
         ) : (
-          <section className="add-card-actions-container">
-            <Box
-              className={`${open ? "floating-card-content" : "card-content"}`}
-              sx={open ? { zIndex: theme => theme.zIndex.modal + 1 } : {}}
-            >
+          <section className="add-card-container">
+            <div className="card-content">
               <input
                 type="text"
-                placeholder="Enter a title or paste a link"
                 className="card-title-input"
-                autoFocus
                 value={newCardTitle}
-                onChange={handleAddCardTitleChange}
+                onChange={e => setNewCardTitle(e.target.value)}
+                placeholder="Enter a title or paste a link"
+                autoFocus
               />
-            </Box>
-            <div className="card-actions">
+            </div>
+            <div className="add-card-buttons-container">
               <Button
                 className="add-card-contained-button"
                 variant="contained"
                 size="large"
                 onClick={handleAddCard}
+                onMouseDown={e => e.preventDefault()}
               >
                 Add card
               </Button>
-              <button
-                className="icon-button"
-                onClick={handleHidingAddCardActions}
-              >
+              <button className="icon-button" onClick={handleHideAddCard}>
                 ✕
               </button>
             </div>

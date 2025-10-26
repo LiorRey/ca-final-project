@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
@@ -18,21 +18,25 @@ import {
   serializeFiltersToSearchParams,
 } from "../services/filter-service";
 import { useCardFilters } from "../hooks/useCardFilters";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 
 export function BoardDetails() {
+  const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
+  const boardCanvasRef = useRef(null);
+  const scrollBoardToEnd = useScrollTo(boardCanvasRef);
   const { filters, updateFilters } = useCardFilters();
+
+  useEffect(() => {
+    loadBoard(params.boardId, filters);
+  }, [params.boardId, filters]);
 
   useEffect(() => {
     const filterBy = parseFiltersFromSearchParams(searchParams);
     updateFilters(filterBy);
   }, []);
-
-  useEffect(() => {
-    loadBoard(params.boardId, filters);
-  }, [params.boardId, filters]);
 
   useEffect(() => {
     const filterBy = serializeFiltersToSearchParams(filters);
@@ -51,11 +55,16 @@ export function BoardDetails() {
       showErrorMsg(`Unable to update the list: ${list.name}`);
     }
   }
-  function onSubmitAddList(newList) {
-    updateBoard(board, {
+
+  async function onAddList(newList) {
+    await updateBoard(board, {
       key: "lists",
       value: [...board.lists, newList],
     });
+
+    requestAnimationFrame(() =>
+      scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
+    );
   }
 
   if (!board) return <div>Loading board...</div>;
@@ -80,7 +89,7 @@ export function BoardDetails() {
           </button>
         </div>
       </header>
-      <div className="board-canvas">
+      <div className="board-canvas" ref={boardCanvasRef}>
         <ul className="lists-list">
           {board.lists.map(list => (
             <li key={list.id}>
@@ -90,11 +99,13 @@ export function BoardDetails() {
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
+                isAddingCard={activeAddCardListId === list.id}
+                setActiveAddCardListId={setActiveAddCardListId}
               />
             </li>
           ))}
           <li>
-            <AddList onSubmit={onSubmitAddList} />
+            <AddList onAddList={onAddList} />
           </li>
         </ul>
         <nav className="board-footer">
