@@ -17,8 +17,9 @@ export default function CopyListForm({ initialValue, onCopy, onCancel }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (onCopy && textareaValue.trim()) {
-      onCopy(textareaValue.trim());
+    const newName = textareaValue.trim();
+    if (newName) {
+      onCopy(newName);
     }
     setTextareaValue("");
   }
@@ -45,7 +46,7 @@ export default function CopyListForm({ initialValue, onCopy, onCancel }) {
         className="copy-list-textfield"
         ref={textareaRef}
         value={textareaValue}
-        onChange={e => setTextareaValue(e.target.value)}
+        onChange={e => setTextareaValue(e.target.value.trim())}
         onKeyDown={handleKeyDown}
         minRows={2}
         autoFocus

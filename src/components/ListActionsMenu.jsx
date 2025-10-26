@@ -21,11 +21,10 @@ export function ListActionsMenu({
     }
   }
 
-  function handleCopyList(newName) {
-    if (onCopyList && newName) {
-      onCopyList(newName);
-    }
+  function handleCopyList(listId, newName) {
+    onCopyList(listId, newName);
     setActiveAction(null);
+    onClose();
   }
 
   function handleCopyCancel() {
@@ -52,9 +51,8 @@ export function ListActionsMenu({
     >
       {activeAction === "copy" ? (
         <CopyListForm
-          list={list}
           initialValue={list.name}
-          onCopy={handleCopyList}
+          onCopy={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
         />
       ) : (

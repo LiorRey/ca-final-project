@@ -22,6 +22,7 @@ export function List({
   onUpdateList,
   isAddingCard,
   setActiveAddCardListId,
+  onCopyList,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -195,7 +196,7 @@ export function List({
         onClose={handleClose}
         onEditList={handleEditList}
         onDeleteList={handleDeleteList}
-        onCopyList={n => console.log(n)}
+        onCopyList={onCopyList}
       />
 
       {/* Card Modal will be moved out of here */}
