@@ -3,13 +3,20 @@ import { useCallback, useMemo } from "react";
 import { setFilters, clearAllFilters } from "../store/actions/board-actions";
 import { debounce } from "../services/util-service";
 
-export const useCardFilters = () => {
+export function useCardFilters() {
   const dispatch = useDispatch();
   const filters = useSelector(state => state.boards.filterBy);
 
   const updateFilter = useCallback(
     (filterType, value) => {
       dispatch(setFilters({ [filterType]: value }));
+    },
+    [dispatch]
+  );
+
+  const updateFilters = useCallback(
+    filterObj => {
+      dispatch(setFilters(filterObj));
     },
     [dispatch]
   );
@@ -44,9 +51,10 @@ export const useCardFilters = () => {
   return {
     filters,
     updateFilter,
+    updateFilters,
     updateFilterDebounced,
     removeFilter,
     clearAllFilters: handleClearAllFilters,
     hasActiveFilters,
   };
-};
+}

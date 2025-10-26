@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
+import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
 import { CardModal } from "./CardModal";
+import { ListActionsMenu } from "./ListActionsMenu";
+import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 
@@ -117,9 +120,11 @@ export function List({
     <section className="list-container">
       <div className="list-header">
         <h2>{list.name}</h2>
-        <button className="icon-button" onClick={handleMoreClick}>
-          <MoreHoriz />
-        </button>
+        <SquareIconButton
+          icon={<MoreHoriz />}
+          onClick={handleMoreClick}
+          selected={open}
+        />
       </div>
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
@@ -180,35 +185,13 @@ export function List({
         )}
       </div>
 
-      <Popover
-        open={open}
+      <ListActionsMenu
         anchorEl={anchorEl}
+        isOpen={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              backgroundColor: "black",
-              color: "white",
-              boxShadow: "none",
-              borderRadius: "5px",
-              border: "1px solid white",
-            },
-          },
-        }}
-      >
-        <MenuList>
-          <MenuItem onClick={handleEditList}>Edit List</MenuItem>
-          <MenuItem onClick={handleDeleteList}>Delete List</MenuItem>
-        </MenuList>
-      </Popover>
+        onEditList={handleEditList}
+        onDeleteList={handleDeleteList}
+      />
 
       {/* Card Modal will be moved out of here */}
       <CardModal
