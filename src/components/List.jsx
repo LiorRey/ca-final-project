@@ -189,11 +189,13 @@ export function List({
       </div>
 
       <ListActionsMenu
+        list={list}
         anchorEl={anchorEl}
         isOpen={open}
         onClose={handleClose}
         onEditList={handleEditList}
         onDeleteList={handleDeleteList}
+        onCopyList={n => console.log(n)}
       />
 
       {/* Card Modal will be moved out of here */}
