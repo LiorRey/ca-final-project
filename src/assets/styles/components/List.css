@@ -87,7 +87,7 @@
   background-color: var(--gray3);
 }
 
-.add-card-actions-container {
+.add-card-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -106,13 +106,13 @@
   }
 }
 
-.card-actions {
+.add-card-buttons-container {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.card-actions .add-card-contained-button {
+.add-card-buttons-container .add-card-contained-button {
   width: fit-content;
   padding: 0.4rem 0.75rem 0.3rem 0.75rem;
   color: var(--button-black-text);
@@ -124,7 +124,7 @@
   }
 }
 
-.card-actions .icon-button {
+.add-card-buttons-container .icon-button {
   width: auto;
   padding: 4px 8px;
   color: var(--gray2);
