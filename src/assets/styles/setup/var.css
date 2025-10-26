@@ -78,4 +78,11 @@
   --icon-btn-color-hover: #bfc1c4;
   --icon-btn-color-active: #1f1f21;
   --icon-btn-color-active-hover: #1f1f21;
+
+  --action-btn-bg-default: #669df1;
+  --action-btn-bg-hover: #8fb8f6;
+  --action-btn-bg-active: #cfe1fd;
+  --action-btn-color-default: #1f1f21;
+  --action-btn-color-hover: var(--action-btn-color-default);
+  --action-btn-color-active: var(--action-btn-color-default);
 }
