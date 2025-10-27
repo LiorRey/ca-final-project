@@ -31,7 +31,7 @@ export function Card({
 
   function handleClickLabels(e) {
     e.stopPropagation();
-    setLabelsIsOpen(!labelsIsOpen);
+    setLabelsIsOpen(prevIsOpen => !prevIsOpen);
   }
 
   function handleClose() {
