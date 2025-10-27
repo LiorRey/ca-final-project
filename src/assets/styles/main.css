@@ -15,6 +15,7 @@
 @import "components/Header";
 @import "components/Footer";
 @import "components/UserMessage";
+@import "components/Popover";
 
 @import "components/car/CarIndex";
 @import "components/car/CarList";
@@ -26,7 +27,9 @@
 
 @import "components/Board";
 @import "components/List";
+@import "components/ListActionsMenu";
 @import "components/Card";
+@import "components/FilterMenu";
 
 @import "components/review/ReviewEdit";
 @import "components/review/ReviewList";

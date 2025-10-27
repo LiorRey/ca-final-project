@@ -1,0 +1,14 @@
+.filter-member-autocomplete .MuiAutocomplete-popupIndicator {
+  transform: none;
+  transition: none;
+}
+
+.filter-member-fullname {
+  font-size: 0.85em;
+}
+
+.filter-member-username {
+  color: #888;
+  font-size: 0.6em;
+  margin-left: 4px;
+}
