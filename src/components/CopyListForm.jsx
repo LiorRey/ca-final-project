@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ActionButton from "./ui/buttons/ActionButton";
 
-export default function CopyListForm({ initialValue, onCopy, onCancel }) {
+export default function CopyListForm({ initialValue, onSubmit, onCancel }) {
   const textareaRef = useRef(null);
   const [textareaValue, setTextareaValue] = useState(initialValue || "");
 
@@ -18,9 +18,9 @@ export default function CopyListForm({ initialValue, onCopy, onCancel }) {
   function handleSubmit(e) {
     e.preventDefault();
     const newName = textareaValue.trim();
-    if (newName) {
-      onCopy(newName);
-    }
+    if (!newName) return;
+
+    onSubmit(newName);
     setTextareaValue("");
   }
 

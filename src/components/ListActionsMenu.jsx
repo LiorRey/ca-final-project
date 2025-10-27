@@ -52,7 +52,7 @@ export function ListActionsMenu({
       {activeAction === "copy" ? (
         <CopyListForm
           initialValue={list.name}
-          onCopy={newName => handleCopyList(list.id, newName)}
+          onSubmit={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
         />
       ) : (
