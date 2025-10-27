@@ -198,6 +198,7 @@ export function List({
         listTitle={list.name}
         cardLabels={getCardLabels(selectedCard)}
         card={selectedCard}
+        boardLabels={boardLabels}
         onClose={handleCloseModal}
         isOpen={openModal}
       />

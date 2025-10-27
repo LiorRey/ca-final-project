@@ -19,7 +19,6 @@ import {
 } from "../services/filter-service";
 import { useCardFilters } from "../hooks/useCardFilters";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
-import { LabelMenu } from "../components/LabelMenu";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
@@ -91,7 +90,6 @@ export function BoardDetails() {
         </div>
       </header>
       <div className="board-canvas" ref={boardCanvasRef}>
-        <LabelMenu boardLabels={board.labels} />
         <ul className="lists-list">
           {board.lists.map(list => (
             <li key={list.id}>

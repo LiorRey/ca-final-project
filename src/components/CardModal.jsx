@@ -4,15 +4,27 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AddIcon from "@mui/icons-material/Add";
+import { LabelMenu } from "./LabelMenu";
 
 export function CardModal({
   listTitle,
   cardLabels = [],
   card,
+  boardLabels = [],
   onClose,
   isOpen,
 }) {
   const [openSection, setOpenSection] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isLabelMenuOpen = Boolean(anchorEl);
+
+  function onOpenLabelMenu(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function onCloseLabelMenu() {
+    setAnchorEl(null);
+  }
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -33,7 +45,11 @@ export function CardModal({
           <section className="card-modal-content">
             <h1 className="card-modal-title">{card.title}</h1>
             <div className="card-modal-controls">
-              <button className="icon-button">
+              <button
+                className="icon-button"
+                onClick={onOpenLabelMenu}
+                selected={isLabelMenuOpen}
+              >
                 <AddIcon /> Add label
               </button>
               <button className="icon-button">
@@ -65,9 +81,8 @@ export function CardModal({
                 className="description-input"
                 placeholder="Add a description"
                 spellCheck="false"
-              >
-                {card.description}
-              </textarea>
+                defaultValue={card.description}
+              />
             </div>
           </section>
           <aside
@@ -92,6 +107,13 @@ export function CardModal({
             Comments
           </button>
         </footer>
+
+        <LabelMenu
+          boardLabels={boardLabels}
+          anchorEl={anchorEl}
+          isLabelMenuOpen={isLabelMenuOpen}
+          onCloseLabelMenu={onCloseLabelMenu}
+        />
       </Box>
     </Modal>
   );
