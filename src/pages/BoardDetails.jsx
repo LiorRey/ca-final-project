@@ -44,10 +44,14 @@ export function BoardDetails() {
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
 
-  function onCopyList(listId, newName) {
+  async function onCopyList(listId, newName) {
     try {
-      const updatedLists = boardService.copyList(board, listId, newName);
-      updateBoard(board, {
+      const updatedLists = await boardService.copyList(
+        board._id,
+        listId,
+        newName
+      );
+      updateBoard(board._id, {
         key: "lists",
         value: updatedLists,
       });
@@ -62,7 +66,7 @@ export function BoardDetails() {
   async function onUpdateList(list, { cardId = null, key, value }) {
     try {
       const options = { listId: list.id, cardId, key, value };
-      updateBoard(board, options);
+      updateBoard(board._id, options);
       showSuccessMsg(`The list ${list.name} updated successfully!`);
     } catch (error) {
       console.error("List update failed:", error);
@@ -71,7 +75,7 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    await updateBoard(board, {
+    await updateBoard(board._id, {
       key: "lists",
       value: [...board.lists, newList],
     });

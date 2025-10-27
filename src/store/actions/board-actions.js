@@ -49,11 +49,11 @@ export async function createBoard(board) {
 }
 
 export async function updateBoard(
-  board,
+  boardId,
   { listId = null, cardId = null, key, value }
 ) {
   try {
-    const updatedBoard = await boardService.updateBoardWithActivity(board, {
+    const updatedBoard = await boardService.updateBoardWithActivity(boardId, {
       listId,
       cardId,
       key,

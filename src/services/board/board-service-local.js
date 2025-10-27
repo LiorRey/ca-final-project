@@ -30,32 +30,38 @@ async function query() {
   }
 }
 
-export function copyList(board, listId, newName) {
-  const originalListIndex = board.lists.findIndex(l => l.id === listId);
-  if (originalListIndex === -1) throw new Error("List not found");
+export async function copyList(boardId, listId, newName) {
+  try {
+    const board = await getById(boardId);
+    const originalListIndex = board.lists.findIndex(l => l.id === listId);
+    if (originalListIndex === -1) throw new Error("List not found");
 
-  const listToCopy = board.lists[originalListIndex];
+    const listToCopy = board.lists[originalListIndex];
 
-  const clonedCards = listToCopy.cards.map(card => ({
-    ...card,
-    id: crypto.randomUUID(),
-  }));
+    const clonedCards = listToCopy.cards.map(card => ({
+      ...card,
+      id: crypto.randomUUID(),
+    }));
 
-  const clonedList = {
-    ...listToCopy,
-    id: crypto.randomUUID(),
-    name: newName,
-    cards: clonedCards,
-  };
+    const clonedList = {
+      ...listToCopy,
+      id: crypto.randomUUID(),
+      name: newName,
+      cards: clonedCards,
+    };
 
-  // insert the cloned list right after the original list
-  const updatedLists = [
-    ...board.lists.slice(0, originalListIndex + 1),
-    clonedList,
-    ...board.lists.slice(originalListIndex + 1),
-  ];
+    // insert the cloned list right after the original list
+    const updatedLists = [
+      ...board.lists.slice(0, originalListIndex + 1),
+      clonedList,
+      ...board.lists.slice(originalListIndex + 1),
+    ];
 
-  return updatedLists;
+    return updatedLists;
+  } catch (error) {
+    console.error("Error copying list:", error);
+    throw error;
+  }
 }
 
 async function getById(boardId, filterBy = {}) {
@@ -80,11 +86,14 @@ async function remove(boardId) {
 }
 
 async function updateBoardWithActivity(
-  board,
+  boardId,
   { listId = null, cardId = null, key, value }
 ) {
   try {
-    if (!board || !key) throw new Error("Board and key are required");
+    if (!boardId || !key) throw new Error("Board and key are required");
+
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
 
     let { board: updatedBoard, prevValue } = _applyBoardUpdate(
       board,
