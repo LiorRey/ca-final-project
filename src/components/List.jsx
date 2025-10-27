@@ -16,6 +16,8 @@ import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 export function List({
   list,
   boardLabels,
+  labelsIsOpen,
+  setLabelsIsOpen,
   onRemoveList,
   onUpdateList,
   isAddingCard,
@@ -138,12 +140,13 @@ export function List({
             return (
               <li key={card.id}>
                 <Card
-                  key={card.id}
                   card={card}
                   labels={cardLabels}
                   onClickCard={card => handleOpenModal(card)}
                   onRemoveCard={onRemoveCard}
                   onUpdateCard={onUpdateCard}
+                  labelsIsOpen={labelsIsOpen}
+                  setLabelsIsOpen={setLabelsIsOpen}
                 />
               </li>
             );

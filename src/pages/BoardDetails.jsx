@@ -25,6 +25,7 @@ export function BoardDetails() {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
+  const [labelsIsOpen, setLabelsIsOpen] = useState(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
   const { filters, updateFilters } = useCardFilters();
@@ -96,6 +97,8 @@ export function BoardDetails() {
               <List
                 key={list.id}
                 list={list}
+                labelsIsOpen={labelsIsOpen}
+                setLabelsIsOpen={setLabelsIsOpen}
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
