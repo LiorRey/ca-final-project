@@ -46,7 +46,7 @@ export default function CopyListForm({ initialValue, onCopy, onCancel }) {
         className="copy-list-textfield"
         ref={textareaRef}
         value={textareaValue}
-        onChange={e => setTextareaValue(e.target.value.trim())}
+        onChange={e => setTextareaValue(e.target.value)}
         onKeyDown={handleKeyDown}
         minRows={2}
         autoFocus
