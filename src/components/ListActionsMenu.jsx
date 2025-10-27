@@ -16,9 +16,8 @@ export function ListActionsMenu({
   const [activeAction, setActiveAction] = useState(null);
 
   function handleMenuClick(key) {
-    if (key === "copy") {
-      setActiveAction("copy");
-    }
+    if (!listActionsMenuItems().find(item => item.key === key)) return;
+    setActiveAction(key);
   }
 
   function handleCopyList(listId, newName) {
