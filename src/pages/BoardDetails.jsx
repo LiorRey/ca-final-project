@@ -7,7 +7,11 @@ import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 
-import { loadBoard, updateBoard } from "../store/actions/board-actions";
+import {
+  loadBoard,
+  updateBoard,
+  copyList,
+} from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
@@ -46,15 +50,8 @@ export function BoardDetails() {
 
   async function onCopyList(listId, newName) {
     try {
-      const updatedLists = await boardService.copyList(
-        board._id,
-        listId,
-        newName
-      );
-      updateBoard(board._id, {
-        key: "lists",
-        value: updatedLists,
-      });
+      await copyList(board._id, listId, newName);
+      showSuccessMsg(`The list copied successfully!`);
     } catch (error) {
       console.error("List copy failed:", error);
       showErrorMsg(`Unable to copy the list: ${listId}`);
