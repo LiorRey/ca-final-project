@@ -1,0 +1,6 @@
+.move-list-form .MuiSelect-select,
+.move-list-form .MuiInputBase-input {
+  color: var(--form-input-color-default);
+  width: 100%;
+  box-sizing: border-box;
+}

@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
+
 import { Popover } from "./Popover";
 import CopyListForm from "./CopyListForm";
+import MoveListForm from "./MoveListForm";
 import "../assets/styles/components/ListActionsMenu.css";
 
 export function ListActionsMenu({
@@ -53,6 +56,15 @@ export function ListActionsMenu({
           initialValue={list.name}
           onSubmit={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
+        />
+      ) : activeAction === "move" ? (
+        <MoveListForm
+          list={list}
+          onCancel={onPopoverClose}
+          onSubmit={() => {
+            setActiveAction(null);
+            onPopoverClose();
+          }}
         />
       ) : (
         <MenuList className="list-actions-menu" dense>
