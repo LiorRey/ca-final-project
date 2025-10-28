@@ -105,7 +105,7 @@ export function BoardDetails() {
       </header>
       <div className="board-canvas" ref={boardCanvasRef}>
         <ul className="lists-list">
-          {board.lists.map(list => (
+          {board.lists.map((list, listIndex) => (
             <li key={list.id}>
               <List
                 key={list.id}
@@ -118,6 +118,7 @@ export function BoardDetails() {
                 onCopyList={onCopyList}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
+                listIndex={listIndex}
               />
             </li>
           ))}
