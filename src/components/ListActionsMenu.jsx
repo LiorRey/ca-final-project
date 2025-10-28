@@ -5,8 +5,8 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import { Popover } from "./Popover";
-import CopyListForm from "./CopyListForm";
-import MoveListForm from "./MoveListForm";
+import { CopyListForm } from "./CopyListForm";
+import { MoveListForm } from "./MoveListForm";
 
 export function ListActionsMenu({
   list,
