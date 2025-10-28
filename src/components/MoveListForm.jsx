@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import "../assets/styles/components/MoveListForm.css";
 import { useSelector } from "react-redux";
 import { useFormState } from "../hooks/useFormState";
 import FormControl from "@mui/material/FormControl";
