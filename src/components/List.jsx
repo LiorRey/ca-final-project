@@ -22,6 +22,7 @@ export function List({
   onUpdateList,
   isAddingCard,
   setActiveAddCardListId,
+  onCopyList,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -189,11 +190,13 @@ export function List({
       </div>
 
       <ListActionsMenu
+        list={list}
         anchorEl={anchorEl}
         isOpen={open}
         onClose={handleClose}
         onEditList={handleEditList}
         onDeleteList={handleDeleteList}
+        onCopyList={onCopyList}
       />
 
       {/* Card Modal will be moved out of here */}

@@ -16,6 +16,7 @@ export const boardService = {
   clearData,
   reCreateBoards,
   getEmptyList,
+  copyList,
 };
 window.bs = boardService;
 
@@ -25,6 +26,40 @@ async function query() {
   } catch (error) {
     console.log("Cannot load boards:", error);
 
+    throw error;
+  }
+}
+
+export async function copyList(boardId, listId, newName) {
+  try {
+    const board = await getById(boardId);
+    const originalListIndex = board.lists.findIndex(l => l.id === listId);
+    if (originalListIndex === -1) throw new Error("List not found");
+
+    const listToCopy = board.lists[originalListIndex];
+
+    const clonedCards = listToCopy.cards.map(card => ({
+      ...card,
+      id: crypto.randomUUID(),
+    }));
+
+    const clonedList = {
+      ...listToCopy,
+      id: crypto.randomUUID(),
+      name: newName,
+      cards: clonedCards,
+    };
+
+    // insert the cloned list right after the original list
+    const updatedLists = [
+      ...board.lists.slice(0, originalListIndex + 1),
+      clonedList,
+      ...board.lists.slice(originalListIndex + 1),
+    ];
+
+    return updatedLists;
+  } catch (error) {
+    console.error("Error copying list:", error);
     throw error;
   }
 }
@@ -51,11 +86,14 @@ async function remove(boardId) {
 }
 
 async function updateBoardWithActivity(
-  board,
+  boardId,
   { listId = null, cardId = null, key, value }
 ) {
   try {
-    if (!board || !key) throw new Error("Board and key are required");
+    if (!boardId || !key) throw new Error("Board and key are required");
+
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
 
     let { board: updatedBoard, prevValue } = _applyBoardUpdate(
       board,

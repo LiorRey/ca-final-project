@@ -7,7 +7,11 @@ import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 
-import { loadBoard, updateBoard } from "../store/actions/board-actions";
+import {
+  loadBoard,
+  updateBoard,
+  copyList,
+} from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
@@ -44,12 +48,22 @@ export function BoardDetails() {
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
 
+  async function onCopyList(listId, newName) {
+    try {
+      await copyList(board._id, listId, newName);
+      showSuccessMsg(`The list copied successfully!`);
+    } catch (error) {
+      console.error("List copy failed:", error);
+      showErrorMsg(`Unable to copy the list: ${listId}`);
+    }
+  }
+
   async function onRemoveList(listId) {}
 
   async function onUpdateList(list, { cardId = null, key, value }) {
     try {
       const options = { listId: list.id, cardId, key, value };
-      updateBoard(board, options);
+      updateBoard(board._id, options);
       showSuccessMsg(`The list ${list.name} updated successfully!`);
     } catch (error) {
       console.error("List update failed:", error);
@@ -58,7 +72,7 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    await updateBoard(board, {
+    await updateBoard(board._id, {
       key: "lists",
       value: [...board.lists, newList],
     });
@@ -102,6 +116,7 @@ export function BoardDetails() {
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
+                onCopyList={onCopyList}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
               />
