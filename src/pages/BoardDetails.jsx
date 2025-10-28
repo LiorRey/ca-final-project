@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
@@ -10,15 +11,38 @@ import { loadBoard, updateBoard } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
+import { FilterMenu } from "../components/FilterMenu";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
+import {
+  parseFiltersFromSearchParams,
+  serializeFiltersToSearchParams,
+} from "../services/filter-service";
+import { useCardFilters } from "../hooks/useCardFilters";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 
 export function BoardDetails() {
+  const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
+  const [labelsIsOpen, setLabelsIsOpen] = useState(false);
+  const boardCanvasRef = useRef(null);
+  const scrollBoardToEnd = useScrollTo(boardCanvasRef);
+  const { filters, updateFilters } = useCardFilters();
 
   useEffect(() => {
-    loadBoard(params.boardId);
-  }, [params.boardId]);
+    loadBoard(params.boardId, filters);
+  }, [params.boardId, filters]);
+
+  useEffect(() => {
+    const filterBy = parseFiltersFromSearchParams(searchParams);
+    updateFilters(filterBy);
+  }, []);
+
+  useEffect(() => {
+    const filterBy = serializeFiltersToSearchParams(filters);
+    setSearchParams(filterBy);
+  }, [filters, setSearchParams]);
 
   async function onRemoveList(listId) {}
 
@@ -32,11 +56,16 @@ export function BoardDetails() {
       showErrorMsg(`Unable to update the list: ${list.name}`);
     }
   }
-  function onSubmitAddList(newList) {
-    updateBoard(board, {
+
+  async function onAddList(newList) {
+    await updateBoard(board, {
       key: "lists",
       value: [...board.lists, newList],
     });
+
+    requestAnimationFrame(() =>
+      scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
+    );
   }
 
   if (!board) return <div>Loading board...</div>;
@@ -46,6 +75,7 @@ export function BoardDetails() {
       <header className="board-header">
         <h2 className="board-title">{board.name}</h2>
         <div className="board-header-right">
+          <FilterMenu />
           <button className="icon-button">
             <Sort />
           </button>
@@ -60,21 +90,25 @@ export function BoardDetails() {
           </button>
         </div>
       </header>
-      <div className="board-canvas">
+      <div className="board-canvas" ref={boardCanvasRef}>
         <ul className="lists-list">
           {board.lists.map(list => (
             <li key={list.id}>
               <List
                 key={list.id}
                 list={list}
+                labelsIsOpen={labelsIsOpen}
+                setLabelsIsOpen={setLabelsIsOpen}
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
+                isAddingCard={activeAddCardListId === list.id}
+                setActiveAddCardListId={setActiveAddCardListId}
               />
             </li>
           ))}
           <li>
-            <AddList onSubmit={onSubmitAddList} />
+            <AddList onAddList={onAddList} />
           </li>
         </ul>
         <nav className="board-footer">

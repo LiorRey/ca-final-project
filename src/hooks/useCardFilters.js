@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { setFilters, clearAllFilters } from "../store/actions/board-actions";
+import { debounce } from "../services/util-service";
 
-export const useCardFilters = () => {
+export function useCardFilters() {
   const dispatch = useDispatch();
   const filters = useSelector(state => state.boards.filterBy);
 
@@ -10,6 +11,21 @@ export const useCardFilters = () => {
     (filterType, value) => {
       dispatch(setFilters({ [filterType]: value }));
     },
+    [dispatch]
+  );
+
+  const updateFilters = useCallback(
+    filterObj => {
+      dispatch(setFilters(filterObj));
+    },
+    [dispatch]
+  );
+
+  const updateFilterDebounced = useMemo(
+    () =>
+      debounce((filterType, value) => {
+        dispatch(setFilters({ [filterType]: value }));
+      }, 300),
     [dispatch]
   );
 
@@ -26,10 +42,19 @@ export const useCardFilters = () => {
     dispatch(clearAllFilters());
   }, [dispatch]);
 
+  function hasActiveFilters() {
+    return (
+      filters.title?.trim() || filters?.members?.length || !!filters.noMembers
+    );
+  }
+
   return {
     filters,
     updateFilter,
+    updateFilters,
+    updateFilterDebounced,
     removeFilter,
     clearAllFilters: handleClearAllFilters,
+    hasActiveFilters,
   };
-};
+}
