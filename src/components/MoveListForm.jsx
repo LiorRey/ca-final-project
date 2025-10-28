@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import ActionButton from "./ui/buttons/ActionButton";
 import { loadBoards } from "../store/actions/board-actions";
 
-export default function MoveListForm({ onSubmit, onCancel }) {
+export function MoveListForm({ onSubmit, onCancel }) {
   const boards = useSelector(state => state.boards.boards);
   const currentBoard = useSelector(state => state.boards.board);
   const activeListIndex = useSelector(state => state.ui.lists.activeListIndex);
