@@ -36,6 +36,20 @@ export function CardDetails() {
     }
   }
 
+  function handleEditCard(card) {
+    try {
+      const options = {
+        listId: list.id,
+        cardId: card.id,
+        key: null,
+        value: card,
+      };
+      updateBoard(board, options);
+    } catch (error) {
+      console.error("Card delete failed:", error);
+    }
+  }
+
   if (!card) {
     return null;
   }
@@ -53,6 +67,7 @@ export function CardDetails() {
       listTitle={list.name}
       card={card}
       onDeleteCard={handleDeleteCard}
+      onEditCard={handleEditCard}
       onClose={handleCloseModal}
       isOpen={modalOpen}
     />

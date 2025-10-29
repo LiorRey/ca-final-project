@@ -52,7 +52,7 @@ async function remove(boardId) {
 
 async function updateBoardWithActivity(
   board,
-  { listId = null, cardId = null, key, value }
+  { listId = null, cardId = null, card = null, key, value }
 ) {
   try {
     if (!board || !key) throw new Error("Board and key are required");

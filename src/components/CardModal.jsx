@@ -12,11 +12,26 @@ export function CardModal({
   onClose,
   isOpen,
   onDeleteCard,
+  onEditCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [cardDetails, setCardDetails] = useState(card);
 
+  function handleEditCard() {
+    setIsEditing(true);
+  }
   function handleCommentSection() {
     setOpenSection(!openSection);
+  }
+
+  function handleSaveCard() {
+    onEditCard(cardDetails);
+    setIsEditing(false);
+  }
+
+  function handleChangeCard(key, value) {
+    setCardDetails({ ...cardDetails, [key]: value });
   }
 
   if (!card) return null;
@@ -25,14 +40,25 @@ export function CardModal({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
-          {listTitle}{" "}
+          {listTitle}
           <button className="icon-button" onClick={onClose}>
             <CloseIcon />
           </button>
         </div>
         <div className="card-modal-container">
           <section className="card-modal-content">
-            <h1 className="card-modal-title">{card.title}</h1>
+            {isEditing ? (
+              <input
+                type="text"
+                value={cardDetails.title}
+                onChange={e => handleChangeCard("title", e.target.value)}
+                onBlur={handleSaveCard}
+              />
+            ) : (
+              <h1 className="card-modal-title" onClick={handleEditCard}>
+                {cardDetails.title}
+              </h1>
+            )}
             <div className="card-modal-controls">
               <button className="icon-button">
                 <AddIcon /> Add label
