@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function LabelMenuItem({ label }) {
+export function LabelMenuItem({ label, onEdit }) {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleToggle = () => {
@@ -18,12 +18,16 @@ export function LabelMenuItem({ label }) {
       />
       <label
         htmlFor={`label-${label.id}`}
-        className="label-color-box"
+        className={`label-color-box ${label.color}`}
         style={{ backgroundColor: label.color }}
       >
         {label.title && <span className="label-title">{label.title}</span>}
       </label>
-      <button className="label-edit-btn" aria-label="Edit label">
+      <button
+        className="label-edit-btn"
+        aria-label="Edit label"
+        onClick={onEdit}
+      >
         <svg
           width="24"
           height="24"

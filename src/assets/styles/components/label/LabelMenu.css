@@ -1,32 +1,19 @@
-.popover-header-title {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: #b6c2cf;
-}
-
-.popover-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid #3f4a54;
-  text-align: center;
-  position: relative;
-}
-
 .label-menu-content {
   padding: 12px;
 
-  h3 {
-    margin: 0;
-    font-size: 14px;
+  .label-menu-label {
+    display: block;
+    font-size: 13px;
     font-weight: 600;
     color: #b6c2cf;
+    margin-block: 7px;
   }
 }
 
 .label-search {
   width: 100%;
   padding: 8px 12px;
-  margin-bottom: 12px;
+  margin-bottom: 7px;
   background-color: #22272b;
   border: 2px solid #3f4a54;
   border-radius: 4px;

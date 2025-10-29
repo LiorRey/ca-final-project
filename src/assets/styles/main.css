@@ -26,6 +26,7 @@
 @import "components/label/CardLabel";
 @import "components/label/LabelMenu";
 @import "components/label/LabelMenuItem";
+@import "components/label/LabelEditor";
 
 @import "components/Board";
 @import "components/List";
