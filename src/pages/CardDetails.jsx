@@ -29,7 +29,7 @@ export function CardDetails() {
         key: "cards",
         value: list.cards.filter(c => c.id !== card.id),
       };
-      updateBoard(board, options);
+      updateBoard(board._id, options);
       handleCloseModal();
     } catch (error) {
       console.error("Card delete failed:", error);
@@ -44,7 +44,7 @@ export function CardDetails() {
         key: null,
         value: card,
       };
-      updateBoard(board, options);
+      updateBoard(board._id, options);
     } catch (error) {
       console.error("Card delete failed:", error);
     }

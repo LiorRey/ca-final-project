@@ -90,9 +90,10 @@ async function updateBoardWithActivity(
   { listId = null, cardId = null, key, value }
 ) {
   try {
-    if (!boardId || !key) throw new Error("Board and key are required");
+    if (!boardId) throw new Error("Board and key are required");
 
     const board = await getById(boardId);
+
     if (!board) throw new Error("Board not found");
 
     let { board: updatedBoard, prevValue } = _applyBoardUpdate(
@@ -145,8 +146,15 @@ function _applyBoardUpdate(
       const card = list.cards?.find(c => c.id === cardId);
       if (!card) throw new Error("Card not found");
 
-      prevValue = card[key];
-      card[key] = value;
+      if (!key && value) {
+        const index = list.cards.findIndex(c => c.id === cardId);
+        prevValue = card;
+        let newcard = { ...card, ...value };
+        list.cards[index] = newcard;
+      } else {
+        prevValue = card[key];
+        card[key] = value;
+      }
     } else if (listId) {
       const list = board.lists?.find(l => l.id === listId);
       if (!list) throw new Error("List not found");
