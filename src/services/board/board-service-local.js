@@ -86,13 +86,8 @@ async function remove(boardId) {
 }
 
 async function updateBoardWithActivity(
-<<<<<<< HEAD
-  board,
-  { listId = null, cardId = null, card = null, key, value }
-=======
   boardId,
   { listId = null, cardId = null, key, value }
->>>>>>> origin/main
 ) {
   try {
     if (!boardId || !key) throw new Error("Board and key are required");
