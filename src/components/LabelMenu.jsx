@@ -15,11 +15,17 @@ export function LabelMenu({
 }) {
   const [view, setView] = useState("list");
   const [editingLabel, setEditingLabel] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredLabels = boardLabels.filter(label =>
+    label.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     if (isLabelMenuOpen) {
       setView("list");
       setEditingLabel(null);
+      setSearchTerm("");
     }
   }, [isLabelMenuOpen]);
 
@@ -88,27 +94,33 @@ export function LabelMenu({
             type="text"
             className="label-search"
             placeholder="Search labels..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
             autoFocus
           />
 
           <label className="label-menu-label">Labels</label>
 
           <ul className="labels-list">
-            {boardLabels.map(label => {
-              const isChecked = cardLabels.some(
-                cardLabel => cardLabel.id === label.id
-              );
-              return (
-                <li key={label.id}>
-                  <LabelMenuItem
-                    label={label}
-                    isChecked={isChecked}
-                    onToggle={handleToggleLabel}
-                    onEdit={() => handleEditLabel(label)}
-                  />
-                </li>
-              );
-            })}
+            {filteredLabels.length > 0 ? (
+              filteredLabels.map(label => {
+                const isChecked = cardLabels.some(
+                  cardLabel => cardLabel.id === label.id
+                );
+                return (
+                  <li key={label.id}>
+                    <LabelMenuItem
+                      label={label}
+                      isChecked={isChecked}
+                      onToggle={handleToggleLabel}
+                      onEdit={() => handleEditLabel(label)}
+                    />
+                  </li>
+                );
+              })
+            ) : (
+              <li className="no-labels-found">No labels found</li>
+            )}
           </ul>
 
           <button className="create-label-btn" onClick={handleCreateLabel}>
