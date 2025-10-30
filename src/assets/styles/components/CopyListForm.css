@@ -1,0 +1,17 @@
+.copy-list-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.copy-list-form textarea {
+  width: 100%;
+  background-color: #242528;
+  border-radius: 0.25rem;
+  border: none;
+  outline: none;
+  .MuiInputBase-input {
+    color: #bfc1c4;
+  }
+}

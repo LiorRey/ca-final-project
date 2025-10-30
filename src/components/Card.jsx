@@ -14,6 +14,8 @@ export function Card({
   onClickCard,
   onRemoveCard,
   onUpdateCard,
+  labelsIsOpen,
+  setLabelsIsOpen,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
@@ -25,6 +27,11 @@ export function Card({
   function handleClick(e) {
     e.stopPropagation();
     setAnchorEl(e.currentTarget);
+  }
+
+  function handleClickLabels(e) {
+    e.stopPropagation();
+    setLabelsIsOpen(prevIsOpen => !prevIsOpen);
   }
 
   function handleClose() {
@@ -60,7 +67,7 @@ export function Card({
                   key={`${card.id}-${label.id}`}
                   className={`card-label ${label.color}`}
                 >
-                  {label.title}
+                  <span className="card-label-text">{label.title}</span>
                 </div>
               ))}
             </div>
@@ -81,13 +88,15 @@ export function Card({
       ) : (
         <Box className="card-content" onClick={handleClickCard}>
           {labels.length > 0 && (
-            <div className="card-labels">
+            <div className="card-labels" onClick={handleClickLabels}>
               {labels.map(label => (
                 <div
                   key={`${card.id}-${label.id}`}
-                  className={`card-label ${label.color}`}
+                  className={`card-label ${label.color} ${
+                    labelsIsOpen ? "open" : "closed"
+                  }`}
                 >
-                  {label.title}
+                  <span className="card-label-text">{label.title}</span>
                 </div>
               ))}
             </div>

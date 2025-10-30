@@ -16,8 +16,11 @@ import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 export function List({
   list,
   boardLabels,
+  labelsIsOpen,
+  setLabelsIsOpen,
   onRemoveList,
   onUpdateList,
+  onCopyList,
   onSaveLabel,
   onRemoveLabel,
   isAddingCard,
@@ -154,6 +157,8 @@ export function List({
                   onClickCard={card => handleOpenModal(card)}
                   onRemoveCard={onRemoveCard}
                   onUpdateCard={onUpdateCard}
+                  labelsIsOpen={labelsIsOpen}
+                  setLabelsIsOpen={setLabelsIsOpen}
                 />
               </li>
             );
@@ -196,11 +201,13 @@ export function List({
       </div>
 
       <ListActionsMenu
+        list={list}
         anchorEl={anchorEl}
         isOpen={open}
         onClose={handleClose}
         onEditList={handleEditList}
         onDeleteList={handleDeleteList}
+        onCopyList={onCopyList}
       />
 
       {/* Card Modal will be moved out of here */}

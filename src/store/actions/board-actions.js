@@ -49,11 +49,11 @@ export async function createBoard(board) {
 }
 
 export async function updateBoard(
-  board,
+  boardId,
   { listId = null, cardId = null, key, value }
 ) {
   try {
-    const updatedBoard = await boardService.updateBoardWithActivity(board, {
+    const updatedBoard = await boardService.updateBoardWithActivity(boardId, {
       listId,
       cardId,
       key,
@@ -73,6 +73,19 @@ export async function deleteBoard(boardId) {
     store.dispatch(deleteBoardAction(boardId));
   } catch (error) {
     store.dispatch(setError(`Error removing board: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function copyList(boardId, listId, newName) {
+  try {
+    const updatedLists = await boardService.copyList(boardId, listId, newName);
+    updateBoard(boardId, {
+      key: "lists",
+      value: updatedLists,
+    });
+  } catch (error) {
+    store.dispatch(setError(`Error copying list: ${error.message}`));
     throw error;
   }
 }
