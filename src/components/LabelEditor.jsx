@@ -81,8 +81,6 @@ export function LabelEditor({
         </div>
       </div>
 
-      <button className="remove-color-btn">✕ Remove color</button>
-
       <div className="label-editor-actions">
         <button className="save-btn" onClick={handleSave}>
           {isEditMode ? "Save" : "Create"}
