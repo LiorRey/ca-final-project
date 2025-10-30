@@ -1,5 +1,5 @@
 import { storageService } from "../async-storage-service";
-import { loadFromStorage, makeId, saveToStorage } from "../util-service";
+import { loadFromStorage, saveToStorage } from "../util-service";
 import boardDataGenerator from "./board-data-generator";
 import { USER_STORAGE_KEY } from "../user/user-service-local.js";
 import { getFilteredBoard } from "../filter-service";
@@ -160,7 +160,7 @@ function _createActivity(
   cardId = null
 ) {
   return {
-    id: makeId(),
+    id: crypto.randomUUID(),
     type: "activity",
     createdAt: Date.now(),
     board: boardId,

@@ -67,6 +67,50 @@ export function BoardDetails() {
     );
   }
 
+  async function onSaveLabel(labelData) {
+    try {
+      const existingLabels = board.labels || [];
+      const existingLabelIndex = existingLabels.findIndex(
+        l => l.id === labelData.id
+      );
+
+      let updatedLabels;
+      if (existingLabelIndex >= 0) {
+        updatedLabels = [...existingLabels];
+        updatedLabels[existingLabelIndex] = labelData;
+        showSuccessMsg(`Label "${labelData.title}" updated successfully!`);
+      } else {
+        updatedLabels = [...existingLabels, labelData];
+        showSuccessMsg(`Label "${labelData.title}" created successfully!`);
+      }
+
+      await updateBoard(board, {
+        key: "labels",
+        value: updatedLabels,
+      });
+    } catch (error) {
+      console.error("Label save failed:", error);
+      showErrorMsg(`Unable to save label: ${labelData.title}`);
+    }
+  }
+
+  async function onRemoveLabel(labelId) {
+    try {
+      const existingLabels = board.labels || [];
+      const updatedLabels = existingLabels.filter(l => l.id !== labelId);
+
+      await updateBoard(board, {
+        key: "labels",
+        value: updatedLabels,
+      });
+
+      showSuccessMsg("Label removed successfully!");
+    } catch (error) {
+      console.error("Label removal failed:", error);
+      showErrorMsg("Unable to remove label");
+    }
+  }
+
   if (!board) return <div>Loading board...</div>;
 
   return (
@@ -99,6 +143,8 @@ export function BoardDetails() {
                 boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
+                onSaveLabel={onSaveLabel}
+                onRemoveLabel={onRemoveLabel}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
               />

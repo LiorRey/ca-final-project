@@ -5,16 +5,17 @@ import { LabelEditor } from "./LabelEditor";
 
 export function LabelMenu({
   boardLabels,
+  cardLabels = [],
   anchorEl,
   isLabelMenuOpen,
   onCloseLabelMenu,
   onSaveLabel,
   onRemoveLabel,
+  onToggleCardLabel,
 }) {
-  const [view, setView] = useState("list"); // "list" or "editor"
+  const [view, setView] = useState("list");
   const [editingLabel, setEditingLabel] = useState(null);
 
-  // Reset view to "list" when menu opens
   useEffect(() => {
     if (isLabelMenuOpen) {
       setView("list");
@@ -23,12 +24,12 @@ export function LabelMenu({
   }, [isLabelMenuOpen]);
 
   function handleCreateLabel() {
-    setEditingLabel(null); // null = create mode
+    setEditingLabel(null);
     setView("editor");
   }
 
   function handleEditLabel(label) {
-    setEditingLabel(label); // existing label = edit mode
+    setEditingLabel(label);
     setView("editor");
   }
 
@@ -43,12 +44,21 @@ export function LabelMenu({
 
   function handleSaveLabel(labelData) {
     onSaveLabel(labelData);
+
+    if (!editingLabel) {
+      onToggleCardLabel(labelData.id);
+    }
+
     handleBack();
   }
 
   function handleRemoveLabel(labelId) {
     onRemoveLabel(labelId);
     handleBack();
+  }
+
+  function handleToggleLabel(labelId) {
+    onToggleCardLabel(labelId);
   }
 
   return (
@@ -65,7 +75,7 @@ export function LabelMenu({
           : "Create label"
       }
       showBack={view}
-      onBack={handleBack}
+      onBack={view === "editor" ? handleBack : handleCloseMenu}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
@@ -84,14 +94,21 @@ export function LabelMenu({
           <label className="label-menu-label">Labels</label>
 
           <ul className="labels-list">
-            {boardLabels.map(label => (
-              <li key={label.id}>
-                <LabelMenuItem
-                  label={label}
-                  onEdit={() => handleEditLabel(label)}
-                />
-              </li>
-            ))}
+            {boardLabels.map(label => {
+              const isChecked = cardLabels.some(
+                cardLabel => cardLabel.id === label.id
+              );
+              return (
+                <li key={label.id}>
+                  <LabelMenuItem
+                    label={label}
+                    isChecked={isChecked}
+                    onToggle={handleToggleLabel}
+                    onEdit={() => handleEditLabel(label)}
+                  />
+                </li>
+              );
+            })}
           </ul>
 
           <button className="create-label-btn" onClick={handleCreateLabel}>
@@ -101,8 +118,8 @@ export function LabelMenu({
       ) : (
         <LabelEditor
           existingLabel={editingLabel}
-          onSave={handleSaveLabel}
-          onRemove={handleRemoveLabel}
+          onSaveLabel={handleSaveLabel}
+          onRemoveLabel={handleRemoveLabel}
         />
       )}
     </Popover>

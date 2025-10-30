@@ -1,25 +1,18 @@
 import { useState } from "react";
 
-export function LabelMenuItem({ label, onEdit }) {
-  const [isSelected, setIsSelected] = useState(false);
-
-  const handleToggle = () => {
-    setIsSelected(!isSelected);
-  };
-
+export function LabelMenuItem({ label, isChecked, onToggle, onEdit }) {
   return (
     <div className="label-menu-item">
       <input
         type="checkbox"
         id={`label-${label.id}`}
-        checked={isSelected}
-        onChange={handleToggle}
+        checked={isChecked}
+        onChange={() => onToggle(label.id)}
         className="label-checkbox"
       />
       <label
         htmlFor={`label-${label.id}`}
-        className={`label-color-box ${label.color}`}
-        style={{ backgroundColor: label.color }}
+        className={`label-color-box label-color-option ${label.color}`}
       >
         {label.title && <span className="label-title">{label.title}</span>}
       </label>

@@ -13,6 +13,9 @@ export function CardModal({
   boardLabels = [],
   onClose,
   isOpen,
+  onSaveLabel,
+  onRemoveLabel,
+  onUpdateCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,6 +31,24 @@ export function CardModal({
 
   function handleCommentSection() {
     setOpenSection(!openSection);
+  }
+
+  function handleToggleCardLabel(labelId) {
+    const currentLabelIds = card.labels || [];
+    let updatedLabelIds;
+
+    if (currentLabelIds.includes(labelId)) {
+      updatedLabelIds = currentLabelIds.filter(id => id !== labelId);
+    } else {
+      updatedLabelIds = [...currentLabelIds, labelId];
+    }
+
+    const updatedCard = {
+      ...card,
+      labels: updatedLabelIds,
+    };
+
+    onUpdateCard(updatedCard);
   }
 
   if (!card) return null;
@@ -110,9 +131,13 @@ export function CardModal({
 
         <LabelMenu
           boardLabels={boardLabels}
+          cardLabels={cardLabels}
           anchorEl={anchorEl}
           isLabelMenuOpen={isLabelMenuOpen}
           onCloseLabelMenu={onCloseLabelMenu}
+          onSaveLabel={onSaveLabel}
+          onRemoveLabel={onRemoveLabel}
+          onToggleCardLabel={handleToggleCardLabel}
         />
       </Box>
     </Modal>

@@ -18,6 +18,8 @@ export function List({
   boardLabels,
   onRemoveList,
   onUpdateList,
+  onSaveLabel,
+  onRemoveLabel,
   isAddingCard,
   setActiveAddCardListId,
 }) {
@@ -38,9 +40,18 @@ export function List({
     await onRemoveList(list.id);
   }
 
-  async function onUpdateCard(card) {
-    setCards(prev => [...prev, card]);
-    const options = { key: "cards", value: cards };
+  async function onUpdateCard(updatedCard) {
+    const updatedCards = cards.map(card =>
+      card.id === updatedCard.id ? updatedCard : card
+    );
+
+    setCards(updatedCards);
+
+    if (selectedCard && selectedCard.id === updatedCard.id) {
+      setSelectedCard(updatedCard);
+    }
+
+    const options = { key: "cards", value: updatedCards };
     await onUpdateList(list, options);
   }
 
@@ -138,7 +149,6 @@ export function List({
             return (
               <li key={card.id}>
                 <Card
-                  key={card.id}
                   card={card}
                   labels={cardLabels}
                   onClickCard={card => handleOpenModal(card)}
@@ -201,6 +211,9 @@ export function List({
         boardLabels={boardLabels}
         onClose={handleCloseModal}
         isOpen={openModal}
+        onSaveLabel={onSaveLabel}
+        onRemoveLabel={onRemoveLabel}
+        onUpdateCard={onUpdateCard}
       />
     </section>
   );
