@@ -147,7 +147,6 @@ export function BoardDetails() {
 
     if (!draggedListId || draggedListId === targetListId) return;
 
-    // Reorder lists in real-time for visual feedback
     const draggedIndex = displayedLists.findIndex(l => l.id === draggedListId);
     const targetIndex = displayedLists.findIndex(l => l.id === targetListId);
 
@@ -162,7 +161,7 @@ export function BoardDetails() {
 
   function handleDragEnd() {
     setDraggedListId(null);
-    // Reset to board's original order if drag was cancelled
+
     if (board && board.lists && !isUpdatingRef.current) {
       setDisplayedLists(board.lists);
     }
@@ -176,24 +175,19 @@ export function BoardDetails() {
       return;
     }
 
-    // Compare current order with board's original order
     const originalOrder = board.lists.map(l => l.id);
     const currentOrder = displayedLists.map(l => l.id);
     const orderChanged =
       JSON.stringify(originalOrder) !== JSON.stringify(currentOrder);
 
-    // Clear drag state
     setDraggedListId(null);
 
-    // If no change, just return without doing anything
     if (!orderChanged) {
       return;
     }
 
-    // Keep the current displayed order (optimistic update)
     const finalLists = [...displayedLists];
 
-    // Set updating flag
     isUpdatingRef.current = true;
 
     try {
@@ -205,15 +199,12 @@ export function BoardDetails() {
     } catch (error) {
       console.error("List reorder failed:", error);
       showErrorMsg("Unable to reorder lists");
-      // Revert to original order on error
+
       if (board && board.lists) {
         setDisplayedLists(board.lists);
       }
     } finally {
-      // Allow board updates to sync after a brief delay
-      // setTimeout(() => {
       isUpdatingRef.current = false;
-      // }, 100);
     }
   }
 
