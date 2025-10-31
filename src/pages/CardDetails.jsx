@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { CardModal } from "../components/CardModal";
 import { useState, useEffect } from "react";
 import { updateBoard } from "../store/actions/board-actions";
+import { deleteCard, editCard } from "../store/actions/board-actions";
 
 export function CardDetails() {
   const { boardId, listId, cardId } = useParams();
@@ -24,12 +25,12 @@ export function CardDetails() {
 
   function handleDeleteCard() {
     try {
-      const options = {
-        listId: list.id,
-        key: "cards",
-        value: list.cards.filter(c => c.id !== card.id),
-      };
-      updateBoard(board._id, options);
+      // const options = {
+      //   listId: list.id,
+      //   key: "cards",
+      //   value: list.cards.filter(c => c.id !== card.id),
+      // };
+      deleteCard(card.id, list.id);
       handleCloseModal();
     } catch (error) {
       console.error("Card delete failed:", error);
@@ -38,13 +39,13 @@ export function CardDetails() {
 
   function handleEditCard(card) {
     try {
-      const options = {
-        listId: list.id,
-        cardId: card.id,
-        key: null,
-        value: card,
-      };
-      updateBoard(board._id, options);
+      // const options = {
+      //   listId: list.id,
+      //   cardId: card.id,
+      //   key: null,
+      //   value: card,
+      // };
+      editCard(card, list.id);
     } catch (error) {
       console.error("Card delete failed:", error);
     }
