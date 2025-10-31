@@ -50,14 +50,13 @@ export async function createBoard(board) {
 
 export async function updateBoard(
   boardId,
-  { listId = null, cardId = null, key, value }
+  updates,
+  { listId = null, cardId = null }
 ) {
   try {
-    const updatedBoard = await boardService.updateBoardWithActivity(boardId, {
+    const updatedBoard = await boardService.updateBoard(boardId, updates, {
       listId,
       cardId,
-      key,
-      value,
     });
     store.dispatch(editBoard(updatedBoard));
     return updatedBoard;
