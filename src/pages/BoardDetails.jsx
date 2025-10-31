@@ -72,7 +72,9 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    await updateBoard(board._id, { lists: [...board.lists, newList] });
+    const options = { listId: null, cardId: null };
+    const updates = { lists: [...board.lists, newList] };
+    await updateBoard(board._id, updates, options);
 
     requestAnimationFrame(() =>
       scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
