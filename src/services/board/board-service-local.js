@@ -154,31 +154,27 @@ export function getEmptyList() {
 }
 
 function updateBoardFields(board, updates) {
-  Object.assign(board, updates);
-  return board;
+  return { ...board, ...updates };
 }
 
 function updateListFields(board, listId, updates) {
   const listIdx = board.lists?.findIndex(l => l.id === listId);
   if (listIdx === -1 || listIdx == null) throw new Error("List not found");
-
   const updatedList = { ...board.lists[listIdx], ...updates };
   const updatedLists = [
     ...board.lists.slice(0, listIdx),
     updatedList,
     ...board.lists.slice(listIdx + 1),
   ];
-  return { ...board, lists: updatedLists };
+  return updateBoardFields(board, { lists: updatedLists });
 }
 
 function updateCardFields(board, listId, cardId, updates) {
   const listIdx = board.lists?.findIndex(l => l.id === listId);
   if (listIdx === -1 || listIdx == null) throw new Error("List not found");
-
   const list = board.lists[listIdx];
   const cardIdx = list.cards?.findIndex(c => c.id === cardId);
   if (cardIdx === -1 || cardIdx == null) throw new Error("Card not found");
-
   const updatedCard = { ...list.cards[cardIdx], ...updates };
   const updatedCards = [
     ...list.cards.slice(0, cardIdx),
@@ -186,12 +182,7 @@ function updateCardFields(board, listId, cardId, updates) {
     ...list.cards.slice(cardIdx + 1),
   ];
   const updatedList = { ...list, cards: updatedCards };
-  const updatedLists = [
-    ...board.lists.slice(0, listIdx),
-    updatedList,
-    ...board.lists.slice(listIdx + 1),
-  ];
-  return { ...board, lists: updatedLists };
+  return updateListFields(board, listId, updatedList);
 }
 
 /* _applyBoardUpdate removed: logic now handled directly in updateBoard */
