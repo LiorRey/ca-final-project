@@ -25,6 +25,11 @@ export function List({
   onRemoveLabel,
   isAddingCard,
   setActiveAddCardListId,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
+  onDrop,
+  isDragging,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -131,7 +136,14 @@ export function List({
   }
 
   return (
-    <section className="list-container">
+    <section
+      className={`list-container ${isDragging ? "dragging" : ""}`}
+      draggable="true"
+      onDragStart={e => onDragStart(e, list.id)}
+      onDragOver={e => onDragOver(e, list.id)}
+      onDragEnd={onDragEnd}
+      onDrop={e => onDrop(e, list.id)}
+    >
       <div className="list-header">
         <h2>{list.name}</h2>
         <SquareIconButton
