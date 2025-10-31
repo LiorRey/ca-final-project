@@ -26,6 +26,9 @@ import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
+  const [draggedListId, setDraggedListId] = useState(null);
+  const [displayedLists, setDisplayedLists] = useState([]);
+  const isUpdatingRef = useRef(false);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
@@ -47,6 +50,12 @@ export function BoardDetails() {
     const filterBy = serializeFiltersToSearchParams(filters);
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
+
+  useEffect(() => {
+    if (board && board.lists && !draggedListId && !isUpdatingRef.current) {
+      setDisplayedLists(board.lists);
+    }
+  }, [board, draggedListId]);
 
   async function onCopyList(listId, newName) {
     try {
@@ -126,6 +135,79 @@ export function BoardDetails() {
     }
   }
 
+  function handleDragStart(e, listId) {
+    setDraggedListId(listId);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html", e.currentTarget);
+  }
+
+  function handleDragOver(e, targetListId) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+
+    if (!draggedListId || draggedListId === targetListId) return;
+
+    const draggedIndex = displayedLists.findIndex(l => l.id === draggedListId);
+    const targetIndex = displayedLists.findIndex(l => l.id === targetListId);
+
+    if (draggedIndex === -1 || targetIndex === -1) return;
+
+    const newLists = [...displayedLists];
+    const [draggedList] = newLists.splice(draggedIndex, 1);
+    newLists.splice(targetIndex, 0, draggedList);
+
+    setDisplayedLists(newLists);
+  }
+
+  function handleDragEnd() {
+    setDraggedListId(null);
+
+    if (board && board.lists && !isUpdatingRef.current) {
+      setDisplayedLists(board.lists);
+    }
+  }
+
+  async function handleDrop(e, targetListId) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!draggedListId) {
+      return;
+    }
+
+    const originalOrder = board.lists.map(l => l.id);
+    const currentOrder = displayedLists.map(l => l.id);
+    const orderChanged =
+      JSON.stringify(originalOrder) !== JSON.stringify(currentOrder);
+
+    setDraggedListId(null);
+
+    if (!orderChanged) {
+      return;
+    }
+
+    const finalLists = [...displayedLists];
+
+    isUpdatingRef.current = true;
+
+    try {
+      await updateBoard(board._id, {
+        key: "lists",
+        value: finalLists,
+      });
+      showSuccessMsg("List reordered successfully!");
+    } catch (error) {
+      console.error("List reorder failed:", error);
+      showErrorMsg("Unable to reorder lists");
+
+      if (board && board.lists) {
+        setDisplayedLists(board.lists);
+      }
+    } finally {
+      isUpdatingRef.current = false;
+    }
+  }
+
   if (!board) return <div>Loading board...</div>;
 
   return (
@@ -150,7 +232,7 @@ export function BoardDetails() {
       </header>
       <div className="board-canvas" ref={boardCanvasRef}>
         <ul className="lists-list">
-          {board.lists.map(list => (
+          {displayedLists.map(list => (
             <li key={list.id}>
               <List
                 key={list.id}
@@ -165,6 +247,11 @@ export function BoardDetails() {
                 onRemoveLabel={onRemoveLabel}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDragEnd={handleDragEnd}
+                onDrop={handleDrop}
+                isDragging={draggedListId === list.id}
               />
             </li>
           ))}
