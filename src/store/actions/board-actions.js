@@ -79,10 +79,7 @@ export async function deleteBoard(boardId) {
 export async function copyList(boardId, listId, newName) {
   try {
     const updatedLists = await boardService.copyList(boardId, listId, newName);
-    updateBoard(boardId, {
-      key: "lists",
-      value: updatedLists,
-    });
+    updateBoard(boardId, { lists: updatedLists });
   } catch (error) {
     store.dispatch(setError(`Error copying list: ${error.message}`));
     throw error;

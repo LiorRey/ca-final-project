@@ -88,7 +88,7 @@ async function remove(boardId) {
 export async function updateBoard(
   boardId,
   updates,
-  { listId = null, cardId = null }
+  { listId = null, cardId = null } = {}
 ) {
   try {
     const board = await getById(boardId);
