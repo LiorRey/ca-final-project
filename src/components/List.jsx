@@ -45,8 +45,7 @@ export function List({
 
   async function onUpdateCard(card) {
     setCards(prev => [...prev, card]);
-    const options = { key: "cards", value: cards };
-    await onUpdateList(list, options);
+    await onUpdateList(list, { cards });
   }
 
   function handleMoreClick(event) {
@@ -94,8 +93,7 @@ export function List({
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
 
-    const options = { key: "cards", value: updatedCards };
-    onUpdateList(list, options);
+    onUpdateList(list, { cards: updatedCards });
 
     setNewCardTitle("");
     requestAnimationFrame(() =>

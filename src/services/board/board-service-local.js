@@ -1,5 +1,5 @@
 import { storageService } from "../async-storage-service";
-import { loadFromStorage, makeId, saveToStorage } from "../util-service";
+import { loadFromStorage, saveToStorage } from "../util-service";
 import boardDataGenerator from "./board-data-generator";
 import { USER_STORAGE_KEY } from "../user/user-service-local.js";
 import { getFilteredBoard } from "../filter-service";
@@ -12,7 +12,7 @@ export const boardService = {
   getById,
   remove,
   save,
-  updateBoardWithActivity,
+  updateBoard,
   clearData,
   reCreateBoards,
   getEmptyList,
@@ -85,32 +85,24 @@ async function remove(boardId) {
   }
 }
 
-async function updateBoardWithActivity(
+export async function updateBoard(
   boardId,
-  { listId = null, cardId = null, key, value }
+  updates,
+  { listId = null, cardId = null } = {}
 ) {
   try {
-    if (!boardId) throw new Error("Board and key are required");
-
     const board = await getById(boardId);
 
     if (!board) throw new Error("Board not found");
 
-    let { board: updatedBoard, prevValue } = _applyBoardUpdate(
-      board,
-      { key, value },
-      listId,
-      cardId
-    );
-
-    updatedBoard = _addBoardActivity(
-      updatedBoard,
-      key,
-      value,
-      prevValue,
-      listId,
-      cardId
-    );
+    let updatedBoard;
+    if (cardId) {
+      updatedBoard = updateCardFields(board, listId, cardId, updates);
+    } else if (listId) {
+      updatedBoard = updateListFields(board, listId, updates);
+    } else {
+      updatedBoard = updateBoardFields(board, updates);
+    }
 
     return save(updatedBoard);
   } catch (error) {
@@ -120,6 +112,40 @@ async function updateBoardWithActivity(
   }
 }
 
+// async function updateBoardWithActivity(
+//   boardId,
+//   { listId = null, cardId = null, key, value }
+// ) {
+//   try {
+//     if (!boardId || !key) throw new Error("Board and key are required");
+
+//     const board = await getById(boardId);
+//     if (!board) throw new Error("Board not found");
+
+//     let { board: updatedBoard, prevValue } = _applyBoardUpdate(
+//       board,
+//       { key, value },
+//       listId,
+//       cardId
+//     );
+
+//     updatedBoard = _addBoardActivity(
+//       updatedBoard,
+//       key,
+//       value,
+//       prevValue,
+//       listId,
+//       cardId
+//     );
+
+//     return save(updatedBoard);
+//   } catch (error) {
+//     console.error("Cannot update board:", error);
+
+//     throw error;
+//   }
+// }
+
 export function getEmptyList() {
   return {
     id: crypto.randomUUID(),
@@ -128,95 +154,127 @@ export function getEmptyList() {
   };
 }
 
-function _applyBoardUpdate(
-  board,
-  { key, value },
-  listId = null,
-  cardId = null
-) {
-  try {
-    let prevValue;
+// function _applyBoardUpdate(
+//   board,
+//   { key, value },
+//   listId = null,
+//   cardId = null
+// ) {
+//   try {
+//     let prevValue;
 
-    if (cardId) {
-      if (!listId) throw new Error("Card update requires listId");
+//     if (cardId) {
+//       if (!listId) throw new Error("Card update requires listId");
 
-      const list = board.lists?.find(l => l.id === listId);
-      if (!list) throw new Error("List not found");
+//       const list = board.lists?.find(l => l.id === listId);
+//       if (!list) throw new Error("List not found");
 
-      const card = list.cards?.find(c => c.id === cardId);
-      if (!card) throw new Error("Card not found");
+//       const card = list.cards?.find(c => c.id === cardId);
+//       if (!card) throw new Error("Card not found");
 
-      if (!key && value) {
-        const index = list.cards.findIndex(c => c.id === cardId);
-        prevValue = card;
-        let newcard = { ...card, ...value };
-        list.cards[index] = newcard;
-      } else {
-        prevValue = card[key];
-        card[key] = value;
-      }
-    } else if (listId) {
-      const list = board.lists?.find(l => l.id === listId);
-      if (!list) throw new Error("List not found");
+//       if (!key && value) {
+//         const index = list.cards.findIndex(c => c.id === cardId);
+//         prevValue = card;
+//         let newcard = { ...card, ...value };
+//         list.cards[index] = newcard;
+//       } else {
+//         prevValue = card[key];
+//         card[key] = value;
+//       }
+//     } else if (listId) {
+//       const list = board.lists?.find(l => l.id === listId);
+//       if (!list) throw new Error("List not found");
 
-      prevValue = list[key];
-      list[key] = value;
-    } else {
-      prevValue = board[key];
-      board[key] = value;
-    }
+//       prevValue = list[key];
+//       list[key] = value;
+//     } else {
+//       prevValue = board[key];
+//       board[key] = value;
+//     }
 
-    return { board, prevValue };
-  } catch (error) {
-    console.warn("Board updated failed:", error.message);
+//     return { board, prevValue };
+//   } catch (error) {
+//     console.warn("Board updated failed:", error.message);
 
-    throw error;
-  }
+//     throw error;
+//   }
+function updateBoardFields(board, updates) {
+  return { ...board, ...updates };
 }
 
-function _addBoardActivity(
-  board,
-  key,
-  value,
-  prevValue,
-  listId = null,
-  cardId = null
-) {
-  const activity = _createActivity(
-    board._id,
-    key,
-    value,
-    prevValue,
-    listId,
-    cardId
-  );
-
-  board.activities = board.activities || [];
-  board.activities.unshift(activity);
-
-  return board;
+function updateListFields(board, listId, updates) {
+  const listIdx = board.lists?.findIndex(l => l.id === listId);
+  if (listIdx === -1 || listIdx == null) throw new Error("List not found");
+  const updatedList = { ...board.lists[listIdx], ...updates };
+  const updatedLists = [
+    ...board.lists.slice(0, listIdx),
+    updatedList,
+    ...board.lists.slice(listIdx + 1),
+  ];
+  return updateBoardFields(board, { lists: updatedLists });
 }
 
-function _createActivity(
-  boardId,
-  key,
-  value,
-  prevValue,
-  listId = null,
-  cardId = null
-) {
-  return {
-    id: makeId(),
-    type: "activity",
-    createdAt: Date.now(),
-    board: boardId,
-    list: listId,
-    card: cardId,
-    key,
-    value,
-    prevValue,
-  };
+function updateCardFields(board, listId, cardId, updates) {
+  const listIdx = board.lists?.findIndex(l => l.id === listId);
+  if (listIdx === -1 || listIdx == null) throw new Error("List not found");
+  const list = board.lists[listIdx];
+  const cardIdx = list.cards?.findIndex(c => c.id === cardId);
+  if (cardIdx === -1 || cardIdx == null) throw new Error("Card not found");
+  const updatedCard = { ...list.cards[cardIdx], ...updates };
+  const updatedCards = [
+    ...list.cards.slice(0, cardIdx),
+    updatedCard,
+    ...list.cards.slice(cardIdx + 1),
+  ];
+  const updatedList = { ...list, cards: updatedCards };
+  return updateListFields(board, listId, updatedList);
 }
+
+/* _applyBoardUpdate removed: logic now handled directly in updateBoard */
+
+// function _addBoardActivity(
+//   board,
+//   key,
+//   value,
+//   prevValue,
+//   listId = null,
+//   cardId = null
+// ) {
+//   const activity = _createActivity(
+//     board._id,
+//     key,
+//     value,
+//     prevValue,
+//     listId,
+//     cardId
+//   );
+
+//   board.activities = board.activities || [];
+//   board.activities.unshift(activity);
+
+//   return board;
+// }
+
+// function _createActivity(
+//   boardId,
+//   key,
+//   value,
+//   prevValue,
+//   listId = null,
+//   cardId = null
+// ) {
+//   return {
+//     id: makeId(),
+//     type: "activity",
+//     createdAt: Date.now(),
+//     board: boardId,
+//     list: listId,
+//     card: cardId,
+//     key,
+//     value,
+//     prevValue,
+//   };
+// }
 
 export async function save(board) {
   try {
