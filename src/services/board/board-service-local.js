@@ -120,7 +120,8 @@ async function moveCrossBoard(
     lists: updatedTargetLists,
   });
 
-  await Promise.all([save(updatedSourceBoard), save(updatedTargetBoard)]);
+  await save(updatedSourceBoard);
+  await save(updatedTargetBoard);
 
   return currentBoardId === sourceBoard._id
     ? updatedSourceLists
