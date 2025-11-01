@@ -6,6 +6,8 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import { Popover } from "./Popover";
+import "../assets/styles/components/ListActionsMenu.css";
+import { useSelector } from "react-redux";
 import { CopyListForm } from "./CopyListForm";
 import { MoveListForm } from "./MoveListForm";
 import { moveList, loadBoards } from "../store/actions/board-actions";
@@ -78,6 +80,21 @@ export function ListActionsMenu({
           onCopy={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
         />
+      ) : activeAction === "moveAll" ? (
+        <MenuList className="list-actions-menu" dense>
+          {currentBoard.lists.map(listItem => (
+            <MenuItem
+              key={listItem.id}
+              disabled={listItem.id === list.id}
+              onClick={() => handleMenuClick(listItem.id)}
+            >
+              <ListItemText>{listItem.name}</ListItemText>
+            </MenuItem>
+          ))}
+          <MenuItem onClick={() => handleMenuClick("new")}>
+            <ListItemText>New List</ListItemText>
+          </MenuItem>
+        </MenuList>
       ) : activeAction === "move" ? (
         <MoveListForm
           currentBoard={currentBoard}
