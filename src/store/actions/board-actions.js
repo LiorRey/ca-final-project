@@ -89,29 +89,30 @@ export async function copyList(boardId, listId, newName) {
   }
 }
 
-export async function addCard(card, listId) {
+export async function addCard(boardId, card, listId) {
   try {
-    // const updatedBoard = await boardService.addCard(card, listId);
-    store.dispatch(addCardAction(card, listId));
-    // return updatedBoard;
+    const newCard = await boardService.addCard(boardId, card, listId);
+    store.dispatch(addCardAction(newCard, listId));
   } catch (error) {
     store.dispatch(setError(`Error adding card: ${error.message}`));
     throw error;
   }
 }
 
-export async function editCard(card, listId) {
+export async function editCard(boardId, card, listId) {
   try {
-    store.dispatch(editCardAction(card, listId));
+    const updatedCard = await boardService.editCard(boardId, card, listId);
+    store.dispatch(editCardAction(updatedCard, listId));
   } catch (error) {
     store.dispatch(setError(`Error editing card: ${error.message}`));
     throw error;
   }
 }
 
-export async function deleteCard(cardId, listId) {
+export async function deleteCard(boardId, cardId, listId) {
   try {
-    store.dispatch(deleteCardAction(cardId, listId));
+    const deletedCard = await boardService.deleteCard(boardId, cardId, listId);
+    store.dispatch(deleteCardAction(deletedCard.id, listId));
   } catch (error) {
     store.dispatch(setError(`Error deleting card: ${error.message}`));
     throw error;

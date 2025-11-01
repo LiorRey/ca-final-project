@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { CardModal } from "../components/CardModal";
 import { useState, useEffect } from "react";
-import { updateBoard } from "../store/actions/board-actions";
 import { deleteCard, editCard } from "../store/actions/board-actions";
 
 export function CardDetails() {
@@ -23,29 +22,18 @@ export function CardDetails() {
     navigate(`/board/${boardId}`);
   }
 
-  function handleDeleteCard() {
+  async function handleDeleteCard() {
     try {
-      // const options = {
-      //   listId: list.id,
-      //   key: "cards",
-      //   value: list.cards.filter(c => c.id !== card.id),
-      // };
-      deleteCard(card.id, list.id);
+      await deleteCard(boardId, cardId, listId);
       handleCloseModal();
     } catch (error) {
       console.error("Card delete failed:", error);
     }
   }
 
-  function handleEditCard(card) {
+  async function handleEditCard(card) {
     try {
-      // const options = {
-      //   listId: list.id,
-      //   cardId: card.id,
-      //   key: null,
-      //   value: card,
-      // };
-      editCard(card, list.id);
+      await editCard(boardId, card, listId);
     } catch (error) {
       console.error("Card delete failed:", error);
     }
