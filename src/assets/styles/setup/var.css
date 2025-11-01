@@ -85,4 +85,6 @@
   --action-btn-color-default: #1f1f21;
   --action-btn-color-hover: var(--action-btn-color-default);
   --action-btn-color-active: var(--action-btn-color-default);
+
+  --form-input-color-default: #bfc1c4;
 }

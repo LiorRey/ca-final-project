@@ -4,6 +4,7 @@ import {
   UPDATE_BOARD,
   DELETE_BOARD,
   SET_BOARD,
+  MOVE_LIST,
   SET_LOADING,
   SET_ERROR,
   SET_FILTERS,
@@ -131,6 +132,29 @@ export function editCardAction(card, listId) {
   return { type: EDIT_CARD, payload: { card, listId } };
 }
 
+export async function moveList(
+  sourceBoardId,
+  sourceIndex,
+  targetIndex,
+  targetBoardId,
+  currentBoardId
+) {
+  try {
+    const updatedLists = await boardService.moveList(
+      sourceBoardId,
+      sourceIndex,
+      targetIndex,
+      targetBoardId,
+      currentBoardId
+    );
+    store.dispatch(moveListAction(updatedLists));
+    return updatedLists;
+  } catch (error) {
+    store.dispatch(setError(`Error moving list: ${error.message}`));
+    throw error;
+  }
+}
+
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };
 }
@@ -165,4 +189,8 @@ export function setFilters(filterBy) {
 
 export function clearAllFilters() {
   return { type: CLEAR_ALL_FILTERS };
+}
+
+export function moveListAction(lists) {
+  return { type: MOVE_LIST, payload: lists };
 }
