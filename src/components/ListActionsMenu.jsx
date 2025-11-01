@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Popover } from "./Popover";
 import { CopyListForm } from "./CopyListForm";
 import { MoveListForm } from "./MoveListForm";
+import { moveList } from "../store/actions/board-actions";
 
 export function ListActionsMenu({
   list,
@@ -16,6 +18,9 @@ export function ListActionsMenu({
   onCopyList,
 }) {
   const [activeAction, setActiveAction] = useState(null);
+  const boards = useSelector(state => state.boards.boards);
+  const currentBoard = useSelector(state => state.boards.board);
+  const activeListIndex = useSelector(state => state.ui.lists.activeListIndex);
 
   function handleMenuClick(key) {
     if (!listActionsMenuItems().find(item => item.key === key)) return;
@@ -24,6 +29,18 @@ export function ListActionsMenu({
 
   function handleCopyList(listId, newName) {
     onCopyList(listId, newName);
+    setActiveAction(null);
+    onClose();
+  }
+
+  function handleMoveList({ targetBoardId, targetPosition }) {
+    moveList(
+      currentBoard._id,
+      activeListIndex,
+      targetPosition,
+      targetBoardId,
+      currentBoard._id
+    );
     setActiveAction(null);
     onClose();
   }
@@ -58,12 +75,11 @@ export function ListActionsMenu({
         />
       ) : activeAction === "move" ? (
         <MoveListForm
-          list={list}
+          currentBoard={currentBoard}
+          boards={boards}
+          activeListIndex={activeListIndex}
           onCancel={onPopoverClose}
-          onSubmit={() => {
-            setActiveAction(null);
-            onPopoverClose();
-          }}
+          onSubmit={handleMoveList}
         />
       ) : (
         <MenuList className="list-actions-menu" dense>
