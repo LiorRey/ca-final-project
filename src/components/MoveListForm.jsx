@@ -14,16 +14,12 @@ export function MoveListForm({
   onSubmit,
   onCancel,
 }) {
-  const defaultBoardId =
-    currentBoard?._id || (boards[0] && boards[0]._id) || "";
-
+  const defaultBoardId = currentBoard._id;
   const { values, handleChange, setValues } = useFormState({
     boardId: defaultBoardId,
     position: activeListIndex || 0,
   });
-
-  const selectedBoard = boards.find(b => b._id === values.boardId) ||
-    boards[0] || { lists: [] };
+  const selectedBoard = boards.find(b => b._id === values.boardId);
 
   // handle position when board changes
   function handleBoardChange(e) {
