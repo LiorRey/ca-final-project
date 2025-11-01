@@ -89,19 +89,21 @@ export function BoardDetails() {
       );
 
       let updatedLabels;
+      let successMsgText;
       if (existingLabelIndex >= 0) {
         updatedLabels = [...existingLabels];
         updatedLabels[existingLabelIndex] = labelData;
-        showSuccessMsg(`Label "${labelData.title}" updated successfully!`);
+        successMsgText = `Label "${labelData.title}" updated successfully!`;
       } else {
         updatedLabels = [...existingLabels, labelData];
-        showSuccessMsg(`Label "${labelData.title}" created successfully!`);
+        successMsgText = `Label "${labelData.title}" created successfully!`;
       }
 
-      await updateBoard(board, {
-        key: "labels",
-        value: updatedLabels,
-      });
+      const updates = { labels: updatedLabels };
+      const options = { listId: null, cardId: null };
+
+      await updateBoard(board._id, updates, options);
+      showSuccessMsg(successMsgText);
     } catch (error) {
       console.error("Label save failed:", error);
       showErrorMsg(`Unable to save label: ${labelData.title}`);
@@ -112,12 +114,10 @@ export function BoardDetails() {
     try {
       const existingLabels = board.labels || [];
       const updatedLabels = existingLabels.filter(l => l.id !== labelId);
+      const updates = { labels: updatedLabels };
+      const options = { listId: null, cardId: null };
 
-      await updateBoard(board, {
-        key: "labels",
-        value: updatedLabels,
-      });
-
+      await updateBoard(board._id, updates, options);
       showSuccessMsg("Label removed successfully!");
     } catch (error) {
       console.error("Label removal failed:", error);

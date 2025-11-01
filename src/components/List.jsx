@@ -54,8 +54,8 @@ export function List({
       setSelectedCard(updatedCard);
     }
 
-    const options = { key: "cards", value: updatedCards };
-    await onUpdateList(list, options);
+    const updates = { cards: updatedCards };
+    await onUpdateList(list, updates);
   }
 
   function handleMoreClick(event) {

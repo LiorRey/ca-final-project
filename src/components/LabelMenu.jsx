@@ -78,7 +78,7 @@ export function LabelMenu({
       anchorEl={anchorEl}
       isOpen={isLabelMenuOpen}
       onClose={handleCloseMenu}
-      title={getPopoverTitle}
+      title={getPopoverTitle()}
       showBack={view}
       onBack={view === "editor" ? handleBack : handleCloseMenu}
       anchorOrigin={{
