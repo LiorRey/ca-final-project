@@ -29,6 +29,11 @@ export function LabelMenu({
     }
   }, [isLabelMenuOpen]);
 
+  function getPopoverTitle() {
+    if (view === "list") return "Labels";
+    return editingLabel ? "Edit label" : "Create label";
+  }
+
   function handleCreateLabel() {
     setEditingLabel(null);
     setView("editor");
@@ -73,13 +78,7 @@ export function LabelMenu({
       anchorEl={anchorEl}
       isOpen={isLabelMenuOpen}
       onClose={handleCloseMenu}
-      title={
-        view === "list"
-          ? "Labels"
-          : editingLabel
-          ? "Edit label"
-          : "Create label"
-      }
+      title={getPopoverTitle}
       showBack={view}
       onBack={view === "editor" ? handleBack : handleCloseMenu}
       anchorOrigin={{
