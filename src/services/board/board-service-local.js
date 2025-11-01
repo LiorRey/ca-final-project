@@ -21,6 +21,8 @@ export const boardService = {
   deleteCard,
   getEmptyList,
   copyList,
+  moveAllCards,
+  createNewList,
 };
 window.bs = boardService;
 
@@ -289,6 +291,45 @@ export async function deleteCard(boardId, cardId, listId) {
 //     throw error;
 //   }
 // }
+
+export async function moveAllCards(boardId, sourceListId, targetListId) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const sourceList = _findList(board, sourceListId);
+    const targetList = _findList(board, targetListId);
+
+    const cardsToMove = [...sourceList.cards];
+    targetList.cards.push(...cardsToMove);
+    sourceList.cards = [];
+
+    const updatedBoard = await updateBoard(boardId, { lists: board.lists });
+    return updatedBoard.lists;
+  } catch (error) {
+    console.error("Cannot move all cards:", error);
+    throw error;
+  }
+}
+
+export async function createNewList(boardId, listName = "New List") {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const newList = {
+      ...getEmptyList(),
+      name: listName,
+    };
+
+    const updatedLists = [...board.lists, newList];
+    await updateBoard(boardId, { lists: updatedLists });
+    return newList;
+  } catch (error) {
+    console.error("Cannot create new list:", error);
+    throw error;
+  }
+}
 
 export function getEmptyList() {
   return {
