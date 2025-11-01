@@ -50,14 +50,13 @@ export async function createBoard(board) {
 
 export async function updateBoard(
   boardId,
-  { listId = null, cardId = null, key, value }
+  updates,
+  { listId = null, cardId = null }
 ) {
   try {
-    const updatedBoard = await boardService.updateBoardWithActivity(boardId, {
+    const updatedBoard = await boardService.updateBoard(boardId, updates, {
       listId,
       cardId,
-      key,
-      value,
     });
     store.dispatch(editBoard(updatedBoard));
     return updatedBoard;
@@ -80,10 +79,7 @@ export async function deleteBoard(boardId) {
 export async function copyList(boardId, listId, newName) {
   try {
     const updatedLists = await boardService.copyList(boardId, listId, newName);
-    updateBoard(boardId, {
-      key: "lists",
-      value: updatedLists,
-    });
+    updateBoard(boardId, { lists: updatedLists });
   } catch (error) {
     store.dispatch(setError(`Error copying list: ${error.message}`));
     throw error;

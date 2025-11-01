@@ -60,10 +60,10 @@ export function BoardDetails() {
 
   async function onRemoveList(listId) {}
 
-  async function onUpdateList(list, { cardId = null, key, value }) {
+  async function onUpdateList(list, updates) {
     try {
-      const options = { listId: list.id, cardId, key, value };
-      updateBoard(board._id, options);
+      const options = { listId: list.id };
+      updateBoard(board._id, updates, options);
       showSuccessMsg(`The list ${list.name} updated successfully!`);
     } catch (error) {
       console.error("List update failed:", error);
@@ -72,10 +72,9 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    await updateBoard(board._id, {
-      key: "lists",
-      value: [...board.lists, newList],
-    });
+    const options = { listId: null, cardId: null };
+    const updates = { lists: [...board.lists, newList] };
+    await updateBoard(board._id, updates, options);
 
     requestAnimationFrame(() =>
       scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })

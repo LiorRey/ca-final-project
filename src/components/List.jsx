@@ -103,8 +103,7 @@ export function List({
     const updatedCards = [...cards, newCard];
     setCards(updatedCards);
 
-    const options = { key: "cards", value: updatedCards };
-    onUpdateList(list, options);
+    onUpdateList(list, { cards: updatedCards });
 
     setNewCardTitle("");
     requestAnimationFrame(() =>
