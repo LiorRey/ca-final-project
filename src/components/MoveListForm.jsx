@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useFormState } from "../hooks/useFormState";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -8,29 +6,24 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ActionButton from "./ui/buttons/ActionButton";
-import { loadBoards } from "../store/actions/board-actions";
 
-export function MoveListForm({ onSubmit, onCancel }) {
-  const boards = useSelector(state => state.boards.boards);
-  const currentBoard = useSelector(state => state.boards.board);
-  const activeListIndex = useSelector(state => state.ui.lists.activeListIndex);
-
-  useEffect(() => {
-    if (!boards || boards.length === 0) {
-      loadBoards();
-    }
-  }, []);
-
+export function MoveListForm({
+  currentBoard,
+  boards,
+  activeListIndex,
+  onSubmit,
+  onCancel,
+}) {
   const defaultBoardId =
     currentBoard?._id || (boards[0] && boards[0]._id) || "";
-  const selectedBoard = boards.find(b => b._id === currentBoard._id) ||
-    boards.find(b => b._id === defaultBoardId) ||
-    boards[0] || { lists: [] };
 
   const { values, handleChange, setValues } = useFormState({
     boardId: defaultBoardId,
     position: activeListIndex || 0,
   });
+
+  const selectedBoard = boards.find(b => b._id === values.boardId) ||
+    boards[0] || { lists: [] };
 
   // handle position when board changes
   function handleBoardChange(e) {
@@ -45,10 +38,9 @@ export function MoveListForm({ onSubmit, onCancel }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit({
-      boardId: values.boardId,
-      position: values.position,
-    });
+    const { boardId: targetBoardId, position: targetPosition } = values;
+
+    onSubmit({ targetBoardId, targetPosition });
   }
 
   return (
