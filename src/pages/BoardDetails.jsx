@@ -9,6 +9,7 @@ import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 
 import {
   loadBoard,
+  loadBoards,
   updateBoard,
   copyList,
 } from "../store/actions/board-actions";
@@ -29,6 +30,7 @@ export function BoardDetails() {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
+  const boards = useSelector(state => state.boards.boards);
   const [labelsIsOpen, setLabelsIsOpen] = useState(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
@@ -36,6 +38,9 @@ export function BoardDetails() {
 
   useEffect(() => {
     loadBoard(params.boardId, filters);
+    if (!boards || boards.length === 0) {
+      loadBoards();
+    }
   }, [params.boardId, filters]);
 
   useEffect(() => {
