@@ -13,11 +13,15 @@ export function CardModal({
   boardLabels = [],
   onClose,
   isOpen,
+  onDeleteCard,
+  onEditCard,
   onSaveLabel,
   onRemoveLabel,
   onUpdateCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
   const isLabelMenuOpen = Boolean(anchorEl);
 
@@ -29,8 +33,20 @@ export function CardModal({
     setAnchorEl(null);
   }
 
+  function handleEditCard() {
+    setIsEditing(true);
+  }
   function handleCommentSection() {
     setOpenSection(!openSection);
+  }
+
+  function handleSaveCard() {
+    onEditCard(cardDetails);
+    setIsEditing(false);
+  }
+
+  function handleChangeCard(key, value) {
+    setCardDetails({ ...cardDetails, [key]: value });
   }
 
   function handleToggleCardLabel(labelId) {
@@ -54,17 +70,28 @@ export function CardModal({
   if (!card) return null;
 
   return (
-    <Modal open={isOpen} onClose={onClose} disableAutoFocus>
+    <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
-          {listTitle}{" "}
+          {listTitle}
           <button className="icon-button" onClick={onClose}>
             <CloseIcon />
           </button>
         </div>
         <div className="card-modal-container">
           <section className="card-modal-content">
-            <h1 className="card-modal-title">{card.title}</h1>
+            {isEditing ? (
+              <input
+                type="text"
+                value={cardDetails.title}
+                onChange={e => handleChangeCard("title", e.target.value)}
+                onBlur={handleSaveCard}
+              />
+            ) : (
+              <h1 className="card-modal-title" onClick={handleEditCard}>
+                {cardDetails.title}
+              </h1>
+            )}
             <div className="card-modal-controls">
               <button
                 className="icon-button"
@@ -73,7 +100,7 @@ export function CardModal({
               >
                 <AddIcon /> Add label
               </button>
-              <button className="icon-button">
+              <button className="icon-button" onClick={onDeleteCard}>
                 <DeleteIcon /> Delete
               </button>
               <button className="icon-button">
@@ -102,7 +129,8 @@ export function CardModal({
                 className="description-input"
                 placeholder="Add a description"
                 spellCheck="false"
-                defaultValue={card.description}
+                value={card.description}
+                onChange={e => setDescription(e.target.value)}
               />
             </div>
           </section>

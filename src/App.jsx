@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/Header";
 import { UserMessage } from "./components/UserMessage";
 import { HomePage } from "./pages/HomePage";
@@ -12,13 +12,16 @@ import { AdminIndex } from "./pages/AdminIndex";
 import { LoginSignup, Login, Signup } from "./pages/LoginSignup";
 
 export function App() {
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
+
   return (
     <div className="main-container">
       <Header />
       <UserMessage />
 
       <main>
-        <Routes>
+        <Routes location={backgroundLocation || location}>
           <Route path="" element={<HomePage />} />
           <Route path="about" element={<AboutUs />}>
             <Route path="team" element={<AboutTeam />} />
@@ -26,10 +29,6 @@ export function App() {
           </Route>
           <Route path="board" element={<BoardIndex />} />
           <Route path="board/:boardId" element={<BoardDetails />} />
-          <Route
-            path="board/:boardId/:listId/:cardId"
-            element={<CardDetails />}
-          />
           <Route path="user/:userId" element={<UserDetails />} />
           <Route path="chat" element={<ChatApp />} />
           <Route path="admin" element={<AdminIndex />} />
@@ -38,6 +37,14 @@ export function App() {
             <Route path="signup" element={<Signup />} />
           </Route>
         </Routes>
+        {backgroundLocation && (
+          <Routes>
+            <Route
+              path="board/:boardId/:listId/:cardId"
+              element={<CardDetails />}
+            />
+          </Routes>
+        )}
       </main>
     </div>
   );

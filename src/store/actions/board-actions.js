@@ -8,6 +8,9 @@ import {
   SET_ERROR,
   SET_FILTERS,
   CLEAR_ALL_FILTERS,
+  ADD_CARD,
+  EDIT_CARD,
+  DELETE_CARD,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -84,6 +87,48 @@ export async function copyList(boardId, listId, newName) {
     store.dispatch(setError(`Error copying list: ${error.message}`));
     throw error;
   }
+}
+
+export async function addCard(boardId, card, listId) {
+  try {
+    const newCard = await boardService.addCard(boardId, card, listId);
+    store.dispatch(addCardAction(newCard, listId));
+  } catch (error) {
+    store.dispatch(setError(`Error adding card: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function editCard(boardId, card, listId) {
+  try {
+    const updatedCard = await boardService.editCard(boardId, card, listId);
+    store.dispatch(editCardAction(updatedCard, listId));
+  } catch (error) {
+    store.dispatch(setError(`Error editing card: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function deleteCard(boardId, cardId, listId) {
+  try {
+    const deletedCard = await boardService.deleteCard(boardId, cardId, listId);
+    store.dispatch(deleteCardAction(deletedCard.id, listId));
+  } catch (error) {
+    store.dispatch(setError(`Error deleting card: ${error.message}`));
+    throw error;
+  }
+}
+
+export function deleteCardAction(cardId, listId) {
+  return { type: DELETE_CARD, payload: { cardId, listId } };
+}
+
+export function addCardAction(card, listId) {
+  return { type: ADD_CARD, payload: { card, listId } };
+}
+
+export function editCardAction(card, listId) {
+  return { type: EDIT_CARD, payload: { card, listId } };
 }
 
 export function setBoards(boards) {

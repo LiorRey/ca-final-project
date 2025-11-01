@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import AddRounded from "@mui/icons-material/AddRounded";
-import Close from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
-import Popover from "@mui/material/Popover";
-import MenuList from "@mui/material/MenuList";
-import MenuItem from "@mui/material/MenuItem";
 import { Card } from "./Card";
-import { CardModal } from "./CardModal";
 import { ListActionsMenu } from "./ListActionsMenu";
 import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export function List({
   list,
@@ -29,8 +25,8 @@ export function List({
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newCardTitle, setNewCardTitle] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   const listContentRef = useRef(null);
   const scrollListToEnd = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
@@ -38,6 +34,12 @@ export function List({
   useEffect(() => {
     setCards(list.cards);
   }, [list.cards]);
+
+  function handleOpenModal(card) {
+    navigate(`${list.id}/${card.id}`, {
+      state: { backgroundLocation: location },
+    });
+  }
 
   async function onRemoveCard(cardId) {
     await onRemoveList(list.id);
@@ -109,16 +111,6 @@ export function List({
     requestAnimationFrame(() =>
       scrollListToEnd({ direction: SCROLL_DIRECTION.VERTICAL })
     );
-  }
-
-  function handleOpenModal(card) {
-    setSelectedCard(card);
-    setOpenModal(true);
-  }
-
-  function handleCloseModal() {
-    setOpenModal(false);
-    setSelectedCard(null);
   }
 
   function getCardLabels(card) {
@@ -207,19 +199,6 @@ export function List({
         onEditList={handleEditList}
         onDeleteList={handleDeleteList}
         onCopyList={onCopyList}
-      />
-
-      {/* Card Modal will be moved out of here */}
-      <CardModal
-        listTitle={list.name}
-        cardLabels={getCardLabels(selectedCard)}
-        card={selectedCard}
-        boardLabels={boardLabels}
-        onClose={handleCloseModal}
-        isOpen={openModal}
-        onSaveLabel={onSaveLabel}
-        onRemoveLabel={onRemoveLabel}
-        onUpdateCard={onUpdateCard}
       />
     </section>
   );
