@@ -8,7 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Popover } from "./Popover";
 import { CopyListForm } from "./CopyListForm";
 import { MoveListForm } from "./MoveListForm";
-import { moveList } from "../store/actions/board-actions";
+import { moveList, loadBoards } from "../store/actions/board-actions";
 
 export function ListActionsMenu({
   list,
@@ -33,14 +33,19 @@ export function ListActionsMenu({
     onClose();
   }
 
-  function handleMoveList({ targetBoardId, targetPosition }) {
-    moveList(
+  async function handleMoveList({ targetBoardId, targetPosition }) {
+    await moveList(
       currentBoard._id,
       activeListIndex,
       targetPosition,
       targetBoardId,
       currentBoard._id
     );
+
+    if (targetBoardId !== currentBoard._id) {
+      await loadBoards();
+    }
+
     setActiveAction(null);
     onClose();
   }
