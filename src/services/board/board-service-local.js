@@ -13,6 +13,7 @@ export const boardService = {
   remove,
   save,
   updateBoard,
+  moveList,
   clearData,
   reCreateBoards,
   addCard,
@@ -63,6 +64,95 @@ export async function copyList(boardId, listId, newName) {
     return updatedLists;
   } catch (error) {
     console.error("Error copying list:", error);
+    throw error;
+  }
+}
+
+function removeListFromArray(lists, index) {
+  return lists.filter((_, idx) => idx !== index);
+}
+
+function insertListInArray(lists, list, index) {
+  return [...lists.slice(0, index), list, ...lists.slice(index)];
+}
+
+async function moveSameBoard(board, sourceIndex, targetIndex) {
+  const movedList = board.lists[sourceIndex];
+  if (!movedList) throw new Error("List not found at source index");
+
+  const listsWithoutMoved = removeListFromArray(board.lists, sourceIndex);
+  const updatedLists = insertListInArray(
+    listsWithoutMoved,
+    movedList,
+    targetIndex
+  );
+
+  const updatedBoard = updateBoardFields(board, { lists: updatedLists });
+  await save(updatedBoard);
+
+  return updatedLists;
+}
+
+async function moveCrossBoard(
+  sourceBoard,
+  targetBoard,
+  sourceIndex,
+  targetIndex,
+  currentBoardId
+) {
+  const movedList = sourceBoard.lists[sourceIndex];
+  if (!movedList) throw new Error("List not found at source index");
+
+  const updatedSourceLists = removeListFromArray(
+    sourceBoard.lists,
+    sourceIndex
+  );
+  const updatedTargetLists = insertListInArray(
+    targetBoard.lists,
+    movedList,
+    targetIndex
+  );
+
+  const updatedSourceBoard = updateBoardFields(sourceBoard, {
+    lists: updatedSourceLists,
+  });
+  const updatedTargetBoard = updateBoardFields(targetBoard, {
+    lists: updatedTargetLists,
+  });
+
+  await Promise.all([save(updatedSourceBoard), save(updatedTargetBoard)]);
+
+  return currentBoardId === sourceBoard._id
+    ? updatedSourceLists
+    : updatedTargetLists;
+}
+
+export async function moveList(
+  sourceBoardId,
+  sourceIndex,
+  targetIndex,
+  targetBoardId,
+  currentBoardId
+) {
+  try {
+    if (sourceBoardId === targetBoardId) {
+      const board = await getById(sourceBoardId);
+      if (!board) throw new Error("Board not found");
+      return await moveSameBoard(board, sourceIndex, targetIndex);
+    } else {
+      const sourceBoard = await getById(sourceBoardId);
+      const targetBoard = await getById(targetBoardId);
+      if (!sourceBoard || !targetBoard) throw new Error("Board not found");
+      return await moveCrossBoard(
+        sourceBoard,
+        targetBoard,
+        sourceIndex,
+        targetIndex,
+        currentBoardId
+      );
+    }
+  } catch (error) {
+    console.error("Error moving list:", error);
     throw error;
   }
 }
