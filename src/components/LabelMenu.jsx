@@ -3,11 +3,7 @@ import { useSelector } from "react-redux";
 import { Popover } from "./Popover";
 import { LabelMenuItem } from "./LabelMenuItem";
 import { LabelEditor } from "./LabelEditor";
-import {
-  addNewLabelToCard,
-  editCard,
-  updateBoard,
-} from "../store/actions/board-actions";
+import { editCard, updateBoard } from "../store/actions/board-actions";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function LabelMenu({
@@ -59,7 +55,7 @@ export function LabelMenu({
     onCloseLabelMenu();
   }
 
-  function handleSaveLabel(labelData) {
+  async function handleSaveLabel(labelData) {
     try {
       const labelDataId = labelData?.id;
 
@@ -67,17 +63,10 @@ export function LabelMenu({
       const boardUpdates = { labels: updatedBoardLabels };
       const boardOptions = { listId: null, cardId: null };
 
+      await updateBoard(board._id, boardUpdates, boardOptions);
       if (!editingLabel) {
         const updatedCard = getUpdatedCard(labelDataId);
-        addNewLabelToCard(
-          board._id,
-          boardUpdates,
-          boardOptions,
-          updatedCard,
-          listId
-        );
-      } else {
-        updateBoard(board._id, boardUpdates, boardOptions);
+        editCard(board._id, updatedCard, listId);
       }
 
       const successMsgText = `Label "${labelData.title}" saved successfully!`;
@@ -134,8 +123,13 @@ export function LabelMenu({
   }
 
   function handleToggleLabel(labelId) {
-    const updatedCard = getUpdatedCard(labelId);
-    editCard(board._id, updatedCard, listId);
+    try {
+      const updatedCard = getUpdatedCard(labelId);
+      editCard(board._id, updatedCard, listId);
+    } catch (error) {
+      console.error("Label toggling failed:", error);
+      showErrorMsg("Unable to toggle label");
+    }
   }
 
   return (

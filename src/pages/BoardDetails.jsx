@@ -81,21 +81,6 @@ export function BoardDetails() {
     );
   }
 
-  async function onRemoveLabel(labelId) {
-    try {
-      const existingLabels = board.labels || [];
-      const updatedLabels = existingLabels.filter(l => l.id !== labelId);
-      const updates = { labels: updatedLabels };
-      const options = { listId: null, cardId: null };
-
-      await updateBoard(board._id, updates, options);
-      showSuccessMsg("Label removed successfully!");
-    } catch (error) {
-      console.error("Label removal failed:", error);
-      showErrorMsg("Unable to remove label");
-    }
-  }
-
   if (!board) return <div>Loading board...</div>;
 
   return (
@@ -125,13 +110,12 @@ export function BoardDetails() {
               <List
                 key={list.id}
                 list={list}
+                boardLabels={board.labels}
                 labelsIsOpen={labelsIsOpen}
                 setLabelsIsOpen={setLabelsIsOpen}
-                boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
-                onRemoveLabel={onRemoveLabel}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
               />

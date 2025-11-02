@@ -119,24 +119,6 @@ export async function deleteCard(boardId, cardId, listId) {
   }
 }
 
-export async function addNewLabelToCard(
-  boardId,
-  boardUpdates,
-  boardOptions,
-  card,
-  listId
-) {
-  try {
-    await updateBoard(boardId, boardUpdates, boardOptions);
-    await editCard(boardId, card, listId);
-  } catch (error) {
-    store.dispatch(
-      setError(`Error adding new label to card: ${error.message}`)
-    );
-    throw error;
-  }
-}
-
 export function addCardAction(card, listId) {
   return { type: ADD_CARD, payload: { card, listId } };
 }
