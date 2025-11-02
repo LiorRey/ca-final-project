@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Popover } from "./Popover";
 import { LabelMenuItem } from "./LabelMenuItem";
 import { LabelEditor } from "./LabelEditor";
-import { addLabel } from "../store/actions/board-actions";
+import { addNewLabelToCard, updateBoard } from "../store/actions/board-actions";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function LabelMenu({
@@ -57,24 +57,29 @@ export function LabelMenu({
     onCloseLabelMenu();
   }
 
-  async function handleSaveLabel(labelData) {
+  function handleSaveLabel(labelData) {
     try {
       const labelDataId = labelData?.id;
 
       const updatedBoardLabels = getUpdatedBoardLabels(labelData);
       const boardUpdates = { labels: updatedBoardLabels };
       const boardOptions = { listId: null, cardId: null };
-      const updatedCard = getUpdatedCard(labelDataId);
 
-      addLabel(board._id, boardUpdates, boardOptions, updatedCard, listId);
+      if (!editingLabel) {
+        const updatedCard = getUpdatedCard(labelDataId);
+        addNewLabelToCard(
+          board._id,
+          boardUpdates,
+          boardOptions,
+          updatedCard,
+          listId
+        );
+      } else {
+        updateBoard(board._id, boardUpdates, boardOptions);
+      }
 
       const successMsgText = `Label "${labelData.title}" saved successfully!`;
       showSuccessMsg(successMsgText);
-
-      // if (!editingLabel) {
-      //   onToggleCardLabel(labelDataId);
-      // }
-
       handleBack();
     } catch (error) {
       console.error("Label save failed:", error);

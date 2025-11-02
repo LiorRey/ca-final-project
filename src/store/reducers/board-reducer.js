@@ -8,7 +8,6 @@ export const UPDATE_BOARD = "UPDATE_BOARD";
 export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
-export const ADD_BOARD_LABEL = "ADD_BOARD_LABEL";
 export const SET_LOADING = "boards/SET_LOADING";
 export const SET_ERROR = "boards/SET_ERROR";
 export const SET_FILTERS = "boards/SET_FILTERS";
@@ -81,14 +80,6 @@ export function boardReducer(state = initialState, action) {
                 }
               : list
           ),
-        },
-      };
-    case ADD_BOARD_LABEL:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          labels: [...state.board.labels, action.payload],
         },
       };
     case SET_LOADING:

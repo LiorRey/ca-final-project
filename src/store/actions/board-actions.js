@@ -11,7 +11,6 @@ import {
   ADD_CARD,
   EDIT_CARD,
   DELETE_CARD,
-  ADD_BOARD_LABEL,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -120,7 +119,7 @@ export async function deleteCard(boardId, cardId, listId) {
   }
 }
 
-export async function addLabel(
+export async function addNewLabelToCard(
   boardId,
   boardUpdates,
   boardOptions,
@@ -131,13 +130,11 @@ export async function addLabel(
     await updateBoard(boardId, boardUpdates, boardOptions);
     await editCard(boardId, card, listId);
   } catch (error) {
-    store.dispatch(setError(`Error adding label: ${error.message}`));
+    store.dispatch(
+      setError(`Error adding new label to card: ${error.message}`)
+    );
     throw error;
   }
-}
-
-export function addBoardLabelAction(label) {
-  return { type: ADD_BOARD_LABEL, payload: label };
 }
 
 export function addCardAction(card, listId) {
