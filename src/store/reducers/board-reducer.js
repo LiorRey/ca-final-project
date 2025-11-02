@@ -5,6 +5,8 @@ export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
 export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
+export const ADD_LIST = "ADD_LIST";
+export const MOVE_ALL_CARDS = "MOVE_ALL_CARDS";
 export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
@@ -36,6 +38,22 @@ export function boardReducer(state = initialState, action) {
     case UPDATE_BOARD:
       return { ...state, board: action.payload };
     case MOVE_LIST:
+      return {
+        ...state,
+        board: {
+          ...state.board,
+          lists: action.payload,
+        },
+      };
+    case ADD_LIST:
+      return {
+        ...state,
+        board: {
+          ...state.board,
+          lists: [...state.board.lists, action.payload],
+        },
+      };
+    case MOVE_ALL_CARDS:
       return {
         ...state,
         board: {

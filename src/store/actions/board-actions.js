@@ -9,6 +9,8 @@ import {
   SET_ERROR,
   SET_FILTERS,
   CLEAR_ALL_FILTERS,
+  ADD_LIST,
+  MOVE_ALL_CARDS,
   ADD_CARD,
   EDIT_CARD,
   DELETE_CARD,
@@ -86,6 +88,31 @@ export async function copyList(boardId, listId, newName) {
     updateBoard(boardId, { lists: updatedLists });
   } catch (error) {
     store.dispatch(setError(`Error copying list: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function createNewList(boardId, listName = "New List") {
+  try {
+    const newList = await boardService.createNewList(boardId, listName);
+    store.dispatch(addListAction(newList));
+    return newList;
+  } catch (error) {
+    store.dispatch(setError(`Error creating new list: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function moveAllCardsToList(boardId, sourceListId, targetListId) {
+  try {
+    const updatedLists = await boardService.moveAllCards(
+      boardId,
+      sourceListId,
+      targetListId
+    );
+    store.dispatch(moveAllCardsAction(updatedLists));
+  } catch (error) {
+    store.dispatch(setError(`Error moving all cards: ${error.message}`));
     throw error;
   }
 }
@@ -193,4 +220,12 @@ export function clearAllFilters() {
 
 export function moveListAction(lists) {
   return { type: MOVE_LIST, payload: lists };
+}
+
+export function addListAction(list) {
+  return { type: ADD_LIST, payload: list };
+}
+
+export function moveAllCardsAction(updatedLists) {
+  return { type: MOVE_ALL_CARDS, payload: updatedLists };
 }
