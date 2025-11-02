@@ -39,15 +39,6 @@ export function List({
     });
   }
 
-  async function onRemoveCard(cardId) {
-    await onRemoveList(list.id);
-  }
-
-  async function onUpdateCard(card) {
-    setCards(prev => [...prev, card]);
-    await onUpdateList(list, { cards });
-  }
-
   function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
   }
@@ -132,10 +123,9 @@ export function List({
               <li key={card.id}>
                 <Card
                   card={card}
+                  listId={list.id}
                   labels={cardLabels}
                   onClickCard={card => handleOpenModal(card)}
-                  onRemoveCard={onRemoveCard}
-                  onUpdateCard={onUpdateCard}
                   labelsIsOpen={labelsIsOpen}
                   setLabelsIsOpen={setLabelsIsOpen}
                 />
