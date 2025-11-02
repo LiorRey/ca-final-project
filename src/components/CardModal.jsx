@@ -37,18 +37,6 @@ export function CardModal({
     setCardDetails({ ...cardDetails, [key]: value });
   }
 
-  function onOpenLabelMenu(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  function onCloseLabelMenu() {
-    setAnchorEl(null);
-  }
-
-  function handleToggleCardLabel(labelId) {
-    // onUpdateCard(updatedCard);
-  }
-
   if (!card) return null;
 
   return (
@@ -77,7 +65,7 @@ export function CardModal({
             <div className="card-modal-controls">
               <button
                 className="icon-button"
-                onClick={onOpenLabelMenu}
+                onClick={e => setAnchorEl(e.currentTarget)}
                 selected={isLabelMenuOpen}
               >
                 <AddIcon /> Add label
@@ -143,8 +131,7 @@ export function CardModal({
           cardLabels={cardLabels}
           anchorEl={anchorEl}
           isLabelMenuOpen={isLabelMenuOpen}
-          onCloseLabelMenu={onCloseLabelMenu}
-          onToggleCardLabel={handleToggleCardLabel}
+          onCloseLabelMenu={() => setAnchorEl(null)}
           listId={list.id}
           card={card}
         />

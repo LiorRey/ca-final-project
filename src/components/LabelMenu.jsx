@@ -56,7 +56,7 @@ export function LabelMenu({
     onCloseLabelMenu();
   }
 
-  async function handleSaveLabel(labelData) {
+  function handleSaveLabel(labelData) {
     try {
       const labelDataId = labelData?.id;
 
@@ -66,7 +66,7 @@ export function LabelMenu({
 
       if (!editingLabel) {
         const updatedCard = getUpdatedCard(labelDataId);
-        await addNewLabelToCard(
+        addNewLabelToCard(
           board._id,
           boardUpdates,
           boardOptions,
@@ -74,7 +74,7 @@ export function LabelMenu({
           listId
         );
       } else {
-        await updateBoard(board._id, boardUpdates, boardOptions);
+        updateBoard(board._id, boardUpdates, boardOptions);
       }
 
       const successMsgText = `Label "${labelData.title}" saved successfully!`;
@@ -114,14 +114,14 @@ export function LabelMenu({
     return { ...card, labels: updatedLabelIds };
   }
 
-  async function handleDeleteLabel(labelId) {
+  function handleDeleteLabel(labelId) {
     try {
       const boardLabels = board.labels || [];
       const updatedBoardLabels = boardLabels.filter(l => l.id !== labelId);
       const updates = { labels: updatedBoardLabels };
       const options = { listId: null, cardId: null };
 
-      await updateBoard(board._id, updates, options);
+      updateBoard(board._id, updates, options);
       showSuccessMsg("Label removed successfully!");
       handleBack();
     } catch (error) {

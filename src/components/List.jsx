@@ -132,17 +132,11 @@ export function List({
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
           {cards.map(card => {
-            const cardLabels =
-              boardLabels && card.labels && card.labels.length > 0
-                ? card.labels
-                    .map(labelId => boardLabels.find(l => l.id === labelId))
-                    .filter(Boolean)
-                : [];
             return (
               <li key={card.id}>
                 <Card
                   card={card}
-                  labels={cardLabels}
+                  labels={getCardLabels(card)}
                   onClickCard={card => handleOpenModal(card)}
                   onRemoveCard={onRemoveCard}
                   onUpdateCard={onUpdateCard}
