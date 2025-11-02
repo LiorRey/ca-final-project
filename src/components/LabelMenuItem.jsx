@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-export function LabelMenuItem({ label, isChecked, onToggle, onEdit }) {
+export function LabelMenuItem({ label, isChecked, onToggleLabel, onEdit }) {
   return (
     <div className="label-menu-item">
       <input
         type="checkbox"
         id={`label-${label.id}`}
         checked={isChecked}
-        onChange={() => onToggle(label.id)}
+        onChange={() => onToggleLabel(label.id)}
         className="label-checkbox"
       />
       <label

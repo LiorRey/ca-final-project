@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import { Popover } from "./Popover";
 import { LabelMenuItem } from "./LabelMenuItem";
 import { LabelEditor } from "./LabelEditor";
-import { addNewLabelToCard, updateBoard } from "../store/actions/board-actions";
+import {
+  addNewLabelToCard,
+  editCard,
+  updateBoard,
+} from "../store/actions/board-actions";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function LabelMenu({
@@ -11,7 +15,6 @@ export function LabelMenu({
   anchorEl,
   isLabelMenuOpen,
   onCloseLabelMenu,
-  onToggleCardLabel,
   listId,
   card,
 }) {
@@ -131,7 +134,8 @@ export function LabelMenu({
   }
 
   function handleToggleLabel(labelId) {
-    onToggleCardLabel(labelId);
+    const updatedCard = getUpdatedCard(labelId);
+    editCard(board._id, updatedCard, listId);
   }
 
   return (
@@ -173,7 +177,7 @@ export function LabelMenu({
                     <LabelMenuItem
                       label={label}
                       isChecked={isChecked}
-                      onToggle={handleToggleLabel}
+                      onToggleLabel={handleToggleLabel}
                       onEdit={() => handleEditLabel(label)}
                     />
                   </li>
