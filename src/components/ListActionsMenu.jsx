@@ -43,7 +43,7 @@ export function ListActionsMenu({
     );
 
     if (targetBoardId !== currentBoard._id) {
-      await loadBoards();
+      loadBoards();
     }
 
     setActiveAction(null);
