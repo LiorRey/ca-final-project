@@ -17,7 +17,7 @@ const colors = [
 export function LabelEditor({
   existingLabel = null,
   onSaveLabel,
-  onRemoveLabel,
+  onDeleteLabel,
 }) {
   const [title, setTitle] = useState(existingLabel?.title || "");
   const [selectedColor, setSelectedColor] = useState(
@@ -40,12 +40,6 @@ export function LabelEditor({
         };
 
     onSaveLabel(labelData);
-  }
-
-  function handleRemove() {
-    if (existingLabel) {
-      onRemoveLabel(existingLabel.id);
-    }
   }
 
   return (
@@ -86,7 +80,10 @@ export function LabelEditor({
           {isEditMode ? "Save" : "Create"}
         </button>
         {isEditMode && (
-          <button className="delete-btn" onClick={handleRemove}>
+          <button
+            className="delete-btn"
+            onClick={() => onDeleteLabel(existingLabel?.id)}
+          >
             Delete
           </button>
         )}

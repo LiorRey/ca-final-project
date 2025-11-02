@@ -14,7 +14,6 @@ export function CardModal({
   onDeleteCard,
   onClose,
   isOpen,
-  onRemoveLabel,
 }) {
   const [openSection, setOpenSection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -145,7 +144,6 @@ export function CardModal({
           anchorEl={anchorEl}
           isLabelMenuOpen={isLabelMenuOpen}
           onCloseLabelMenu={onCloseLabelMenu}
-          onRemoveLabel={onRemoveLabel}
           onToggleCardLabel={handleToggleCardLabel}
           listId={list.id}
           card={card}
