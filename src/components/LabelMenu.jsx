@@ -1,23 +1,27 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Popover } from "./Popover";
 import { LabelMenuItem } from "./LabelMenuItem";
 import { LabelEditor } from "./LabelEditor";
+import { addLabel } from "../store/actions/board-actions";
+import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 
 export function LabelMenu({
-  boardLabels,
   cardLabels = [],
   anchorEl,
   isLabelMenuOpen,
   onCloseLabelMenu,
-  onSaveLabel,
   onRemoveLabel,
   onToggleCardLabel,
+  listId,
+  card,
 }) {
   const [view, setView] = useState("list");
   const [editingLabel, setEditingLabel] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const board = useSelector(state => state.boards.board);
 
-  const filteredLabels = boardLabels.filter(label =>
+  const filteredLabels = board.labels?.filter(label =>
     label.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -53,14 +57,57 @@ export function LabelMenu({
     onCloseLabelMenu();
   }
 
-  function handleSaveLabel(labelData) {
-    onSaveLabel(labelData);
+  async function handleSaveLabel(labelData) {
+    try {
+      const labelDataId = labelData?.id;
 
-    if (!editingLabel) {
-      onToggleCardLabel(labelData.id);
+      const updatedBoardLabels = getUpdatedBoardLabels(labelData);
+      const boardUpdates = { labels: updatedBoardLabels };
+      const boardOptions = { listId: null, cardId: null };
+      const updatedCard = getUpdatedCard(labelDataId);
+
+      addLabel(board._id, boardUpdates, boardOptions, updatedCard, listId);
+
+      const successMsgText = `Label "${labelData.title}" saved successfully!`;
+      showSuccessMsg(successMsgText);
+
+      // if (!editingLabel) {
+      //   onToggleCardLabel(labelDataId);
+      // }
+
+      handleBack();
+    } catch (error) {
+      console.error("Label save failed:", error);
+      showErrorMsg(`Unable to save label: ${labelData.title}`);
+    }
+  }
+
+  function getUpdatedBoardLabels(labelData) {
+    const boardLabels = board.labels || [];
+    const boardLabelIndex = boardLabels.findIndex(l => l.id === labelData.id);
+    let updatedBoardLabels;
+
+    if (boardLabelIndex >= 0) {
+      updatedBoardLabels = [...boardLabels];
+      updatedBoardLabels[boardLabelIndex] = labelData;
+    } else {
+      updatedBoardLabels = [...boardLabels, labelData];
     }
 
-    handleBack();
+    return updatedBoardLabels;
+  }
+
+  function getUpdatedCard(labelDataId) {
+    const cardLabelIds = card.labels || [];
+    let updatedLabelIds;
+
+    if (cardLabelIds.includes(labelDataId)) {
+      updatedLabelIds = cardLabelIds.filter(id => id !== labelDataId);
+    } else {
+      updatedLabelIds = [...cardLabelIds, labelDataId];
+    }
+
+    return { ...card, labels: updatedLabelIds };
   }
 
   function handleRemoveLabel(labelId) {

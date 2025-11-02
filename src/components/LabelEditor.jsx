@@ -19,12 +19,12 @@ export function LabelEditor({
   onSaveLabel,
   onRemoveLabel,
 }) {
-  const isEditMode = existingLabel !== null;
-
   const [title, setTitle] = useState(existingLabel?.title || "");
   const [selectedColor, setSelectedColor] = useState(
     existingLabel?.color || colors[0]
   );
+
+  const isEditMode = existingLabel !== null;
 
   function handleSave() {
     const labelData = isEditMode

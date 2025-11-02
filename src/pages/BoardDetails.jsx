@@ -81,35 +81,6 @@ export function BoardDetails() {
     );
   }
 
-  async function onSaveLabel(labelData) {
-    try {
-      const existingLabels = board.labels || [];
-      const existingLabelIndex = existingLabels.findIndex(
-        l => l.id === labelData.id
-      );
-
-      let updatedLabels;
-      let successMsgText;
-      if (existingLabelIndex >= 0) {
-        updatedLabels = [...existingLabels];
-        updatedLabels[existingLabelIndex] = labelData;
-        successMsgText = `Label "${labelData.title}" updated successfully!`;
-      } else {
-        updatedLabels = [...existingLabels, labelData];
-        successMsgText = `Label "${labelData.title}" created successfully!`;
-      }
-
-      const updates = { labels: updatedLabels };
-      const options = { listId: null, cardId: null };
-
-      await updateBoard(board._id, updates, options);
-      showSuccessMsg(successMsgText);
-    } catch (error) {
-      console.error("Label save failed:", error);
-      showErrorMsg(`Unable to save label: ${labelData.title}`);
-    }
-  }
-
   async function onRemoveLabel(labelId) {
     try {
       const existingLabels = board.labels || [];
@@ -160,7 +131,6 @@ export function BoardDetails() {
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
-                onSaveLabel={onSaveLabel}
                 onRemoveLabel={onRemoveLabel}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}

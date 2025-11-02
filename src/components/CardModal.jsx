@@ -7,31 +7,20 @@ import AddIcon from "@mui/icons-material/Add";
 import { LabelMenu } from "./LabelMenu";
 
 export function CardModal({
-  listTitle,
-  cardLabels = [],
+  list,
   card,
-  boardLabels = [],
+  cardLabels = [],
+  onEditCard,
+  onDeleteCard,
   onClose,
   isOpen,
-  onDeleteCard,
-  onEditCard,
-  onSaveLabel,
   onRemoveLabel,
-  onUpdateCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
   const isLabelMenuOpen = Boolean(anchorEl);
-
-  function onOpenLabelMenu(event) {
-    setAnchorEl(event.currentTarget);
-  }
-
-  function onCloseLabelMenu() {
-    setAnchorEl(null);
-  }
 
   function handleEditCard() {
     setIsEditing(true);
@@ -49,22 +38,16 @@ export function CardModal({
     setCardDetails({ ...cardDetails, [key]: value });
   }
 
+  function onOpenLabelMenu(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function onCloseLabelMenu() {
+    setAnchorEl(null);
+  }
+
   function handleToggleCardLabel(labelId) {
-    const currentLabelIds = card.labels || [];
-    let updatedLabelIds;
-
-    if (currentLabelIds.includes(labelId)) {
-      updatedLabelIds = currentLabelIds.filter(id => id !== labelId);
-    } else {
-      updatedLabelIds = [...currentLabelIds, labelId];
-    }
-
-    const updatedCard = {
-      ...card,
-      labels: updatedLabelIds,
-    };
-
-    onUpdateCard(updatedCard);
+    // onUpdateCard(updatedCard);
   }
 
   if (!card) return null;
@@ -73,7 +56,7 @@ export function CardModal({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
-          {listTitle}
+          {list.title}
           <button className="icon-button" onClick={onClose}>
             <CloseIcon />
           </button>
@@ -158,14 +141,14 @@ export function CardModal({
         </footer>
 
         <LabelMenu
-          boardLabels={boardLabels}
           cardLabels={cardLabels}
           anchorEl={anchorEl}
           isLabelMenuOpen={isLabelMenuOpen}
           onCloseLabelMenu={onCloseLabelMenu}
-          onSaveLabel={onSaveLabel}
           onRemoveLabel={onRemoveLabel}
           onToggleCardLabel={handleToggleCardLabel}
+          listId={list.id}
+          card={card}
         />
       </Box>
     </Modal>

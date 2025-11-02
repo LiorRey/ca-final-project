@@ -17,8 +17,6 @@ export function List({
   onRemoveList,
   onUpdateList,
   onCopyList,
-  onSaveLabel,
-  onRemoveLabel,
   isAddingCard,
   setActiveAddCardListId,
 }) {
