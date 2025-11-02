@@ -8,7 +8,6 @@ import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { setActiveListIndex } from "../store/actions/ui-actions";
 
 export function List({
@@ -25,7 +24,6 @@ export function List({
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
-  const dispatch = useDispatch();
   const [newCardTitle, setNewCardTitle] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,7 +52,7 @@ export function List({
 
   function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
-    dispatch(setActiveListIndex(listIndex));
+    setActiveListIndex(listIndex);
   }
 
   function handleClose() {
