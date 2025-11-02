@@ -1,10 +1,14 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
+
 import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
+
 import { Popover } from "./Popover";
-import CopyListForm from "./CopyListForm";
-import "../assets/styles/components/ListActionsMenu.css";
+import { CopyListForm } from "./CopyListForm";
+import { MoveListForm } from "./MoveListForm";
+import { moveList, loadBoards } from "../store/actions/board-actions";
 
 export function ListActionsMenu({
   list,
@@ -14,15 +18,34 @@ export function ListActionsMenu({
   onCopyList,
 }) {
   const [activeAction, setActiveAction] = useState(null);
+  const boards = useSelector(state => state.boards.boards);
+  const currentBoard = useSelector(state => state.boards.board);
+  const activeListIndex = useSelector(state => state.ui.lists.activeListIndex);
 
   function handleMenuClick(key) {
-    if (key === "copy") {
-      setActiveAction("copy");
-    }
+    if (!listActionsMenuItems().find(item => item.key === key)) return;
+    setActiveAction(key);
   }
 
   function handleCopyList(listId, newName) {
     onCopyList(listId, newName);
+    setActiveAction(null);
+    onClose();
+  }
+
+  async function handleMoveList({ targetBoardId, targetPosition }) {
+    await moveList(
+      currentBoard._id,
+      activeListIndex,
+      targetPosition,
+      targetBoardId,
+      currentBoard._id
+    );
+
+    if (targetBoardId !== currentBoard._id) {
+      loadBoards();
+    }
+
     setActiveAction(null);
     onClose();
   }
@@ -54,6 +77,14 @@ export function ListActionsMenu({
           initialValue={list.name}
           onSubmit={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
+        />
+      ) : activeAction === "move" ? (
+        <MoveListForm
+          currentBoard={currentBoard}
+          boards={boards}
+          activeListIndex={activeListIndex}
+          onCancel={onPopoverClose}
+          onSubmit={handleMoveList}
         />
       ) : (
         <MenuList className="list-actions-menu" dense>

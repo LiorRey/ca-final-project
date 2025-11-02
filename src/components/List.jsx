@@ -8,6 +8,7 @@ import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { useNavigate, useLocation } from "react-router-dom";
+import { setActiveListIndex } from "../store/actions/ui-actions";
 
 export function List({
   list,
@@ -19,6 +20,7 @@ export function List({
   isAddingCard,
   setActiveAddCardListId,
   onCopyList,
+  listIndex,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -50,6 +52,7 @@ export function List({
 
   function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
+    setActiveListIndex(listIndex);
   }
 
   function handleClose() {
