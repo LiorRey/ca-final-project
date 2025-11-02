@@ -1,0 +1,180 @@
+.label-editor-content {
+  padding: 12px;
+}
+
+.label-preview {
+  height: 38px;
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.label-editor-field {
+  margin-bottom: 12px;
+
+  .label-editor-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #b6c2cf;
+    margin-block: 7px;
+  }
+
+  .label-editor-input {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #22272b;
+    border: 2px solid #3f4a54;
+    border-radius: 4px;
+    color: #b6c2cf;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #579dff;
+      background-color: #1d2125;
+    }
+
+    &::placeholder {
+      color: #8c9bab;
+    }
+  }
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-block-start: 10px;
+  margin-block-end: 20px;
+
+  .label-color-option {
+    width: 100%;
+    height: 32px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+
+    &.selected {
+      border-color: #579dff;
+      box-shadow: 0 0 0 2px rgba(87, 157, 255, 0.3);
+    }
+  }
+}
+
+.label-editor-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  .save-btn {
+    flex: 1;
+    padding: 8px 16px;
+    background-color: #579dff;
+    border: none;
+    border-radius: 4px;
+    color: #1d2125;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #4c8fef;
+    }
+
+    &:active {
+      background-color: #3f7cdb;
+    }
+  }
+
+  .delete-btn {
+    padding: 8px 16px;
+    background-color: #ca3521;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #ae2a19;
+    }
+
+    &:active {
+      background-color: #932116;
+    }
+  }
+}
+
+.label-color-option.green {
+  background-color: var(--label-green-bg);
+  border: 1px solid var(--label-green-border);
+  color: var(--label-green-text);
+}
+
+.label-color-option.yellow {
+  background-color: var(--label-yellow-bg);
+  border: 1px solid var(--label-yellow-border);
+  color: var(--label-yellow-text);
+}
+
+.label-color-option.orange {
+  background-color: var(--label-orange-bg);
+  border: 1px solid var(--label-orange-border);
+  color: var(--label-orange-text);
+}
+
+.label-color-option.red {
+  background-color: var(--label-red-bg);
+  border: 1px solid var(--label-red-border);
+  color: var(--label-red-text);
+}
+
+.label-color-option.purple {
+  background-color: var(--label-purple-bg);
+  border: 1px solid var(--label-purple-border);
+  color: var(--label-purple-text);
+}
+
+.label-color-option.blue {
+  background-color: var(--label-blue-bg);
+  border: 1px solid var(--label-blue-border);
+  color: var(--label-blue-text);
+}
+
+.label-color-option.sky {
+  background-color: var(--label-sky-bg);
+  border: 1px solid var(--label-sky-border);
+  color: var(--label-sky-text);
+}
+
+.label-color-option.lime {
+  background-color: var(--label-lime-bg);
+  border: 1px solid var(--label-lime-border);
+  color: var(--label-lime-text);
+}
+
+.label-color-option.pink {
+  background-color: var(--label-pink-bg);
+  border: 1px solid var(--label-pink-border);
+  color: var(--label-pink-text);
+}
+
+.label-color-option.gray {
+  background-color: var(--label-gray-bg);
+  border: 1px solid var(--label-gray-border);
+  color: var(--label-gray-text);
+}

@@ -16,9 +16,9 @@ export function List({
   setLabelsIsOpen,
   onRemoveList,
   onUpdateList,
+  onCopyList,
   isAddingCard,
   setActiveAddCardListId,
-  onCopyList,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -43,9 +43,19 @@ export function List({
     await onRemoveList(list.id);
   }
 
-  async function onUpdateCard(card) {
-    setCards(prev => [...prev, card]);
-    await onUpdateList(list, { cards });
+  async function onUpdateCard(updatedCard) {
+    const updatedCards = cards.map(card =>
+      card.id === updatedCard.id ? updatedCard : card
+    );
+
+    setCards(updatedCards);
+
+    if (selectedCard && selectedCard.id === updatedCard.id) {
+      setSelectedCard(updatedCard);
+    }
+
+    const updates = { cards: updatedCards };
+    await onUpdateList(list, updates);
   }
 
   function handleMoreClick(event) {
@@ -122,17 +132,11 @@ export function List({
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
           {cards.map(card => {
-            const cardLabels =
-              boardLabels && card.labels && card.labels.length > 0
-                ? card.labels
-                    .map(labelId => boardLabels.find(l => l.id === labelId))
-                    .filter(Boolean)
-                : [];
             return (
               <li key={card.id}>
                 <Card
                   card={card}
-                  labels={cardLabels}
+                  labels={getCardLabels(card)}
                   onClickCard={card => handleOpenModal(card)}
                   onRemoveCard={onRemoveCard}
                   onUpdateCard={onUpdateCard}

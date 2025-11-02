@@ -119,16 +119,16 @@ export async function deleteCard(boardId, cardId, listId) {
   }
 }
 
-export function deleteCardAction(cardId, listId) {
-  return { type: DELETE_CARD, payload: { cardId, listId } };
-}
-
 export function addCardAction(card, listId) {
   return { type: ADD_CARD, payload: { card, listId } };
 }
 
 export function editCardAction(card, listId) {
   return { type: EDIT_CARD, payload: { card, listId } };
+}
+
+export function deleteCardAction(cardId, listId) {
+  return { type: DELETE_CARD, payload: { cardId, listId } };
 }
 
 export function setBoards(boards) {

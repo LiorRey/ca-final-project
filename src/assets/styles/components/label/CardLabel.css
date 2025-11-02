@@ -43,16 +43,16 @@
   transition: opacity 0.3s ease;
 }
 
-.card-label.blue {
-  background-color: var(--label-blue-bg);
-  border: 1px solid var(--label-blue-border);
-  color: var(--label-blue-text);
-}
-
 .card-label.green {
   background-color: var(--label-green-bg);
   border: 1px solid var(--label-green-border);
   color: var(--label-green-text);
+}
+
+.card-label.yellow {
+  background-color: var(--label-yellow-bg);
+  border: 1px solid var(--label-yellow-border);
+  color: var(--label-yellow-text);
 }
 
 .card-label.orange {
@@ -73,10 +73,28 @@
   color: var(--label-purple-text);
 }
 
-.card-label.yellow {
-  background-color: var(--label-yellow-bg);
-  border: 1px solid var(--label-yellow-border);
-  color: var(--label-yellow-text);
+.card-label.blue {
+  background-color: var(--label-blue-bg);
+  border: 1px solid var(--label-blue-border);
+  color: var(--label-blue-text);
+}
+
+.card-label.sky {
+  background-color: var(--label-sky-bg);
+  border: 1px solid var(--label-sky-border);
+  color: var(--label-sky-text);
+}
+
+.card-label.lime {
+  background-color: var(--label-lime-bg);
+  border: 1px solid var(--label-lime-border);
+  color: var(--label-lime-text);
+}
+
+.card-label.pink {
+  background-color: var(--label-pink-bg);
+  border: 1px solid var(--label-pink-border);
+  color: var(--label-pink-text);
 }
 
 .card-label.gray {

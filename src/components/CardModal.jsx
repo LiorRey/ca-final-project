@@ -4,19 +4,22 @@ import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AddIcon from "@mui/icons-material/Add";
+import { LabelMenu } from "./LabelMenu";
 
 export function CardModal({
-  listTitle,
-  cardLabels = [],
+  list,
   card,
+  cardLabels = [],
+  onEditCard,
+  onDeleteCard,
   onClose,
   isOpen,
-  onDeleteCard,
-  onEditCard,
 }) {
   const [openSection, setOpenSection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isLabelMenuOpen = Boolean(anchorEl);
 
   function handleEditCard() {
     setIsEditing(true);
@@ -40,7 +43,7 @@ export function CardModal({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
-          {listTitle}
+          {list.title}
           <button className="icon-button" onClick={onClose}>
             <CloseIcon />
           </button>
@@ -60,7 +63,11 @@ export function CardModal({
               </h1>
             )}
             <div className="card-modal-controls">
-              <button className="icon-button">
+              <button
+                className="icon-button"
+                onClick={e => setAnchorEl(e.currentTarget)}
+                selected={isLabelMenuOpen}
+              >
                 <AddIcon /> Add label
               </button>
               <button className="icon-button" onClick={onDeleteCard}>
@@ -119,6 +126,15 @@ export function CardModal({
             Comments
           </button>
         </footer>
+
+        <LabelMenu
+          cardLabels={cardLabels}
+          anchorEl={anchorEl}
+          isLabelMenuOpen={isLabelMenuOpen}
+          onCloseLabelMenu={() => setAnchorEl(null)}
+          listId={list.id}
+          card={card}
+        />
       </Box>
     </Modal>
   );

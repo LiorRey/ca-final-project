@@ -37,29 +37,41 @@
   --error: rgb(216, 59, 59);
 
   /* Label Colors */
-  --label-red-bg: rgb(86, 1, 8);
-  --label-red-border: rgb(146, 1, 14);
-  --label-red-text: rgb(255, 220, 223);
-
   --label-green-bg: rgb(15, 92, 46);
   --label-green-border: rgb(25, 120, 60);
   --label-green-text: rgb(220, 255, 223);
+
+  --label-yellow-bg: rgb(120, 100, 0);
+  --label-yellow-border: rgb(160, 140, 0);
+  --label-yellow-text: rgb(255, 255, 220);
 
   --label-orange-bg: rgb(120, 60, 0);
   --label-orange-border: rgb(160, 80, 0);
   --label-orange-text: rgb(255, 240, 220);
 
-  --label-blue-bg: rgb(0, 60, 120);
-  --label-blue-border: rgb(0, 80, 160);
-  --label-blue-text: rgb(220, 240, 255);
+  --label-red-bg: rgb(86, 1, 8);
+  --label-red-border: rgb(146, 1, 14);
+  --label-red-text: rgb(255, 220, 223);
 
   --label-purple-bg: rgb(60, 0, 120);
   --label-purple-border: rgb(80, 0, 160);
   --label-purple-text: rgb(240, 220, 255);
 
-  --label-yellow-bg: rgb(120, 100, 0);
-  --label-yellow-border: rgb(160, 140, 0);
-  --label-yellow-text: rgb(255, 255, 220);
+  --label-blue-bg: rgb(0, 60, 120);
+  --label-blue-border: rgb(0, 80, 160);
+  --label-blue-text: rgb(220, 240, 255);
+
+  --label-sky-bg: rgb(0, 90, 120);
+  --label-sky-border: rgb(0, 120, 160);
+  --label-sky-text: rgb(220, 245, 255);
+
+  --label-lime-bg: rgb(60, 100, 20);
+  --label-lime-border: rgb(80, 140, 30);
+  --label-lime-text: rgb(240, 255, 220);
+
+  --label-pink-bg: rgb(120, 20, 80);
+  --label-pink-border: rgb(160, 30, 110);
+  --label-pink-text: rgb(255, 220, 245);
 
   --label-gray-bg: rgb(60, 60, 60);
   --label-gray-border: rgb(100, 100, 100);
