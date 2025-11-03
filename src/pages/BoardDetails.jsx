@@ -13,7 +13,7 @@ import {
   updateBoard,
   copyList,
   moveAllCardsToList,
-  createNewList,
+  createNewListAndMoveAllCards,
 } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
@@ -89,8 +89,7 @@ export function BoardDetails() {
   async function onMoveAllCards(sourceListId, targetListId) {
     try {
       if (targetListId === "new") {
-        const newList = await createNewList(board._id, "New List");
-        await moveAllCardsToList(board._id, sourceListId, newList.id);
+        await createNewListAndMoveAllCards(board._id, sourceListId, "New List");
       } else {
         await moveAllCardsToList(board._id, sourceListId, targetListId);
       }
@@ -135,7 +134,6 @@ export function BoardDetails() {
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
                 onMoveAllCards={onMoveAllCards}
-                onCreateListAndMoveCards={onCreateListAndMoveCards}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
                 listIndex={listIndex}

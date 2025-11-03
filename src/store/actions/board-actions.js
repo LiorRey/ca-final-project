@@ -117,6 +117,20 @@ export async function moveAllCardsToList(boardId, sourceListId, targetListId) {
   }
 }
 
+export async function createNewListAndMoveAllCards(boardId, sourceListId, listName = "New List") {
+  try {
+    const { updatedLists } = await boardService.createNewListAndMoveAllCards(
+      boardId,
+      sourceListId,
+      listName
+    );
+    store.dispatch(moveAllCardsAction(updatedLists));
+  } catch (error) {
+    store.dispatch(setError(`Error creating list and moving cards: ${error.message}`));
+    throw error;
+  }
+}
+
 export async function addCard(boardId, card, listId) {
   try {
     const newCard = await boardService.addCard(boardId, card, listId);

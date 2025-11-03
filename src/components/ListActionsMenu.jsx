@@ -7,7 +7,6 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { Popover } from "./Popover";
 import "../assets/styles/components/ListActionsMenu.css";
-import { useSelector } from "react-redux";
 import { CopyListForm } from "./CopyListForm";
 import { MoveListForm } from "./MoveListForm";
 import { moveList, loadBoards } from "../store/actions/board-actions";
