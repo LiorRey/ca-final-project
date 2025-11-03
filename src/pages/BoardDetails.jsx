@@ -14,6 +14,7 @@ import {
   copyList,
   moveAllCardsToList,
   createListAndMoveAllCards,
+  createList,
 } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
@@ -77,10 +78,7 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    const options = { listId: null, cardId: null };
-    const updates = { lists: [...board.lists, newList] };
-    await updateBoard(board._id, updates, options);
-    crete;
+    await createList(board._id, newList);
 
     requestAnimationFrame(() =>
       scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
