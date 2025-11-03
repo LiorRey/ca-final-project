@@ -4,50 +4,52 @@ import { Popover } from "./Popover";
 import { LabelMenuItem } from "./LabelMenuItem";
 import { LabelEditor } from "./LabelEditor";
 import { editCard, updateBoard } from "../store/actions/board-actions";
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
+
+const VIEW_MENU = "menu";
+const VIEW_EDITOR = "editor";
 
 export function LabelMenu({
-  cardLabels = [],
+  boardId,
+  listId,
+  card,
   anchorEl,
   isLabelMenuOpen,
   onCloseLabelMenu,
-  listId,
-  card,
 }) {
-  const [view, setView] = useState("list");
+  const [view, setView] = useState(VIEW_MENU);
   const [editingLabel, setEditingLabel] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const board = useSelector(state => state.boards.board);
+  const boardLabels = useSelector(state => state.boards.board.labels);
 
-  const filteredLabels = board.labels?.filter(label =>
+  const filteredLabels = boardLabels.filter(label =>
     label.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
     if (isLabelMenuOpen) {
-      setView("list");
+      setView(VIEW_MENU);
       setEditingLabel(null);
       setSearchTerm("");
     }
   }, [isLabelMenuOpen]);
 
   function getPopoverTitle() {
-    if (view === "list") return "Labels";
+    if (view === VIEW_MENU) return "Labels";
     return editingLabel ? "Edit label" : "Create label";
   }
 
   function handleCreateLabel() {
     setEditingLabel(null);
-    setView("editor");
+    setView(VIEW_EDITOR);
   }
 
   function handleEditLabel(label) {
     setEditingLabel(label);
-    setView("editor");
+    setView(VIEW_EDITOR);
   }
 
   function handleBack() {
-    setView("list");
+    setView(VIEW_MENU);
     setEditingLabel(null);
   }
 
@@ -55,80 +57,68 @@ export function LabelMenu({
     onCloseLabelMenu();
   }
 
-  async function handleSaveLabel(labelData) {
+  async function handleSaveLabel(label) {
     try {
-      const labelDataId = labelData?.id;
-
-      const updatedBoardLabels = getUpdatedBoardLabels(labelData);
+      const updatedBoardLabels = getUpdatedBoardLabels(label);
       const boardUpdates = { labels: updatedBoardLabels };
-      const boardOptions = { listId: null, cardId: null };
+      await updateBoard(boardId, boardUpdates, {});
 
-      await updateBoard(board._id, boardUpdates, boardOptions);
       if (!editingLabel) {
-        const updatedCard = getUpdatedCard(labelDataId);
-        editCard(board._id, updatedCard, listId);
+        toggleCardLabel(label.id);
       }
 
-      const successMsgText = `Label "${labelData.title}" saved successfully!`;
-      showSuccessMsg(successMsgText);
       handleBack();
     } catch (error) {
       console.error("Label save failed:", error);
-      showErrorMsg(`Unable to save label: ${labelData.title}`);
     }
   }
 
-  function getUpdatedBoardLabels(labelData) {
-    const boardLabels = board.labels || [];
-    const boardLabelIndex = boardLabels.findIndex(l => l.id === labelData.id);
-    let updatedBoardLabels;
+  function getUpdatedBoardLabels(label) {
+    const boardLabelIndex = boardLabels.findIndex(l => l.id === label.id);
 
     if (boardLabelIndex >= 0) {
-      updatedBoardLabels = [...boardLabels];
-      updatedBoardLabels[boardLabelIndex] = labelData;
-    } else {
-      updatedBoardLabels = [...boardLabels, labelData];
+      const updatedBoardLabels = [...boardLabels];
+      updatedBoardLabels[boardLabelIndex] = label;
+
+      return updatedBoardLabels;
     }
 
-    return updatedBoardLabels;
+    return [...boardLabels, label];
   }
 
-  function getUpdatedCard(labelDataId) {
-    const cardLabelIds = card.labels || [];
-    let updatedLabelIds;
+  function toggleCardLabel(labelId, shouldAddToCard = true) {
+    const updatedLabelIds = shouldAddToCard
+      ? [...card.labels, labelId]
+      : card.labels.filter(id => id !== labelId);
 
-    if (cardLabelIds.includes(labelDataId)) {
-      updatedLabelIds = cardLabelIds.filter(id => id !== labelDataId);
-    } else {
-      updatedLabelIds = [...cardLabelIds, labelDataId];
-    }
+    const updatedCard = { ...card, labels: updatedLabelIds };
 
-    return { ...card, labels: updatedLabelIds };
-  }
-
-  function handleDeleteLabel(labelId) {
-    try {
-      const boardLabels = board.labels || [];
-      const updatedBoardLabels = boardLabels.filter(l => l.id !== labelId);
-      const updates = { labels: updatedBoardLabels };
-      const options = { listId: null, cardId: null };
-
-      updateBoard(board._id, updates, options);
-      showSuccessMsg("Label removed successfully!");
-      handleBack();
-    } catch (error) {
-      console.error("Label removal failed:", error);
-      showErrorMsg("Unable to remove label");
-    }
+    editCard(boardId, updatedCard, listId);
   }
 
   function handleToggleLabel(labelId) {
     try {
-      const updatedCard = getUpdatedCard(labelId);
-      editCard(board._id, updatedCard, listId);
+      const shouldAddToCard = !card.labels.includes(labelId);
+      toggleCardLabel(labelId, shouldAddToCard);
     } catch (error) {
-      console.error("Label toggling failed:", error);
-      showErrorMsg("Unable to toggle label");
+      console.error("Label check toggling failed:", error);
+    }
+  }
+
+  async function handleDeleteLabel(labelId) {
+    try {
+      const updatedBoardLabels = boardLabels.filter(l => l.id !== labelId);
+      const updates = { labels: updatedBoardLabels };
+      await updateBoard(boardId, updates, {});
+
+      if (card.labels.includes(labelId)) {
+        const shouldAddToCard = false;
+        toggleCardLabel(labelId, shouldAddToCard);
+      }
+
+      handleBack();
+    } catch (error) {
+      console.error("Label removal failed:", error);
     }
   }
 
@@ -140,14 +130,14 @@ export function LabelMenu({
       onClose={handleCloseMenu}
       title={getPopoverTitle()}
       showBack={view}
-      onBack={view === "editor" ? handleBack : handleCloseMenu}
+      onBack={view === VIEW_EDITOR ? handleBack : handleCloseMenu}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
       paperProps={{ sx: { mt: 1 } }}
     >
-      {view === "list" ? (
+      {view === VIEW_MENU ? (
         <div className="label-menu-content">
           <input
             type="text"
@@ -163,8 +153,8 @@ export function LabelMenu({
           <ul className="labels-list">
             {filteredLabels.length > 0 ? (
               filteredLabels.map(label => {
-                const isChecked = cardLabels.some(
-                  cardLabel => cardLabel.id === label.id
+                const isChecked = card.labels.some(
+                  cardLabelId => cardLabelId === label.id
                 );
                 return (
                   <li key={label.id}>

@@ -7,7 +7,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { LabelMenu } from "./LabelMenu";
 
 export function CardModal({
-  list,
+  boardId,
+  listId,
+  listName,
   card,
   cardLabels = [],
   onEditCard,
@@ -43,7 +45,7 @@ export function CardModal({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
-          {list.title}
+          {listName}
           <button className="icon-button" onClick={onClose}>
             <CloseIcon />
           </button>
@@ -128,12 +130,12 @@ export function CardModal({
         </footer>
 
         <LabelMenu
-          cardLabels={cardLabels}
+          boardId={boardId}
+          listId={listId}
+          card={card}
           anchorEl={anchorEl}
           isLabelMenuOpen={isLabelMenuOpen}
           onCloseLabelMenu={() => setAnchorEl(null)}
-          listId={list.id}
-          card={card}
         />
       </Box>
     </Modal>

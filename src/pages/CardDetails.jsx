@@ -52,7 +52,9 @@ export function CardDetails() {
 
   return (
     <CardModal
-      list={list}
+      boardId={boardId}
+      listId={list.id}
+      listName={list.name}
       card={card}
       cardLabels={cardLabels}
       onEditCard={handleEditCard}

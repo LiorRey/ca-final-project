@@ -43,19 +43,9 @@ export function List({
     await onRemoveList(list.id);
   }
 
-  async function onUpdateCard(updatedCard) {
-    const updatedCards = cards.map(card =>
-      card.id === updatedCard.id ? updatedCard : card
-    );
-
-    setCards(updatedCards);
-
-    if (selectedCard && selectedCard.id === updatedCard.id) {
-      setSelectedCard(updatedCard);
-    }
-
-    const updates = { cards: updatedCards };
-    await onUpdateList(list, updates);
+  async function onUpdateCard(card) {
+    setCards(prev => [...prev, card]);
+    await onUpdateList(list, { cards });
   }
 
   function handleMoreClick(event) {

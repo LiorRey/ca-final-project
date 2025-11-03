@@ -27,19 +27,15 @@ export function LabelEditor({
   const isEditMode = existingLabel !== null;
 
   function handleSave() {
-    const labelData = isEditMode
-      ? {
-          ...existingLabel,
-          title,
-          color: selectedColor,
-        }
-      : {
-          ...boardService.getEmptyLabel(),
-          title,
-          color: selectedColor,
-        };
+    const baseLabel = isEditMode ? existingLabel : boardService.getEmptyLabel();
 
-    onSaveLabel(labelData);
+    const label = {
+      ...baseLabel,
+      title,
+      color: selectedColor,
+    };
+
+    onSaveLabel(label);
   }
 
   return (
