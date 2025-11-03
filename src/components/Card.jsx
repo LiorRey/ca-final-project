@@ -7,18 +7,20 @@ import {
 import CardPopover from "./CardPopover";
 import { Box } from "@mui/material";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { editCard, deleteCard } from "../store/actions/board-actions";
 
 export function Card({
   card,
+  listId,
   labels = [],
   onClickCard,
-  onRemoveCard,
-  onUpdateCard,
   labelsIsOpen,
   setLabelsIsOpen,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
+  const { boardId } = useParams();
 
   function handleClickCard() {
     onClickCard(card);
@@ -42,11 +44,16 @@ export function Card({
   function handleSave() {
     card.title = title;
     handleClose();
-    onUpdateCard({ ...card, title });
+    handleUpdateCard({ ...card, title });
+  }
+
+  function handleUpdateCard(card) {
+    editCard(boardId, card, listId);
+    handleClose();
   }
 
   function handleDelete() {
-    onRemoveCard(card.id);
+    deleteCard(boardId, card.id, listId);
     handleClose();
   }
 
