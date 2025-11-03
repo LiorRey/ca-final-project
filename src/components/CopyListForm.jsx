@@ -20,7 +20,7 @@ export function CopyListForm({ initialValue, onCopy, onCancel }) {
     const newName = textareaValue.trim();
     if (!newName) return;
 
-    onSubmit(newName);
+    onCopy(newName);
     setTextareaValue("");
   }
 
