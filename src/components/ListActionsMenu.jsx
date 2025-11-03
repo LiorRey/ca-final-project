@@ -18,6 +18,7 @@ export function ListActionsMenu({
   isOpen,
   onClose,
   onCopyList,
+  onMoveAllCards,
 }) {
   const [activeAction, setActiveAction] = useState(null);
   const boards = useSelector(state => state.boards.boards);
@@ -27,6 +28,12 @@ export function ListActionsMenu({
   function handleMenuClick(key) {
     if (!listActionsMenuItems().find(item => item.key === key)) return;
     setActiveAction(key);
+  }
+
+  function handleMoveAllCards(destinationListId) {
+    onMoveAllCards(list.id, destinationListId);
+    setActiveAction(null);
+    onClose();
   }
 
   function handleCopyList(listId, newName) {
@@ -86,12 +93,12 @@ export function ListActionsMenu({
             <MenuItem
               key={listItem.id}
               disabled={listItem.id === list.id}
-              onClick={() => handleMenuClick(listItem.id)}
+              onClick={() => handleMoveAllCards(listItem.id)}
             >
               <ListItemText>{listItem.name}</ListItemText>
             </MenuItem>
           ))}
-          <MenuItem onClick={() => handleMenuClick("new")}>
+          <MenuItem onClick={() => handleMoveAllCards("new")}>
             <ListItemText>New List</ListItemText>
           </MenuItem>
         </MenuList>

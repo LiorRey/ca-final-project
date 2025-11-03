@@ -12,6 +12,8 @@ import {
   loadBoards,
   updateBoard,
   copyList,
+  moveAllCardsToList,
+  createNewList,
 } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
@@ -84,6 +86,19 @@ export function BoardDetails() {
     );
   }
 
+  async function onMoveAllCards(sourceListId, targetListId) {
+    try {
+      if (targetListId === "new") {
+        const newList = await createNewList(board._id, "New List");
+        await moveAllCardsToList(board._id, sourceListId, newList.id);
+      } else {
+        await moveAllCardsToList(board._id, sourceListId, targetListId);
+      }
+    } catch (error) {
+      console.error("Move all cards failed:", error);
+    }
+  }
+
   if (!board) return <div>Loading board...</div>;
 
   return (
@@ -119,6 +134,8 @@ export function BoardDetails() {
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
+                onMoveAllCards={onMoveAllCards}
+                onCreateListAndMoveCards={onCreateListAndMoveCards}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
                 listIndex={listIndex}
