@@ -8,6 +8,7 @@ import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { useNavigate, useLocation } from "react-router-dom";
+import { setActiveListIndex } from "../store/actions/ui-actions";
 
 export function List({
   list,
@@ -19,6 +20,7 @@ export function List({
   onCopyList,
   isAddingCard,
   setActiveAddCardListId,
+  listIndex,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -39,17 +41,9 @@ export function List({
     });
   }
 
-  async function onRemoveCard(cardId) {
-    await onRemoveList(list.id);
-  }
-
-  async function onUpdateCard(card) {
-    setCards(prev => [...prev, card]);
-    await onUpdateList(list, { cards });
-  }
-
   function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
+    setActiveListIndex(listIndex);
   }
 
   function handleClose() {
@@ -126,10 +120,9 @@ export function List({
               <li key={card.id}>
                 <Card
                   card={card}
+                  listId={list.id}
                   labels={getCardLabels(card)}
                   onClickCard={card => handleOpenModal(card)}
-                  onRemoveCard={onRemoveCard}
-                  onUpdateCard={onUpdateCard}
                   labelsIsOpen={labelsIsOpen}
                   setLabelsIsOpen={setLabelsIsOpen}
                 />

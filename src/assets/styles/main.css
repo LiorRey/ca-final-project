@@ -32,6 +32,7 @@
 @import "components/List";
 @import "components/ListActionsMenu";
 @import "components/CopyListForm";
+@import "components/MoveListForm";
 @import "components/Card";
 @import "components/FilterMenu";
 
