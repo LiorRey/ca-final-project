@@ -22,8 +22,8 @@ export const boardService = {
   getEmptyList,
   copyList,
   moveAllCards,
-  createNewList,
-  createNewListAndMoveAllCards,
+  createList,
+  createListAndMoveAllCards,
 };
 window.bs = boardService;
 
@@ -280,7 +280,7 @@ export async function moveAllCards(boardId, sourceListId, targetListId) {
   }
 }
 
-export async function createNewList(boardId, listName = "New List") {
+export async function createList(boardId, listName = "New List") {
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
@@ -307,7 +307,7 @@ export function getEmptyList() {
   };
 }
 
-export async function createNewListAndMoveAllCards(
+export async function createListAndMoveAllCards(
   boardId,
   sourceListId,
   listName = "New List"

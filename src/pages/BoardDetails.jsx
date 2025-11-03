@@ -13,7 +13,7 @@ import {
   updateBoard,
   copyList,
   moveAllCardsToList,
-  createNewListAndMoveAllCards,
+  createListAndMoveAllCards,
 } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
@@ -80,6 +80,7 @@ export function BoardDetails() {
     const options = { listId: null, cardId: null };
     const updates = { lists: [...board.lists, newList] };
     await updateBoard(board._id, updates, options);
+    crete;
 
     requestAnimationFrame(() =>
       scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
@@ -89,7 +90,7 @@ export function BoardDetails() {
   async function onMoveAllCards(sourceListId, targetListId) {
     try {
       if (targetListId === "new") {
-        await createNewListAndMoveAllCards(board._id, sourceListId, "New List");
+        await createListAndMoveAllCards(board._id, sourceListId, "New List");
       } else {
         await moveAllCardsToList(board._id, sourceListId, targetListId);
       }

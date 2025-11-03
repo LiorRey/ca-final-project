@@ -92,9 +92,9 @@ export async function copyList(boardId, listId, newName) {
   }
 }
 
-export async function createNewList(boardId, listName = "New List") {
+export async function createList(boardId, listName = "New List") {
   try {
-    const newList = await boardService.createNewList(boardId, listName);
+    const newList = await boardService.createList(boardId, listName);
     store.dispatch(addListAction(newList));
     return newList;
   } catch (error) {
@@ -117,16 +117,22 @@ export async function moveAllCardsToList(boardId, sourceListId, targetListId) {
   }
 }
 
-export async function createNewListAndMoveAllCards(boardId, sourceListId, listName = "New List") {
+export async function createListAndMoveAllCards(
+  boardId,
+  sourceListId,
+  listName = "New List"
+) {
   try {
-    const { updatedLists } = await boardService.createNewListAndMoveAllCards(
+    const { updatedLists } = await boardService.createListAndMoveAllCards(
       boardId,
       sourceListId,
       listName
     );
     store.dispatch(moveAllCardsAction(updatedLists));
   } catch (error) {
-    store.dispatch(setError(`Error creating list and moving cards: ${error.message}`));
+    store.dispatch(
+      setError(`Error creating list and moving cards: ${error.message}`)
+    );
     throw error;
   }
 }
