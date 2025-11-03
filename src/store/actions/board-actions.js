@@ -55,7 +55,7 @@ export async function createBoard(board) {
 export async function updateBoard(
   boardId,
   updates,
-  { listId = null, cardId = null }
+  { listId = null, cardId = null } = {}
 ) {
   try {
     const updatedBoard = await boardService.updateBoard(boardId, updates, {
