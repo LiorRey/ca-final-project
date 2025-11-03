@@ -92,9 +92,9 @@ export async function copyList(boardId, listId, newName) {
   }
 }
 
-export async function createList(boardId, listName = "New List") {
+export async function createList(boardId, listData) {
   try {
-    const newList = await boardService.createList(boardId, listName);
+    const newList = await boardService.createList(boardId, listData);
     store.dispatch(addListAction(newList));
     return newList;
   } catch (error) {

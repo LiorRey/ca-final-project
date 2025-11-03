@@ -280,14 +280,14 @@ export async function moveAllCards(boardId, sourceListId, targetListId) {
   }
 }
 
-export async function createList(boardId, listName = "New List") {
+export async function createList(boardId, listData) {
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
     const newList = {
       ...getEmptyList(),
-      name: listName,
+      ...listData,
     };
 
     const updatedLists = [...board.lists, newList];
