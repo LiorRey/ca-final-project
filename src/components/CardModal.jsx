@@ -9,7 +9,7 @@ import { LabelMenu } from "./LabelMenu";
 export function CardModal({
   boardId,
   listId,
-  listName,
+  listTitle,
   card,
   cardLabels = [],
   onEditCard,
@@ -45,7 +45,7 @@ export function CardModal({
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
-          {listName}
+          {listTitle}
           <button className="icon-button" onClick={onClose}>
             <CloseIcon />
           </button>
