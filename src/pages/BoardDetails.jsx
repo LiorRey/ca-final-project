@@ -56,10 +56,8 @@ export function BoardDetails() {
   async function onCopyList(listId, newName) {
     try {
       await copyList(board._id, listId, newName);
-      showSuccessMsg(`The list copied successfully!`);
     } catch (error) {
       console.error("List copy failed:", error);
-      showErrorMsg(`Unable to copy the list: ${listId}`);
     }
   }
 
