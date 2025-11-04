@@ -94,25 +94,27 @@ export async function copyList(boardId, listId, newName) {
 
 export async function createList(boardId, listData) {
   try {
+    store.dispatch({ type: ADD_LIST.REQUEST });
     const newList = await boardService.createList(boardId, listData);
-    store.dispatch(addListAction(newList));
+    store.dispatch({ type: ADD_LIST.SUCCESS, payload: newList });
     return newList;
   } catch (error) {
-    store.dispatch(setError(`Error creating new list: ${error.message}`));
+    store.dispatch({ type: ADD_LIST.FAILURE, payload: error.message });
     throw error;
   }
 }
 
 export async function moveAllCardsToList(boardId, sourceListId, targetListId) {
   try {
+    store.dispatch({ type: MOVE_ALL_CARDS.REQUEST });
     const updatedLists = await boardService.moveAllCards(
       boardId,
       sourceListId,
       targetListId
     );
-    store.dispatch(moveAllCardsAction(updatedLists));
+    store.dispatch({ type: MOVE_ALL_CARDS.SUCCESS, payload: updatedLists });
   } catch (error) {
-    store.dispatch(setError(`Error moving all cards: ${error.message}`));
+    store.dispatch({ type: MOVE_ALL_CARDS.FAILURE, payload: error.message });
     throw error;
   }
 }
@@ -123,16 +125,15 @@ export async function createListAndMoveAllCards(
   listName = "New List"
 ) {
   try {
+    store.dispatch({ type: MOVE_ALL_CARDS.REQUEST });
     const { updatedLists } = await boardService.createListAndMoveAllCards(
       boardId,
       sourceListId,
       listName
     );
-    store.dispatch(moveAllCardsAction(updatedLists));
+    store.dispatch({ type: MOVE_ALL_CARDS.SUCCESS, payload: updatedLists });
   } catch (error) {
-    store.dispatch(
-      setError(`Error creating list and moving cards: ${error.message}`)
-    );
+    store.dispatch({ type: MOVE_ALL_CARDS.FAILURE, payload: error.message });
     throw error;
   }
 }
@@ -240,12 +241,4 @@ export function clearAllFilters() {
 
 export function moveListAction(lists) {
   return { type: MOVE_LIST, payload: lists };
-}
-
-export function addListAction(list) {
-  return { type: ADD_LIST, payload: list };
-}
-
-export function moveAllCardsAction(updatedLists) {
-  return { type: MOVE_ALL_CARDS, payload: updatedLists };
 }
