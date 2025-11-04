@@ -75,7 +75,7 @@ export function ListActionsMenu({
       {activeAction === "copy" ? (
         <CopyListForm
           initialValue={list.name}
-          onSubmit={newName => handleCopyList(list.id, newName)}
+          onCopy={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
         />
       ) : activeAction === "move" ? (
