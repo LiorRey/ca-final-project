@@ -1,16 +1,20 @@
 import { getDefaultFilter } from "../../services/filter-service";
 
+function createAsyncActionTypes(baseType) {
+  return {
+    REQUEST: `${baseType}_REQUEST`,
+    SUCCESS: `${baseType}_SUCCESS`,
+    FAILURE: `${baseType}_FAILURE`,
+  };
+}
+
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
 export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
-export const ADD_LIST_REQUEST = "ADD_LIST_REQUEST";
-export const ADD_LIST_SUCCESS = "ADD_LIST_SUCCESS";
-export const ADD_LIST_FAILURE = "ADD_LIST_FAILURE";
-export const MOVE_ALL_CARDS_REQUEST = "MOVE_ALL_CARDS_REQUEST";
-export const MOVE_ALL_CARDS_SUCCESS = "MOVE_ALL_CARDS_SUCCESS";
-export const MOVE_ALL_CARDS_FAILURE = "MOVE_ALL_CARDS_FAILURE";
+export const ADD_LIST = createAsyncActionTypes("ADD_LIST");
+export const MOVE_ALL_CARDS = createAsyncActionTypes("MOVE_ALL_CARDS");
 export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
@@ -49,9 +53,9 @@ export function boardReducer(state = initialState, action) {
           lists: action.payload,
         },
       };
-    case ADD_LIST_REQUEST:
+    case ADD_LIST.REQUEST:
       return { ...state, isLoading: true };
-    case ADD_LIST_SUCCESS:
+    case ADD_LIST.SUCCESS:
       return {
         ...state,
         board: {
@@ -61,11 +65,11 @@ export function boardReducer(state = initialState, action) {
         isLoading: false,
         error: null,
       };
-    case ADD_LIST_FAILURE:
+    case ADD_LIST.FAILURE:
       return { ...state, isLoading: false, error: action.payload };
-    case MOVE_ALL_CARDS_REQUEST:
+    case MOVE_ALL_CARDS.REQUEST:
       return { ...state, isLoading: true };
-    case MOVE_ALL_CARDS_SUCCESS:
+    case MOVE_ALL_CARDS.SUCCESS:
       return {
         ...state,
         board: {
@@ -75,7 +79,7 @@ export function boardReducer(state = initialState, action) {
         isLoading: false,
         error: null,
       };
-    case MOVE_ALL_CARDS_FAILURE:
+    case MOVE_ALL_CARDS.FAILURE:
       return { ...state, isLoading: false, error: action.payload };
     case ADD_CARD:
       return {
