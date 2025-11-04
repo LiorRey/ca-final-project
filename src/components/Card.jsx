@@ -24,6 +24,7 @@ export function Card({
 
   function handleClickCard() {
     onClickCard(card);
+    setAnchorEl(null);
   }
 
   function handleClick(e) {
@@ -132,6 +133,9 @@ export function Card({
         open={open}
         anchorEl={anchorEl}
         id={id}
+        cardId={card.id}
+        listId={listId}
+        openCard={handleClickCard}
         handleClose={handleClose}
         handleDelete={handleDelete}
         handleSave={handleSave}
