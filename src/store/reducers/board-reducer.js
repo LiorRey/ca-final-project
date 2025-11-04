@@ -5,8 +5,12 @@ export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
 export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
-export const ADD_LIST = "ADD_LIST";
-export const MOVE_ALL_CARDS = "MOVE_ALL_CARDS";
+export const ADD_LIST_REQUEST = "ADD_LIST_REQUEST";
+export const ADD_LIST_SUCCESS = "ADD_LIST_SUCCESS";
+export const ADD_LIST_FAILURE = "ADD_LIST_FAILURE";
+export const MOVE_ALL_CARDS_REQUEST = "MOVE_ALL_CARDS_REQUEST";
+export const MOVE_ALL_CARDS_SUCCESS = "MOVE_ALL_CARDS_SUCCESS";
+export const MOVE_ALL_CARDS_FAILURE = "MOVE_ALL_CARDS_FAILURE";
 export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
@@ -45,22 +49,34 @@ export function boardReducer(state = initialState, action) {
           lists: action.payload,
         },
       };
-    case ADD_LIST:
+    case ADD_LIST_REQUEST:
+      return { ...state, isLoading: true };
+    case ADD_LIST_SUCCESS:
       return {
         ...state,
         board: {
           ...state.board,
           lists: [...state.board.lists, action.payload],
         },
+        isLoading: false,
+        error: null,
       };
-    case MOVE_ALL_CARDS:
+    case ADD_LIST_FAILURE:
+      return { ...state, isLoading: false, error: action.payload };
+    case MOVE_ALL_CARDS_REQUEST:
+      return { ...state, isLoading: true };
+    case MOVE_ALL_CARDS_SUCCESS:
       return {
         ...state,
         board: {
           ...state.board,
           lists: action.payload,
         },
+        isLoading: false,
+        error: null,
       };
+    case MOVE_ALL_CARDS_FAILURE:
+      return { ...state, isLoading: false, error: action.payload };
     case ADD_CARD:
       return {
         ...state,
