@@ -104,13 +104,19 @@ export async function createList(boardId, listData) {
   }
 }
 
-export async function moveAllCardsToList(boardId, sourceListId, targetListId) {
+export async function moveAllCards(
+  boardId,
+  sourceListId,
+  targetListId = null,
+  { newListName = "New List" } = {}
+) {
   try {
     store.dispatch({ type: MOVE_ALL_CARDS.REQUEST });
     const updatedLists = await boardService.moveAllCards(
       boardId,
       sourceListId,
-      targetListId
+      targetListId,
+      { newListName }
     );
     store.dispatch({ type: MOVE_ALL_CARDS.SUCCESS, payload: updatedLists });
   } catch (error) {
@@ -126,10 +132,11 @@ export async function createListAndMoveAllCards(
 ) {
   try {
     store.dispatch({ type: MOVE_ALL_CARDS.REQUEST });
-    const { updatedLists } = await boardService.createListAndMoveAllCards(
+    const updatedLists = await boardService.moveAllCards(
       boardId,
       sourceListId,
-      listName
+      null,
+      { newListName: listName }
     );
     store.dispatch({ type: MOVE_ALL_CARDS.SUCCESS, payload: updatedLists });
   } catch (error) {

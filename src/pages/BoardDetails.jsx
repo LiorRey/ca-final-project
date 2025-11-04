@@ -12,8 +12,7 @@ import {
   loadBoards,
   updateBoard,
   copyList,
-  moveAllCardsToList,
-  createListAndMoveAllCards,
+  moveAllCards,
   createList,
 } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
@@ -88,9 +87,11 @@ export function BoardDetails() {
   async function onMoveAllCards(sourceListId, targetListId) {
     try {
       if (targetListId === "new") {
-        await createListAndMoveAllCards(board._id, sourceListId, "New List");
+        await moveAllCards(board._id, sourceListId, null, {
+          newListName: "New List",
+        });
       } else {
-        await moveAllCardsToList(board._id, sourceListId, targetListId);
+        await moveAllCards(board._id, sourceListId, targetListId);
       }
     } catch (error) {
       console.error("Move all cards failed:", error);

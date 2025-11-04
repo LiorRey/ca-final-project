@@ -23,7 +23,6 @@ export const boardService = {
   copyList,
   moveAllCards,
   createList,
-  createListAndMoveAllCards,
 };
 window.bs = boardService;
 
@@ -260,19 +259,37 @@ export async function deleteCard(boardId, cardId, listId) {
   }
 }
 
-export async function moveAllCards(boardId, sourceListId, targetListId) {
+export async function moveAllCards(
+  boardId,
+  sourceListId,
+  targetListId = null,
+  { newListName = "New List" } = {}
+) {
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
     const sourceList = _findList(board, sourceListId);
-    const targetList = _findList(board, targetListId);
-
     const cardsToMove = [...sourceList.cards];
-    targetList.cards.push(...cardsToMove);
-    sourceList.cards = [];
 
-    const updatedBoard = await updateBoard(boardId, { lists: board.lists });
+    let targetList;
+    let updatedLists;
+
+    if (!targetListId) {
+      const newList = {
+        ...getEmptyList(),
+        name: newListName,
+        cards: cardsToMove,
+      };
+      updatedLists = [...board.lists, newList];
+    } else {
+      targetList = _findList(board, targetListId);
+      targetList.cards.push(...cardsToMove);
+      updatedLists = board.lists;
+    }
+
+    sourceList.cards = [];
+    const updatedBoard = await updateBoard(boardId, { lists: updatedLists });
     return updatedBoard.lists;
   } catch (error) {
     console.error("Cannot move all cards:", error);
@@ -305,35 +322,6 @@ export function getEmptyList() {
     name: "",
     cards: [],
   };
-}
-
-export async function createListAndMoveAllCards(
-  boardId,
-  sourceListId,
-  listName = "New List"
-) {
-  try {
-    const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
-
-    const sourceList = _findList(board, sourceListId);
-
-    const newList = {
-      ...getEmptyList(),
-      name: listName,
-      cards: [...sourceList.cards],
-    };
-
-    sourceList.cards = [];
-
-    const updatedLists = [...board.lists, newList];
-
-    const updatedBoard = await updateBoard(boardId, { lists: updatedLists });
-    return { newList, updatedLists: updatedBoard.lists };
-  } catch (error) {
-    console.error("Cannot create new list and move cards:", error);
-    throw error;
-  }
 }
 
 function updateBoardFields(board, updates) {
