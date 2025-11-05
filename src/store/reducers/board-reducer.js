@@ -1,13 +1,5 @@
 import { getDefaultFilter } from "../../services/filter-service";
 
-function createAsyncActionTypes(baseType) {
-  return {
-    REQUEST: `${baseType}_REQUEST`,
-    SUCCESS: `${baseType}_SUCCESS`,
-    FAILURE: `${baseType}_FAILURE`,
-  };
-}
-
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
