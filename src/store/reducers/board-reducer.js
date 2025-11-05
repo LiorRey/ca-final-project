@@ -1,4 +1,5 @@
 import { getDefaultFilter } from "../../services/filter-service";
+import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
 
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
@@ -19,123 +20,119 @@ export const CLEAR_ALL_FILTERS = "boards/CLEAR_ALL_FILTERS";
 const initialState = {
   boards: [],
   board: null,
-  isLoading: false,
-  error: null,
+  loading: {},
+  errors: {},
   filterBy: getDefaultFilter(),
 };
 
+const handlers = {
+  ...createAsyncHandlers(ADD_LIST, "addList"),
+  [ADD_LIST.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, addList: false },
+    board: {
+      ...state.board,
+      lists: [...state.board.lists, action.payload],
+    },
+  }),
+  ...createAsyncHandlers(MOVE_ALL_CARDS, "moveAllCards"),
+  [MOVE_ALL_CARDS.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, moveAllCards: false },
+    board: {
+      ...state.board,
+      lists: action.payload,
+    },
+  }),
+  [SET_BOARDS]: (state, action) => ({
+    ...state,
+    boards: action.payload,
+  }),
+  [SET_BOARD]: (state, action) => ({
+    ...state,
+    board: action.payload,
+  }),
+  [DELETE_BOARD]: (state, action) => {
+    const boards = state.boards.filter(board => board._id !== action.payload);
+    return { ...state, boards };
+  },
+  [ADD_BOARD]: (state, action) => ({
+    ...state,
+    boards: [...state.boards, action.payload],
+  }),
+  [UPDATE_BOARD]: (state, action) => ({
+    ...state,
+    board: action.payload,
+  }),
+  [MOVE_LIST]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      lists: action.payload,
+    },
+  }),
+  [ADD_CARD]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.listId
+          ? { ...list, cards: [...list.cards, action.payload.card] }
+          : list
+      ),
+    },
+  }),
+  [EDIT_CARD]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card.id === action.payload.card.id ? action.payload.card : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  [DELETE_CARD]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.filter(
+                card => card.id !== action.payload.cardId
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  [SET_LOADING]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, global: action.payload },
+  }),
+  [SET_ERROR]: (state, action) => ({
+    ...state,
+    errors: { ...state.errors, global: action.payload },
+  }),
+  [SET_FILTERS]: (state, action) => ({
+    ...state,
+    filterBy: { ...state.filterBy, ...action.payload },
+  }),
+  [CLEAR_ALL_FILTERS]: state => ({
+    ...state,
+    filterBy: getDefaultFilter(),
+  }),
+};
+
 export function boardReducer(state = initialState, action) {
-  switch (action.type) {
-    case SET_BOARDS:
-      return { ...state, boards: action.payload };
-    case SET_BOARD:
-      return { ...state, board: action.payload };
-    case DELETE_BOARD:
-      const boards = state.boards.filter(board => board._id !== action.payload);
-      return { ...state, boards };
-    case ADD_BOARD:
-      return { ...state, boards: [...state.boards, action.payload] };
-    case UPDATE_BOARD:
-      return { ...state, board: action.payload };
-    case MOVE_LIST:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          lists: action.payload,
-        },
-      };
-    case ADD_LIST.REQUEST:
-      return { ...state, isLoading: true };
-    case ADD_LIST.SUCCESS:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          lists: [...state.board.lists, action.payload],
-        },
-        isLoading: false,
-        error: null,
-      };
-    case ADD_LIST.FAILURE:
-      return { ...state, isLoading: false, error: action.payload };
-    case MOVE_ALL_CARDS.REQUEST:
-      return { ...state, isLoading: true };
-    case MOVE_ALL_CARDS.SUCCESS:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          lists: action.payload,
-        },
-        isLoading: false,
-        error: null,
-      };
-    case MOVE_ALL_CARDS.FAILURE:
-      return { ...state, isLoading: false, error: action.payload };
-    case ADD_CARD:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          lists: state.board.lists.map(list =>
-            list.id === action.payload.listId
-              ? { ...list, cards: [...list.cards, action.payload.card] }
-              : list
-          ),
-        },
-      };
-    case EDIT_CARD:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          lists: state.board.lists.map(list =>
-            list.id === action.payload.listId
-              ? {
-                  ...list,
-                  cards: list.cards.map(card =>
-                    card.id === action.payload.card.id
-                      ? action.payload.card
-                      : card
-                  ),
-                }
-              : list
-          ),
-        },
-      };
-    case DELETE_CARD:
-      return {
-        ...state,
-        board: {
-          ...state.board,
-          lists: state.board.lists.map(list =>
-            list.id === action.payload.listId
-              ? {
-                  ...list,
-                  cards: list.cards.filter(
-                    card => card.id !== action.payload.cardId
-                  ),
-                }
-              : list
-          ),
-        },
-      };
-    case SET_LOADING:
-      return { ...state, isLoading: action.payload };
-    case SET_ERROR:
-      return { ...state, error: action.payload };
-    case SET_FILTERS:
-      return {
-        ...state,
-        filterBy: { ...state.filterBy, ...action.payload },
-      };
-    case CLEAR_ALL_FILTERS:
-      return {
-        ...state,
-        filterBy: getDefaultFilter(),
-      };
-    default:
-      return state;
-  }
+  const handler = handlers[action.type];
+  return handler ? handler(state, action) : state;
 }
