@@ -125,26 +125,6 @@ export async function moveAllCards(
   }
 }
 
-export async function createListAndMoveAllCards(
-  boardId,
-  sourceListId,
-  listName = "New List"
-) {
-  try {
-    store.dispatch({ type: MOVE_ALL_CARDS.REQUEST });
-    const updatedLists = await boardService.moveAllCards(
-      boardId,
-      sourceListId,
-      null,
-      { newListName: listName }
-    );
-    store.dispatch({ type: MOVE_ALL_CARDS.SUCCESS, payload: updatedLists });
-  } catch (error) {
-    store.dispatch({ type: MOVE_ALL_CARDS.FAILURE, payload: error.message });
-    throw error;
-  }
-}
-
 export async function addCard(boardId, card, listId) {
   try {
     const newCard = await boardService.addCard(boardId, card, listId);
