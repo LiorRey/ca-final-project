@@ -21,6 +21,10 @@ export const boardService = {
   deleteCard,
   getEmptyList,
   copyList,
+  createLabel,
+  editLabel,
+  deleteLabel,
+  updateCardLabels,
 };
 window.bs = boardService;
 
@@ -365,6 +369,69 @@ function updateCardFields(board, listId, cardId, updates) {
   );
   const updatedList = { ...list, cards: updatedCards };
   return updateListFields(board, listId, updatedList);
+}
+
+async function createLabel(boardId, label) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    await updateBoard(boardId, { labels: [...board.labels, label] });
+  } catch (error) {
+    console.error("Cannot create label:", error);
+    throw error;
+  }
+}
+
+async function editLabel(boardId, label) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const updatedLabels = board.labels.map(l =>
+      l.id === label.id ? label : l
+    );
+
+    await updateBoard(boardId, { labels: updatedLabels });
+  } catch (error) {
+    console.error("Cannot edit label:", error);
+    throw error;
+  }
+}
+
+async function deleteLabel(boardId, labelId) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const updatedLabels = board.labels.filter(l => l.id !== labelId);
+
+    await updateBoard(boardId, { labels: updatedLabels });
+  } catch (error) {
+    console.error("Cannot delete label:", error);
+    throw error;
+  }
+}
+
+async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const updatedBoard = await updateBoard(
+      boardId,
+      { labels: updatedCardLabels },
+      {
+        listId,
+        cardId,
+      }
+    );
+
+    return updatedCardLabels;
+  } catch (error) {
+    console.error("Cannot update card labels:", error);
+    throw error;
+  }
 }
 
 /* _applyBoardUpdate removed: logic now handled directly in updateBoard */

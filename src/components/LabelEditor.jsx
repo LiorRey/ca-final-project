@@ -14,28 +14,22 @@ const colors = [
   "gray",
 ];
 
-export function LabelEditor({
-  existingLabel = null,
-  onSaveLabel,
-  onDeleteLabel,
-}) {
-  const [title, setTitle] = useState(existingLabel?.title || "");
+export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
+  const [title, setTitle] = useState(labelToEdit?.title || "");
   const [selectedColor, setSelectedColor] = useState(
-    existingLabel?.color || colors[0]
+    labelToEdit?.color || colors[0]
   );
 
-  const isEditMode = existingLabel !== null;
-
   function handleSave() {
-    const baseLabel = isEditMode ? existingLabel : boardService.getEmptyLabel();
+    const label = labelToEdit || boardService.getEmptyLabel();
 
-    const label = {
-      ...baseLabel,
+    const updatedLabel = {
+      ...label,
       title,
       color: selectedColor,
     };
 
-    onSaveLabel(label);
+    onSaveLabel(updatedLabel);
   }
 
   return (
@@ -73,12 +67,12 @@ export function LabelEditor({
 
       <div className="label-editor-actions">
         <button className="save-btn" onClick={handleSave}>
-          {isEditMode ? "Save" : "Create"}
+          {labelToEdit ? "Save" : "Create"}
         </button>
-        {isEditMode && (
+        {labelToEdit && (
           <button
             className="delete-btn"
-            onClick={() => onDeleteLabel(existingLabel?.id)}
+            onClick={() => onDeleteLabel(labelToEdit.id)}
           >
             Delete
           </button>

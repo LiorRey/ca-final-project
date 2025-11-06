@@ -12,6 +12,10 @@ import {
   ADD_CARD,
   EDIT_CARD,
   DELETE_CARD,
+  CREATE_LABEL,
+  EDIT_LABEL,
+  DELETE_LABEL,
+  UPDATE_CARD_LABELS,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -153,6 +157,75 @@ export async function moveList(
     store.dispatch(setError(`Error moving list: ${error.message}`));
     throw error;
   }
+}
+
+export async function createLabel(boardId, label) {
+  try {
+    await boardService.createLabel(boardId, label);
+    store.dispatch(createLabelAction(label));
+  } catch (error) {
+    store.dispatch(setError(`Error creating label: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function editLabel(boardId, label) {
+  try {
+    await boardService.editLabel(boardId, label);
+    store.dispatch(editLabelAction(label));
+  } catch (error) {
+    store.dispatch(setError(`Error editing label: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function deleteLabel(boardId, labelId) {
+  try {
+    await boardService.deleteLabel(boardId, labelId);
+    store.dispatch(deleteLabelAction(labelId));
+  } catch (error) {
+    store.dispatch(setError(`Error deleting label: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function updateCardLabels(
+  boardId,
+  listId,
+  cardId,
+  updatedCardLabels
+) {
+  try {
+    await boardService.updateCardLabels(
+      boardId,
+      listId,
+      cardId,
+      updatedCardLabels
+    );
+    store.dispatch(updateCardLabelsAction(listId, cardId, updatedCardLabels));
+  } catch (error) {
+    store.dispatch(setError(`Error updating card labels: ${error.message}`));
+    throw error;
+  }
+}
+
+export function createLabelAction(label) {
+  return { type: CREATE_LABEL, payload: label };
+}
+
+export function editLabelAction(label) {
+  return { type: EDIT_LABEL, payload: label };
+}
+
+export function deleteLabelAction(labelId) {
+  return { type: DELETE_LABEL, payload: labelId };
+}
+
+export function updateCardLabelsAction(listId, cardId, updatedCardLabels) {
+  return {
+    type: UPDATE_CARD_LABELS,
+    payload: { listId, cardId, updatedCardLabels },
+  };
 }
 
 export function setBoards(boards) {

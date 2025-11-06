@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Popover } from "./Popover";
 import { LabelMenuItem } from "./LabelMenuItem";
 import { LabelEditor } from "./LabelEditor";
-import { editCard, updateBoard } from "../store/actions/board-actions";
-
-const VIEW_MENU = "menu";
-const VIEW_EDITOR = "editor";
+import {
+  createLabel,
+  editLabel,
+  deleteLabel,
+  updateCardLabels,
+} from "../store/actions/board-actions";
 
 export function LabelMenu({
   boardId,
@@ -16,110 +18,62 @@ export function LabelMenu({
   isLabelMenuOpen,
   onCloseLabelMenu,
 }) {
-  const [view, setView] = useState(VIEW_MENU);
-  const [editingLabel, setEditingLabel] = useState(null);
+  const [viewEditor, setViewEditor] = useState(false);
+  const [labelToEdit, setLabelToEdit] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const boardLabels = useSelector(state => state.boards.board.labels);
 
+  const boardLabels = useSelector(state => state.boards.board.labels);
   const filteredLabels = boardLabels.filter(label =>
     label.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    if (isLabelMenuOpen) {
-      setView(VIEW_MENU);
-      setEditingLabel(null);
-      setSearchTerm("");
-    }
-  }, [isLabelMenuOpen]);
-
-  function getPopoverTitle() {
-    if (view === VIEW_MENU) return "Labels";
-    return editingLabel ? "Edit label" : "Create label";
+  function handleShowCreateLabel() {
+    setLabelToEdit(null);
+    setViewEditor(true);
   }
 
-  function handleCreateLabel() {
-    setEditingLabel(null);
-    setView(VIEW_EDITOR);
-  }
-
-  function handleEditLabel(label) {
-    setEditingLabel(label);
-    setView(VIEW_EDITOR);
+  function handleShowEditLabel(label) {
+    setLabelToEdit(label);
+    setViewEditor(true);
   }
 
   function handleBack() {
-    setView(VIEW_MENU);
-    setEditingLabel(null);
+    setLabelToEdit(null);
+    setViewEditor(false);
   }
 
-  function handleCloseMenu() {
-    onCloseLabelMenu();
+  function onCreateLabel(label) {
+    createLabel(boardId, label);
+    onToggleLabel(label.id);
+    handleBack();
   }
 
-  async function handleSaveLabel(label) {
-    try {
-      const updatedBoardLabels = getUpdatedBoardLabels(label);
-      const boardUpdates = { labels: updatedBoardLabels };
-      await updateBoard(boardId, boardUpdates, {});
-
-      if (!editingLabel) {
-        toggleCardLabel(label.id);
-      }
-
-      handleBack();
-    } catch (error) {
-      console.error("Label save failed:", error);
-    }
+  function onEditLabel(label) {
+    editLabel(boardId, label);
+    handleBack();
   }
 
-  function getUpdatedBoardLabels(label) {
-    const boardLabelIndex = boardLabels.findIndex(l => l.id === label.id);
+  function onDeleteLabel(labelId) {
+    deleteLabel(boardId, labelId);
 
-    if (boardLabelIndex >= 0) {
-      const updatedBoardLabels = [...boardLabels];
-      updatedBoardLabels[boardLabelIndex] = label;
-
-      return updatedBoardLabels;
+    if (card.labels.includes(labelId)) {
+      onToggleLabel(labelId);
     }
 
-    return [...boardLabels, label];
+    handleBack();
   }
 
-  function toggleCardLabel(labelId, shouldAddToCard = true) {
-    const updatedLabelIds = shouldAddToCard
-      ? [...card.labels, labelId]
-      : card.labels.filter(id => id !== labelId);
+  function onToggleLabel(labelId) {
+    const updatedCardLabels = card.labels.includes(labelId)
+      ? card.labels.filter(id => id !== labelId)
+      : [...card.labels, labelId];
 
-    const updatedCard = { ...card, labels: updatedLabelIds };
-
-    editCard(boardId, updatedCard, listId);
+    updateCardLabels(boardId, listId, card.id, updatedCardLabels);
   }
 
-  function handleToggleLabel(labelId) {
-    try {
-      const shouldAddToCard = !card.labels.includes(labelId);
-      toggleCardLabel(labelId, shouldAddToCard);
-    } catch (error) {
-      console.error("Label check toggling failed:", error);
-    }
-  }
-
-  async function handleDeleteLabel(labelId) {
-    try {
-      const updatedBoardLabels = boardLabels.filter(l => l.id !== labelId);
-      const updates = { labels: updatedBoardLabels };
-      await updateBoard(boardId, updates, {});
-
-      if (card.labels.includes(labelId)) {
-        const shouldAddToCard = false;
-        toggleCardLabel(labelId, shouldAddToCard);
-      }
-
-      handleBack();
-    } catch (error) {
-      console.error("Label removal failed:", error);
-    }
+  function getPopoverTitle() {
+    if (!viewEditor) return "Labels";
+    return labelToEdit ? "Edit label" : "Create label";
   }
 
   return (
@@ -127,17 +81,23 @@ export function LabelMenu({
       className="label-menu-popover"
       anchorEl={anchorEl}
       isOpen={isLabelMenuOpen}
-      onClose={handleCloseMenu}
+      onClose={onCloseLabelMenu}
       title={getPopoverTitle()}
-      showBack={view}
-      onBack={view === VIEW_EDITOR ? handleBack : handleCloseMenu}
+      showBack={true}
+      onBack={viewEditor ? handleBack : onCloseLabelMenu}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
       paperProps={{ sx: { mt: 1 } }}
     >
-      {view === VIEW_MENU ? (
+      {viewEditor ? (
+        <LabelEditor
+          labelToEdit={labelToEdit}
+          onSaveLabel={labelToEdit ? onEditLabel : onCreateLabel}
+          onDeleteLabel={onDeleteLabel}
+        />
+      ) : (
         <div className="label-menu-content">
           <input
             type="text"
@@ -161,8 +121,8 @@ export function LabelMenu({
                     <LabelMenuItem
                       label={label}
                       isChecked={isChecked}
-                      onToggleLabel={handleToggleLabel}
-                      onEdit={() => handleEditLabel(label)}
+                      onToggleLabel={onToggleLabel}
+                      onShowEditLabel={handleShowEditLabel}
                     />
                   </li>
                 );
@@ -172,16 +132,10 @@ export function LabelMenu({
             )}
           </ul>
 
-          <button className="create-label-btn" onClick={handleCreateLabel}>
+          <button className="create-label-btn" onClick={handleShowCreateLabel}>
             Create a new label
           </button>
         </div>
-      ) : (
-        <LabelEditor
-          existingLabel={editingLabel}
-          onSaveLabel={handleSaveLabel}
-          onDeleteLabel={handleDeleteLabel}
-        />
       )}
     </Popover>
   );

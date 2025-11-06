@@ -1,6 +1,11 @@
 import Edit from "@mui/icons-material/Edit";
 
-export function LabelMenuItem({ label, isChecked, onToggleLabel, onEdit }) {
+export function LabelMenuItem({
+  label,
+  isChecked,
+  onToggleLabel,
+  onShowEditLabel,
+}) {
   return (
     <div className="label-menu-item">
       <input
@@ -19,7 +24,7 @@ export function LabelMenuItem({ label, isChecked, onToggleLabel, onEdit }) {
       <button
         className="label-edit-btn"
         aria-label="Edit label"
-        onClick={onEdit}
+        onClick={() => onShowEditLabel(label)}
       >
         <Edit />
       </button>
