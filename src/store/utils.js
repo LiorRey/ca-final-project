@@ -1,3 +1,27 @@
+/**
+ * Creates async action type constants for Redux async actions.
+ * Generates REQUEST, SUCCESS, FAILURE action types and a camelCase KEY.
+ *
+ * @param {string} base - The base action name in SCREAMING_SNAKE_CASE (e.g., "ADD_LIST")
+ * @returns {{REQUEST: string, SUCCESS: string, FAILURE: string, KEY: string}}
+ *   Object containing action type strings and a camelCase key
+ *
+ * @example
+ * const ADD_LIST = createAsyncActionTypes("ADD_LIST");
+ * // Returns:
+ * // {
+ * //   REQUEST: "ADD_LIST_REQUEST",
+ * //   SUCCESS: "ADD_LIST_SUCCESS",
+ * //   FAILURE: "ADD_LIST_FAILURE",
+ * //   KEY: "addList"
+ * // }
+ *
+ * // Usage in reducer:
+ * [ADD_LIST.REQUEST]: (state) => ({ ...state, loading: true })
+ *
+ * // Usage with createAsyncHandlers:
+ * createAsyncHandlers(ADD_LIST, ADD_LIST.KEY)
+ */
 export function createAsyncActionTypes(base) {
   // BASE_ACTION -> baseAction
   const key = base
@@ -14,6 +38,34 @@ export function createAsyncActionTypes(base) {
   };
 }
 
+/**
+ * Creates reducer handlers for async action lifecycle (REQUEST, SUCCESS, FAILURE).
+ * Automatically manages loading and error states in the Redux store.
+ *
+ * @param {{REQUEST: string, SUCCESS: string, FAILURE: string}} actionTypes
+ *   Action types object created by createAsyncActionTypes
+ * @param {string} key - The key to use for tracking loading/error state (e.g., "addList")
+ * @returns {Object.<string, Function>} Object mapping action types to reducer functions
+ *
+ * @example
+ * const ADD_LIST = createAsyncActionTypes("ADD_LIST");
+ *
+ * const handlers = {
+ *   ...createAsyncHandlers(ADD_LIST, ADD_LIST.KEY),
+ *   // Override SUCCESS to add custom logic
+ *   [ADD_LIST.SUCCESS]: (state, action) => ({
+ *     ...state,
+ *     loading: { ...state.loading, [ADD_LIST.KEY]: false },
+ *     items: [...state.items, action.payload],
+ *   }),
+ * };
+ *
+ * // State shape:
+ * // {
+ * //   loading: { addList: true/false },
+ * //   errors: { addList: null | errorMessage }
+ * // }
+ */
 export function createAsyncHandlers(actionTypes, key) {
   return {
     [actionTypes.REQUEST]: state => ({
