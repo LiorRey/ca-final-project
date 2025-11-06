@@ -26,19 +26,19 @@ const initialState = {
 };
 
 const handlers = {
-  ...createAsyncHandlers(ADD_LIST, "addList"),
+  ...createAsyncHandlers(ADD_LIST, ADD_LIST.KEY),
   [ADD_LIST.SUCCESS]: (state, action) => ({
     ...state,
-    loading: { ...state.loading, addList: false },
+    loading: { ...state.loading, [ADD_LIST.KEY]: false },
     board: {
       ...state.board,
       lists: [...state.board.lists, action.payload],
     },
   }),
-  ...createAsyncHandlers(MOVE_ALL_CARDS, "moveAllCards"),
+  ...createAsyncHandlers(MOVE_ALL_CARDS, MOVE_ALL_CARDS.KEY),
   [MOVE_ALL_CARDS.SUCCESS]: (state, action) => ({
     ...state,
-    loading: { ...state.loading, moveAllCards: false },
+    loading: { ...state.loading, [MOVE_ALL_CARDS.KEY]: false },
     board: {
       ...state.board,
       lists: action.payload,
