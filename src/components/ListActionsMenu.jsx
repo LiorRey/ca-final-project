@@ -87,7 +87,7 @@ export function ListActionsMenu({
           onCancel={handleCopyCancel}
         />
       ) : activeAction === "moveAll" ? (
-        <MenuList className="list-actions-menu" dense>
+        <MenuList className="popover-menu" dense>
           {currentBoard.lists.map(listItem => (
             <MenuItem
               key={listItem.id}
@@ -110,7 +110,7 @@ export function ListActionsMenu({
           onSubmit={handleMoveList}
         />
       ) : (
-        <MenuList className="list-actions-menu" dense>
+        <MenuList className="list-actions-menu popover-menu" dense>
           {listActionsMenuItems().map(({ label, key }) => (
             <MenuItem key={key} onClick={() => handleMenuClick(key)}>
               <ListItemText>{label}</ListItemText>
