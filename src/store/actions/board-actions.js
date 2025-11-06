@@ -21,25 +21,29 @@ import { boardService } from "../../services/board";
 
 export async function loadBoards() {
   try {
-    store.dispatch(setLoading(true));
+    store.dispatch(setLoading("loadBoards", true));
     const boards = await boardService.query();
     store.dispatch(setBoards(boards));
   } catch (error) {
-    store.dispatch(setError(`Error loading boards: ${error.message}`));
+    store.dispatch(
+      setError("loadBoards", `Error loading boards: ${error.message}`)
+    );
   } finally {
-    store.dispatch(setLoading(false));
+    store.dispatch(setLoading("loadBoards", false));
   }
 }
 
 export async function loadBoard(boardId, filterBy = {}) {
   try {
-    store.dispatch(setLoading(true));
+    store.dispatch(setLoading("loadBoard", true));
     const board = await boardService.getById(boardId, filterBy);
     store.dispatch(setBoard(board));
   } catch (error) {
-    store.dispatch(setError(`Error loading board: ${error.message}`));
+    store.dispatch(
+      setError("loadBoard", `Error loading board: ${error.message}`)
+    );
   } finally {
-    store.dispatch(setLoading(false));
+    store.dispatch(setLoading("loadBoard", false));
   }
 }
 
@@ -49,7 +53,9 @@ export async function createBoard(board) {
     store.dispatch(addBoard(newBoard));
     return newBoard;
   } catch (error) {
-    store.dispatch(setError(`Error creating board: ${error.message}`));
+    store.dispatch(
+      setError("createBoard", `Error creating board: ${error.message}`)
+    );
     throw error;
   }
 }
@@ -67,7 +73,9 @@ export async function updateBoard(
     store.dispatch(editBoard(updatedBoard));
     return updatedBoard;
   } catch (error) {
-    store.dispatch(setError(`Error updating board: ${error.message}`));
+    store.dispatch(
+      setError("updateBoard", `Error updating board: ${error.message}`)
+    );
     throw error;
   }
 }
@@ -77,7 +85,9 @@ export async function deleteBoard(boardId) {
     await boardService.remove(boardId);
     store.dispatch(deleteBoardAction(boardId));
   } catch (error) {
-    store.dispatch(setError(`Error removing board: ${error.message}`));
+    store.dispatch(
+      setError("deleteBoard", `Error removing board: ${error.message}`)
+    );
     throw error;
   }
 }
@@ -87,7 +97,9 @@ export async function copyList(boardId, listId, newName) {
     const updatedLists = await boardService.copyList(boardId, listId, newName);
     updateBoard(boardId, { lists: updatedLists });
   } catch (error) {
-    store.dispatch(setError(`Error copying list: ${error.message}`));
+    store.dispatch(
+      setError("copyList", `Error copying list: ${error.message}`)
+    );
     throw error;
   }
 }
@@ -130,7 +142,7 @@ export async function addCard(boardId, card, listId) {
     const newCard = await boardService.addCard(boardId, card, listId);
     store.dispatch(addCardAction(newCard, listId));
   } catch (error) {
-    store.dispatch(setError(`Error adding card: ${error.message}`));
+    store.dispatch(setError("addCard", `Error adding card: ${error.message}`));
     throw error;
   }
 }
@@ -140,7 +152,9 @@ export async function editCard(boardId, card, listId) {
     const updatedCard = await boardService.editCard(boardId, card, listId);
     store.dispatch(editCardAction(updatedCard, listId));
   } catch (error) {
-    store.dispatch(setError(`Error editing card: ${error.message}`));
+    store.dispatch(
+      setError("editCard", `Error editing card: ${error.message}`)
+    );
     throw error;
   }
 }
@@ -150,7 +164,9 @@ export async function deleteCard(boardId, cardId, listId) {
     const deletedCard = await boardService.deleteCard(boardId, cardId, listId);
     store.dispatch(deleteCardAction(deletedCard.id, listId));
   } catch (error) {
-    store.dispatch(setError(`Error deleting card: ${error.message}`));
+    store.dispatch(
+      setError("deleteCard", `Error deleting card: ${error.message}`)
+    );
     throw error;
   }
 }
@@ -185,7 +201,7 @@ export async function moveList(
     store.dispatch(moveListAction(updatedLists));
     return updatedLists;
   } catch (error) {
-    store.dispatch(setError(`Error moving list: ${error.message}`));
+    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
     throw error;
   }
 }
@@ -210,12 +226,12 @@ export function setBoard(board) {
   return { type: SET_BOARD, payload: board };
 }
 
-export function setLoading(isLoading) {
-  return { type: SET_LOADING, payload: isLoading };
+export function setLoading(key, isLoading) {
+  return { type: SET_LOADING, payload: { key, isLoading } };
 }
 
-export function setError(error) {
-  return { type: SET_ERROR, payload: error };
+export function setError(key, error) {
+  return { type: SET_ERROR, payload: { key, error } };
 }
 
 export function setFilters(filterBy) {

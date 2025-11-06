@@ -116,11 +116,17 @@ const handlers = {
   }),
   [SET_LOADING]: (state, action) => ({
     ...state,
-    loading: { ...state.loading, global: action.payload },
+    loading: {
+      ...state.loading,
+      [action.payload.key]: action.payload.isLoading,
+    },
   }),
   [SET_ERROR]: (state, action) => ({
     ...state,
-    errors: { ...state.errors, global: action.payload },
+    errors: {
+      ...state.errors,
+      [action.payload.key]: action.payload.error,
+    },
   }),
   [SET_FILTERS]: (state, action) => ({
     ...state,
