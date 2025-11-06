@@ -27,12 +27,7 @@ export function LabelMenu({
     label.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function handleShowCreateLabel() {
-    setLabelToEdit(null);
-    setViewEditor(true);
-  }
-
-  function handleShowEditLabel(label) {
+  function handleShowEditor(label) {
     setLabelToEdit(label);
     setViewEditor(true);
   }
@@ -42,28 +37,29 @@ export function LabelMenu({
     setViewEditor(false);
   }
 
-  function onCreateLabel(label) {
-    createLabel(boardId, label);
-    onToggleLabel(label.id);
+  async function handleCreateLabel(label) {
+    await createLabel(boardId, label);
+    handleToggleLabel(label.id);
+    setSearchTerm("");
     handleBack();
   }
 
-  function onEditLabel(label) {
+  function handleEditLabel(label) {
     editLabel(boardId, label);
     handleBack();
   }
 
-  function onDeleteLabel(labelId) {
-    deleteLabel(boardId, labelId);
+  async function handleDeleteLabel(labelId) {
+    await deleteLabel(boardId, labelId);
 
     if (card.labels.includes(labelId)) {
-      onToggleLabel(labelId);
+      handleToggleLabel(labelId);
     }
 
     handleBack();
   }
 
-  function onToggleLabel(labelId) {
+  function handleToggleLabel(labelId) {
     const updatedCardLabels = card.labels.includes(labelId)
       ? card.labels.filter(id => id !== labelId)
       : [...card.labels, labelId];
@@ -73,7 +69,7 @@ export function LabelMenu({
 
   function getPopoverTitle() {
     if (!viewEditor) return "Labels";
-    return labelToEdit ? "Edit label" : "Create label";
+    return labelToEdit.id ? "Edit label" : "Create label";
   }
 
   return (
@@ -94,8 +90,8 @@ export function LabelMenu({
       {viewEditor ? (
         <LabelEditor
           labelToEdit={labelToEdit}
-          onSaveLabel={labelToEdit ? onEditLabel : onCreateLabel}
-          onDeleteLabel={onDeleteLabel}
+          onSaveLabel={labelToEdit.id ? handleEditLabel : handleCreateLabel}
+          onDeleteLabel={handleDeleteLabel}
         />
       ) : (
         <div className="label-menu-content">
@@ -121,8 +117,8 @@ export function LabelMenu({
                     <LabelMenuItem
                       label={label}
                       isChecked={isChecked}
-                      onToggleLabel={onToggleLabel}
-                      onShowEditLabel={handleShowEditLabel}
+                      onToggleLabel={handleToggleLabel}
+                      onShowEditor={handleShowEditor}
                     />
                   </li>
                 );
@@ -132,7 +128,10 @@ export function LabelMenu({
             )}
           </ul>
 
-          <button className="create-label-btn" onClick={handleShowCreateLabel}>
+          <button
+            className="create-label-btn"
+            onClick={() => handleShowEditor({ title: searchTerm })}
+          >
             Create a new label
           </button>
         </div>

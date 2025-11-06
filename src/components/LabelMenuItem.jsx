@@ -4,7 +4,7 @@ export function LabelMenuItem({
   label,
   isChecked,
   onToggleLabel,
-  onShowEditLabel,
+  onShowEditor,
 }) {
   return (
     <div className="label-menu-item">
@@ -24,7 +24,7 @@ export function LabelMenuItem({
       <button
         className="label-edit-btn"
         aria-label="Edit label"
-        onClick={() => onShowEditLabel(label)}
+        onClick={() => onShowEditor(label)}
       >
         <Edit />
       </button>

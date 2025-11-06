@@ -15,13 +15,13 @@ const colors = [
 ];
 
 export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
-  const [title, setTitle] = useState(labelToEdit?.title || "");
+  const [title, setTitle] = useState(labelToEdit.title);
   const [selectedColor, setSelectedColor] = useState(
-    labelToEdit?.color || colors[0]
+    labelToEdit.color || colors[0]
   );
 
   function handleSave() {
-    const label = labelToEdit || boardService.getEmptyLabel();
+    const label = labelToEdit.id ? labelToEdit : boardService.getEmptyLabel();
 
     const updatedLabel = {
       ...label,
@@ -67,9 +67,9 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
 
       <div className="label-editor-actions">
         <button className="save-btn" onClick={handleSave}>
-          {labelToEdit ? "Save" : "Create"}
+          {labelToEdit.id ? "Save" : "Create"}
         </button>
-        {labelToEdit && (
+        {labelToEdit.id && (
           <button
             className="delete-btn"
             onClick={() => onDeleteLabel(labelToEdit.id)}
