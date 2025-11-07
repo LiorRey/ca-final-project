@@ -57,22 +57,10 @@ const handlers = {
     loading: { ...state.loading, [ARCHIVE_LIST.KEY]: false },
     board: {
       ...state.board,
-      lists: state.board.lists.map(list =>
-        list.id === action.payload.id ? action.payload : list
-      ),
+      lists: state.board.lists.map(list => list.id !== action.payload.id),
     },
   }),
   ...createAsyncHandlers(UNARCHIVE_LIST, UNARCHIVE_LIST.KEY),
-  [UNARCHIVE_LIST.SUCCESS]: (state, action) => ({
-    ...state,
-    loading: { ...state.loading, [UNARCHIVE_LIST.KEY]: false },
-    board: {
-      ...state.board,
-      lists: state.board.lists.map(list =>
-        list.id === action.payload.id ? action.payload : list
-      ),
-    },
-  }),
   [SET_BOARDS]: (state, action) => ({
     ...state,
     boards: action.payload,
