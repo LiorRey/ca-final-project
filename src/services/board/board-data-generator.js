@@ -128,6 +128,7 @@ export function generateList(
     id: crypto.randomUUID(),
     title: faker.helpers.arrayElement(listNames),
     cards,
+    archivedAt: null,
     ...options,
   };
 
