@@ -154,7 +154,7 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
 
   const board = {
     _id: boardId,
-    name: faker.helpers.arrayElement(PROJECT_TYPES),
+    title: faker.helpers.arrayElement(PROJECT_TYPES),
     description: faker.company.catchPhrase() + " - " + faker.lorem.sentence(),
     createdAt,
     updatedAt,
@@ -305,7 +305,7 @@ export function generateBoardWithUsers(
 
   const board = {
     _id: boardId,
-    name: faker.helpers.arrayElement(PROJECT_TYPES),
+    title: faker.helpers.arrayElement(PROJECT_TYPES),
     description: faker.company.catchPhrase() + " - " + faker.lorem.sentence(),
     createdAt,
     updatedAt,
@@ -412,7 +412,7 @@ export function generateSampleData() {
     4,
     4,
     {
-      name: "Sample Development Board",
+      title: "Sample Development Board",
       description: "A comprehensive sample board for development and testing",
       userCount: 6,
     }

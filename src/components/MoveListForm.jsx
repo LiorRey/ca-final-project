@@ -61,7 +61,7 @@ export function MoveListForm({
           >
             {boards.map(b => (
               <MenuItem key={b._id} value={b._id}>
-                {b.name}
+                {b.title}
               </MenuItem>
             ))}
           </Select>

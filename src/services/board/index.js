@@ -6,7 +6,7 @@ import boardDataGenerator from "../board/board-data-generator.js";
 function getEmptyBoard() {
   return {
     _id: crypto.randomUUID(),
-    name: "",
+    title: "",
     description: "",
     createdAt: "",
     updatedAt: "",
