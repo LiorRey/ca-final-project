@@ -56,7 +56,7 @@ export async function copyList(boardId, listId, newName) {
     const clonedList = {
       ...listToCopy,
       id: crypto.randomUUID(),
-      name: newName,
+      title: newName,
       cards: clonedCards,
     };
 
@@ -267,7 +267,7 @@ export async function moveAllCards(
   boardId,
   sourceListId,
   targetListId = null,
-  { newListName = "New List" } = {}
+  { newListTitle = "New List" } = {}
 ) {
   try {
     const board = await getById(boardId);
@@ -282,7 +282,7 @@ export async function moveAllCards(
     if (!targetListId) {
       const newList = {
         ...getEmptyList(),
-        name: newListName,
+        title: newListTitle,
         cards: cardsToMove,
       };
       updatedLists = [...board.lists, newList];
@@ -323,7 +323,7 @@ export async function createList(boardId, listData) {
 export function getEmptyList() {
   return {
     id: crypto.randomUUID(),
-    name: "",
+    title: "",
     cards: [],
   };
 }

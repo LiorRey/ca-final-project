@@ -81,7 +81,7 @@ export function ListActionsMenu({
     >
       {activeAction === "copy" ? (
         <CopyListForm
-          initialValue={list.name}
+          initialValue={list.title}
           onCopy={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
         />
@@ -93,7 +93,7 @@ export function ListActionsMenu({
               disabled={listItem.id === list.id}
               onClick={() => handleMoveAllCards(listItem.id)}
             >
-              <ListItemText>{listItem.name}</ListItemText>
+              <ListItemText>{listItem.title}</ListItemText>
             </MenuItem>
           ))}
           <MenuItem onClick={() => handleMoveAllCards("new")}>
