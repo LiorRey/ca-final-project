@@ -24,6 +24,7 @@ import {
 
 import { store } from "../store";
 import { boardService } from "../../services/board";
+import { createAsyncAction } from "../utils";
 
 export async function loadBoards() {
   try {
@@ -272,29 +273,17 @@ export async function updateCardLabels(
   }
 }
 
-export async function archiveList(boardId, listId) {
-  try {
-    store.dispatch({ type: ARCHIVE_LIST.REQUEST });
-    const updatedList = await boardService.archiveList(boardId, listId);
-    store.dispatch({ type: ARCHIVE_LIST.SUCCESS, payload: updatedList });
-    return updatedList;
-  } catch (error) {
-    store.dispatch({ type: ARCHIVE_LIST.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const archiveList = createAsyncAction(
+  ARCHIVE_LIST,
+  boardService.archiveList,
+  store
+);
 
-export async function unarchiveList(boardId, listId) {
-  try {
-    store.dispatch({ type: UNARCHIVE_LIST.REQUEST });
-    const updatedList = await boardService.unarchiveList(boardId, listId);
-    store.dispatch({ type: UNARCHIVE_LIST.SUCCESS, payload: updatedList });
-    return updatedList;
-  } catch (error) {
-    store.dispatch({ type: UNARCHIVE_LIST.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const unarchiveList = createAsyncAction(
+  UNARCHIVE_LIST,
+  boardService.unarchiveList,
+  store
+);
 
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };
