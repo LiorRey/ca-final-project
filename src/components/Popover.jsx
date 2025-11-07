@@ -15,6 +15,7 @@ export function Popover({
   showBack = false,
   onBack,
   paperProps = {},
+  slotProps = {},
   ...popoverProps
 }) {
   return (
@@ -27,6 +28,7 @@ export function Popover({
           className: "popover-paper",
           ...paperProps,
         },
+        ...slotProps,
       }}
       {...popoverProps}
     >

@@ -130,7 +130,6 @@ export function CardModal({
         </footer>
 
         <LabelMenu
-          key={anchorEl ? "open" : "closed"}
           boardId={boardId}
           listId={listId}
           card={card}

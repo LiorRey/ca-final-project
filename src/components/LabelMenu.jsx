@@ -37,6 +37,13 @@ export function LabelMenu({
     setViewEditor(false);
   }
 
+  function handleCloseLabelMenu() {
+    setSearchTerm("");
+    setLabelToEdit(null);
+    setViewEditor(false);
+    onCloseLabelMenu();
+  }
+
   async function handleCreateLabel(label) {
     await createLabel(boardId, label);
     handleToggleLabel(label.id);
@@ -86,6 +93,7 @@ export function LabelMenu({
         horizontal: "left",
       }}
       paperProps={{ sx: { mt: 1 } }}
+      slotProps={{ transition: { onExited: () => handleCloseLabelMenu() } }}
     >
       {viewEditor ? (
         <LabelEditor
