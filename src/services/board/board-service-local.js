@@ -21,6 +21,8 @@ export const boardService = {
   deleteCard,
   getEmptyList,
   copyList,
+  moveAllCards,
+  createList,
 };
 window.bs = boardService;
 
@@ -256,39 +258,63 @@ export async function deleteCard(boardId, cardId, listId) {
     throw error;
   }
 }
-// async function updateBoardWithActivity(
-//   boardId,
-//   { listId = null, cardId = null, key, value }
-// ) {
-//   try {
-//     if (!boardId || !key) throw new Error("Board and key are required");
 
-//     const board = await getById(boardId);
-//     if (!board) throw new Error("Board not found");
+export async function moveAllCards(
+  boardId,
+  sourceListId,
+  targetListId = null,
+  { newListName = "New List" } = {}
+) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
 
-//     let { board: updatedBoard, prevValue } = _applyBoardUpdate(
-//       board,
-//       { key, value },
-//       listId,
-//       cardId
-//     );
+    const sourceList = _findList(board, sourceListId);
+    const cardsToMove = [...sourceList.cards];
 
-//     updatedBoard = _addBoardActivity(
-//       updatedBoard,
-//       key,
-//       value,
-//       prevValue,
-//       listId,
-//       cardId
-//     );
+    let targetList;
+    let updatedLists;
 
-//     return save(updatedBoard);
-//   } catch (error) {
-//     console.error("Cannot update board:", error);
+    if (!targetListId) {
+      const newList = {
+        ...getEmptyList(),
+        name: newListName,
+        cards: cardsToMove,
+      };
+      updatedLists = [...board.lists, newList];
+    } else {
+      targetList = _findList(board, targetListId);
+      targetList.cards.push(...cardsToMove);
+      updatedLists = board.lists;
+    }
 
-//     throw error;
-//   }
-// }
+    sourceList.cards = [];
+    const updatedBoard = await updateBoard(boardId, { lists: updatedLists });
+    return updatedBoard.lists;
+  } catch (error) {
+    console.error("Cannot move all cards:", error);
+    throw error;
+  }
+}
+
+export async function createList(boardId, listData) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const newList = {
+      ...getEmptyList(),
+      ...listData,
+    };
+
+    const updatedLists = [...board.lists, newList];
+    await updateBoard(boardId, { lists: updatedLists });
+    return newList;
+  } catch (error) {
+    console.error("Cannot create new list:", error);
+    throw error;
+  }
+}
 
 export function getEmptyList() {
   return {
@@ -298,50 +324,6 @@ export function getEmptyList() {
   };
 }
 
-// function _applyBoardUpdate(
-//   board,
-//   { key, value },
-//   listId = null,
-//   cardId = null
-// ) {
-//   try {
-//     let prevValue;
-
-//     if (cardId) {
-//       if (!listId) throw new Error("Card update requires listId");
-
-//       const list = board.lists?.find(l => l.id === listId);
-//       if (!list) throw new Error("List not found");
-
-//       const card = list.cards?.find(c => c.id === cardId);
-//       if (!card) throw new Error("Card not found");
-
-//       if (!key && value) {
-//         const index = list.cards.findIndex(c => c.id === cardId);
-//         prevValue = card;
-//         let newcard = { ...card, ...value };
-//         list.cards[index] = newcard;
-//       } else {
-//         prevValue = card[key];
-//         card[key] = value;
-//       }
-//     } else if (listId) {
-//       const list = board.lists?.find(l => l.id === listId);
-//       if (!list) throw new Error("List not found");
-
-//       prevValue = list[key];
-//       list[key] = value;
-//     } else {
-//       prevValue = board[key];
-//       board[key] = value;
-//     }
-
-//     return { board, prevValue };
-//   } catch (error) {
-//     console.warn("Board updated failed:", error.message);
-
-//     throw error;
-//   }
 function updateBoardFields(board, updates) {
   return { ...board, ...updates };
 }
@@ -366,52 +348,6 @@ function updateCardFields(board, listId, cardId, updates) {
   const updatedList = { ...list, cards: updatedCards };
   return updateListFields(board, listId, updatedList);
 }
-
-/* _applyBoardUpdate removed: logic now handled directly in updateBoard */
-
-// function _addBoardActivity(
-//   board,
-//   key,
-//   value,
-//   prevValue,
-//   listId = null,
-//   cardId = null
-// ) {
-//   const activity = _createActivity(
-//     board._id,
-//     key,
-//     value,
-//     prevValue,
-//     listId,
-//     cardId
-//   );
-
-//   board.activities = board.activities || [];
-//   board.activities.unshift(activity);
-
-//   return board;
-// }
-
-// function _createActivity(
-//   boardId,
-//   key,
-//   value,
-//   prevValue,
-//   listId = null,
-//   cardId = null
-// ) {
-//   return {
-//     id: makeId(),
-//     type: "activity",
-//     createdAt: Date.now(),
-//     board: boardId,
-//     list: listId,
-//     card: cardId,
-//     key,
-//     value,
-//     prevValue,
-//   };
-// }
 
 export async function save(board) {
   try {

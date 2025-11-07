@@ -21,6 +21,7 @@ export function List({
   setActiveAddCardListId,
   onCopyList,
   listIndex,
+  onMoveAllCards,
 }) {
   const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -180,6 +181,7 @@ export function List({
         onEditList={handleEditList}
         onDeleteList={handleDeleteList}
         onCopyList={onCopyList}
+        onMoveAllCards={onMoveAllCards}
       />
     </section>
   );

@@ -12,6 +12,7 @@ export function Popover({
   children,
   showClose = true,
   paperProps = {},
+  slotProps = {},
   ...popoverProps
 }) {
   return (
@@ -24,6 +25,7 @@ export function Popover({
           className: "popover-paper",
           ...paperProps,
         },
+        ...slotProps,
       }}
       {...popoverProps}
     >
