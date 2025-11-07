@@ -13,6 +13,7 @@ import {
   moveList,
   loadBoards,
   archiveList,
+  archiveAllCardsInList,
 } from "../store/actions/board-actions";
 
 export function ListActionsMenu({
@@ -35,7 +36,12 @@ export function ListActionsMenu({
       archiveList(currentBoard._id, list.id);
       onClose();
     } else {
-      setActiveAction(key);
+      if (key === "archiveAllCards") {
+        archiveAllCardsInList(currentBoard._id, list.id);
+        onClose();
+      } else {
+        setActiveAction(key);
+      }
     }
   }
 
