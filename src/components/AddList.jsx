@@ -10,23 +10,23 @@ import { boardService } from "../services/board";
 
 export function AddList({ onAddList }) {
   const [showAddList, setShowAddList] = useState(false);
-  const [newListName, setNewListName] = useState("");
+  const [newListTitle, setNewListTitle] = useState("");
 
   function handleAddList() {
-    if (!newListName) {
+    if (!newListTitle) {
       handleHideAddList();
       return;
     }
 
     const newList = boardService.getEmptyList();
-    newList.name = newListName;
+    newList.title = newListTitle;
     onAddList(newList);
 
-    setNewListName("");
+    setNewListTitle("");
   }
 
   function handleHideAddList() {
-    setNewListName("");
+    setNewListTitle("");
     setShowAddList(false);
   }
 
@@ -46,9 +46,9 @@ export function AddList({ onAddList }) {
             <TextField
               id="outlined-basic"
               variant="outlined"
-              value={newListName}
+              value={newListTitle}
               placeholder="Enter list name"
-              onChange={e => setNewListName(e.target.value)}
+              onChange={e => setNewListTitle(e.target.value)}
               autoFocus
             />
           </div>

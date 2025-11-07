@@ -69,10 +69,10 @@ export function BoardDetails() {
     try {
       const options = { listId: list.id };
       updateBoard(board._id, updates, options);
-      showSuccessMsg(`The list ${list.name} updated successfully!`);
+      showSuccessMsg(`The list ${list.title} updated successfully!`);
     } catch (error) {
       console.error("List update failed:", error);
-      showErrorMsg(`Unable to update the list: ${list.name}`);
+      showErrorMsg(`Unable to update the list: ${list.title}`);
     }
   }
 

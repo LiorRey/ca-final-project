@@ -126,7 +126,7 @@ export function generateList(
 
   const list = {
     id: crypto.randomUUID(),
-    name: faker.helpers.arrayElement(listNames),
+    title: faker.helpers.arrayElement(listNames),
     cards,
     ...options,
   };
@@ -444,7 +444,7 @@ export function generateSampleData() {
     sampleList: generateList(
       4,
       {
-        name: "Sample List",
+        title: "Sample List",
       },
       sampleUsers
     ),

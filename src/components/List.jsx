@@ -107,7 +107,7 @@ export function List({
   return (
     <section className="list-container">
       <div className="list-header">
-        <h2>{list.name}</h2>
+        <h2>{list.title}</h2>
         <SquareIconButton
           icon={<MoreHoriz />}
           onClick={handleMoreClick}
