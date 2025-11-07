@@ -132,6 +132,7 @@ export function Card({
       <CardPopover
         open={open}
         anchorEl={anchorEl}
+        card={card}
         id={id}
         cardId={card.id}
         listId={listId}

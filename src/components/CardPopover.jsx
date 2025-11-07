@@ -11,9 +11,11 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 
+import CopyCardForm from "./CopyCardForm";
 import { Popover as MenuPopover } from "./Popover";
 
 export default function CardPopover({
+  card,
   open,
   anchorEl,
   id,
@@ -21,54 +23,43 @@ export default function CardPopover({
   handleClose,
   handleDelete,
 }) {
-  const [popoverOpen, setPopoverOpen] = useState(false);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
-  function handleMenuClick(e, key) {
-    e.stopPropagation();
-    switch (key) {
-      case "open":
-        handleOpen();
-        break;
-      case "editLabels":
-        handleEditLabels();
-        break;
-      case "changeMembers":
-        handleChangeMembers();
-        break;
-      case "moveCard":
-        handleMoveCard();
-        break;
-      case "copyCard":
-        handleCopyCard(e);
-        break;
-      case "copyLink":
-        handleCopyLink(e);
-        break;
-      case "archive":
-        handleArchive();
-        break;
-      default:
-        break;
-    }
-  }
-  function handleOpen() {
+
+  function handleOpen(e) {
     openCard();
     console.log("open");
   }
-  function handleEditLabels() {
+  function handleEditLabels(e) {
     console.log("editLabels");
   }
-  function handleArchive() {
+  function handleArchive(e) {
     console.log("delete");
     handleDelete();
   }
 
   function handleCopyCard(e) {
     setPopoverAnchorEl(e.currentTarget);
-    setPopoverOpen(true);
     setActiveMenuItem("copyCard");
   }
+
+  function handleMenuClick(e, key) {
+    e.stopPropagation();
+    const menuHandlers = {
+      open: handleOpen,
+      editLabels: handleEditLabels,
+      copyCard: handleCopyCard,
+      archive: handleArchive,
+    };
+    menuHandlers[key]?.(e);
+  }
+
+  function handlePopoverClose() {
+    setPopoverAnchorEl(null);
+    setActiveMenuItem(null);
+  }
+
+  const popoverOpen = Boolean(popoverAnchorEl);
 
   return (
     <Backdrop
@@ -110,7 +101,7 @@ export default function CardPopover({
         onClick={e => e.stopPropagation()}
       >
         <div className="card-popover-content">
-          {listActionstems().map(({ label, key, icon }) => (
+          {cardActionsMenuItems().map(({ label, key, icon }) => (
             <button
               key={key}
               onClick={e => handleMenuClick(e, key)}
@@ -124,25 +115,35 @@ export default function CardPopover({
           ))}
         </div>
       </Popover>
-      <MenuPopover
-        title="Copy card"
-        open={popoverOpen}
-        anchorEl={popoverAnchorEl}
-        onClose={() => {
-          setPopoverOpen(false);
-          setActiveMenuItem(null);
-        }}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        sx={{ zIndex: theme => theme.zIndex.modal + 2 }}
-      />
+      {popoverOpen && (
+        <MenuPopover
+          className="copy-card-form-popover"
+          anchorEl={popoverAnchorEl}
+          isOpen={popoverOpen}
+          onClose={handlePopoverClose}
+          title="Copy card"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          paperProps={{ sx: { mt: 1 } }}
+          sx={{
+            zIndex: theme => theme.zIndex.modal + 2,
+          }}
+          onClick={e => e.stopPropagation()}
+        >
+          <CopyCardForm
+            card={card}
+            onSubmit={handleCopyCard}
+            onCancel={handlePopoverClose}
+          />
+        </MenuPopover>
+      )}
     </Backdrop>
   );
 }
 
-function listActionstems() {
+function cardActionsMenuItems() {
   return [
     { label: "Open card", key: "open", icon: <OpenInNew /> },
     {
