@@ -57,7 +57,7 @@ const handlers = {
     loading: { ...state.loading, [ARCHIVE_LIST.KEY]: false },
     board: {
       ...state.board,
-      lists: state.board.lists.map(list => list.id !== action.payload.id),
+      lists: state.board.lists.filter(list => list.id !== action.payload.id),
     },
   }),
   ...createAsyncHandlers(UNARCHIVE_LIST, UNARCHIVE_LIST.KEY),
