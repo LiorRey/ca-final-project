@@ -23,6 +23,7 @@ function getEmptyCard() {
     description: "",
     labels: [],
     createdAt: "",
+    archivedAt: null,
   };
 }
 
