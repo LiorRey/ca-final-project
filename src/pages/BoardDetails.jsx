@@ -103,7 +103,7 @@ export function BoardDetails() {
   return (
     <section className="board-container">
       <header className="board-header">
-        <h2 className="board-title">{board.name}</h2>
+        <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
           <FilterMenu />
           <button className="icon-button">
