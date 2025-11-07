@@ -212,30 +212,33 @@ export async function moveList(
 
 export async function createLabel(boardId, label) {
   try {
+    store.dispatch({ type: CREATE_LABEL.REQUEST });
     await boardService.createLabel(boardId, label);
-    store.dispatch(createLabelAction(label));
+    store.dispatch({ type: CREATE_LABEL.SUCCESS, payload: label });
   } catch (error) {
-    store.dispatch(setError(`Error creating label: ${error.message}`));
+    store.dispatch({ type: CREATE_LABEL.FAILURE, payload: error.message });
     throw error;
   }
 }
 
 export async function editLabel(boardId, label) {
   try {
+    store.dispatch({ type: EDIT_LABEL.REQUEST });
     await boardService.editLabel(boardId, label);
-    store.dispatch(editLabelAction(label));
+    store.dispatch({ type: EDIT_LABEL.SUCCESS, payload: label });
   } catch (error) {
-    store.dispatch(setError(`Error editing label: ${error.message}`));
+    store.dispatch({ type: EDIT_LABEL.FAILURE, payload: error.message });
     throw error;
   }
 }
 
 export async function deleteLabel(boardId, labelId) {
   try {
+    store.dispatch({ type: DELETE_LABEL.REQUEST });
     await boardService.deleteLabel(boardId, labelId);
-    store.dispatch(deleteLabelAction(labelId));
+    store.dispatch({ type: DELETE_LABEL.SUCCESS, payload: labelId });
   } catch (error) {
-    store.dispatch(setError(`Error deleting label: ${error.message}`));
+    store.dispatch({ type: DELETE_LABEL.FAILURE, payload: error.message });
     throw error;
   }
 }
@@ -247,36 +250,24 @@ export async function updateCardLabels(
   updatedCardLabels
 ) {
   try {
+    store.dispatch({ type: UPDATE_CARD_LABELS.REQUEST });
     await boardService.updateCardLabels(
       boardId,
       listId,
       cardId,
       updatedCardLabels
     );
-    store.dispatch(updateCardLabelsAction(listId, cardId, updatedCardLabels));
+    store.dispatch({
+      type: UPDATE_CARD_LABELS.SUCCESS,
+      payload: { listId, cardId, updatedCardLabels },
+    });
   } catch (error) {
-    store.dispatch(setError(`Error updating card labels: ${error.message}`));
+    store.dispatch({
+      type: UPDATE_CARD_LABELS.FAILURE,
+      payload: error.message,
+    });
     throw error;
   }
-}
-
-export function createLabelAction(label) {
-  return { type: CREATE_LABEL, payload: label };
-}
-
-export function editLabelAction(label) {
-  return { type: EDIT_LABEL, payload: label };
-}
-
-export function deleteLabelAction(labelId) {
-  return { type: DELETE_LABEL, payload: labelId };
-}
-
-export function updateCardLabelsAction(listId, cardId, updatedCardLabels) {
-  return {
-    type: UPDATE_CARD_LABELS,
-    payload: { listId, cardId, updatedCardLabels },
-  };
 }
 
 export function setBoards(boards) {

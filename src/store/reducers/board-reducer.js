@@ -12,10 +12,10 @@ export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
 export const MOVE_LIST = "MOVE_LIST";
-export const CREATE_LABEL = "CREATE_LABEL";
-export const EDIT_LABEL = "EDIT_LABEL";
-export const DELETE_LABEL = "DELETE_LABEL";
-export const UPDATE_CARD_LABELS = "UPDATE_CARD_LABELS";
+export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
+export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
+export const DELETE_LABEL = createAsyncActionTypes("DELETE_LABEL");
+export const UPDATE_CARD_LABELS = createAsyncActionTypes("UPDATE_CARD_LABELS");
 
 export const SET_LOADING = "boards/SET_LOADING";
 export const SET_ERROR = "boards/SET_ERROR";
