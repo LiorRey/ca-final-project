@@ -31,7 +31,6 @@ export function ListActionsMenu({
 
   function handleMoveAllCards(destinationListId) {
     onMoveAllCards(list.id, destinationListId);
-    setActiveAction(null);
     onClose();
   }
 
@@ -63,7 +62,6 @@ export function ListActionsMenu({
   }
 
   function onPopoverClose() {
-    setActiveAction(null);
     onClose();
   }
 
@@ -72,13 +70,14 @@ export function ListActionsMenu({
       className="list-actions-menu-popover"
       anchorEl={anchorEl}
       open={isOpen}
-      onClose={onPopoverClose}
+      onClose={onClose}
       title="List actions"
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
       paperProps={{ sx: { mt: 1 } }}
+      slotProps={{ transition: { onExited: () => setActiveAction(null) } }}
     >
       {activeAction === "copy" ? (
         <CopyListForm
