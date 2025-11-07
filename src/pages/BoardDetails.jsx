@@ -12,6 +12,8 @@ import {
   loadBoards,
   updateBoard,
   copyList,
+  moveAllCards,
+  createList,
 } from "../store/actions/board-actions";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
@@ -56,10 +58,8 @@ export function BoardDetails() {
   async function onCopyList(listId, newName) {
     try {
       await copyList(board._id, listId, newName);
-      showSuccessMsg(`The list copied successfully!`);
     } catch (error) {
       console.error("List copy failed:", error);
-      showErrorMsg(`Unable to copy the list: ${listId}`);
     }
   }
 
@@ -77,13 +77,25 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    const options = { listId: null, cardId: null };
-    const updates = { lists: [...board.lists, newList] };
-    await updateBoard(board._id, updates, options);
+    await createList(board._id, newList);
 
     requestAnimationFrame(() =>
       scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
     );
+  }
+
+  async function onMoveAllCards(sourceListId, targetListId) {
+    try {
+      if (targetListId === "new") {
+        await moveAllCards(board._id, sourceListId, null, {
+          newListName: "New List",
+        });
+      } else {
+        await moveAllCards(board._id, sourceListId, targetListId);
+      }
+    } catch (error) {
+      console.error("Move all cards failed:", error);
+    }
   }
 
   if (!board) return <div>Loading board...</div>;
@@ -121,6 +133,7 @@ export function BoardDetails() {
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
+                onMoveAllCards={onMoveAllCards}
                 isAddingCard={activeAddCardListId === list.id}
                 setActiveAddCardListId={setActiveAddCardListId}
                 listIndex={listIndex}

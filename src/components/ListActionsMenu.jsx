@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import { Popover } from "./Popover";
+import "../assets/styles/components/ListActionsMenu.css";
 import { CopyListForm } from "./CopyListForm";
 import { MoveListForm } from "./MoveListForm";
 import { moveList, loadBoards } from "../store/actions/board-actions";
@@ -16,6 +17,7 @@ export function ListActionsMenu({
   isOpen,
   onClose,
   onCopyList,
+  onMoveAllCards,
 }) {
   const [activeAction, setActiveAction] = useState(null);
   const boards = useSelector(state => state.boards.boards);
@@ -25,6 +27,11 @@ export function ListActionsMenu({
   function handleMenuClick(key) {
     if (!listActionsMenuItems().find(item => item.key === key)) return;
     setActiveAction(key);
+  }
+
+  function handleMoveAllCards(destinationListId) {
+    onMoveAllCards(list.id, destinationListId);
+    onClose();
   }
 
   function handleCopyList(listId, newName) {
@@ -55,7 +62,6 @@ export function ListActionsMenu({
   }
 
   function onPopoverClose() {
-    setActiveAction(null);
     onClose();
   }
 
@@ -64,20 +70,36 @@ export function ListActionsMenu({
       className="list-actions-menu-popover"
       anchorEl={anchorEl}
       open={isOpen}
-      onClose={onPopoverClose}
+      onClose={onClose}
       title="List actions"
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
       paperProps={{ sx: { mt: 1 } }}
+      slotProps={{ transition: { onExited: () => setActiveAction(null) } }}
     >
       {activeAction === "copy" ? (
         <CopyListForm
           initialValue={list.name}
-          onSubmit={newName => handleCopyList(list.id, newName)}
+          onCopy={newName => handleCopyList(list.id, newName)}
           onCancel={handleCopyCancel}
         />
+      ) : activeAction === "moveAll" ? (
+        <MenuList className="popover-menu" dense>
+          {currentBoard.lists.map(listItem => (
+            <MenuItem
+              key={listItem.id}
+              disabled={listItem.id === list.id}
+              onClick={() => handleMoveAllCards(listItem.id)}
+            >
+              <ListItemText>{listItem.name}</ListItemText>
+            </MenuItem>
+          ))}
+          <MenuItem onClick={() => handleMoveAllCards("new")}>
+            <ListItemText>New List</ListItemText>
+          </MenuItem>
+        </MenuList>
       ) : activeAction === "move" ? (
         <MoveListForm
           currentBoard={currentBoard}
@@ -87,7 +109,7 @@ export function ListActionsMenu({
           onSubmit={handleMoveList}
         />
       ) : (
-        <MenuList className="list-actions-menu" dense>
+        <MenuList className="list-actions-menu popover-menu" dense>
           {listActionsMenuItems().map(({ label, key }) => (
             <MenuItem key={key} onClick={() => handleMenuClick(key)}>
               <ListItemText>{label}</ListItemText>
