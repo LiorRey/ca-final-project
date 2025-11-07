@@ -90,6 +90,7 @@ export function generateCard(
     labels,
     assignedTo,
     createdAt,
+    archivedAt: null,
     ...(dueDate && { dueDate }),
     ...options,
   };
