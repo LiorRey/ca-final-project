@@ -37,10 +37,12 @@ export function getFilteredBoard(board, filterBy) {
 
   return {
     ...board,
-    lists: board.lists.map(list => ({
-      ...list,
-      cards: filterCards(list.cards, filterBy),
-    })),
+    lists: board.lists
+      .filter(list => !list.archivedAt)
+      .map(list => ({
+        ...list,
+        cards: filterCards(list.cards, filterBy),
+      })),
   };
 }
 
