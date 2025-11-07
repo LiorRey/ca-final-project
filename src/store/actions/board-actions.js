@@ -18,6 +18,8 @@ import {
   EDIT_LABEL,
   DELETE_LABEL,
   UPDATE_CARD_LABELS,
+  ARCHIVE_LIST,
+  UNARCHIVE_LIST,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -266,6 +268,30 @@ export async function updateCardLabels(
       type: UPDATE_CARD_LABELS.FAILURE,
       payload: error.message,
     });
+    throw error;
+  }
+}
+
+export async function archiveList(boardId, listId) {
+  try {
+    store.dispatch({ type: ARCHIVE_LIST.REQUEST });
+    const updatedList = await boardService.archiveList(boardId, listId);
+    store.dispatch({ type: ARCHIVE_LIST.SUCCESS, payload: updatedList });
+    return updatedList;
+  } catch (error) {
+    store.dispatch({ type: ARCHIVE_LIST.FAILURE, payload: error.message });
+    throw error;
+  }
+}
+
+export async function unarchiveList(boardId, listId) {
+  try {
+    store.dispatch({ type: UNARCHIVE_LIST.REQUEST });
+    const updatedList = await boardService.unarchiveList(boardId, listId);
+    store.dispatch({ type: UNARCHIVE_LIST.SUCCESS, payload: updatedList });
+    return updatedList;
+  } catch (error) {
+    store.dispatch({ type: UNARCHIVE_LIST.FAILURE, payload: error.message });
     throw error;
   }
 }
