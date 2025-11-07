@@ -6,6 +6,8 @@ export function filterCards(cards, filterBy) {
   const { title = "", noMembers = false, members = [] } = filterBy;
 
   return cards.filter(card => {
+    if (card.archivedAt) return false;
+
     if (title && !card.title?.toLowerCase().includes(title.toLowerCase())) {
       return false;
     }
