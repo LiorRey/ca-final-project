@@ -119,6 +119,50 @@ const handlers = {
       ),
     },
   }),
+  [CREATE_LABEL]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      labels: [...state.board.labels, action.payload],
+    },
+  }),
+  [EDIT_LABEL]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      labels: state.board.labels.map(l =>
+        l.id === action.payload.id ? action.payload : l
+      ),
+    },
+  }),
+  [DELETE_LABEL]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      labels: state.board.labels.filter(l => l.id !== action.payload),
+    },
+  }),
+  [UPDATE_CARD_LABELS]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card.id === action.payload.cardId
+                  ? {
+                      ...card,
+                      labels: action.payload.updatedCardLabels,
+                    }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
   [SET_LOADING]: (state, action) => ({
     ...state,
     loading: {
