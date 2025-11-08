@@ -14,6 +14,10 @@ import {
   ADD_CARD,
   EDIT_CARD,
   DELETE_CARD,
+  CREATE_LABEL,
+  EDIT_LABEL,
+  DELETE_LABEL,
+  UPDATE_CARD_LABELS,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -171,16 +175,16 @@ export async function deleteCard(boardId, cardId, listId) {
   }
 }
 
-export function deleteCardAction(cardId, listId) {
-  return { type: DELETE_CARD, payload: { cardId, listId } };
-}
-
 export function addCardAction(card, listId) {
   return { type: ADD_CARD, payload: { card, listId } };
 }
 
 export function editCardAction(card, listId) {
   return { type: EDIT_CARD, payload: { card, listId } };
+}
+
+export function deleteCardAction(cardId, listId) {
+  return { type: DELETE_CARD, payload: { cardId, listId } };
 }
 
 export async function moveList(
@@ -202,6 +206,66 @@ export async function moveList(
     return updatedLists;
   } catch (error) {
     store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
+    throw error;
+  }
+}
+
+export async function createLabel(boardId, label) {
+  try {
+    store.dispatch({ type: CREATE_LABEL.REQUEST });
+    await boardService.createLabel(boardId, label);
+    store.dispatch({ type: CREATE_LABEL.SUCCESS, payload: label });
+  } catch (error) {
+    store.dispatch({ type: CREATE_LABEL.FAILURE, payload: error.message });
+    throw error;
+  }
+}
+
+export async function editLabel(boardId, label) {
+  try {
+    store.dispatch({ type: EDIT_LABEL.REQUEST });
+    await boardService.editLabel(boardId, label);
+    store.dispatch({ type: EDIT_LABEL.SUCCESS, payload: label });
+  } catch (error) {
+    store.dispatch({ type: EDIT_LABEL.FAILURE, payload: error.message });
+    throw error;
+  }
+}
+
+export async function deleteLabel(boardId, labelId) {
+  try {
+    store.dispatch({ type: DELETE_LABEL.REQUEST });
+    await boardService.deleteLabel(boardId, labelId);
+    store.dispatch({ type: DELETE_LABEL.SUCCESS, payload: labelId });
+  } catch (error) {
+    store.dispatch({ type: DELETE_LABEL.FAILURE, payload: error.message });
+    throw error;
+  }
+}
+
+export async function updateCardLabels(
+  boardId,
+  listId,
+  cardId,
+  updatedCardLabels
+) {
+  try {
+    store.dispatch({ type: UPDATE_CARD_LABELS.REQUEST });
+    await boardService.updateCardLabels(
+      boardId,
+      listId,
+      cardId,
+      updatedCardLabels
+    );
+    store.dispatch({
+      type: UPDATE_CARD_LABELS.SUCCESS,
+      payload: { listId, cardId, updatedCardLabels },
+    });
+  } catch (error) {
+    store.dispatch({
+      type: UPDATE_CARD_LABELS.FAILURE,
+      payload: error.message,
+    });
     throw error;
   }
 }

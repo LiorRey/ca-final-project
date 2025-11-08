@@ -48,16 +48,16 @@
   }
 }
 
-.modal-label.blue {
-  background-color: var(--label-blue-bg);
-  border: 1px solid var(--label-blue-border);
-  color: var(--label-blue-text);
-}
-
 .modal-label.green {
   background-color: var(--label-green-bg);
   border: 1px solid var(--label-green-border);
   color: var(--label-green-text);
+}
+
+.modal-label.yellow {
+  background-color: var(--label-yellow-bg);
+  border: 1px solid var(--label-yellow-border);
+  color: var(--label-yellow-text);
 }
 
 .modal-label.orange {
@@ -78,10 +78,28 @@
   color: var(--label-purple-text);
 }
 
-.modal-label.yellow {
-  background-color: var(--label-yellow-bg);
-  border: 1px solid var(--label-yellow-border);
-  color: var(--label-yellow-text);
+.modal-label.blue {
+  background-color: var(--label-blue-bg);
+  border: 1px solid var(--label-blue-border);
+  color: var(--label-blue-text);
+}
+
+.modal-label.sky {
+  background-color: var(--label-sky-bg);
+  border: 1px solid var(--label-sky-border);
+  color: var(--label-sky-text);
+}
+
+.modal-label.lime {
+  background-color: var(--label-lime-bg);
+  border: 1px solid var(--label-lime-border);
+  color: var(--label-lime-text);
+}
+
+.modal-label.pink {
+  background-color: var(--label-pink-bg);
+  border: 1px solid var(--label-pink-border);
+  color: var(--label-pink-text);
 }
 
 .modal-label.gray {

@@ -12,6 +12,11 @@ export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
 export const MOVE_LIST = "MOVE_LIST";
+export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
+export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
+export const DELETE_LABEL = createAsyncActionTypes("DELETE_LABEL");
+export const UPDATE_CARD_LABELS = createAsyncActionTypes("UPDATE_CARD_LABELS");
+
 export const SET_LOADING = "boards/SET_LOADING";
 export const SET_ERROR = "boards/SET_ERROR";
 export const SET_FILTERS = "boards/SET_FILTERS";
@@ -108,6 +113,50 @@ const handlers = {
               ...list,
               cards: list.cards.filter(
                 card => card.id !== action.payload.cardId
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  [CREATE_LABEL]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      labels: [...state.board.labels, action.payload],
+    },
+  }),
+  [EDIT_LABEL]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      labels: state.board.labels.map(l =>
+        l.id === action.payload.id ? action.payload : l
+      ),
+    },
+  }),
+  [DELETE_LABEL]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      labels: state.board.labels.filter(l => l.id !== action.payload),
+    },
+  }),
+  [UPDATE_CARD_LABELS]: (state, action) => ({
+    ...state,
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card.id === action.payload.cardId
+                  ? {
+                      ...card,
+                      labels: action.payload.updatedCardLabels,
+                    }
+                  : card
               ),
             }
           : list

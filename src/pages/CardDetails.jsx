@@ -52,11 +52,13 @@ export function CardDetails() {
 
   return (
     <CardModal
-      cardLabels={cardLabels}
+      boardId={boardId}
+      listId={list.id}
       listTitle={list.name}
       card={card}
-      onDeleteCard={handleDeleteCard}
+      cardLabels={cardLabels}
       onEditCard={handleEditCard}
+      onDeleteCard={handleDeleteCard}
       onClose={handleCloseModal}
       isOpen={modalOpen}
     />

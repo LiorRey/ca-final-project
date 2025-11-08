@@ -127,9 +127,9 @@ export function BoardDetails() {
               <List
                 key={list.id}
                 list={list}
+                boardLabels={board.labels}
                 labelsIsOpen={labelsIsOpen}
                 setLabelsIsOpen={setLabelsIsOpen}
-                boardLabels={board.labels}
                 onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
