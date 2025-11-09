@@ -119,15 +119,19 @@ const handlers = {
       ),
     },
   }),
-  [CREATE_LABEL]: (state, action) => ({
+  ...createAsyncHandlers(CREATE_LABEL, CREATE_LABEL.KEY),
+  [CREATE_LABEL.SUCCESS]: (state, action) => ({
     ...state,
+    loading: { ...state.loading, [CREATE_LABEL.KEY]: false },
     board: {
       ...state.board,
       labels: [...state.board.labels, action.payload],
     },
   }),
-  [EDIT_LABEL]: (state, action) => ({
+  ...createAsyncHandlers(EDIT_LABEL, EDIT_LABEL.KEY),
+  [EDIT_LABEL.SUCCESS]: (state, action) => ({
     ...state,
+    loading: { ...state.loading, [EDIT_LABEL.KEY]: false },
     board: {
       ...state.board,
       labels: state.board.labels.map(l =>
@@ -135,15 +139,19 @@ const handlers = {
       ),
     },
   }),
-  [DELETE_LABEL]: (state, action) => ({
+  ...createAsyncHandlers(DELETE_LABEL, DELETE_LABEL.KEY),
+  [DELETE_LABEL.SUCCESS]: (state, action) => ({
     ...state,
+    loading: { ...state.loading, [DELETE_LABEL.KEY]: false },
     board: {
       ...state.board,
       labels: state.board.labels.filter(l => l.id !== action.payload),
     },
   }),
-  [UPDATE_CARD_LABELS]: (state, action) => ({
+  ...createAsyncHandlers(UPDATE_CARD_LABELS, UPDATE_CARD_LABELS.KEY),
+  [UPDATE_CARD_LABELS.SUCCESS]: (state, action) => ({
     ...state,
+    loading: { ...state.loading, [UPDATE_CARD_LABELS.KEY]: false },
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
