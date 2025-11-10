@@ -11,9 +11,12 @@ const CURRENT_USER_SESSION_KEY = "currentUser";
 
 export async function signup(userData) {
   try {
-    const user = await storageService.post(USERS_STORAGE_KEY, userData);
-    setCurrentUserInSession(user);
-    return user;
+    const { password: _, ...userWithoutPassword } = await storageService.post(
+      USERS_STORAGE_KEY,
+      userData
+    );
+    setCurrentUserInSession(userWithoutPassword);
+    return userWithoutPassword;
   } catch (error) {
     console.error("Error during signup:", error);
     throw error;
