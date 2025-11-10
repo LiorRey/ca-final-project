@@ -1,9 +1,19 @@
+import { useNavigate } from "react-router";
+
 import { SignupForm } from "../components/SignupForm";
+import { signup } from "../store/actions/auth-actions";
 
 export function SignupPage() {
-  const handleSignup = async formData => {
-    console.log("Signup data:", formData);
-  };
+  const navigate = useNavigate();
+
+  async function handleSignup(userData) {
+    try {
+      await signup(userData);
+      navigate("/");
+    } catch (error) {
+      console.error("Signup failed:", error);
+    }
+  }
 
   return <SignupForm onSubmit={handleSignup} />;
 }
