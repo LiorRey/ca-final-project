@@ -118,11 +118,11 @@ export function SignupForm({ onSubmit }) {
   };
 
   return (
-    <Box className="signup-container">
-      <Container className="signup-wrapper" maxWidth={false}>
-        <Box className="signup-card">
-          <Box className="signup-header">
-            <Typography className="signup-title" component="h1">
+    <Box className="auth-container">
+      <Container className="auth-wrapper" maxWidth={false}>
+        <Box className="auth-card">
+          <Box className="auth-header">
+            <Typography className="auth-title" component="h1">
               Sign up for your account
             </Typography>
           </Box>
@@ -142,8 +142,8 @@ export function SignupForm({ onSubmit }) {
             onSubmit={handleSubmit(handleFormSubmit)}
             noValidate
           >
-            <Box className="signup-form-field">
-              <Typography className="signup-form-label" component="label">
+            <Box className="auth-form-field">
+              <Typography className="auth-form-label" component="label">
                 Email address
               </Typography>
               <Controller
@@ -162,7 +162,7 @@ export function SignupForm({ onSubmit }) {
                     placeholder="Enter email address"
                     fullWidth
                     variant="outlined"
-                    className="signup-text-field"
+                    className="auth-text-field"
                     error={!!errors.email}
                     helperText={errors.email?.message}
                   />
@@ -170,8 +170,8 @@ export function SignupForm({ onSubmit }) {
               />
             </Box>
 
-            <Box className="signup-form-field">
-              <Typography className="signup-form-label" component="label">
+            <Box className="auth-form-field">
+              <Typography className="auth-form-label" component="label">
                 Full name
               </Typography>
               <Controller
@@ -190,7 +190,7 @@ export function SignupForm({ onSubmit }) {
                     placeholder="Enter full name"
                     fullWidth
                     variant="outlined"
-                    className="signup-text-field"
+                    className="auth-text-field"
                     error={!!errors.fullName}
                     helperText={errors.fullName?.message}
                   />
@@ -198,8 +198,8 @@ export function SignupForm({ onSubmit }) {
               />
             </Box>
 
-            <Box className="signup-form-field">
-              <Typography className="signup-form-label" component="label">
+            <Box className="auth-form-field">
+              <Typography className="auth-form-label" component="label">
                 Password
               </Typography>
               <Controller
@@ -219,7 +219,7 @@ export function SignupForm({ onSubmit }) {
                     placeholder="Create password"
                     fullWidth
                     variant="outlined"
-                    className="signup-text-field"
+                    className="auth-text-field"
                     error={!!errors.password}
                     slotProps={{
                       input: {
@@ -227,7 +227,7 @@ export function SignupForm({ onSubmit }) {
                           <InputAdornment position="end">
                             <IconButton
                               onClick={() => setShowPassword(!showPassword)}
-                              className="signup-password-toggle"
+                              className="auth-password-toggle"
                               edge="end"
                             >
                               {showPassword ? (
@@ -244,7 +244,7 @@ export function SignupForm({ onSubmit }) {
                 )}
               />
 
-              <Box className="signup-password-strength">
+              <Box className="auth-password-strength">
                 <div className="strength-bars">
                   {[1, 2, 3, 4, 5].map(barIndex => (
                     <div
@@ -268,15 +268,15 @@ export function SignupForm({ onSubmit }) {
               </Box>
             </Box>
 
-            <Box className="signup-form-field">
+            <Box className="auth-form-field">
               <FormControlLabel
-                className="signup-checkbox"
+                className="auth-checkbox"
                 control={<Checkbox />}
                 label="Yes! Send me news and offers about products, events, and more."
               />
             </Box>
 
-            <Typography className="signup-legal-text">
+            <Typography className="auth-legal-text">
               By signing up, I accept the{" "}
               <Link href="/terms" target="_blank">
                 Terms of Service
@@ -291,15 +291,15 @@ export function SignupForm({ onSubmit }) {
             <Button
               type="submit"
               fullWidth
-              className="signup-continue-button"
+              className="auth-continue-button"
               disabled={!isValid || isSubmitting}
             >
               {isSubmitting ? "Please wait..." : "Continue"}
             </Button>
           </Box>
 
-          <Box className="signup-footer">
-            <Typography className="signup-login-link">
+          <Box className="auth-footer">
+            <Typography className="auth-login-link">
               Already have an account?{" "}
               <RouterLink to="/login">Log in</RouterLink>
             </Typography>
