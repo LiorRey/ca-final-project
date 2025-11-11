@@ -35,7 +35,7 @@
 @import "components/MoveListForm";
 @import "components/Card";
 @import "components/FilterMenu";
-@import "components/SignupForm";
+@import "components/auth/AuthFormLayout";
 
 @import "components/review/ReviewEdit";
 @import "components/review/ReviewList";
