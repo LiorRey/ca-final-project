@@ -34,6 +34,7 @@
 @import "components/CopyListForm";
 @import "components/MoveListForm";
 @import "components/Card";
+@import "components/CopyCardForm";
 @import "components/FilterMenu";
 
 @import "components/review/ReviewEdit";

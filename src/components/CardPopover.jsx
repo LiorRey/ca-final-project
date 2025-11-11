@@ -34,7 +34,7 @@ export default function CardPopover({
     console.log("editLabels");
   }
   function handleArchive(e) {
-    console.log("delete");
+    console.log("archive");
     handleDelete();
   }
 

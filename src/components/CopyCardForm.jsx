@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,22 +13,20 @@ import Tab from "@mui/material/Tab";
 import ActionButton from "./ui/buttons/ActionButton";
 
 export default function CopyCardForm({ card, onSubmit, onCancel }) {
+  const boards = useSelector(state => state.boards.boards);
   const board = useSelector(state => state.boards.board);
+  const availableLists = board?.lists || [];
+
   const textareaRef = useRef(null);
   const cardTitle = card?.title || "";
   const [textareaValue, setTextareaValue] = useState(cardTitle);
-  const [activeTab, setActiveTab] = useState(1); // 0 = Inbox, 1 = Board
+  const [activeTab, setActiveTab] = useState(1);
 
-  // Get card labels count (labels can be IDs or objects)
   const cardLabels = card?.labels || [];
   const cardLabelsCount = Array.isArray(cardLabels) ? cardLabels.length : 0;
 
-  // Get card members count
   const cardMembers = card?.assignedTo || [];
   const cardMembersCount = Array.isArray(cardMembers) ? cardMembers.length : 0;
-
-  // Get available lists for selected board
-  const availableLists = board?.lists || [];
 
   useEffect(() => {
     if (textareaRef.current) {
