@@ -1,5 +1,8 @@
 import { faker } from "@faker-js/faker";
-import { generateMultipleUsers } from "../user/user-data-generator.js";
+import {
+  generateMultipleUsers,
+  generateSampleUsers,
+} from "../user/user-data-generator.js";
 
 const PROJECT_TYPES = [
   "Project Alpha",
@@ -410,15 +413,13 @@ export function generateMultipleBoardsWithUsers(count = 5, options = {}) {
 }
 
 export function generateSampleData() {
-  const { board: sampleBoard, users: sampleUsers } = generateBoardWithUsers(
-    4,
-    4,
-    {
-      title: "Sample Development Board",
-      description: "A comprehensive sample board for development and testing",
-      userCount: 6,
-    }
-  );
+  const { allUsers, adminUser, testUser, regularUsers } = generateSampleUsers();
+
+  const { board: sampleBoard } = generateBoardWithUsers(4, 4, {
+    title: "Sample Development Board",
+    description: "A comprehensive sample board for development and testing",
+    userCount: 6,
+  });
 
   const multipleBoardsData = generateMultipleBoardsWithUsers(3, {
     minLists: 3,
@@ -430,25 +431,25 @@ export function generateSampleData() {
 
   return {
     sampleBoard,
-    sampleUsers,
+    sampleUsers: allUsers,
     sampleBoards: multipleBoardsData.map(data => data.board),
-    allUsers: multipleBoardsData.reduce(
-      (acc, data) => [...acc, ...data.users],
-      sampleUsers
-    ),
+    allUsers,
+    adminUser,
+    testUser,
+    regularUsers,
     sampleCard: generateCard(
       {
         title: "Sample Task",
         description: "This is a sample card for testing purposes",
       },
-      sampleUsers
+      allUsers
     ),
     sampleList: generateList(
       4,
       {
         title: "Sample List",
       },
-      sampleUsers
+      allUsers
     ),
   };
 }
