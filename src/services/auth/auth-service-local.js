@@ -2,6 +2,7 @@ import { storageService } from "../async-storage-service";
 
 export const authService = {
   signup,
+  login,
   setCurrentUserInSession,
   getCurrentUserFromSession,
 };
@@ -19,6 +20,21 @@ export async function signup(userData) {
     return userWithoutPassword;
   } catch (error) {
     console.error("Error during signup:", error);
+    throw error;
+  }
+}
+
+export async function login(credentials) {
+  const { email, password } = credentials;
+  try {
+    const users = await storageService.query(USERS_STORAGE_KEY);
+    const user = users.find(u => u.email === email && u.password === password);
+    if (!user) throw new Error("Invalid email or password");
+
+    const { password: _, ...userWithoutPassword } = user;
+    return userWithoutPassword;
+  } catch (error) {
+    console.error("Error during login:", error);
     throw error;
   }
 }
