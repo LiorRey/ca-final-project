@@ -1,0 +1,6 @@
+.copy-card-form .MuiSelect-select,
+.copy-card-form .MuiInputBase-input {
+  color: var(--form-input-color-default);
+  width: 100%;
+  box-sizing: border-box;
+}
