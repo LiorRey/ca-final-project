@@ -1,0 +1,103 @@
+.card-form-menu {
+  color: var(--form-text-color-default, inherit);
+  margin: 8px 16px 16px 16px;
+}
+
+.card-form-tabs-container {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 16px;
+}
+
+.card-form-tabs .MuiTab-root {
+  color: white;
+}
+
+.card-form-tabs .Mui-selected {
+  color: white;
+}
+
+.card-form-section {
+  margin-bottom: 16px;
+}
+
+.card-form-section-label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--form-section-label-color, rgba(255, 255, 255, 0.9));
+}
+
+.card-form-textarea {
+  width: 100%;
+  background-color: var(--gray3);
+  color: var(--gray1);
+  border: 1px solid var(--gray2);
+  border-radius: 4px;
+  padding: 16.5px 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+.card-form-checkbox .MuiSvgIcon-root {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.card-form-checkbox.Mui-checked .MuiSvgIcon-root {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card-form-checkbox-label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card-form-suggested-section {
+  margin-bottom: 16px;
+}
+
+.card-form-suggested-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+}
+
+.card-form-suggested-icon {
+  font-size: 18px;
+}
+
+.card-form-suggested-text {
+  color: white;
+}
+
+.card-form-suggested-button {
+  justify-content: flex-start;
+  text-transform: none;
+  color: white;
+  border-color: var(--gray2);
+}
+
+.card-form-suggested-button:hover {
+  border-color: var(--gray1);
+  background-color: transparent;
+}
+
+.card-form-section-title {
+  margin-bottom: 16px;
+  font-weight: 500;
+  font-size: 15px;
+  color: white;
+}
+
+.card-form-select {
+  margin-bottom: 16px;
+}
+
+.card-form-selects-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}

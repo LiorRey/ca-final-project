@@ -10,9 +10,7 @@ import {
   OpenInNew,
 } from "@mui/icons-material";
 import { useState } from "react";
-
-import CopyCardForm from "./CopyCardForm";
-import { Popover as MenuPopover } from "./Popover";
+import { PopoverMenu } from "./ui/buttons/PopoverMenu";
 
 export default function CardPopover({
   card,
@@ -38,17 +36,34 @@ export default function CardPopover({
     handleDelete();
   }
 
-  function handleCopyCard(e) {
+  function handleCopyCardClick(e) {
     setPopoverAnchorEl(e.currentTarget);
     setActiveMenuItem("copyCard");
   }
 
+  function handleMoveCardClick(e) {
+    setPopoverAnchorEl(e.currentTarget);
+    setActiveMenuItem("moveCard");
+  }
+
+  function handleCopyCardSubmit(formData) {
+    // TODO: Implement copy card logic
+    console.log("Copy card:", formData);
+    handlePopoverClose();
+  }
+
+  function handleMoveCardSubmit(formData) {
+    // TODO: Implement move card logic
+    console.log("Move card:", formData);
+    handlePopoverClose();
+  }
   function handleMenuClick(e, key) {
     e.stopPropagation();
     const menuHandlers = {
       open: handleOpen,
       editLabels: handleEditLabels,
-      copyCard: handleCopyCard,
+      copyCard: handleCopyCardClick,
+      moveCard: handleMoveCardClick,
       archive: handleArchive,
     };
     menuHandlers[key]?.(e);
@@ -116,12 +131,17 @@ export default function CardPopover({
         </div>
       </Popover>
       {popoverOpen && (
-        <MenuPopover
-          className="copy-card-form-popover"
+        <PopoverMenu
           anchorEl={popoverAnchorEl}
           isOpen={popoverOpen}
           onClose={handlePopoverClose}
-          title="Copy card"
+          activeMenuItem={activeMenuItem}
+          card={card}
+          onSubmit={
+            activeMenuItem === "copyCard"
+              ? handleCopyCardSubmit
+              : handleMoveCardSubmit
+          }
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -130,14 +150,7 @@ export default function CardPopover({
           sx={{
             zIndex: theme => theme.zIndex.modal + 2,
           }}
-          onClick={e => e.stopPropagation()}
-        >
-          <CopyCardForm
-            card={card}
-            onSubmit={handleCopyCard}
-            onCancel={handlePopoverClose}
-          />
-        </MenuPopover>
+        />
       )}
     </Backdrop>
   );
