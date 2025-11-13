@@ -1,0 +1,135 @@
+.MuiPaper-root.main-menu-paper {
+  width: 350px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background-color: #2b2c2f;
+  color: #bfc1c4;
+  border-radius: 0.5rem;
+  box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+}
+
+.main-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 2.5rem;
+  min-width: 200px;
+}
+
+.main-menu-header-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: white;
+}
+
+.main-menu-header-close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.main-menu-list {
+  padding: 0;
+}
+
+.main-menu-separator {
+  margin: 8px 0;
+  color: var(--gray1);
+  border-color: var(--gray1);
+  border-width: 1px;
+}
+
+.main-menu-section {
+  padding: 16px;
+  margin: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  position: relative;
+}
+
+.main-menu-section-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.main-menu-section-description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+}
+
+.main-menu-section-action {
+  font-size: 0.875rem;
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.main-menu-section-action:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.main-menu-section-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  opacity: 0.3;
+}
+
+.main-menu-section-upgrade-icon {
+  font-size: 48px;
+  color: #9c27b0;
+}
+
+.main-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.main-menu-item-button {
+  padding: 8px 16px;
+  min-height: 40px;
+}
+
+.main-menu-item-icon,
+.MuiListItemIcon-root.main-menu-item-icon {
+  min-width: 40px;
+  color: var(--gray1);
+}
+
+.main-menu-item-icon svg {
+  color: var(--gray1);
+}
+
+.main-menu-item-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.main-menu-item-label.disabled {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.main-menu-badges-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.main-menu-badge {
+  height: 20px;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: 500;
+}
+
+.main-menu-secondary-icon {
+  margin-left: 0.5rem;
+  opacity: 0.5;
+}
