@@ -30,7 +30,7 @@ import {
   ExitToApp,
 } from "@mui/icons-material";
 
-export function MainMenu({
+export function BoardMenu({
   anchorEl,
   open,
   onClose,
@@ -118,7 +118,7 @@ export function MainMenu({
         label: "Start free trial",
         onClick: e => handleItemClick("start-free-trial", e),
       },
-      icon: <Computer className="main-menu-section-upgrade-icon" />,
+      icon: <Computer className="board-menu-section-upgrade-icon" />,
       sx: {
         backgroundColor: "rgba(156, 39, 176, 0.1)",
       },
@@ -191,15 +191,15 @@ export function MainMenu({
       transitionDuration={0}
       slotProps={{
         paper: {
-          className: "main-menu-paper",
+          className: "board-menu-paper",
           sx: { padding: 2, ...sx },
         },
       }}
       {...popoverProps}
     >
-      <Box className="main-menu-header">
-        <Typography className="main-menu-header-title">Menu</Typography>
-        <Box className="main-menu-header-close">
+      <Box className="board-menu-header">
+        <Typography className="board-menu-header-title">Menu</Typography>
+        <Box className="board-menu-header-close">
           <SquareIconButton
             icon={<Close />}
             aria-label="Close"
@@ -208,14 +208,14 @@ export function MainMenu({
         </Box>
       </Box>
 
-      <MuiList className="main-menu-list">
+      <MuiList className="board-menu-list">
         {menuItems.map((item, index) => {
           if (item.type === "separator") {
             return (
               <Divider
                 key={`separator-${index}`}
                 sx={{ opacity: 0.3, my: 1, borderColor: "var(--gray1)" }}
-                className="main-menu-separator"
+                className="board-menu-separator"
               />
             );
           }
@@ -224,16 +224,16 @@ export function MainMenu({
             return (
               <Box
                 key={`section-${index}`}
-                className="main-menu-section"
+                className="board-menu-section"
                 sx={item.sx}
               >
                 {item.title && (
-                  <Typography className="main-menu-section-title">
+                  <Typography className="board-menu-section-title">
                     {item.title}
                   </Typography>
                 )}
                 {item.description && (
-                  <Typography className="main-menu-section-description">
+                  <Typography className="board-menu-section-description">
                     {item.description}
                   </Typography>
                 )}
@@ -242,13 +242,13 @@ export function MainMenu({
                     component="a"
                     href={item.action.href}
                     onClick={item.action.onClick}
-                    className="main-menu-section-action"
+                    className="board-menu-section-action"
                   >
                     {item.action.label}
                   </Typography>
                 )}
                 {item.icon && (
-                  <Box className="main-menu-section-icon">{item.icon}</Box>
+                  <Box className="board-menu-section-icon">{item.icon}</Box>
                 )}
               </Box>
             );
@@ -258,7 +258,7 @@ export function MainMenu({
             <ListItem
               key={item.id || index}
               disablePadding
-              className="main-menu-item"
+              className="board-menu-item"
             >
               <ListItemButton
                 onClick={e => {
@@ -267,22 +267,22 @@ export function MainMenu({
                   }
                 }}
                 disabled={item.disabled}
-                className="main-menu-item-button"
+                className="board-menu-item-button"
               >
                 {item.icon && (
-                  <ListItemIcon className="main-menu-item-icon">
+                  <ListItemIcon className="board-menu-item-icon">
                     {item.icon}
                   </ListItemIcon>
                 )}
                 <ListItemText primary={item.label} />
                 {item.badges && (
-                  <Box className="main-menu-badges-container">
+                  <Box className="board-menu-badges-container">
                     {item.badges.map((badge, badgeIndex) => (
                       <Chip
                         key={badgeIndex}
                         label={badge.label}
                         size="small"
-                        className="main-menu-badge"
+                        className="board-menu-badge"
                         sx={{
                           backgroundColor: badge.color || "#3b3c3f",
                           color: "var(--gray1)",
@@ -292,7 +292,7 @@ export function MainMenu({
                   </Box>
                 )}
                 {item.secondaryIcon && (
-                  <Box className="main-menu-secondary-icon">
+                  <Box className="board-menu-secondary-icon">
                     {item.secondaryIcon}
                   </Box>
                 )}

@@ -6,7 +6,7 @@ import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
-import { MainMenu } from "../components/ui/MainMenu";
+import { BoardMenu } from "../components/ui/BoardMenu";
 import {
   loadBoard,
   loadBoards,
@@ -163,7 +163,7 @@ export function BoardDetails() {
           <Footer />
         </nav>
       </div>
-      <MainMenu
+      <BoardMenu
         anchorEl={mainMenuAnchorEl}
         open={Boolean(mainMenuAnchorEl)}
         onClose={handleCloseMainMenu}
