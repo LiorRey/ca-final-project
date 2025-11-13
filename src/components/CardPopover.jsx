@@ -10,7 +10,8 @@ import {
   OpenInNew,
 } from "@mui/icons-material";
 import { useState } from "react";
-import { PopoverMenu } from "./ui/buttons/PopoverMenu";
+import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
+import { CardActionForm } from "./card/CardActionForm";
 
 export default function CardPopover({
   card,
@@ -24,14 +25,14 @@ export default function CardPopover({
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
 
-  function handleOpen(e) {
+  function handleOpen() {
     openCard();
     console.log("open");
   }
-  function handleEditLabels(e) {
+  function handleEditLabels() {
     console.log("editLabels");
   }
-  function handleArchive(e) {
+  function handleArchive() {
     console.log("archive");
     handleDelete();
   }
@@ -131,16 +132,17 @@ export default function CardPopover({
         </div>
       </Popover>
       {popoverOpen && (
-        <PopoverMenu
+        <PopoverMenuProvider
           anchorEl={popoverAnchorEl}
           isOpen={popoverOpen}
           onClose={handlePopoverClose}
           activeMenuItem={activeMenuItem}
           card={card}
-          onSubmit={
-            activeMenuItem === "copyCard"
-              ? handleCopyCardSubmit
-              : handleMoveCardSubmit
+          menuTitle={
+            activeMenuItem === "copyCard" ? "Copy to..." : "Move to..."
+          }
+          submitButtonText={
+            activeMenuItem === "copyCard" ? "Create card" : "Move"
           }
           anchorOrigin={{
             vertical: "bottom",
@@ -150,7 +152,13 @@ export default function CardPopover({
           sx={{
             zIndex: theme => theme.zIndex.modal + 2,
           }}
-        />
+        >
+          <CardActionForm
+            isCopyMode={activeMenuItem === "copyCard"}
+            onCopySubmit={handleCopyCardSubmit}
+            onMoveSubmit={handleMoveCardSubmit}
+          />
+        </PopoverMenuProvider>
       )}
     </Backdrop>
   );

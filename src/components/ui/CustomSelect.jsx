@@ -4,7 +4,9 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 const menuProps = {
-  disablePortal: true,
+  sx: {
+    zIndex: theme => theme.zIndex.modal + 2,
+  },
   slotProps: {
     root: {
       sx: {
@@ -23,8 +25,6 @@ const menuProps = {
       backgroundColor: "var(--gray3)",
       color: "var(--gray1)",
       pointerEvents: "auto",
-      position: "absolute",
-      zIndex: 1,
     },
   },
 };
