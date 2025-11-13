@@ -10,6 +10,9 @@ export const ADD_LIST = createAsyncActionTypes("ADD_LIST");
 export const MOVE_ALL_CARDS = createAsyncActionTypes("MOVE_ALL_CARDS");
 export const ARCHIVE_LIST = createAsyncActionTypes("ARCHIVE_LIST");
 export const UNARCHIVE_LIST = createAsyncActionTypes("UNARCHIVE_LIST");
+export const ARCHIVE_ALL_CARDS_IN_LIST = createAsyncActionTypes(
+  "ARCHIVE_ALL_CARDS_IN_LIST"
+);
 export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
@@ -61,6 +64,25 @@ const handlers = {
     },
   }),
   ...createAsyncHandlers(UNARCHIVE_LIST, UNARCHIVE_LIST.KEY),
+  ...createAsyncHandlers(
+    ARCHIVE_ALL_CARDS_IN_LIST,
+    ARCHIVE_ALL_CARDS_IN_LIST.KEY
+  ),
+  [ARCHIVE_ALL_CARDS_IN_LIST.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [ARCHIVE_ALL_CARDS_IN_LIST.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.id
+          ? {
+              ...list,
+              cards: action.payload.cards.filter(card => !card.archivedAt),
+            }
+          : list
+      ),
+    },
+  }),
   [SET_BOARDS]: (state, action) => ({
     ...state,
     boards: action.payload,

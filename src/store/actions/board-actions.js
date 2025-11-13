@@ -20,6 +20,7 @@ import {
   UPDATE_CARD_LABELS,
   ARCHIVE_LIST,
   UNARCHIVE_LIST,
+  ARCHIVE_ALL_CARDS_IN_LIST,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -282,6 +283,12 @@ export const archiveList = createAsyncAction(
 export const unarchiveList = createAsyncAction(
   UNARCHIVE_LIST,
   boardService.unarchiveList,
+  store
+);
+
+export const archiveAllCardsInList = createAsyncAction(
+  ARCHIVE_ALL_CARDS_IN_LIST,
+  boardService.archiveAllCardsInList,
   store
 );
 

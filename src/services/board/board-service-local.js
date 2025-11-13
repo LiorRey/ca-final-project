@@ -29,6 +29,7 @@ export const boardService = {
   updateCardLabels,
   archiveList,
   unarchiveList,
+  archiveAllCardsInList,
 };
 window.bs = boardService;
 
@@ -215,6 +216,28 @@ export async function updateBoard(
   } catch (error) {
     console.error("Cannot update board:", error);
 
+    throw error;
+  }
+}
+
+async function archiveAllCardsInList(boardId, listId) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const list = _findList(board, listId);
+    if (!list) throw new Error("List not found");
+
+    list.cards.forEach(card => {
+      if (!card.archivedAt) {
+        card.archivedAt = Date.now();
+      }
+    });
+
+    await updateBoard(boardId, board);
+    return list;
+  } catch (error) {
+    console.error("Cannot archive all cards in list:", error);
     throw error;
   }
 }

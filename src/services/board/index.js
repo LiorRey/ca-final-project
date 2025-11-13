@@ -8,8 +8,8 @@ function getEmptyBoard() {
     _id: crypto.randomUUID(),
     title: "",
     description: "",
-    createdAt: "",
-    updatedAt: "",
+    createdAt: null,
+    updatedAt: null,
     lists: [],
     activities: [],
     listOrder: [],
@@ -22,7 +22,8 @@ function getEmptyCard() {
     title: "",
     description: "",
     labels: [],
-    createdAt: "",
+    createdAt: null,
+    archivedAt: null,
   };
 }
 
