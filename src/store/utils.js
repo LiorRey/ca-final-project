@@ -84,3 +84,36 @@ export function createAsyncHandlers(actionTypes, key) {
     }),
   };
 }
+
+/**
+ * Creates an async action creator that handles REQUEST, SUCCESS, FAILURE lifecycle.
+ * Eliminates repetitive async action boilerplate code.
+ *
+ * @param {Object} actionTypes - Action types object from createAsyncActionTypes
+ * @param {Function} serviceFunction - The service function to call
+ * @param {Function} store - The Redux store instance for using dispatch
+ * @returns {Function} Async action creator function
+ *
+ * @example
+ * const archiveList = createAsyncAction(
+ *   ARCHIVE_LIST,
+ *   boardService.archiveList,
+ *   store
+ * );
+ *
+ * // Usage:
+ * archiveList(boardId, listId);
+ */
+export function createAsyncAction(actionTypes, serviceFunction, store) {
+  return async (...args) => {
+    try {
+      store.dispatch({ type: actionTypes.REQUEST });
+      const result = await serviceFunction(...args);
+      store.dispatch({ type: actionTypes.SUCCESS, payload: result });
+      return result;
+    } catch (error) {
+      store.dispatch({ type: actionTypes.FAILURE, payload: error.message });
+      throw error;
+    }
+  };
+}

@@ -18,10 +18,13 @@ import {
   EDIT_LABEL,
   DELETE_LABEL,
   UPDATE_CARD_LABELS,
+  ARCHIVE_LIST,
+  UNARCHIVE_LIST,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
 import { boardService } from "../../services/board";
+import { createAsyncAction } from "../utils";
 
 export async function loadBoards() {
   try {
@@ -269,6 +272,18 @@ export async function updateCardLabels(
     throw error;
   }
 }
+
+export const archiveList = createAsyncAction(
+  ARCHIVE_LIST,
+  boardService.archiveList,
+  store
+);
+
+export const unarchiveList = createAsyncAction(
+  UNARCHIVE_LIST,
+  boardService.unarchiveList,
+  store
+);
 
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };

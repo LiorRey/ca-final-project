@@ -27,6 +27,8 @@ export const boardService = {
   editLabel,
   deleteLabel,
   updateCardLabels,
+  archiveList,
+  unarchiveList,
 };
 window.bs = boardService;
 
@@ -325,7 +327,42 @@ export function getEmptyList() {
     id: crypto.randomUUID(),
     title: "",
     cards: [],
+    archivedAt: null,
   };
+}
+
+async function updateListArchiveStatus(boardId, listId, archivedAt) {
+  const board = await getById(boardId);
+  const list = _findList(board, listId);
+
+  if (archivedAt && list.archivedAt) {
+    throw new Error("List is already archived");
+  }
+  if (!archivedAt && !list.archivedAt) {
+    throw new Error("List is not archived");
+  }
+
+  const updatedList = { ...list, archivedAt };
+  await updateBoard(boardId, { archivedAt }, { listId });
+  return updatedList;
+}
+
+export async function archiveList(boardId, listId) {
+  try {
+    return await updateListArchiveStatus(boardId, listId, Date.now());
+  } catch (error) {
+    console.error("Cannot archive list:", error);
+    throw error;
+  }
+}
+
+export async function unarchiveList(boardId, listId) {
+  try {
+    return await updateListArchiveStatus(boardId, listId, null);
+  } catch (error) {
+    console.error("Cannot unarchive list:", error);
+    throw error;
+  }
 }
 
 function updateBoardFields(board, updates) {

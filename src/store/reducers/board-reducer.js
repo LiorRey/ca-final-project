@@ -8,6 +8,8 @@ export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
 export const ADD_LIST = createAsyncActionTypes("ADD_LIST");
 export const MOVE_ALL_CARDS = createAsyncActionTypes("MOVE_ALL_CARDS");
+export const ARCHIVE_LIST = createAsyncActionTypes("ARCHIVE_LIST");
+export const UNARCHIVE_LIST = createAsyncActionTypes("UNARCHIVE_LIST");
 export const ADD_CARD = "ADD_CARD";
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
@@ -49,6 +51,16 @@ const handlers = {
       lists: action.payload,
     },
   }),
+  ...createAsyncHandlers(ARCHIVE_LIST, ARCHIVE_LIST.KEY),
+  [ARCHIVE_LIST.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [ARCHIVE_LIST.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.filter(list => list.id !== action.payload.id),
+    },
+  }),
+  ...createAsyncHandlers(UNARCHIVE_LIST, UNARCHIVE_LIST.KEY),
   [SET_BOARDS]: (state, action) => ({
     ...state,
     boards: action.payload,

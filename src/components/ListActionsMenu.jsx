@@ -9,7 +9,11 @@ import { Popover } from "./Popover";
 import "../assets/styles/components/ListActionsMenu.css";
 import { CopyListForm } from "./CopyListForm";
 import { MoveListForm } from "./MoveListForm";
-import { moveList, loadBoards } from "../store/actions/board-actions";
+import {
+  moveList,
+  loadBoards,
+  archiveList,
+} from "../store/actions/board-actions";
 
 export function ListActionsMenu({
   list,
@@ -26,7 +30,13 @@ export function ListActionsMenu({
 
   function handleMenuClick(key) {
     if (!listActionsMenuItems().find(item => item.key === key)) return;
-    setActiveAction(key);
+
+    if (key === "archiveList") {
+      archiveList(currentBoard._id, list.id);
+      onClose();
+    } else {
+      setActiveAction(key);
+    }
   }
 
   function handleMoveAllCards(destinationListId) {
@@ -129,7 +139,7 @@ function listActionsMenuItems() {
     { label: "Move All cards in this list", key: "moveAll" },
     { label: "Sort list...", key: "sort" },
     { label: "Watch", key: "watch" },
-    { label: "Archive this list", key: "archive" },
-    { label: "Archive all cards in this list", key: "archiveAll" },
+    { label: "Archive this list", key: "archiveList" },
+    { label: "Archive all cards in this list", key: "archiveAllCards" },
   ];
 }
