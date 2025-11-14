@@ -1,0 +1,5 @@
+# Jobs directory
+# Place your background jobs/cron tasks here
+# Example: emailJob.js, cleanupJob.js, reportJob.js
+# Use libraries like node-cron, bull, agenda, etc.
+
