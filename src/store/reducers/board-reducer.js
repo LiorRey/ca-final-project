@@ -180,6 +180,13 @@ const handlers = {
     board: {
       ...state.board,
       labels: state.board.labels.filter(l => l.id !== action.payload),
+      lists: state.board.lists.map(list => ({
+        ...list,
+        cards: list.cards.map(card => ({
+          ...card,
+          labels: card.labels.filter(id => id !== action.payload),
+        })),
+      })),
     },
   }),
   ...createAsyncHandlers(UPDATE_CARD_LABELS, UPDATE_CARD_LABELS.KEY),
