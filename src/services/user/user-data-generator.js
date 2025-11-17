@@ -4,10 +4,12 @@ export function generateUser(options = {}) {
   const firstName = faker.person.firstName();
   const lastName = faker.person.lastName();
   const username = faker.internet.username();
+  const email = faker.internet.email({ firstName, lastName });
 
   const user = {
     _id: faker.string.uuid(),
     username,
+    email,
     password: faker.internet.password({ length: 8 }),
     fullname: `${firstName} ${lastName}`,
     imgUrl:
@@ -21,10 +23,14 @@ export function generateUser(options = {}) {
 }
 
 export function generateAdminUser(options = {}) {
+  const firstName = faker.person.firstName();
+  const lastName = faker.person.lastName();
+
   return generateUser({
     isAdmin: true,
     score: faker.number.int({ min: 25000, max: 100000 }),
-    fullname: faker.person.fullName() + " (Admin)",
+    fullname: `${firstName} ${lastName} (Admin)`,
+    email: faker.internet.email({ firstName, lastName }),
     ...options,
   });
 }
@@ -55,12 +61,14 @@ export function generateSampleUsers() {
   const adminUser = generateAdminUser({
     username: "admin",
     fullname: "System Administrator",
+    email: "admin@example.com",
     score: 100000,
   });
 
   const testUser = generateUser({
     username: "testuser",
     fullname: "Test User",
+    email: "test@example.com",
     password: "test",
     score: 15000,
     isAdmin: false,
