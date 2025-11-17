@@ -448,7 +448,18 @@ async function deleteLabel(boardId, labelId) {
 
     const updatedLabels = board.labels.filter(l => l.id !== labelId);
 
-    await updateBoard(boardId, { labels: updatedLabels });
+    const updatedLists = board.lists.map(list => ({
+      ...list,
+      cards: list.cards.map(card => ({
+        ...card,
+        labels: card.labels.filter(id => id !== labelId),
+      })),
+    }));
+
+    await updateBoard(boardId, {
+      labels: updatedLabels,
+      lists: updatedLists,
+    });
   } catch (error) {
     console.error("Cannot delete label:", error);
     throw error;
