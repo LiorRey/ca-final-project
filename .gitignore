@@ -75,3 +75,4 @@ Desktop.ini
 
 # Docker
 .dockerignore
+memory-bank/

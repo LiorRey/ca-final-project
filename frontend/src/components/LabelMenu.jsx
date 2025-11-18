@@ -58,11 +58,6 @@ export function LabelMenu({
 
   async function handleDeleteLabel(labelId) {
     await deleteLabel(boardId, labelId);
-
-    if (card.labels.includes(labelId)) {
-      handleToggleLabel(labelId);
-    }
-
     handleBack();
   }
 

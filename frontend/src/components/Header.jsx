@@ -35,7 +35,7 @@ export function Header() {
         {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
 
         {!user && (
-          <NavLink to="auth/login" className="login-link">
+          <NavLink to="/login" className="login-link">
             Login
           </NavLink>
         )}

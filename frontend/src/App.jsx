@@ -9,7 +9,9 @@ import { CardDetails } from "./pages/CardDetails";
 import { UserDetails } from "./pages/UserDetails";
 import { ChatApp } from "./pages/Chat";
 import { AdminIndex } from "./pages/AdminIndex";
-import { LoginSignup, Login, Signup } from "./pages/LoginSignup";
+// import { Login } from "./pages/LoginSignup";
+import { SignupPage } from "./pages/SignupPage";
+import { LoginPage } from "./pages/LoginPage";
 
 export function App() {
   const location = useLocation();
@@ -32,10 +34,8 @@ export function App() {
           <Route path="user/:userId" element={<UserDetails />} />
           <Route path="chat" element={<ChatApp />} />
           <Route path="admin" element={<AdminIndex />} />
-          <Route path="auth" element={<LoginSignup />}>
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-          </Route>
+          <Route path="signup" element={<SignupPage />} />
+          <Route path="login" element={<LoginPage />} />
         </Routes>
         {backgroundLocation && (
           <Routes>
