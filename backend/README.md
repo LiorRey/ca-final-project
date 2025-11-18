@@ -196,6 +196,20 @@ All errors are handled by the centralized error handler middleware. Errors retur
 - MongoDB connection is configured in `src/config/database.js`
 - Automatically connects when server starts in `src/server.js`
 
+## Accessing the Database via CLI
+
+After launching the database with Docker Compose, you can access MongoDB through the command line interface:
+
+```powershell
+docker exec -it backend-mongodb-1 mongosh "mongodb://admin:123123@localhost:27017/basicdb?authSource=admin"
+```
+
+This command:
+
+- Connects to the MongoDB container (`backend-mongodb-1`)
+- Uses the same connection URI as configured in your environment
+- Opens an interactive MongoDB shell where you can run queries and manage the database
+
 ## Technologies
 
 - **Node.js** - Runtime environment

@@ -1,5 +1,5 @@
-import app from './app.js';
-import { connectDatabase } from './config/database.js';
+import app from "./app.js";
+import { connectDatabase } from "./config/database.js";
 
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV;
@@ -18,7 +18,7 @@ async function startServer() {
       console.log(`URL: ${URL}`);
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.error("Failed to start server:", error);
     process.exit(1);
   }
 }
