@@ -1,9 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-/**
- * Card Schema
- * Simple schema for cards with title, description, labels, assigned users, and due date
- */
 const cardSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -20,7 +16,6 @@ const cardSchema = new mongoose.Schema({
   },
 });
 
-// Export the model
-const Card = mongoose.model('Card', cardSchema);
+const Card = mongoose.model("Card", cardSchema);
 
 export default Card;

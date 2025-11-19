@@ -1,7 +1,5 @@
 # Dependencies
 node_modules/
-.pnp
-.pnp.js
 
 # Environment variables
 .env
@@ -20,11 +18,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Testing
-coverage/
-.nyc_output/
-*.lcov
-
 # Build outputs
 dist/
 dist-ssr/
@@ -36,37 +29,10 @@ build/
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-# ESLint cache
+# cache
+.prettiercache
 .eslintcache
 
-# Prettier cache
-.prettiercache
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-.idea/
-*.swp
-*.swo
-*~
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
 
 # Temporary files
 *.tmp
