@@ -35,6 +35,18 @@ const muiTheme = createTheme({
 
     return spacingMap[factor] ?? `${factor * 0.5}rem`;
   },
+
+  /**
+   * Shape Configuration
+   *
+   * Uses ADS radius.small as the default border radius.
+   * This provides a consistent 4px (0.25rem) border radius across components.
+   *
+   * Larger components can override to radius.medium or radius.large in styleOverrides.
+   */
+  shape: {
+    borderRadius: token("radius.small", "0.25rem"),
+  },
 });
 
 export default muiTheme;
