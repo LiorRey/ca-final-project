@@ -1,3 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
 # Logs
 logs
 *.log
@@ -7,20 +18,27 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-.env
-.env.*
+# Build outputs
+dist/
+dist-ssr/
+build/
+*.tsbuildinfo
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Vite (Frontend)
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# cache
+.prettiercache
+.eslintcache
+
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Docker
+.dockerignore
+memory-bank/
