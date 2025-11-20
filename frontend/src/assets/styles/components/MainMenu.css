@@ -1,0 +1,135 @@
+.MuiPaper-root.board-menu-paper {
+  width: 350px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background-color: #2b2c2f;
+  color: #bfc1c4;
+  border-radius: 0.5rem;
+  box-shadow: 0px 8px 12px #091e4226, 0px 0px 1px #091e424f;
+}
+
+.board-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0.5rem 2.5rem;
+  min-width: 200px;
+}
+
+.board-menu-header-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: white;
+}
+
+.board-menu-header-close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.board-menu-list {
+  padding: 0;
+}
+
+.board-menu-separator {
+  margin: 8px 0;
+  color: var(--gray1);
+  border-color: var(--gray1);
+  border-width: 1px;
+}
+
+.board-menu-section {
+  padding: 16px;
+  margin: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  position: relative;
+}
+
+.board-menu-section-title {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.board-menu-section-description {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+}
+
+.board-menu-section-action {
+  font-size: 0.875rem;
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.board-menu-section-action:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.board-menu-section-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  opacity: 0.3;
+}
+
+.board-menu-section-upgrade-icon {
+  font-size: 48px;
+  color: #9c27b0;
+}
+
+.board-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.board-menu-item-button {
+  padding: 8px 16px;
+  min-height: 40px;
+}
+
+.board-menu-item-icon,
+.MuiListItemIcon-root.board-menu-item-icon {
+  min-width: 40px;
+  color: var(--gray1);
+}
+
+.board-menu-item-icon svg {
+  color: var(--gray1);
+}
+
+.board-menu-item-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.board-menu-item-label.disabled {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.board-menu-badges-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.board-menu-badge {
+  height: 20px;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: 500;
+}
+
+.board-menu-secondary-icon {
+  margin-left: 0.5rem;
+  opacity: 0.5;
+}
