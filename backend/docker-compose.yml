@@ -3,7 +3,7 @@ services:
     image: mongo:latest
     restart: unless-stopped
     ports:
-      - '27017:27017'
+      - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 123123
@@ -15,10 +15,9 @@ services:
   backend:
     build:
       context: .
-      dockerfile: .dockerfile
     restart: unless-stopped
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       MONGODB_URI: mongodb://admin:123123@mongodb:27017/basicdb?authSource=admin
       PORT: 3000
