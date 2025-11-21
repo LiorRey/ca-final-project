@@ -3,6 +3,11 @@ import { loadFromStorage, saveToStorage } from "../util-service";
 import boardDataGenerator from "./board-data-generator";
 import { USER_STORAGE_KEY } from "../user/user-service-local.js";
 import { getFilteredBoard } from "../filter-service";
+import {
+  calculateNewPosition,
+  generatePositionAtEnd,
+  sortByPosition,
+} from "./fractional-index-service";
 
 const BOARDS_STORAGE_KEY = "boardDB";
 _createBoards();
@@ -58,18 +63,22 @@ export async function copyList(boardId, listId, newName) {
       id: crypto.randomUUID(),
     }));
 
+    // Calculate position for the cloned list (right after the original)
+    const newPosition = calculateNewPosition(
+      board.lists,
+      originalListIndex + 1
+    );
+
     const clonedList = {
       ...listToCopy,
       id: crypto.randomUUID(),
       title: newName,
       cards: clonedCards,
+      position: newPosition,
     };
 
-    const updatedLists = [
-      ...board.lists.slice(0, originalListIndex + 1),
-      clonedList,
-      ...board.lists.slice(originalListIndex + 1),
-    ];
+    // Add the cloned list and sort by position
+    const updatedLists = sortByPosition([...board.lists, clonedList]);
 
     return updatedLists;
   } catch (error) {
@@ -90,13 +99,24 @@ async function moveSameBoard(board, sourceIndex, targetIndex) {
   const movedList = board.lists[sourceIndex];
   if (!movedList) throw new Error("List not found at source index");
 
-  const listsWithoutMoved = removeFromArray(board.lists, sourceIndex);
-  const updatedLists = insertInArray(listsWithoutMoved, movedList, targetIndex);
+  const newPosition = calculateNewPosition(
+    board.lists,
+    targetIndex,
+    movedList.id
+  );
 
-  const updatedBoard = updateBoardFields(board, { lists: updatedLists });
+  const updatedList = { ...movedList, position: newPosition };
+
+  const updatedLists = board.lists.map(list =>
+    list.id === movedList.id ? updatedList : list
+  );
+
+  const sortedLists = sortByPosition(updatedLists);
+
+  const updatedBoard = updateBoardFields(board, { lists: sortedLists });
   await save(updatedBoard);
 
-  return updatedLists;
+  return sortedLists;
 }
 
 async function moveCrossBoard(
@@ -109,12 +129,18 @@ async function moveCrossBoard(
   const movedList = sourceBoard.lists[sourceIndex];
   if (!movedList) throw new Error("List not found at source index");
 
-  const updatedSourceLists = removeFromArray(sourceBoard.lists, sourceIndex);
-  const updatedTargetLists = insertInArray(
-    targetBoard.lists,
-    movedList,
-    targetIndex
+  const newPosition = calculateNewPosition(targetBoard.lists, targetIndex);
+
+  const updatedList = { ...movedList, position: newPosition };
+
+  const updatedSourceLists = sourceBoard.lists.filter(
+    list => list.id !== movedList.id
   );
+
+  const updatedTargetLists = sortByPosition([
+    ...targetBoard.lists,
+    updatedList,
+  ]);
 
   const updatedSourceBoard = updateBoardFields(sourceBoard, {
     lists: updatedSourceLists,
@@ -164,6 +190,11 @@ export async function moveList(
 async function getById(boardId, filterBy = {}) {
   try {
     const board = await storageService.get(BOARDS_STORAGE_KEY, boardId);
+
+    if (board && board.lists) {
+      board.lists = sortByPosition(board.lists);
+    }
+
     return getFilteredBoard(board, filterBy);
   } catch (error) {
     console.log("Cannot get board:", error);
@@ -459,9 +490,14 @@ export async function createList(boardId, listData) {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
+    const lastList =
+      board.lists.length > 0 ? board.lists[board.lists.length - 1] : null;
+    const newPosition = generatePositionAtEnd(lastList?.position || null);
+
     const newList = {
       ...getEmptyList(),
       ...listData,
+      position: newPosition,
     };
 
     const updatedLists = [...board.lists, newList];
@@ -479,6 +515,7 @@ export function getEmptyList() {
     title: "",
     cards: [],
     archivedAt: null,
+    position: null,
   };
 }
 
