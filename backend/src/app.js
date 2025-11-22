@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 import routes from "./routes/index.js";
 import errorHandler from "./middlewares/error-handler.js";
@@ -17,6 +18,8 @@ if (process.env.NODE_ENV === "development") {
 } else {
   app.use(morgan("combined"));
 }
+
+app.use(cookieParser());
 
 app.use("/", routes);
 
