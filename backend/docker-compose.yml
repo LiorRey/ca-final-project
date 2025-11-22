@@ -9,7 +9,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
     volumes:
-      - mongodb_data:/data/db
+      - mongo_data:/data/db
     command: mongod --auth
 
   # backend:
@@ -40,4 +40,4 @@ services:
   #         path: ./package.json
 
 volumes:
-  mongodb_data:
+  mongo_data:
