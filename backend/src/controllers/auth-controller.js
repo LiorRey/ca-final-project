@@ -26,8 +26,30 @@ export async function signup(req, res) {
   }
 }
 
-export async function login(req, res) {}
+export async function login(req, res) {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return invalidCredentials(res);
+
+    const passwordMatch = await user.comparePassword(password);
+    if (!passwordMatch) return invalidCredentials(res);
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
+    res.json({ data: userWithoutPassword, error: null });
+  } catch (err) {
+    res.status(500).json({ error: "Login failed", data: null });
+  }
+}
 
 export function logout(req, res) {}
 
 export async function getCurrentUser(req, res) {}
+
+function invalidCredentials(res) {
+  return res.status(401).json({ error: "Invalid credentials", data: null });
+}
