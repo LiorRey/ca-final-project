@@ -44,7 +44,10 @@ export async function login(req, res) {
   }
 }
 
-export function logout(req, res) {}
+export function logout(_req, res) {
+  res.clearCookie("token");
+  res.json({ error: null, data: "Logged out successfully" });
+}
 
 export async function getCurrentUser(req, res) {}
 
