@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 
 export async function connectDatabase() {
   try {
-    const mongoURI =
-      process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/basicdb";
-
-    await mongoose.connect(mongoURI);
+    await mongoose.connect(process.env.MONGODB_URI);
 
     console.log("MongoDB connected successfully");
     console.log(`Database: ${mongoose.connection.name}`);
