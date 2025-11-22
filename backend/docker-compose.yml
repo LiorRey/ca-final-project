@@ -1,5 +1,5 @@
 services:
-  mongodb:
+  db:
     image: mongo:8.2
     restart: unless-stopped
     ports:
