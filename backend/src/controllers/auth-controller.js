@@ -18,9 +18,8 @@ export async function signup(req, res) {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    const { password: _, ...userWithoutPassword } = user.toObject();
     res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
-    res.status(201).json({ error: null, data: userWithoutPassword });
+    res.status(201).json({ error: null, data: user.getSafeUser() });
   } catch (err) {
     res.status(500).json({ error: "Signup failed", data: null });
   }
@@ -38,9 +37,8 @@ export async function login(req, res) {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    const { password: _, ...userWithoutPassword } = user.toObject();
     res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
-    res.json({ data: userWithoutPassword, error: null });
+    res.json({ data: user.getSafeUser(), error: null });
   } catch (err) {
     res.status(500).json({ error: "Login failed", data: null });
   }

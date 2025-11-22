@@ -40,4 +40,15 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
+userSchema.methods.getSafeUser = function () {
+  return {
+    _id: this._id,
+    email: this.email,
+    fullName: this.fullName,
+    username: this.username,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
+  };
+};
+
 export const User = mongoose.model("User", userSchema);
