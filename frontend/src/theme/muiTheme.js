@@ -4,7 +4,11 @@ import { setGlobalTheme, token } from "@atlaskit/tokens";
 setGlobalTheme({
   colorMode: "auto",
   shape: "shape",
+  typography: "typography",
 });
+
+const FONT_FALLBACK =
+  'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Ubuntu, "Helvetica Neue", sans-serif';
 
 const muiTheme = createTheme({
   /**
@@ -46,6 +50,95 @@ const muiTheme = createTheme({
    */
   shape: {
     borderRadius: token("radius.small", "0.25rem"),
+  },
+
+  /**
+   * Typography Configuration
+   *
+   * Maps MUI typography variants to ADS font scales.
+   * - Uses token() for fontFamily and fontWeight (CSS variables)
+   * - fontSize and lineHeight are hardcoded rem values based on ADS scales
+   *   (ADS doesn't provide separate fontSize/lineHeight tokens)
+   *
+   * ADS Font Scale Mapping:
+   * h1 → font.heading.xxlarge (35px/500)
+   * h2 → font.heading.xlarge  (29px/600)
+   * h3 → font.heading.large   (24px/500)
+   * h4 → font.heading.medium  (20px/500)
+   * h5 → font.heading.small   (16px/600)
+   * h6 → font.heading.xsmall  (14px/600)
+   * body1 → font.body         (14px/400)
+   * body2 → font.body.small   (11px/400)
+   */
+  typography: {
+    fontFamily: token("font.family.body", FONT_FALLBACK),
+    fontWeightLight: 300,
+    fontWeightRegular: token("font.weight.regular", "400"),
+    fontWeightMedium: token("font.weight.medium", "500"),
+    fontWeightBold: token("font.weight.bold", "700"),
+
+    h1: {
+      fontFamily: token("font.family.heading", FONT_FALLBACK),
+      fontSize: "2.1875rem",
+      lineHeight: "2.5rem",
+      fontWeight: token("font.weight.medium", "500"),
+    },
+    h2: {
+      fontFamily: token("font.family.heading", FONT_FALLBACK),
+      fontSize: "1.8125rem",
+      lineHeight: "2rem",
+      fontWeight: token("font.weight.semibold", "600"),
+    },
+    h3: {
+      fontFamily: token("font.family.heading", FONT_FALLBACK),
+      fontSize: "1.5rem",
+      lineHeight: "1.75rem",
+      fontWeight: token("font.weight.medium", "500"),
+    },
+    h4: {
+      fontFamily: token("font.family.heading", FONT_FALLBACK),
+      fontSize: "1.25rem",
+      lineHeight: "1.5rem",
+      fontWeight: token("font.weight.medium", "500"),
+    },
+    h5: {
+      fontFamily: token("font.family.heading", FONT_FALLBACK),
+      fontSize: "1rem",
+      lineHeight: "1.25rem",
+      fontWeight: token("font.weight.semibold", "600"),
+    },
+    h6: {
+      fontFamily: token("font.family.heading", FONT_FALLBACK),
+      fontSize: "0.875rem",
+      lineHeight: "1rem",
+      fontWeight: token("font.weight.semibold", "600"),
+    },
+    body1: {
+      fontSize: "0.875rem",
+      lineHeight: "1.25rem",
+      fontWeight: token("font.weight.regular", "400"),
+    },
+    body2: {
+      fontSize: "0.6875rem",
+      lineHeight: "1rem",
+      fontWeight: token("font.weight.regular", "400"),
+    },
+    button: {
+      fontSize: "0.875rem",
+      fontWeight: token("font.weight.medium", "500"),
+      textTransform: "none",
+    },
+    caption: {
+      fontSize: "0.6875rem",
+      lineHeight: "1rem",
+      fontWeight: token("font.weight.regular", "400"),
+    },
+    overline: {
+      fontSize: "0.6875rem",
+      lineHeight: "1rem",
+      fontWeight: token("font.weight.regular", "400"),
+      textTransform: "uppercase",
+    },
   },
 });
 
