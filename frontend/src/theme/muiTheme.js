@@ -5,6 +5,7 @@ setGlobalTheme({
   colorMode: "auto",
   shape: "shape",
   typography: "typography",
+  elevation: "elevation",
 });
 
 const FONT_FALLBACK =
@@ -140,6 +141,41 @@ const muiTheme = createTheme({
       textTransform: "uppercase",
     },
   },
+
+  /**
+   * Shadows Configuration (Elevation)
+   *
+   * Maps MUI shadow levels to ADS elevation tokens.
+   * MUI expects an array of 25 shadow values (0-24).
+   *
+   * ADS provides 3 shadow levels:
+   * - elevation.shadow.raised (subtle)
+   * - elevation.shadow.overflow (medium)
+   * - elevation.shadow.overlay (strong)
+   *
+   * Mapping:
+   * 0: none
+   * 1: raised
+   * 2: overflow
+   * 3-24: overlay (repeated for remaining indices)
+   */
+  shadows: [
+    "none",
+    token(
+      "elevation.shadow.raised",
+      "0px 1px 1px rgba(30, 31, 33, 0.25), 0px 0px 1px rgba(30, 31, 33, 0.31)"
+    ),
+    token(
+      "elevation.shadow.overflow",
+      "0px 0px 8px rgba(30, 31, 33, 0.16), 0px 0px 1px rgba(30, 31, 33, 0.12)"
+    ),
+    ...Array(22).fill(
+      token(
+        "elevation.shadow.overlay",
+        "0px 8px 12px rgba(30, 31, 33, 0.15), 0px 0px 1px rgba(30, 31, 33, 0.31)"
+      )
+    ), // Indices 3-24 (22 elements)
+  ],
 });
 
 export default muiTheme;
