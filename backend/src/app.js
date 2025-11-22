@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import "dotenv/config";
-import cardRoutes from "./routes/card.js";
+import routes from "./routes/index.js";
 import errorHandler from "./middlewares/error-handler.js";
 
 const app = express();
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("combined"));
 }
 
-app.use("/cards", cardRoutes);
+app.use("/", routes);
 
 app.get("/health", function (_req, res) {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
