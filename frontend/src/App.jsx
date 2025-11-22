@@ -12,6 +12,7 @@ import { AdminIndex } from "./pages/AdminIndex";
 // import { Login } from "./pages/LoginSignup";
 import { SignupPage } from "./pages/SignupPage";
 import { LoginPage } from "./pages/LoginPage";
+import ThemeComparison from "./pages/ThemeComparison";
 
 export function App() {
   const location = useLocation();
@@ -36,6 +37,7 @@ export function App() {
           <Route path="admin" element={<AdminIndex />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="theme-comparison" element={<ThemeComparison />} />
         </Routes>
         {backgroundLocation && (
           <Routes>
