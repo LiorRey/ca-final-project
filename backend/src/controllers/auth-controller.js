@@ -49,7 +49,20 @@ export function logout(_req, res) {
   res.json({ error: null, data: "Logged out successfully" });
 }
 
-export async function getCurrentUser(req, res) {}
+export async function getCurrentUser(req, res) {
+  try {
+    const token = req.cookies.token;
+    if (!token) return invalidCredentials(res);
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId);
+    if (!user) return invalidCredentials(res);
+
+    res.json({ error: null, data: user.getSafeUser() });
+  } catch (err) {
+    return invalidCredentials(res);
+  }
+}
 
 function invalidCredentials(res) {
   return res.status(401).json({ error: "Invalid credentials", data: null });
