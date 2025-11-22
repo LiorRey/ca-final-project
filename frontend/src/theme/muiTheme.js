@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 import { setGlobalTheme, token } from "@atlaskit/tokens";
 
 setGlobalTheme({
-  colorMode: "auto",
+  colorMode: "light",
   shape: "shape",
   typography: "typography",
   elevation: "elevation",
@@ -140,6 +140,71 @@ const muiTheme = createTheme({
       fontWeight: token("font.weight.regular", "400"),
       textTransform: "uppercase",
     },
+  },
+
+  /**
+   * Palette Configuration
+   *
+   * Maps MUI color system to ADS color tokens using token() function.
+   * This provides dynamic theming capabilities but generates MUI warnings
+   * about color channels (which is expected and acceptable).
+   *
+   * Color Mapping:
+   * - primary → brand (blue)
+   * - secondary → neutral (gray)
+   * - error → danger (red)
+   * - warning → warning (orange/yellow)
+   * - info → information (blue)
+   * - success → success (green)
+   *
+   * Note: MUI will show warnings about palette.defaultChannel because
+   * CSS variables can't be parsed for channel generation. This is
+   * expected and doesn't affect functionality.
+   */
+  cssVariables: true,
+  palette: {
+    primary: {
+      main: token("color.background.brand.bold", "#1868DB"),
+      light: token("color.background.brand.subtlest", "#E9F2FE"),
+      dark: token("color.background.brand.boldest", "#123263"),
+      contrastText: token("color.text.inverse", "#FFFFFF"),
+    },
+    secondary: {
+      main: token("color.background.neutral.bold", "#505258"),
+      light: token("color.background.neutral", "#F7F8F9"),
+      dark: token("color.background.neutral.bold.pressed", "#3B3D42"),
+      contrastText: token("color.text.inverse", "#FFFFFF"),
+    },
+    error: {
+      main: token("color.background.danger.bold", "#C9372C"),
+      light: token("color.background.danger", "#FFECEB"),
+      dark: token("color.background.danger.bold.pressed", "#872821"),
+      contrastText: token("color.text.inverse", "#FFFFFF"),
+    },
+    warning: {
+      main: token("color.background.warning.bold", "#FCA700"),
+      light: token("color.background.warning", "#FFF5DB"),
+      dark: token("color.background.warning.bold.pressed", "#F68909"),
+      contrastText: token("color.text", "#292A2E"),
+    },
+    info: {
+      main: token("color.background.information.bold", "#1868DB"),
+      light: token("color.background.information", "#E9F2FE"),
+      dark: token("color.background.information.bold.pressed", "#144794"),
+      contrastText: token("color.text.inverse", "#FFFFFF"),
+    },
+    success: {
+      main: token("color.background.success.bold", "#6A9A23"),
+      light: token("color.background.success", "#EFFFD6"),
+      dark: token("color.background.success.bold.pressed", "#3F5224"),
+      contrastText: token("color.text.inverse", "#FFFFFF"),
+    },
+    text: {
+      primary: token("color.text", "#292A2E"),
+      secondary: token("color.text.subtle", "#626F86"),
+      disabled: token("color.text.disabled", "#7D818A"),
+    },
+    divider: token("color.border", "rgba(11, 18, 14, 0.14)"),
   },
 
   /**
