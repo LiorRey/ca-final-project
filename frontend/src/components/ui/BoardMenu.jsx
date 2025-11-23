@@ -197,7 +197,6 @@ export function BoardMenu({
     vertical: "top",
     horizontal: "left",
   },
-  sx,
   ...popoverProps
 }) {
   function handleItemClick(itemId, e) {
@@ -233,7 +232,7 @@ export function BoardMenu({
       slotProps={{
         paper: {
           className: "board-menu-paper",
-          sx: { padding: 2, ...sx },
+          sx: { padding: 1 },
         },
       }}
       {...popoverProps}
