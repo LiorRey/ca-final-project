@@ -27,38 +27,38 @@ export function generatePositionBetween(beforePosition, afterPosition) {
 
 /**
  * Calculate the new position for moving an item to a specific index
- * @param {Array} lists - Array of lists with position field
+ * @param {Array} items - Array of items with position field (lists, cards, etc.)
  * @param {number} targetIndex - Target index for the moved item
  * @param {string} [movedItemId] - ID of the item being moved (to exclude from calculation)
  * @returns {string} New position string
  */
-export function calculateNewPosition(lists, targetIndex, movedItemId = null) {
-  const relevantLists = movedItemId
-    ? lists.filter(list => list.id !== movedItemId)
-    : lists;
+export function calculateNewPosition(items, targetIndex, movedItemId = null) {
+  const relevantItems = movedItemId
+    ? items.filter(item => item.id !== movedItemId)
+    : items;
 
-  const sortedLists = sortByPosition(relevantLists);
+  const sortedItems = sortByPosition(relevantItems);
 
-  if (sortedLists.length === 0) {
+  if (sortedItems.length === 0) {
     return generateKeyBetween(null, null);
   }
 
   if (targetIndex <= 0) {
-    return generatePositionAtStart(sortedLists[0].position);
+    return generatePositionAtStart(sortedItems[0].position);
   }
 
-  if (targetIndex >= sortedLists.length) {
-    return generatePositionAtEnd(sortedLists[sortedLists.length - 1].position);
+  if (targetIndex >= sortedItems.length) {
+    return generatePositionAtEnd(sortedItems[sortedItems.length - 1].position);
   }
 
-  const beforePosition = sortedLists[targetIndex - 1].position;
-  const afterPosition = sortedLists[targetIndex].position;
+  const beforePosition = sortedItems[targetIndex - 1].position;
+  const afterPosition = sortedItems[targetIndex].position;
 
   return generatePositionBetween(beforePosition, afterPosition);
 }
 
-export function sortByPosition(lists) {
-  return [...lists].sort((a, b) => {
+export function sortByPosition(items) {
+  return [...items].sort((a, b) => {
     if (a.position < b.position) return -1;
     if (a.position > b.position) return 1;
     return 0;
