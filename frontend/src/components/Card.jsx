@@ -39,12 +39,9 @@ export function Card({
 
   function handleClose() {
     setAnchorEl(null);
-    setTitle(card.title);
   }
 
   function handleSave() {
-    card.title = title;
-    handleClose();
     handleUpdateCard({ ...card, title });
   }
 

@@ -154,6 +154,7 @@ export default function CardPopover({
           }}
         >
           <CardActionForm
+            card={card}
             isCopyMode={activeMenuItem === "copyCard"}
             onCopySubmit={handleCopyCardSubmit}
             onMoveSubmit={handleMoveCardSubmit}
