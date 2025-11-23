@@ -14,6 +14,8 @@ import {
   ADD_CARD,
   EDIT_CARD,
   DELETE_CARD,
+  COPY_CARD,
+  MOVE_CARD,
   CREATE_LABEL,
   EDIT_LABEL,
   DELETE_LABEL,
@@ -155,17 +157,11 @@ export async function addCard(boardId, card, listId) {
   }
 }
 
-export async function editCard(boardId, card, listId) {
-  try {
-    const updatedCard = await boardService.editCard(boardId, card, listId);
-    store.dispatch(editCardAction(updatedCard, listId));
-  } catch (error) {
-    store.dispatch(
-      setError("editCard", `Error editing card: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const editCard = createAsyncAction(
+  EDIT_CARD,
+  boardService.editCard,
+  store
+);
 
 export async function deleteCard(boardId, cardId, listId) {
   try {
@@ -178,6 +174,18 @@ export async function deleteCard(boardId, cardId, listId) {
     throw error;
   }
 }
+
+export const copyCard = createAsyncAction(
+  COPY_CARD,
+  boardService.copyCard,
+  store
+);
+
+export const moveCard = createAsyncAction(
+  MOVE_CARD,
+  boardService.moveCard,
+  store
+);
 
 export function addCardAction(card, listId) {
   return { type: ADD_CARD, payload: { card, listId } };

@@ -14,8 +14,10 @@ export const ARCHIVE_ALL_CARDS_IN_LIST = createAsyncActionTypes(
   "ARCHIVE_ALL_CARDS_IN_LIST"
 );
 export const ADD_CARD = "ADD_CARD";
-export const EDIT_CARD = "EDIT_CARD";
+export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const DELETE_CARD = "DELETE_CARD";
+export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
+export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
 export const MOVE_LIST = "MOVE_LIST";
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
 export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
@@ -121,8 +123,10 @@ const handlers = {
       ),
     },
   }),
-  [EDIT_CARD]: (state, action) => ({
+  ...createAsyncHandlers(EDIT_CARD, EDIT_CARD.KEY),
+  [EDIT_CARD.SUCCESS]: (state, action) => ({
     ...state,
+    loading: { ...state.loading, [EDIT_CARD.KEY]: false },
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
@@ -151,6 +155,26 @@ const handlers = {
             }
           : list
       ),
+    },
+  }),
+  ...createAsyncHandlers(COPY_CARD, COPY_CARD.KEY),
+  [COPY_CARD.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [COPY_CARD.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.id ? action.payload : list
+      ),
+    },
+  }),
+  ...createAsyncHandlers(MOVE_CARD, MOVE_CARD.KEY),
+  [MOVE_CARD.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [MOVE_CARD.KEY]: false },
+    board: {
+      ...state.board,
+      lists: action.payload,
     },
   }),
   ...createAsyncHandlers(CREATE_LABEL, CREATE_LABEL.KEY),

@@ -12,9 +12,12 @@ import {
 import { useState } from "react";
 import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
 import { CardActionForm } from "./card/CardActionForm";
+import { moveCard, copyCard } from "../store/actions/board-actions";
+import { useParams } from "react-router-dom";
 
 export default function CardPopover({
   card,
+  listId,
   open,
   anchorEl,
   id,
@@ -24,6 +27,7 @@ export default function CardPopover({
 }) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
+  const { boardId } = useParams();
 
   function handleOpen() {
     openCard();
@@ -48,15 +52,51 @@ export default function CardPopover({
   }
 
   function handleCopyCardSubmit(formData) {
-    // TODO: Implement copy card logic
+    const {
+      boardId: destinationBoardId,
+      keepLabels,
+      keepMembers,
+      listId: destinationListId,
+      position,
+      title,
+    } = formData;
+
+    const copyData = {
+      sourceBoardId: boardId,
+      destinationBoardId,
+      sourceListId: listId,
+      destinationListId,
+      keepLabels,
+      keepMembers,
+      position,
+      title,
+    };
+
+    copyCard(copyData, card);
     console.log("Copy card:", formData);
     handlePopoverClose();
+    handleClose();
   }
 
   function handleMoveCardSubmit(formData) {
-    // TODO: Implement move card logic
+    const {
+      boardId: destinationBoardId,
+      listId: destinationListId,
+      position,
+    } = formData;
+
+    const moveData = {
+      sourceBoardId: boardId,
+      sourceListId: listId,
+      destinationBoardId,
+      destinationListId,
+      position,
+    };
+
+    moveCard(moveData, card);
     console.log("Move card:", formData);
     handlePopoverClose();
+    handleClose();
   }
   function handleMenuClick(e, key) {
     e.stopPropagation();
@@ -154,6 +194,7 @@ export default function CardPopover({
           }}
         >
           <CardActionForm
+            card={card}
             isCopyMode={activeMenuItem === "copyCard"}
             onCopySubmit={handleCopyCardSubmit}
             onMoveSubmit={handleMoveCardSubmit}
