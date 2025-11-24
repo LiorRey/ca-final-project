@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -9,6 +11,7 @@ import East from "@mui/icons-material/East";
 import { usePopoverMenuContext } from "./PopoverMenuContext";
 import ActionButton from "../ui/buttons/ActionButton";
 import CustomSelect from "../ui/CustomSelect";
+import { useFormState } from "../../hooks/useFormState";
 
 const SELECT_IDS = {
   BOARD: "card-board-select",
@@ -16,33 +19,107 @@ const SELECT_IDS = {
   POSITION: "card-position-select",
 };
 
-export function CardActionForm({ onCopySubmit, onMoveSubmit, isCopyMode }) {
+export function CardActionForm({
+  onCopySubmit,
+  onMoveSubmit,
+  isCopyMode,
+  card,
+}) {
   const {
-    values,
-    handleChange,
-    cardLabelsCount,
-    cardMembersCount,
-
-    //display values
     submitButtonText,
-
-    //suggested list
-    suggestedList,
-    handleSuggestedClick,
-
-    //select menu state handlers
     openSelectMenuId,
     handleSelectOpen,
     handleSelectClose,
-
-    //select menu handlers
-    handleBoardChange,
-    handleListChange,
-    handlePositionChange,
-    boards,
-    selectedBoardLists,
-    maxPosition,
   } = usePopoverMenuContext();
+
+  const boards = useSelector(state => state.boards.boards);
+  const board = useSelector(state => state.boards.board);
+  const cardTitle = card?.title || "";
+
+  const initialValues = useMemo(() => {
+    const baseValues = {
+      boardId: board?._id || "",
+      listId: board?.lists?.[0]?.id || "",
+      position: 0,
+    };
+
+    if (isCopyMode) {
+      return {
+        ...baseValues,
+        title: cardTitle,
+        keepLabels: true,
+        keepMembers: true,
+      };
+    }
+    return baseValues;
+  }, [isCopyMode, cardTitle, board]);
+
+  const { values, handleChange, setValues } = useFormState(initialValues);
+
+  const selectedBoardLists = useMemo(() => {
+    if (board?._id === values.boardId) {
+      return board?.lists || [];
+    }
+    return boards.find(b => b._id === values.boardId)?.lists || [];
+  }, [boards, board, values.boardId]);
+
+  const selectedList = useMemo(
+    () => selectedBoardLists.find(l => l.id === values.listId) || null,
+    [selectedBoardLists, values.listId]
+  );
+
+  const suggestedList = useMemo(
+    () => selectedBoardLists.find(l => l.id === values.listId) || null,
+    [selectedBoardLists, values.listId]
+  );
+
+  const maxPosition = useMemo(
+    () => (selectedList?.cards?.length ? selectedList.cards.length + 1 : 1),
+    [selectedList]
+  );
+
+  const cardLabels = card?.labels || [];
+  const cardLabelsCount = Array.isArray(cardLabels) ? cardLabels.length : 0;
+  const cardMembers = card?.assignedTo || [];
+  const cardMembersCount = Array.isArray(cardMembers) ? cardMembers.length : 0;
+
+  function handleBoardChange(e) {
+    const newBoardId = e.target.value;
+    const newBoard = boards.find(b => b._id === newBoardId);
+    const newBoardLists = newBoard?.lists || [];
+    const firstListId = newBoardLists[0]?.id || "";
+
+    setValues(prev => ({
+      ...prev,
+      boardId: newBoardId,
+      listId: firstListId,
+      position: 0,
+    }));
+  }
+
+  function handleSuggestedClick() {
+    if (suggestedList) {
+      setValues(prev => ({
+        ...prev,
+        listId: suggestedList.id,
+      }));
+    }
+  }
+
+  function handleListChange(e) {
+    setValues(prev => ({
+      ...prev,
+      listId: e.target.value,
+      position: 0,
+    }));
+  }
+
+  function handlePositionChange(e) {
+    setValues(prev => ({
+      ...prev,
+      position: e.target.value,
+    }));
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
