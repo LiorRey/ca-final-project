@@ -5,6 +5,7 @@ import {
   DELETE_BOARD,
   SET_BOARD,
   MOVE_LIST,
+  COPY_LIST,
   SET_LOADING,
   SET_ERROR,
   SET_FILTERS,
@@ -102,17 +103,11 @@ export async function deleteBoard(boardId) {
   }
 }
 
-export async function copyList(boardId, listId, newName) {
-  try {
-    const updatedLists = await boardService.copyList(boardId, listId, newName);
-    updateBoard(boardId, { lists: updatedLists });
-  } catch (error) {
-    store.dispatch(
-      setError("copyList", `Error copying list: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const copyList = createAsyncAction(
+  COPY_LIST,
+  boardService.copyList,
+  store
+);
 
 export async function createList(boardId, listData) {
   try {

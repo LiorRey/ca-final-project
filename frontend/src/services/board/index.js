@@ -1,7 +1,7 @@
 const { DEV, VITE_LOCAL } = import.meta.env;
 
 import { boardService as local } from "./board-service-local";
-import boardDataGenerator from "../board/board-data-generator.js";
+import { boardDataGenerator } from "../board/board-data-generator.js";
 
 function getEmptyBoard() {
   return {

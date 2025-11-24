@@ -14,7 +14,7 @@ export function Header() {
       navigate("/");
       showSuccessMsg(`Bye now`);
     } catch (err) {
-      showErrorMsg("Cannot logout");
+      showErrorMsg("Cannot logout: " + err.message);
     }
   }
 

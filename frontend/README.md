@@ -1,6 +1,6 @@
-# Coding Academy React Frontend
+# Note tracking app - Frontend
 
-Modern React application built with Vite, featuring a complete frontend infrastructure for teaching full-stack development.
+Modern React application built with Vite, featuring a board management system with cards, lists, labels, and real-time collaboration.
 
 ## 🚀 Quick Start
 
@@ -21,17 +21,27 @@ npm run dev
 ```
 src/
 ├── assets/
-│   └── styles/        # SCSS modules
+│   └── styles/        # CSS modules
 │       ├── basics/    # Core styles
-│       ├── cmps/      # Component styles
+│       ├── components/# Component styles
 │       ├── pages/     # Page styles
-│       └── setup/     # SCSS variables & mixins
-├── cmps/              # Reusable components
-├── pages/             # Route components
-├── services/          # API and utility services
-└── store/            # Redux state management
-    ├── actions/      # Action creators
-    └── reducers/     # State reducers
+│       └── setup/     # CSS variables & typography
+├── components/        # Reusable components
+│   ├── board/        # Board-related components
+│   ├── card/         # Card-related components
+│   ├── auth/         # Authentication components
+│   ├── forms/        # Form components
+│   └── ui/           # UI primitives
+├── pages/            # Route components
+├── services/         # API and utility services
+│   ├── board/        # Board service
+│   ├── user/         # User service
+│   └── auth/         # Auth service
+├── store/            # Redux state management
+│   ├── actions/      # Action creators
+│   └── reducers/     # State reducers
+├── hooks/            # Custom React hooks
+└── theme/            # MUI theme configuration
 ```
 
 ## 🎨 Components
@@ -40,72 +50,88 @@ src/
 
 - `Header` - Navigation and user menu
 - `Footer` - Footer with service status
-- `UserMsg` - Toast notifications
-- `CarList` - Grid display of cars with actions
-- `CarFilter` - Search and filter interface
-- `ReviewList` - User reviews with CRUD
+- `UserMessage` - Toast notifications
+- `Board` - Board container with lists
+- `List` - List container with cards
+- `Card` - Individual card component
+- `CardModal` - Card detail modal
+- `CardPopover` - Card action menu
+- `FilterMenu` - Card filtering interface
+- `LabelMenu` - Label management
+- `BoardMenu` - Board actions menu
 
 ### Pages
 
-- `CarIndex` - Main car management
-- `ReviewIndex` - Review system
+- `BoardIndex` - Board selection and management
+- `BoardDetails` - Main board view with lists and cards
+- `CardDetails` - Card detail view
 - `UserDetails` - User profile
 - `AboutUs` - Static content with nested routes
 - `Chat` - Real-time messaging
+- `LoginPage` / `SignupPage` - Authentication
 
 ## 🔄 State Management
 
 Using Redux with the following modules:
 
-- `carModule` - Car CRUD operations
-- `userModule` - Authentication and user data
-- `reviewModule` - Review system
-- `systemModule` - App-wide settings
+- `boards` - Board, list, and card management
+- `users` - User data and profiles
+- `auth` - Authentication state
+- `ui` - UI state and settings
 
 ### Example Usage
 
 ```jsx
 // In component:
-const cars = useSelector(state => state.carModule.cars);
+const boards = useSelector(state => state.boards.boards);
+const currentBoard = useSelector(state => state.boards.board);
 const dispatch = useDispatch();
 
 // Action dispatch:
-dispatch(loadCars());
+dispatch(loadBoards());
+dispatch(addCard(boardId, card, listId));
 ```
 
 ## 🎯 Services
 
 ### REST API Services
 
-- `car.service` - Car CRUD operations
+- `board.service` - Board, list, and card CRUD operations
 - `user.service` - Authentication & user management
-- `review.service` - Review system
-- `upload.service` - File uploads
+- `auth.service` - Authentication logic
+- `upload.service` - File uploads (Cloudinary)
 
 ### Utility Services
 
-- `event-bus.service` - Pub/sub messaging
-- `socket.service` - WebSocket connection
-- `storage.service` - Local storage wrapper
+- `event-bus.service` - Pub/sub messaging for notifications
+- `socket.service` - WebSocket connection for real-time updates
+- `async-storage.service` - Local storage wrapper
+- `filter.service` - Card filtering utilities
 - `util.service` - Common helpers
 
 ## 🎨 Styling
 
-Using SCSS modules with:
+Using CSS modules with Material-UI (MUI) for components:
 
-- CSS Grid for layouts
-- Flexbox for component alignment
-- CSS Variables for theming
+- MUI Theme with Atlassian Design System tokens
+- CSS Variables for custom theming
+- CSS Modules for component-specific styles
 - Responsive breakpoints
 - Utility classes
 
 ### Example Usage
 
-```scss
-.car-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.5em;
+```css
+.board-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+}
+
+.card-container {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 0.75rem;
 }
 ```
 

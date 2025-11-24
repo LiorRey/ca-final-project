@@ -1,21 +1,20 @@
-import React from "react";
-import { Popover, Backdrop } from "@mui/material";
-import {
-  PermIdentity,
-  East,
-  ContentCopyOutlined,
-  TurnedInNotOutlined,
-  LinkOutlined,
-  ArchiveOutlined,
-  OpenInNew,
-} from "@mui/icons-material";
 import { useState } from "react";
-import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
-import { CardActionForm } from "./card/CardActionForm";
-import { moveCard, copyCard } from "../store/actions/board-actions";
 import { useParams } from "react-router-dom";
+import {
+  ArchiveOutlined,
+  ContentCopyOutlined,
+  East,
+  LinkOutlined,
+  OpenInNew,
+  PermIdentity,
+  TurnedInNotOutlined,
+} from "@mui/icons-material";
+import { Backdrop, Popover } from "@mui/material";
+import { CardActionForm } from "./card/CardActionForm";
+import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
+import { copyCard, moveCard } from "../store/actions/board-actions";
 
-export default function CardPopover({
+export function CardPopover({
   card,
   listId,
   open,

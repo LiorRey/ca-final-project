@@ -1,11 +1,6 @@
 import Button from "@mui/material/Button";
 
-export default function ActionButton({
-  sx = {},
-  selected,
-  children,
-  ...props
-}) {
+export function ActionButton({ sx = {}, selected, children, ...props }) {
   return (
     <Button
       size="small"

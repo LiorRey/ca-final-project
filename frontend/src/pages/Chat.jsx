@@ -18,6 +18,10 @@ export function ChatApp() {
 
   const botTimeoutRef = useRef();
 
+  function addMsg(newMsg) {
+    setMsgs(prevMsgs => [...prevMsgs, newMsg]);
+  }
+
   useEffect(() => {
     socketService.on(SOCKET_EVENT_ADD_MSG, addMsg);
     return () => {
@@ -29,10 +33,6 @@ export function ChatApp() {
   useEffect(() => {
     socketService.emit(SOCKET_EMIT_SET_TOPIC, topic);
   }, [topic]);
-
-  function addMsg(newMsg) {
-    setMsgs(prevMsgs => [...prevMsgs, newMsg]);
-  }
 
   function sendBotResponse() {
     // Handle case: send single bot response (debounce).

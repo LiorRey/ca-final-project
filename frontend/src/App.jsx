@@ -1,18 +1,18 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/Header";
 import { UserMessage } from "./components/UserMessage";
-import { HomePage } from "./pages/HomePage";
-import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
-import { BoardIndex } from "./pages/BoardIndex";
-import { BoardDetails } from "./pages/BoardDetails";
-import { CardDetails } from "./pages/CardDetails";
-import { UserDetails } from "./pages/UserDetails";
-import { ChatApp } from "./pages/Chat";
 import { AdminIndex } from "./pages/AdminIndex";
+import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
+import { BoardDetails } from "./pages/BoardDetails";
+import { BoardIndex } from "./pages/BoardIndex";
+import { CardDetails } from "./pages/CardDetails";
+import { ChatApp } from "./pages/Chat";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
 // import { Login } from "./pages/LoginSignup";
 import { SignupPage } from "./pages/SignupPage";
-import { LoginPage } from "./pages/LoginPage";
-import ThemeComparison from "./pages/ThemeComparison";
+import { ThemeComparison } from "./pages/ThemeComparison";
+import { UserDetails } from "./pages/UserDetails";
 
 export function App() {
   const location = useLocation();

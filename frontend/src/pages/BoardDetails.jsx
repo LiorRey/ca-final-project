@@ -1,31 +1,31 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
-import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
-import { BoardMenu } from "../components/ui/BoardMenu";
-import {
-  loadBoard,
-  loadBoards,
-  updateBoard,
-  copyList,
-  moveAllCards,
-  createList,
-} from "../store/actions/board-actions";
-import { Footer } from "../components/Footer";
-import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
+import { Footer } from "../components/Footer";
+import { List } from "../components/List";
+import { BoardMenu } from "../components/ui/BoardMenu";
+import { useCardFilters } from "../hooks/useCardFilters";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
 } from "../services/filter-service";
-import { useCardFilters } from "../hooks/useCardFilters";
-import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
+import {
+  copyList,
+  createList,
+  loadBoard,
+  loadBoards,
+  moveAllCards,
+  updateBoard,
+} from "../store/actions/board-actions";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
@@ -64,8 +64,6 @@ export function BoardDetails() {
     }
   }
 
-  async function onRemoveList(listId) {}
-
   async function onUpdateList(list, updates) {
     try {
       const options = { listId: list.id };
@@ -78,11 +76,16 @@ export function BoardDetails() {
   }
 
   async function onAddList(newList) {
-    await createList(board._id, newList);
-
-    requestAnimationFrame(() =>
-      scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
-    );
+    try {
+      await createList(board._id, newList);
+      showSuccessMsg("List created successfully!");
+      requestAnimationFrame(() =>
+        scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
+      );
+    } catch (error) {
+      console.error("List creation failed:", error);
+      showErrorMsg("Failed to create list. Please try again.");
+    }
   }
 
   async function onMoveAllCards(sourceListId, targetListId) {
@@ -107,7 +110,7 @@ export function BoardDetails() {
     setMainMenuAnchorEl(null);
   }
 
-  function handleMenuItemClick(itemId, e) {
+  function handleMenuItemClick(itemId) {
     // Handle menu item clicks here
     console.log(`${itemId} clicked`);
     // Add your custom logic for each menu item
@@ -140,12 +143,10 @@ export function BoardDetails() {
           {board.lists.map((list, listIndex) => (
             <li key={list.id}>
               <List
-                key={list.id}
                 list={list}
                 boardLabels={board.labels}
                 labelsIsOpen={labelsIsOpen}
                 setLabelsIsOpen={setLabelsIsOpen}
-                onRemoveList={onRemoveList}
                 onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
                 onMoveAllCards={onMoveAllCards}

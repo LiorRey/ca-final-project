@@ -454,7 +454,7 @@ export function generateSampleData() {
   };
 }
 
-export default {
+export const boardDataGenerator = {
   generateCard,
   generateList,
   generateBoard,

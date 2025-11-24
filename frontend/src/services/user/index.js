@@ -2,7 +2,7 @@ const { DEV, VITE_LOCAL } = import.meta.env;
 
 import { userService as local } from "./user-service-local";
 import { userService as remote } from "./user-service-remote";
-import userDataGenerator from "../user/user-data-generator.js";
+import { userDataGenerator } from "../user/user-data-generator.js";
 
 function getEmptyUser() {
   return {
