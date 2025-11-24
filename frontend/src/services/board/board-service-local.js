@@ -522,12 +522,10 @@ export async function unarchiveList(boardId, listId) {
 }
 
 function updateBoardFields(board, updates) {
-  console.log("updates board fields", updates);
   return { ...board, ...updates };
 }
 
 function updateListFields(board, listId, updates) {
-  console.log("updates list fields", updates);
   const list = _findList(board, listId);
   const updatedList = { ...list, ...updates };
   const updatedLists = board.lists.map(list =>
@@ -537,7 +535,6 @@ function updateListFields(board, listId, updates) {
 }
 
 function updateCardFields(board, listId, cardId, updates) {
-  console.log("updates card fields", updates);
   const list = _findList(board, listId);
   const card = _findCard(list, cardId);
   const updatedCard = { ...card, ...updates };

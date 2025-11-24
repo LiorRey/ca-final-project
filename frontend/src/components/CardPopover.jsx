@@ -31,11 +31,12 @@ export default function CardPopover({
 
   function handleOpen() {
     openCard();
-    console.log("open");
   }
+
   function handleEditLabels() {
     console.log("editLabels");
   }
+
   function handleArchive() {
     console.log("archive");
     handleDelete();
@@ -73,7 +74,6 @@ export default function CardPopover({
     };
 
     copyCard(copyData, card);
-    console.log("Copy card:", formData);
     handlePopoverClose();
     handleClose();
   }
@@ -94,10 +94,10 @@ export default function CardPopover({
     };
 
     moveCard(moveData, card);
-    console.log("Move card:", formData);
     handlePopoverClose();
     handleClose();
   }
+
   function handleMenuClick(e, key) {
     e.stopPropagation();
     const menuHandlers = {
