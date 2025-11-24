@@ -188,11 +188,6 @@ export async function updateBoard(
   { listId = null, cardId = null } = {}
 ) {
   try {
-    // debug logs
-    console.log("boardId", boardId);
-    console.log("updates", updates);
-    console.log("listId", listId);
-    console.log("cardId", cardId);
     const board = await getById(boardId);
 
     if (!board) throw new Error("Board not found");

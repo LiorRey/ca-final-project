@@ -59,7 +59,7 @@ export function PopoverMenuProvider({
         anchorOrigin={anchorOrigin}
         transformOrigin={transformOrigin}
         disableEnforceFocus
-        disableAutoFocus
+        disableRestoreFocus
         slotProps={{
           paper: {
             className: "popover-paper",
