@@ -147,7 +147,6 @@ export function CardActionForm({
 
   return (
     <form onSubmit={handleSubmit} className="card-form-menu">
-      {/* Copy mode: Title input */}
       {isCopyMode && (
         <Box className="card-form-section">
           <Typography className="card-form-section-label">Title</Typography>
@@ -163,7 +162,6 @@ export function CardActionForm({
         </Box>
       )}
 
-      {/* Copy mode: Keep labels and members checkboxes */}
       {isCopyMode && (
         <Box className="card-form-section">
           <Typography className="card-form-section-label">Keep...</Typography>
@@ -202,7 +200,6 @@ export function CardActionForm({
         </Box>
       )}
 
-      {/* Move mode: Suggested list section */}
       {!isCopyMode && suggestedList && (
         <Box className="card-form-suggested-section" sx={{ mb: 2 }}>
           <Box className="card-form-suggested-header" sx={{ my: 2 }}>
@@ -223,7 +220,6 @@ export function CardActionForm({
         </Box>
       )}
 
-      {/* Destination selects section */}
       <Box sx={{ mb: 2 }}>
         {!isCopyMode && (
           <Typography className="card-form-section-title" sx={{ mb: 3 }}>
@@ -289,7 +285,6 @@ export function CardActionForm({
         </Box>
       </Box>
 
-      {/* Submit button */}
       <Box display="flex" justifyContent="flex-end">
         <ActionButton
           type="submit"
