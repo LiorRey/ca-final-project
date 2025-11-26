@@ -1,84 +1,95 @@
 import * as listService from "../services/list-service.js";
-import createHttpError from "http-errors";
 
-export async function createList(req, res, next) {
+export async function createList(req, res) {
   try {
     const list = await listService.createList(req.body);
-    res.status(201).json({ success: true, data: list });
-  } catch (error) {
-    next(error);
+    res.status(201).json({ list });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function getListById(req, res, next) {
+export async function getListById(req, res) {
   try {
     const list = await listService.getListById(req.params.id);
     if (!list) {
-      throw createHttpError(404, "List not found");
+      return res.status(404).json({ error: "List not found" });
     }
-    res.json({ success: true, data: list });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ list });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function getListsByBoardId(req, res, next) {
+export async function getListsByBoardId(req, res) {
   try {
     const { boardId } = req.query;
     if (!boardId) {
-      throw createHttpError(400, "boardId query parameter is required");
+      return res
+        .status(400)
+        .json({ error: "boardId query parameter is required" });
     }
     const lists = await listService.getListsByBoardId(boardId);
-    res.json({ success: true, data: lists });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ lists });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function updateList(req, res, next) {
+export async function updateList(req, res) {
   try {
     const list = await listService.updateList(req.params.id, req.body);
     if (!list) {
-      throw createHttpError(404, "List not found and was not updated");
+      return res.status(404).json({ error: "List not found" });
     }
-    res.json({ success: true, data: list });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ list });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function moveList(req, res, next) {
+export async function moveList(req, res) {
   try {
-    const list = await listService.repositionList(
-      req.params.id,
-      req.body.position
-    );
+    const list = await listService.moveList(req.params.id, req.body.position);
     if (!list) {
-      throw createHttpError(404, "List not found and was not repositioned");
+      return res.status(404).json({ error: "List not found" });
     }
-    res.json({ success: true, data: list });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ list });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function archiveList(req, res, next) {
+export async function archiveList(req, res) {
   try {
     const list = await listService.archiveList(req.params.id);
-    res.json({ success: true, data: list });
-  } catch (error) {
-    next(error);
+    if (!list) {
+      return res.status(204).send();
+    }
+    res.status(200).json({ list });
+  } catch (err) {
+    console.error(err);
+    if (err.status === 404) {
+      return res.status(404).json({ error: err.message });
+    }
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 
-export async function deleteList(req, res, next) {
+export async function deleteList(req, res) {
   try {
     const list = await listService.deleteList(req.params.id);
     if (!list) {
-      throw createHttpError(404, "List not found");
+      return res.status(404).json({ error: "List not found" });
     }
-    res.json({ success: true, data: list });
-  } catch (error) {
-    next(error);
+    res.status(200).json({ id: list._id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 }

@@ -1,13 +1,20 @@
+import { isHttpError } from "http-errors";
+import { config } from "../config/env.js";
+
 function errorHandler(err, _req, res, _next) {
   console.error("Error:", err);
 
-  const status = err.status || err.statusCode || 500;
-  const message = err.message || "Internal server error";
+  if (isHttpError(err)) {
+    res.status(err.status).json({
+      error: err.message,
+    });
+    return;
+  }
 
-  res.status(status).json({
-    success: false,
-    message,
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+  res.status(500).json({
+    error:
+      config.app.env === "development" ? err.message : "Internal server error",
+    ...(config.app.env === "development" && { stack: err.stack }),
   });
 }
 

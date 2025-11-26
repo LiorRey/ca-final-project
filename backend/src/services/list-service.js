@@ -27,7 +27,7 @@ export async function moveList(id, position) {
 export async function archiveList(id) {
   const list = await List.findById(id);
   if (!list) throw createHttpError(404, "List not found");
-  if (list.archivedAt) throw createHttpError(400, "List is already archived");
+  if (list.archivedAt) return null;
   list.archivedAt = new Date();
   return list.save();
 }
