@@ -2,11 +2,15 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { CardModal } from "../components/CardModal";
 import { useState, useEffect } from "react";
-import { deleteCard, editCard } from "../store/actions/board-actions";
+import {
+  deleteCard,
+  editCard,
+  loadBoard,
+} from "../store/actions/board-actions";
 
 export function CardDetails() {
   const { boardId, listId, cardId } = useParams();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
 
   const navigate = useNavigate();
   const board = useSelector(s => s.boards.board);
@@ -14,8 +18,10 @@ export function CardDetails() {
   const card = list?.cards?.find(c => c.id === cardId);
 
   useEffect(() => {
-    setModalOpen(true);
-  }, [cardId]);
+    if (!board || board._id !== boardId) {
+      loadBoard(boardId);
+    }
+  }, [boardId, board]);
 
   function handleCloseModal() {
     setModalOpen(false);
@@ -40,7 +46,7 @@ export function CardDetails() {
   }
 
   if (!card) {
-    return null;
+    return <section className="board-container" />;
   }
 
   const cardLabels =
@@ -51,16 +57,18 @@ export function CardDetails() {
       : [];
 
   return (
-    <CardModal
-      boardId={boardId}
-      listId={list.id}
-      listTitle={list.title}
-      card={card}
-      cardLabels={cardLabels}
-      onEditCard={handleEditCard}
-      onDeleteCard={handleDeleteCard}
-      onClose={handleCloseModal}
-      isOpen={modalOpen}
-    />
+    <section className="board-container">
+      <CardModal
+        boardId={boardId}
+        listId={list.id}
+        listTitle={list.title}
+        card={card}
+        cardLabels={cardLabels}
+        onEditCard={handleEditCard}
+        onDeleteCard={handleDeleteCard}
+        onClose={handleCloseModal}
+        isOpen={modalOpen}
+      />
+    </section>
   );
 }
