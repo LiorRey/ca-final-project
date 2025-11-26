@@ -1,16 +1,15 @@
 import {
   SET_BOARDS,
+  SET_BOARD,
   ADD_BOARD,
   UPDATE_BOARD,
   DELETE_BOARD,
-  SET_BOARD,
+  ADD_LIST,
   MOVE_LIST,
   COPY_LIST,
-  SET_LOADING,
-  SET_ERROR,
-  SET_FILTERS,
-  CLEAR_ALL_FILTERS,
-  ADD_LIST,
+  ARCHIVE_LIST,
+  UNARCHIVE_LIST,
+  ARCHIVE_ALL_CARDS_IN_LIST,
   MOVE_ALL_CARDS,
   ADD_CARD,
   EDIT_CARD,
@@ -21,9 +20,10 @@ import {
   EDIT_LABEL,
   DELETE_LABEL,
   UPDATE_CARD_LABELS,
-  ARCHIVE_LIST,
-  UNARCHIVE_LIST,
-  ARCHIVE_ALL_CARDS_IN_LIST,
+  SET_FILTERS,
+  CLEAR_ALL_FILTERS,
+  SET_LOADING,
+  SET_ERROR,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -103,12 +103,6 @@ export async function deleteBoard(boardId) {
   }
 }
 
-export const copyList = createAsyncAction(
-  COPY_LIST,
-  boardService.copyList,
-  store
-);
-
 export async function createList(boardId, listData) {
   try {
     store.dispatch({ type: ADD_LIST.REQUEST });
@@ -120,6 +114,53 @@ export async function createList(boardId, listData) {
     throw error;
   }
 }
+
+export async function moveList(
+  sourceBoardId,
+  sourceIndex,
+  targetIndex,
+  targetBoardId,
+  currentBoardId
+) {
+  try {
+    const updatedLists = await boardService.moveList(
+      sourceBoardId,
+      sourceIndex,
+      targetIndex,
+      targetBoardId,
+      currentBoardId
+    );
+    store.dispatch(moveListAction(updatedLists));
+    return updatedLists;
+  } catch (error) {
+    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
+    throw error;
+  }
+}
+
+export const copyList = createAsyncAction(
+  COPY_LIST,
+  boardService.copyList,
+  store
+);
+
+export const archiveList = createAsyncAction(
+  ARCHIVE_LIST,
+  boardService.archiveList,
+  store
+);
+
+export const unarchiveList = createAsyncAction(
+  UNARCHIVE_LIST,
+  boardService.unarchiveList,
+  store
+);
+
+export const archiveAllCardsInList = createAsyncAction(
+  ARCHIVE_ALL_CARDS_IN_LIST,
+  boardService.archiveAllCardsInList,
+  store
+);
 
 export async function moveAllCards(
   boardId,
@@ -182,41 +223,6 @@ export const moveCard = createAsyncAction(
   store
 );
 
-export function addCardAction(card, listId) {
-  return { type: ADD_CARD, payload: { card, listId } };
-}
-
-export function editCardAction(card, listId) {
-  return { type: EDIT_CARD, payload: { card, listId } };
-}
-
-export function deleteCardAction(cardId, listId) {
-  return { type: DELETE_CARD, payload: { cardId, listId } };
-}
-
-export async function moveList(
-  sourceBoardId,
-  sourceIndex,
-  targetIndex,
-  targetBoardId,
-  currentBoardId
-) {
-  try {
-    const updatedLists = await boardService.moveList(
-      sourceBoardId,
-      sourceIndex,
-      targetIndex,
-      targetBoardId,
-      currentBoardId
-    );
-    store.dispatch(moveListAction(updatedLists));
-    return updatedLists;
-  } catch (error) {
-    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
-    throw error;
-  }
-}
-
 export async function createLabel(boardId, label) {
   try {
     store.dispatch({ type: CREATE_LABEL.REQUEST });
@@ -277,26 +283,12 @@ export async function updateCardLabels(
   }
 }
 
-export const archiveList = createAsyncAction(
-  ARCHIVE_LIST,
-  boardService.archiveList,
-  store
-);
-
-export const unarchiveList = createAsyncAction(
-  UNARCHIVE_LIST,
-  boardService.unarchiveList,
-  store
-);
-
-export const archiveAllCardsInList = createAsyncAction(
-  ARCHIVE_ALL_CARDS_IN_LIST,
-  boardService.archiveAllCardsInList,
-  store
-);
-
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };
+}
+
+export function setBoard(board) {
+  return { type: SET_BOARD, payload: board };
 }
 
 export function addBoard(board) {
@@ -311,16 +303,20 @@ export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
 }
 
-export function setBoard(board) {
-  return { type: SET_BOARD, payload: board };
+export function moveListAction(lists) {
+  return { type: MOVE_LIST, payload: lists };
 }
 
-export function setLoading(key, isLoading) {
-  return { type: SET_LOADING, payload: { key, isLoading } };
+export function addCardAction(card, listId) {
+  return { type: ADD_CARD, payload: { card, listId } };
 }
 
-export function setError(key, error) {
-  return { type: SET_ERROR, payload: { key, error } };
+export function editCardAction(card, listId) {
+  return { type: EDIT_CARD, payload: { card, listId } };
+}
+
+export function deleteCardAction(cardId, listId) {
+  return { type: DELETE_CARD, payload: { cardId, listId } };
 }
 
 export function setFilters(filterBy) {
@@ -331,6 +327,10 @@ export function clearAllFilters() {
   return { type: CLEAR_ALL_FILTERS };
 }
 
-export function moveListAction(lists) {
-  return { type: MOVE_LIST, payload: lists };
+export function setLoading(key, isLoading) {
+  return { type: SET_LOADING, payload: { key, isLoading } };
+}
+
+export function setError(key, error) {
+  return { type: SET_ERROR, payload: { key, error } };
 }

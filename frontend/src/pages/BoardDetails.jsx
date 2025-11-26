@@ -13,7 +13,6 @@ import { List } from "../components/List";
 import { BoardMenu } from "../components/ui/BoardMenu";
 import { useCardFilters } from "../hooks/useCardFilters";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
@@ -68,23 +67,19 @@ export function BoardDetails() {
     try {
       const options = { listId: list.id };
       updateBoard(board._id, updates, options);
-      showSuccessMsg(`The list ${list.title} updated successfully!`);
     } catch (error) {
       console.error("List update failed:", error);
-      showErrorMsg(`Unable to update the list: ${list.title}`);
     }
   }
 
   async function onAddList(newList) {
     try {
       await createList(board._id, newList);
-      showSuccessMsg("List created successfully!");
       requestAnimationFrame(() =>
         scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
       );
     } catch (error) {
       console.error("List creation failed:", error);
-      showErrorMsg("Failed to create list. Please try again.");
     }
   }
 

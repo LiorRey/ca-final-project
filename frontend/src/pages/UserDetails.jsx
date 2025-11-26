@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 
 import { loadUser } from "../store/actions/user-actions";
 import { store } from "../store/store";
-import { showSuccessMsg } from "../services/event-bus-service";
 import {
   socketService,
   SOCKET_EVENT_USER_UPDATED,
@@ -19,19 +18,16 @@ export function UserDetails() {
     loadUser(params.id);
 
     socketService.emit(SOCKET_EMIT_USER_WATCH, params.id);
-    socketService.on(SOCKET_EVENT_USER_UPDATED, onUserUpdate);
+    socketService.on(SOCKET_EVENT_USER_UPDATED, user => {
+      store.dispatch({ type: "SET_WATCHED_USER", user });
+    });
 
     return () => {
-      socketService.off(SOCKET_EVENT_USER_UPDATED, onUserUpdate);
+      socketService.off(SOCKET_EVENT_USER_UPDATED, user => {
+        store.dispatch({ type: "SET_WATCHED_USER", user });
+      });
     };
   }, [params.id]);
-
-  function onUserUpdate(user) {
-    showSuccessMsg(
-      `This user ${user.fullname} just got updated from socket, new score: ${user.score}`
-    );
-    store.dispatch({ type: "SET_WATCHED_USER", user });
-  }
 
   return (
     <section className="user-details">

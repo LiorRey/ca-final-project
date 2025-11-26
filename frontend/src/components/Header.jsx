@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import { logout } from "../store/actions/user-actions";
 
 export function Header() {
@@ -12,9 +11,8 @@ export function Header() {
     try {
       await logout();
       navigate("/");
-      showSuccessMsg(`Bye now`);
     } catch (err) {
-      showErrorMsg("Cannot logout: " + err.message);
+      console.error("Cannot logout: " + err.message);
     }
   }
 

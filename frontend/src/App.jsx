@@ -6,7 +6,6 @@ import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
 import { BoardDetails } from "./pages/BoardDetails";
 import { BoardIndex } from "./pages/BoardIndex";
 import { CardDetails } from "./pages/CardDetails";
-import { ChatApp } from "./pages/Chat";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
 // import { Login } from "./pages/LoginSignup";
@@ -33,7 +32,6 @@ export function App() {
           <Route path="board" element={<BoardIndex />} />
           <Route path="board/:boardId" element={<BoardDetails />} />
           <Route path="user/:userId" element={<UserDetails />} />
-          <Route path="chat" element={<ChatApp />} />
           <Route path="admin" element={<AdminIndex />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
