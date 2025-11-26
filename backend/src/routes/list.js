@@ -2,20 +2,20 @@ import express from "express";
 import {
   createList,
   getListById,
-  getListByBoardId,
+  getListsByBoardId,
   updateList,
-  repositionList,
+  moveList,
   archiveList,
   deleteList,
 } from "../controllers/list-controller.js";
 
 const router = express.Router();
 
-router.get("/by-board/:boardId", getListByBoardId);
+router.get("/", getListsByBoardId);
 router.post("/", createList);
 router.get("/:id", getListById);
 router.put("/:id", updateList);
-router.put("/:id/reposition", repositionList);
+router.put("/:id/move", moveList);
 router.put("/:id/archive", archiveList);
 router.delete("/:id", deleteList);
 

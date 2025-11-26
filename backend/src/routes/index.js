@@ -6,6 +6,6 @@ import listRoutes from "./list.js";
 const router = express.Router();
 
 router.use("/api/auth", authRoutes);
-router.use("/api/list", listRoutes);
+router.use("/api/lists", listRoutes);
 
 export default router;

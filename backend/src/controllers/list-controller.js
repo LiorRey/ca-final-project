@@ -22,13 +22,14 @@ export async function getListById(req, res, next) {
   }
 }
 
-export async function getListByBoardId(req, res, next) {
+export async function getListsByBoardId(req, res, next) {
   try {
-    const list = await listService.getListsByBoardId(req.params.boardId);
-    if (!list) {
-      throw createHttpError(404, "Lists not found");
+    const { boardId } = req.query;
+    if (!boardId) {
+      throw createHttpError(400, "boardId query parameter is required");
     }
-    res.json({ success: true, data: list });
+    const lists = await listService.getListsByBoardId(boardId);
+    res.json({ success: true, data: lists });
   } catch (error) {
     next(error);
   }
@@ -46,7 +47,7 @@ export async function updateList(req, res, next) {
   }
 }
 
-export async function repositionList(req, res, next) {
+export async function moveList(req, res, next) {
   try {
     const list = await listService.repositionList(
       req.params.id,
@@ -63,14 +64,8 @@ export async function repositionList(req, res, next) {
 
 export async function archiveList(req, res, next) {
   try {
-    const result = await listService.archiveList(req.params.id);
-    if (result.error === "not_found") {
-      throw createHttpError(404, "List not found and was not archived");
-    }
-    if (result.error === "already_archived") {
-      throw createHttpError(400, "List is already archived");
-    }
-    res.json({ success: true, data: result.data });
+    const list = await listService.archiveList(req.params.id);
+    res.json({ success: true, data: list });
   } catch (error) {
     next(error);
   }

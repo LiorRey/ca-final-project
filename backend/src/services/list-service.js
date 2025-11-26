@@ -1,59 +1,37 @@
 import { List } from "../models/List.js";
+import createHttpError from "http-errors";
 
 export async function createList(listData) {
-  const list = new List({
-    ...listData,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    archivedAt: null,
-    deletedAt: null,
-  });
-  await list.save();
-  return list;
+  return new List(listData).save();
 }
 
 export async function getListById(id) {
-  const list = await List.findById(id);
-  return list;
+  return List.findById(id);
 }
 
 export async function getListsByBoardId(boardId) {
-  const lists = await List.find({ boardId });
-  return lists;
+  return List.find({ boardId });
 }
 
 export async function updateList(id, updateData) {
-  const list = await List.findByIdAndUpdate(id, updateData, {
+  return List.findByIdAndUpdate(id, updateData, {
     new: true,
     runValidators: true,
   });
-  return list;
 }
 
-export async function repositionList(id, position) {
-  const list = await List.findById(id);
-  if (!list) {
-    return null;
-  }
-  list.position = position;
-  await list.save();
-  return list;
+export async function moveList(id, position) {
+  return List.findByIdAndUpdate(id, { position }, { new: true });
 }
 
 export async function archiveList(id) {
   const list = await List.findById(id);
-  if (!list) {
-    return { error: "not_found" };
-  }
-  if (list.archivedAt) {
-    return { error: "already_archived" };
-  }
-  list.archivedAt = Date.now();
-  await list.save();
-  return { data: list };
+  if (!list) throw createHttpError(404, "List not found");
+  if (list.archivedAt) throw createHttpError(400, "List is already archived");
+  list.archivedAt = new Date();
+  return list.save();
 }
 
 export async function deleteList(id) {
-  const list = await List.findByIdAndDelete(id);
-  return list;
+  return List.findByIdAndDelete(id);
 }
