@@ -8,6 +8,7 @@ import {
   LinkOutlined,
   ArchiveOutlined,
   OpenInNew,
+  Check,
 } from "@mui/icons-material";
 import { useState } from "react";
 import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
@@ -27,6 +28,7 @@ export default function CardPopover({
 }) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
+  const [copiedLink, setCopiedLink] = useState(false);
   const { boardId } = useParams();
 
   function handleOpen() {
@@ -50,6 +52,15 @@ export default function CardPopover({
   function handleMoveCardClick(e) {
     setPopoverAnchorEl(e.currentTarget);
     setActiveMenuItem("moveCard");
+  }
+
+  function handleCopyLinkClick(e) {
+    e.stopPropagation();
+    navigator.clipboard.writeText(
+      `${window.location.origin}/board/${boardId}/${listId}/${card.id}`
+    );
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   }
 
   function handleCopyCardSubmit(formData) {
@@ -104,6 +115,7 @@ export default function CardPopover({
       open: handleOpen,
       editLabels: handleEditLabels,
       copyCard: handleCopyCardClick,
+      copyLink: handleCopyLinkClick,
       moveCard: handleMoveCardClick,
       archive: handleArchive,
     };
@@ -165,7 +177,11 @@ export default function CardPopover({
                 activeMenuItem === key ? "is-active" : ""
               }`}
             >
-              {icon}
+              {key === "copyLink" && copiedLink ? (
+                <Check sx={{ color: "#22c55e" }} />
+              ) : (
+                icon
+              )}
               {label}
             </button>
           ))}
