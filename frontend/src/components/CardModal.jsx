@@ -101,8 +101,9 @@ export function CardModal({
                 className="description-input"
                 placeholder="Add a description"
                 spellCheck="false"
-                value={card.description}
-                onChange={e => setDescription(e.target.value)}
+                value={cardDetails.description}
+                onChange={e => handleChangeCard("description", e.target.value)}
+                onBlur={handleSaveCard}
               />
             </div>
           </section>

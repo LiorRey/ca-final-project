@@ -19,6 +19,7 @@ export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
 export const MOVE_LIST = "MOVE_LIST";
+export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
 export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
 export const DELETE_LABEL = createAsyncActionTypes("DELETE_LABEL");
@@ -107,6 +108,15 @@ const handlers = {
   }),
   [MOVE_LIST]: (state, action) => ({
     ...state,
+    board: {
+      ...state.board,
+      lists: action.payload,
+    },
+  }),
+  ...createAsyncHandlers(COPY_LIST, COPY_LIST.KEY),
+  [COPY_LIST.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [COPY_LIST.KEY]: false },
     board: {
       ...state.board,
       lists: action.payload,

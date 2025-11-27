@@ -1,9 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-
-import TextareaAutosize from "@mui/material/TextareaAutosize";
-import Button from "@mui/material/Button";
+import { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
-import ActionButton from "./ui/buttons/ActionButton";
+import Button from "@mui/material/Button";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { ActionButton } from "./ui/buttons/ActionButton";
 
 export function CopyListForm({ initialValue, onCopy, onCancel }) {
   const textareaRef = useRef(null);

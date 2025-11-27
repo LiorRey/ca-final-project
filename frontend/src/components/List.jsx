@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Button from "@mui/material/Button";
 import { Card } from "./Card";
 import { ListActionsMenu } from "./ListActionsMenu";
 import { SquareIconButton } from "./ui/buttons/SquareIconButton";
-import { boardService } from "../services/board";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
-import { useNavigate, useLocation } from "react-router-dom";
+import { boardService } from "../services/board";
 import { setActiveListIndex } from "../store/actions/ui-actions";
 
 export function List({
@@ -15,7 +15,6 @@ export function List({
   boardLabels,
   labelsIsOpen,
   setLabelsIsOpen,
-  onRemoveList,
   onUpdateList,
   onCopyList,
   isAddingCard,
@@ -52,11 +51,6 @@ export function List({
   }
 
   function handleEditList() {
-    handleClose();
-  }
-
-  function handleDeleteList() {
-    onRemoveList(list.id);
     handleClose();
   }
 
@@ -173,7 +167,6 @@ export function List({
         isOpen={open}
         onClose={handleClose}
         onEditList={handleEditList}
-        onDeleteList={handleDeleteList}
         onCopyList={onCopyList}
         onMoveAllCards={onMoveAllCards}
       />

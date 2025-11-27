@@ -1,7 +1,7 @@
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const menuProps = {
   sx: {
@@ -35,7 +35,7 @@ const selectSx = {
   borderColor: "var(--gray2)",
 };
 
-export default function CustomSelect({
+export function CustomSelect({
   label,
   id,
   options = [],

@@ -1,14 +1,14 @@
-import {
-  ChatRounded,
-  NotesRounded,
-  RemoveRedEyeOutlined,
-  DriveFileRenameOutline,
-} from "@mui/icons-material";
-import CardPopover from "./CardPopover";
-import { Box } from "@mui/material";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { editCard, deleteCard } from "../store/actions/board-actions";
+import {
+  ChatRounded,
+  DriveFileRenameOutline,
+  NotesRounded,
+  RemoveRedEyeOutlined,
+} from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { CardPopover } from "./CardPopover";
+import { deleteCard, editCard } from "../store/actions/board-actions";
 
 export function Card({
   card,

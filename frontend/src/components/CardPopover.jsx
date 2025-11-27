@@ -1,21 +1,21 @@
-import React from "react";
-import { Popover, Backdrop } from "@mui/material";
-import {
-  PermIdentity,
-  East,
-  ContentCopyOutlined,
-  TurnedInNotOutlined,
-  LinkOutlined,
-  ArchiveOutlined,
-  OpenInNew,
-} from "@mui/icons-material";
 import { useState } from "react";
-import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
-import { CardActionForm } from "./card/CardActionForm";
-import { moveCard, copyCard } from "../store/actions/board-actions";
 import { useParams } from "react-router-dom";
+import {
+  ArchiveOutlined,
+  ContentCopyOutlined,
+  Check,
+  East,
+  LinkOutlined,
+  OpenInNew,
+  PermIdentity,
+  TurnedInNotOutlined,
+} from "@mui/icons-material";
+import { Backdrop, Popover } from "@mui/material";
+import { CardActionForm } from "./card/CardActionForm";
+import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
+import { copyCard, moveCard } from "../store/actions/board-actions";
 
-export default function CardPopover({
+export function CardPopover({
   card,
   listId,
   open,
@@ -27,6 +27,7 @@ export default function CardPopover({
 }) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
+  const [copiedLink, setCopiedLink] = useState(false);
   const { boardId } = useParams();
 
   function handleOpen() {
@@ -50,6 +51,15 @@ export default function CardPopover({
   function handleMoveCardClick(e) {
     setPopoverAnchorEl(e.currentTarget);
     setActiveMenuItem("moveCard");
+  }
+
+  function handleCopyLinkClick(e) {
+    e.stopPropagation();
+    navigator.clipboard.writeText(
+      `${window.location.origin}/board/${boardId}/${listId}/${card.id}`
+    );
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   }
 
   function handleCopyCardSubmit(formData) {
@@ -104,6 +114,7 @@ export default function CardPopover({
       open: handleOpen,
       editLabels: handleEditLabels,
       copyCard: handleCopyCardClick,
+      copyLink: handleCopyLinkClick,
       moveCard: handleMoveCardClick,
       archive: handleArchive,
     };
@@ -165,7 +176,11 @@ export default function CardPopover({
                 activeMenuItem === key ? "is-active" : ""
               }`}
             >
-              {icon}
+              {key === "copyLink" && copiedLink ? (
+                <Check sx={{ color: "#22c55e" }} />
+              ) : (
+                icon
+              )}
               {label}
             </button>
           ))}

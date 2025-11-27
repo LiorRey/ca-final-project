@@ -1,23 +1,23 @@
 import { useState } from "react";
 import {
+  Badge,
   Box,
   Button,
   Card,
-  CardContent,
   CardActions,
+  CardContent,
   Chip,
   Container,
-  Paper,
-  TextField,
-  Typography,
-  Tooltip,
-  Badge,
-  Stack,
-  Grid,
-  ThemeProvider,
   createTheme,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  ThemeProvider,
+  Tooltip,
+  Typography,
 } from "@mui/material";
-import muiTheme from "../theme/muiTheme";
+import { muiTheme } from "../theme/muiTheme";
 
 // Default MUI theme for comparison
 const defaultTheme = createTheme();
@@ -197,7 +197,7 @@ const ComponentShowcase = () => (
   </>
 );
 
-const ThemeComparison = () => {
+export function ThemeComparison() {
   const [activeTheme, setActiveTheme] = useState("split");
 
   // Single theme view
@@ -408,6 +408,4 @@ const ThemeComparison = () => {
       </Box>
     </Box>
   );
-};
-
-export default ThemeComparison;
+}

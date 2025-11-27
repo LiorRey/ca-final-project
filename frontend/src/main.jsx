@@ -2,15 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-
+import { ThemeProvider } from "@mui/material/styles";
+import { App } from "./App";
+import "./assets/styles/main.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { store } from "./store/store";
-import { App } from "./App";
-import muiTheme from "./theme/muiTheme";
-
-import "./assets/styles/main.css";
+import { muiTheme } from "./theme/muiTheme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

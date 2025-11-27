@@ -30,11 +30,11 @@ async function ajax(endpoint, method = "GET", data = null) {
     const res = await axios(options);
     return res.data;
   } catch (err) {
-    console.log(
+    console.error(
       `Had Issues ${method}ing to the backend, endpoint: ${endpoint}, with data: `,
       data
     );
-    console.dir(err);
+    console.error(err);
     if (err.response && err.response.status === 401) {
       sessionStorage.clear();
       window.location.assign("/");

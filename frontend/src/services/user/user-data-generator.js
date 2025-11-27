@@ -96,7 +96,7 @@ export function generateUserCredentials(options = {}) {
   };
 }
 
-export default {
+export const userDataGenerator = {
   generateUser,
   generateAdminUser,
   generateMultipleUsers,

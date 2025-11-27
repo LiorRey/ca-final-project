@@ -1,4 +1,3 @@
-import { eventBus, showSuccessMsg } from "../services/event-bus-service";
 import { useState, useEffect, useRef } from "react";
 import {
   socketService,
@@ -10,17 +9,17 @@ export function UserMessage() {
   const timeoutIdRef = useRef();
 
   useEffect(() => {
-    const unsubscribe = eventBus.on("show-msg", msg => {
+    const unsubscribe = socketService.on("show-msg", msg => {
       setMsg(msg);
       if (timeoutIdRef.current) {
         timeoutIdRef.current = null;
         clearTimeout(timeoutIdRef.current);
       }
-      timeoutIdRef.current = setTimeout(closeMsg, 3000);
+      timeoutIdRef.current = setTimeout(() => setMsg(null), 3000);
     });
 
     socketService.on(SOCKET_EVENT_REVIEW_ABOUT_YOU, review => {
-      showSuccessMsg(`New review about me ${review.txt}`);
+      console.log(`New review about me ${review.txt}`);
     });
 
     return () => {
