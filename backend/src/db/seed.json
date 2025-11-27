@@ -1,0 +1,220 @@
+{
+  "users": [
+    {
+      "email": "admin@example.com",
+      "username": "admin",
+      "fullName": "System Administrator",
+      "password": "FPRsqmZp"
+    },
+    {
+      "email": "test@example.com",
+      "username": "testuser",
+      "fullName": "Test User",
+      "password": "test"
+    },
+    {
+      "email": "Chadd.Ullrich@yahoo.com",
+      "username": "Robin59",
+      "fullName": "Chadd Ullrich",
+      "password": "pd55bkiN"
+    },
+    {
+      "email": "Gilberto.Nolan@hotmail.com",
+      "username": "Godfrey.Wintheiser16",
+      "fullName": "Gilberto Nolan",
+      "password": "NdLbnFlD"
+    },
+    {
+      "email": "Luigi_Cormier13@yahoo.com",
+      "username": "Marisol_Lueilwitz",
+      "fullName": "Luigi Cormier",
+      "password": "fbaIRmZo"
+    },
+    {
+      "email": "Winifred.Jerde@yahoo.com",
+      "username": "Nicholas_Hilpert",
+      "fullName": "Winifred Jerde",
+      "password": "vAkrHW6I"
+    },
+    {
+      "email": "Jacquelyn_Stanton@gmail.com",
+      "username": "Arden29",
+      "fullName": "Jacquelyn Stanton",
+      "password": "x_8R7Aqw"
+    },
+    {
+      "email": "Joelle.Cronin62@hotmail.com",
+      "username": "Keyon_Johnson74",
+      "fullName": "Joelle Cronin",
+      "password": "vLxHdg3C"
+    },
+    {
+      "email": "Moises_Casper71@hotmail.com",
+      "username": "Verna_Jerde46",
+      "fullName": "Moises Casper",
+      "password": "d9dWOWPH"
+    },
+    {
+      "email": "Rosa_Wyman51@hotmail.com",
+      "username": "Diana94",
+      "fullName": "Rosa Wyman",
+      "password": "kFAtKRAI"
+    }
+  ],
+  "boards": [
+    {
+      "title": "Mobile App Development",
+      "description": "Exclusive motivating software - Tertius caelestis adstringo tabella conscendo thymum arto ventus animadverto terror.",
+      "labels": [
+        {
+          "title": "enhancement",
+          "color": "green"
+        },
+        {
+          "title": "documentation",
+          "color": "gray"
+        },
+        {
+          "title": "priority:low",
+          "color": "gray"
+        },
+        {
+          "title": "review",
+          "color": "orange"
+        },
+        {
+          "title": "design",
+          "color": "purple"
+        },
+        {
+          "title": "blocked",
+          "color": "red"
+        },
+        {
+          "title": "frontend",
+          "color": "blue"
+        }
+      ],
+      "owner": {
+        "username": "admin"
+      },
+      "members": [
+        {
+          "username": "testuser"
+        },
+        {
+          "username": "Robin59"
+        },
+        {
+          "username": "admin"
+        },
+        {
+          "username": "Godfrey.Wintheiser16"
+        },
+        {
+          "username": "Marisol_Lueilwitz"
+        }
+      ]
+    },
+    {
+      "title": "Website Redesign",
+      "description": "Seamless clear-thinking function - Quam tamquam apparatus auxilium ver.",
+      "labels": [
+        {
+          "title": "priority:low",
+          "color": "gray"
+        },
+        {
+          "title": "review",
+          "color": "orange"
+        },
+        {
+          "title": "blocked",
+          "color": "red"
+        },
+        {
+          "title": "frontend",
+          "color": "blue"
+        }
+      ],
+      "owner": {
+        "username": "Nicholas_Hilpert"
+      },
+      "members": [
+        {
+          "username": "Arden29"
+        },
+        {
+          "username": "Keyon_Johnson74"
+        },
+        {
+          "username": "Verna_Jerde46"
+        },
+        {
+          "username": "Nicholas_Hilpert"
+        },
+        {
+          "username": "Diana94"
+        }
+      ]
+    },
+    {
+      "title": "Product Launch",
+      "description": "Profit-focused empowering analyzer - Anser culpa texo.",
+      "labels": [
+        {
+          "title": "feature",
+          "color": "blue"
+        },
+        {
+          "title": "frontend",
+          "color": "blue"
+        },
+        {
+          "title": "documentation",
+          "color": "gray"
+        },
+        {
+          "title": "priority:high",
+          "color": "red"
+        },
+        {
+          "title": "backend",
+          "color": "green"
+        },
+        {
+          "title": "priority:medium",
+          "color": "yellow"
+        },
+        {
+          "title": "testing",
+          "color": "orange"
+        },
+        {
+          "title": "bug",
+          "color": "red"
+        }
+      ],
+      "owner": {
+        "username": "testuser"
+      },
+      "members": [
+        {
+          "username": "Robin59"
+        },
+        {
+          "username": "Godfrey.Wintheiser16"
+        },
+        {
+          "username": "Marisol_Lueilwitz"
+        },
+        {
+          "username": "testuser"
+        },
+        {
+          "username": "Nicholas_Hilpert"
+        }
+      ]
+    }
+  ]
+}
