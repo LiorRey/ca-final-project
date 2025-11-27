@@ -111,7 +111,9 @@ export function BoardDetails() {
     // Add your custom logic for each menu item
   }
 
-  if (!board) return <div>Loading board...</div>;
+  if (!board) {
+    return <section className="board-container">Loading...</section>;
+  }
 
   return (
     <section className="board-container">

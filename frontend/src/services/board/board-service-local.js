@@ -3,6 +3,11 @@ import { loadFromStorage, saveToStorage } from "../util-service";
 import { boardDataGenerator } from "./board-data-generator";
 import { USER_STORAGE_KEY } from "../user/user-service-local.js";
 import { getFilteredBoard } from "../filter-service";
+import {
+  calculateNewPosition,
+  generatePositionAtEnd,
+  sortByPosition,
+} from "./fractional-index-service";
 
 const BOARDS_STORAGE_KEY = "boardDB";
 _createBoards();
@@ -45,9 +50,154 @@ async function query() {
   }
 }
 
+<<<<<<< HEAD
+=======
+export async function copyList(boardId, listId, newName) {
+  try {
+    const board = await getById(boardId);
+    const originalListIndex = board.lists.findIndex(l => l.id === listId);
+    if (originalListIndex === -1) throw new Error("List not found");
+
+    const listToCopy = board.lists[originalListIndex];
+
+    const clonedCards = listToCopy.cards.map(card => ({
+      ...card,
+      id: crypto.randomUUID(),
+    }));
+
+    // Calculate position for the cloned list (right after the original)
+    const newPosition = calculateNewPosition(
+      board.lists,
+      originalListIndex + 1
+    );
+
+    const clonedList = {
+      ...listToCopy,
+      id: crypto.randomUUID(),
+      title: newName,
+      cards: clonedCards,
+      position: newPosition,
+    };
+
+    // Add the cloned list and sort by position
+    const updatedLists = sortByPosition([...board.lists, clonedList]);
+
+    return updatedLists;
+  } catch (error) {
+    console.error("Error copying list:", error);
+    throw error;
+  }
+}
+
+function removeFromArray(arr, index) {
+  return arr.filter((_, idx) => idx !== index);
+}
+
+function insertInArray(arr, obj, index) {
+  return [...arr.slice(0, index), obj, ...arr.slice(index)];
+}
+
+async function moveSameBoard(board, sourceIndex, targetIndex) {
+  const movedList = board.lists[sourceIndex];
+  if (!movedList) throw new Error("List not found at source index");
+
+  const newPosition = calculateNewPosition(
+    board.lists,
+    targetIndex,
+    movedList.id
+  );
+
+  const updatedList = { ...movedList, position: newPosition };
+
+  const updatedLists = board.lists.map(list =>
+    list.id === movedList.id ? updatedList : list
+  );
+
+  const sortedLists = sortByPosition(updatedLists);
+
+  const updatedBoard = updateBoardFields(board, { lists: sortedLists });
+  await save(updatedBoard);
+
+  return sortedLists;
+}
+
+async function moveCrossBoard(
+  sourceBoard,
+  targetBoard,
+  sourceIndex,
+  targetIndex,
+  currentBoardId
+) {
+  const movedList = sourceBoard.lists[sourceIndex];
+  if (!movedList) throw new Error("List not found at source index");
+
+  const newPosition = calculateNewPosition(targetBoard.lists, targetIndex);
+
+  const updatedList = { ...movedList, position: newPosition };
+
+  const updatedSourceLists = sourceBoard.lists.filter(
+    list => list.id !== movedList.id
+  );
+
+  const updatedTargetLists = sortByPosition([
+    ...targetBoard.lists,
+    updatedList,
+  ]);
+
+  const updatedSourceBoard = updateBoardFields(sourceBoard, {
+    lists: updatedSourceLists,
+  });
+  const updatedTargetBoard = updateBoardFields(targetBoard, {
+    lists: updatedTargetLists,
+  });
+
+  await save(updatedSourceBoard);
+  await save(updatedTargetBoard);
+
+  return currentBoardId === sourceBoard._id
+    ? updatedSourceLists
+    : updatedTargetLists;
+}
+
+export async function moveList(
+  sourceBoardId,
+  sourceIndex,
+  targetIndex,
+  targetBoardId,
+  currentBoardId
+) {
+  try {
+    if (sourceBoardId === targetBoardId) {
+      const board = await getById(sourceBoardId);
+      if (!board) throw new Error("Board not found");
+      return await moveSameBoard(board, sourceIndex, targetIndex);
+    } else {
+      const sourceBoard = await getById(sourceBoardId);
+      const targetBoard = await getById(targetBoardId);
+      if (!sourceBoard || !targetBoard) throw new Error("Board not found");
+      return await moveCrossBoard(
+        sourceBoard,
+        targetBoard,
+        sourceIndex,
+        targetIndex,
+        currentBoardId
+      );
+    }
+  } catch (error) {
+    console.error("Error moving list:", error);
+    throw error;
+  }
+}
+
+>>>>>>> main
 async function getById(boardId, filterBy = {}) {
   try {
     const board = await storageService.get(BOARDS_STORAGE_KEY, boardId);
+
+    if (board && board.lists) {
+      board.lists = sortByPosition(board.lists);
+    }
+
     return getFilteredBoard(board, filterBy);
   } catch (error) {
     console.error("Cannot get board:", error);
@@ -524,8 +674,20 @@ async function archiveAllCardsInList(boardId, listId) {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
+<<<<<<< HEAD
     const list = _findList(board, listId);
     if (!list) throw new Error("List not found");
+=======
+    const lastList =
+      board.lists.length > 0 ? board.lists[board.lists.length - 1] : null;
+    const newPosition = generatePositionAtEnd(lastList?.position || null);
+
+    const newList = {
+      ...getEmptyList(),
+      ...listData,
+      position: newPosition,
+    };
+>>>>>>> main
 
     list.cards.forEach(card => {
       if (!card.archivedAt) {
@@ -541,7 +703,37 @@ async function archiveAllCardsInList(boardId, listId) {
   }
 }
 
+<<<<<<< HEAD
 async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
+=======
+export function getEmptyList() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    cards: [],
+    archivedAt: null,
+    position: null,
+  };
+}
+
+async function updateListArchiveStatus(boardId, listId, archivedAt) {
+  const board = await getById(boardId);
+  const list = _findList(board, listId);
+
+  if (archivedAt && list.archivedAt) {
+    throw new Error("List is already archived");
+  }
+  if (!archivedAt && !list.archivedAt) {
+    throw new Error("List is not archived");
+  }
+
+  const updatedList = { ...list, archivedAt };
+  await updateBoard(boardId, { archivedAt }, { listId });
+  return updatedList;
+}
+
+export async function archiveList(boardId, listId) {
+>>>>>>> main
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");

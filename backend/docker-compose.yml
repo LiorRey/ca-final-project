@@ -1,44 +1,42 @@
 services:
-  mongodb:
-    image: mongo:latest
+  db:
+    image: mongo:8.2
     restart: unless-stopped
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: 123123
-      MONGO_INITDB_DATABASE: basicdb
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
     volumes:
-      - mongodb_data:/data/db
-    command: mongod --auth
+      - mongo_data:/data/db
 
-  backend:
-    build:
-      context: .
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      MONGODB_URI: mongodb://admin:123123@mongodb:27017/basicdb?authSource=admin
-      PORT: 3000
-      NODE_ENV: development
-      BASE_URL: http://localhost:3000
-      CORS_ORIGIN: http://localhost:5173
-    depends_on:
-      - mongodb
-    volumes:
-      - ./src:/app/src
-      - /app/node_modules
-    develop:
-      watch:
-        - action: sync
-          path: ./src
-          target: /app/src
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: ./package.json
+  # backend:
+  #   build:
+  #     context: .
+  #   restart: unless-stopped
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     MONGODB_URI: mongodb://admin:123123@mongodb:27017/basicdb?authSource=admin
+  #     PORT: 3000
+  #     NODE_ENV: development
+  #     BASE_URL: http://localhost:3000
+  #     CORS_ORIGIN: http://localhost:5173
+  #   depends_on:
+  #     - mongodb
+  #   volumes:
+  #     - ./src:/app/src
+  #     - /app/node_modules
+  #   develop:
+  #     watch:
+  #       - action: sync
+  #         path: ./src
+  #         target: /app/src
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./package.json
 
 volumes:
-  mongodb_data:
-    driver: local
+  mongo_data:

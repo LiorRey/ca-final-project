@@ -35,6 +35,10 @@ export function App() {
           <Route path="admin" element={<AdminIndex />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route
+            path="board/:boardId/:listId/:cardId"
+            element={<CardDetails />}
+          />
           <Route path="theme-comparison" element={<ThemeComparison />} />
         </Routes>
         {backgroundLocation && (

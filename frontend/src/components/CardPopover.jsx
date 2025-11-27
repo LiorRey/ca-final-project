@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import {
   ArchiveOutlined,
   ContentCopyOutlined,
+  Check,
   East,
   LinkOutlined,
   OpenInNew,
@@ -26,6 +27,7 @@ export function CardPopover({
 }) {
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState(null);
+  const [copiedLink, setCopiedLink] = useState(false);
   const { boardId } = useParams();
 
   function handleOpen() {
@@ -49,6 +51,15 @@ export function CardPopover({
   function handleMoveCardClick(e) {
     setPopoverAnchorEl(e.currentTarget);
     setActiveMenuItem("moveCard");
+  }
+
+  function handleCopyLinkClick(e) {
+    e.stopPropagation();
+    navigator.clipboard.writeText(
+      `${window.location.origin}/board/${boardId}/${listId}/${card.id}`
+    );
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   }
 
   function handleCopyCardSubmit(formData) {
@@ -103,6 +114,7 @@ export function CardPopover({
       open: handleOpen,
       editLabels: handleEditLabels,
       copyCard: handleCopyCardClick,
+      copyLink: handleCopyLinkClick,
       moveCard: handleMoveCardClick,
       archive: handleArchive,
     };
@@ -164,7 +176,11 @@ export function CardPopover({
                 activeMenuItem === key ? "is-active" : ""
               }`}
             >
-              {icon}
+              {key === "copyLink" && copiedLink ? (
+                <Check sx={{ color: "#22c55e" }} />
+              ) : (
+                icon
+              )}
               {label}
             </button>
           ))}
