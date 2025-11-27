@@ -39,14 +39,6 @@
   outline: none;
 }
 
-.card-form-checkbox .MuiSvgIcon-root {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.card-form-checkbox.Mui-checked .MuiSvgIcon-root {
-  color: rgba(255, 255, 255, 0.9);
-}
-
 .card-form-checkbox-label {
   color: rgba(255, 255, 255, 0.9);
 }
