@@ -7,19 +7,22 @@ import {
   deleteBoard,
 } from "../controllers/board-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
+import { loadBoard } from "../middleware/load-board.js";
 
 const router = express.Router();
 
 // Public routes
 router.get("/", getAllBoards);
-router.get("/:id", getBoardById);
+router.get("/:id", loadBoard, getBoardById);
 
 // Protected routes
 const protectedRouter = express.Router();
 protectedRouter.use(authenticate);
-router.post("/", createBoard);
-router.put("/:id", updateBoard);
-router.delete("/:id", deleteBoard);
+protectedRouter.post("/", createBoard);
+
+// Routes with authorization and other middleware
+protectedRouter.put("/:id", loadBoard, updateBoard);
+protectedRouter.delete("/:id", loadBoard, deleteBoard);
 
 router.use("/", protectedRouter);
 
