@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Button from "@mui/material/Button";
+import { Droppable } from "@hello-pangea/dnd";
 import { Card } from "./Card";
 import { ListActionsMenu } from "./ListActionsMenu";
 import { SquareIconButton } from "./ui/buttons/SquareIconButton";
@@ -22,7 +23,6 @@ export function List({
   listIndex,
   onMoveAllCards,
 }) {
-  const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [newCardTitle, setNewCardTitle] = useState("");
   const navigate = useNavigate();
@@ -30,10 +30,6 @@ export function List({
   const listContentRef = useRef(null);
   const scrollListToEnd = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    setCards(list.cards);
-  }, [list.cards]);
 
   function handleOpenModal(card) {
     navigate(`${list.id}/${card.id}`, {
@@ -79,8 +75,7 @@ export function List({
       createdAt: Date.now(),
     };
 
-    const updatedCards = [...cards, newCard];
-    setCards(updatedCards);
+    const updatedCards = [...list.cards, newCard];
 
     onUpdateList(list, { cards: updatedCards });
 
@@ -109,22 +104,41 @@ export function List({
         />
       </div>
       <div className="list-content-container" ref={listContentRef}>
-        <ul className="cards-list">
-          {cards.map(card => {
+        <Droppable droppableId={list.id}>
+          {(provided, snapshot) => {
             return (
-              <li key={card.id}>
-                <Card
-                  card={card}
-                  listId={list.id}
-                  labels={getCardLabels(card)}
-                  onClickCard={card => handleOpenModal(card)}
-                  labelsIsOpen={labelsIsOpen}
-                  setLabelsIsOpen={setLabelsIsOpen}
-                />
-              </li>
+              <div
+                className={`cards-list ${
+                  snapshot.isDraggingOver ? "drag-over" : ""
+                }`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {list.cards.map((card, index) => (
+                  <Card
+                    key={card.id}
+                    card={card}
+                    listId={list.id}
+                    index={index}
+                    labels={getCardLabels(card)}
+                    onClickCard={card => handleOpenModal(card)}
+                    labelsIsOpen={labelsIsOpen}
+                    setLabelsIsOpen={setLabelsIsOpen}
+                  />
+                ))}
+                <div
+                  className={`placeholder ${
+                    snapshot.isDraggingOver
+                      ? "placeholder--visible"
+                      : "placeholder--hidden"
+                  }`}
+                >
+                  {provided.placeholder}
+                </div>
+              </div>
             );
-          })}
-        </ul>
+          }}
+        </Droppable>
       </div>
       <div className="list-footer">
         {!isAddingCard ? (

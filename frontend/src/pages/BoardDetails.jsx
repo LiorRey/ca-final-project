@@ -6,6 +6,7 @@ import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
+import { DragDropContext } from "@hello-pangea/dnd";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
 import { Footer } from "../components/Footer";
@@ -23,6 +24,7 @@ import {
   loadBoard,
   loadBoards,
   moveAllCards,
+  moveCard,
   updateBoard,
 } from "../store/actions/board-actions";
 
@@ -37,6 +39,13 @@ export function BoardDetails() {
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
   const { filters, updateFilters } = useCardFilters();
+  const [lists, setLists] = useState(board?.lists || []);
+
+  useEffect(() => {
+    if (board) {
+      setLists(board.lists);
+    }
+  }, [board]);
 
   useEffect(() => {
     loadBoard(params.boardId, filters);
@@ -111,6 +120,86 @@ export function BoardDetails() {
     // Add your custom logic for each menu item
   }
 
+  function handleDragStart() {}
+
+  function handleDragEnd(result) {
+    const { destination, source, draggableId } = result;
+
+    // Dropped outside of a droppable area
+    if (!destination) {
+      return;
+    }
+
+    // Dropped in the same position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    // Find source and destination lists
+    const sourceListIndex = lists.findIndex(
+      list => list.id === source.droppableId
+    );
+    const destinationListIndex = lists.findIndex(
+      list => list.id === destination.droppableId
+    );
+
+    const sourceList = lists[sourceListIndex];
+    const destinationList = lists[destinationListIndex];
+
+    // Find the card being moved
+    const cardToMove = sourceList.cards.find(card => card.id === draggableId);
+
+    // Create new lists array
+    const newLists = [...lists];
+
+    // Moving within the same list
+    if (sourceListIndex === destinationListIndex) {
+      const newCards = Array.from(sourceList.cards);
+      newCards.splice(source.index, 1);
+      newCards.splice(destination.index, 0, cardToMove);
+
+      newLists[sourceListIndex] = {
+        ...sourceList,
+        cards: newCards,
+      };
+    } else {
+      // Moving to a different list
+      // Remove from source
+      const newSourceCards = sourceList.cards.filter(
+        (_, index) => index !== source.index
+      );
+
+      // Add to destination
+      const newDestinationCards = Array.from(destinationList.cards);
+      newDestinationCards.splice(destination.index, 0, cardToMove);
+
+      newLists[sourceListIndex] = {
+        ...sourceList,
+        cards: newSourceCards,
+      };
+
+      newLists[destinationListIndex] = {
+        ...destinationList,
+        cards: newDestinationCards,
+      };
+    }
+
+    setLists(newLists);
+
+    const moveData = {
+      sourceBoardId: board._id,
+      sourceListId: source.droppableId,
+      destinationBoardId: board._id,
+      destinationListId: destination.droppableId,
+      position: destination.index,
+    };
+
+    moveCard(moveData, cardToMove);
+  }
+
   if (!board) {
     return <section className="board-container">Loading...</section>;
   }
@@ -136,27 +225,32 @@ export function BoardDetails() {
         </div>
       </header>
       <div className="board-canvas" ref={boardCanvasRef}>
-        <ul className="lists-list">
-          {board.lists.map((list, listIndex) => (
-            <li key={list.id}>
-              <List
-                list={list}
-                boardLabels={board.labels}
-                labelsIsOpen={labelsIsOpen}
-                setLabelsIsOpen={setLabelsIsOpen}
-                onUpdateList={onUpdateList}
-                onCopyList={onCopyList}
-                onMoveAllCards={onMoveAllCards}
-                isAddingCard={activeAddCardListId === list.id}
-                setActiveAddCardListId={setActiveAddCardListId}
-                listIndex={listIndex}
-              />
+        <DragDropContext
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <ul className="lists-list">
+            {lists.map((list, listIndex) => (
+              <li key={list.id}>
+                <List
+                  list={list}
+                  boardLabels={board.labels}
+                  labelsIsOpen={labelsIsOpen}
+                  setLabelsIsOpen={setLabelsIsOpen}
+                  onUpdateList={onUpdateList}
+                  onCopyList={onCopyList}
+                  onMoveAllCards={onMoveAllCards}
+                  isAddingCard={activeAddCardListId === list.id}
+                  setActiveAddCardListId={setActiveAddCardListId}
+                  listIndex={listIndex}
+                />
+              </li>
+            ))}
+            <li>
+              <AddList onAddList={onAddList} />
             </li>
-          ))}
-          <li>
-            <AddList onAddList={onAddList} />
-          </li>
-        </ul>
+          </ul>
+        </DragDropContext>
         <nav className="board-footer">
           <Footer />
         </nav>

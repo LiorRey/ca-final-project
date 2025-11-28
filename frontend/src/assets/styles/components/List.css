@@ -62,9 +62,40 @@
   flex-direction: column;
   flex-wrap: wrap;
   padding: 0 0.5rem 0 0.5rem;
-  gap: 10px;
   max-width: 350px;
+  transition: background-color 0.2s ease;
 }
+
+/*
+This styles are not currently used its a work in progress
+to eliminate the placeholder in the source list smoothly
+*/
+
+/*
+.cards-list.drag-over {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+/* Placeholder animation for smooth card movement */
+/*
+.placeholder {
+  background-color: blueviolet;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.placeholder--visible {
+  opacity: 1;
+  max-height: 200px;
+}
+
+.placeholder--hidden {
+  opacity: 0;
+  max-height: 0;
+}
+*/
 
 .list-footer {
   display: flex;
