@@ -15,7 +15,6 @@ export function List({
   labelsIsOpen,
   setLabelsIsOpen,
   onRemoveList,
-  onUpdateList,
   onCopyList,
   isAddingCard,
   setActiveAddCardListId,

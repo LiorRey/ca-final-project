@@ -19,7 +19,6 @@ import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
-import { showErrorMsg, showSuccessMsg } from "../services/event-bus-service";
 import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
@@ -64,17 +63,6 @@ export function BoardDetails() {
   }
 
   async function onRemoveList(listId) {}
-
-  async function onUpdateList(list, updates) {
-    try {
-      const options = { listId: list.id };
-      updateBoard(board._id, updates, options);
-      showSuccessMsg(`The list ${list.title} updated successfully!`);
-    } catch (error) {
-      console.error("List update failed:", error);
-      showErrorMsg(`Unable to update the list: ${list.title}`);
-    }
-  }
 
   async function onAddList(newList) {
     await createList(board._id, newList);
@@ -131,7 +119,6 @@ export function BoardDetails() {
                 labelsIsOpen={labelsIsOpen}
                 setLabelsIsOpen={setLabelsIsOpen}
                 onRemoveList={onRemoveList}
-                onUpdateList={onUpdateList}
                 onCopyList={onCopyList}
                 onMoveAllCards={onMoveAllCards}
                 isAddingCard={activeAddCardListId === list.id}
