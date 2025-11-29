@@ -216,5 +216,81 @@
         }
       ]
     }
+  ],
+  "lists": [
+    {
+      "boardTitle": "Mobile App Development",
+      "lists": [
+        {
+          "title": "QA",
+          "description": "Quality assurance tasks and bugs",
+          "position": "a"
+        },
+        {
+          "title": "Waiting for Review",
+          "description": "Items pending review",
+          "position": "b"
+        },
+        { "title": "Done", "description": "Completed tasks", "position": "c" },
+        {
+          "title": "In Progress",
+          "description": "Currently being worked on",
+          "position": "d"
+        },
+        { "title": "To Do", "description": "Planned tasks", "position": "e" }
+      ]
+    },
+    {
+      "boardTitle": "Website Redesign",
+      "lists": [
+        {
+          "title": "Code Review",
+          "description": "Review code for issues",
+          "position": "a"
+        },
+        {
+          "title": "Sprint Planning",
+          "description": "Plan upcoming sprints",
+          "position": "b"
+        },
+        {
+          "title": "Ideas",
+          "description": "Brainstorm new features",
+          "position": "c"
+        },
+        {
+          "title": "Deployment",
+          "description": "Deployment tasks",
+          "position": "d"
+        },
+        { "title": "Testing", "description": "Testing and QA", "position": "e" }
+      ]
+    },
+    {
+      "boardTitle": "Product Launch",
+      "lists": [
+        {
+          "title": "Ready for Production",
+          "description": "Ready for deployment",
+          "position": "a"
+        },
+        { "title": "To Do", "description": "Upcoming tasks", "position": "b" },
+        {
+          "title": "Waiting for Review",
+          "description": "Awaiting approval",
+          "position": "c"
+        },
+        {
+          "title": "Sprint Planning",
+          "description": "Sprint planning items",
+          "position": "d"
+        },
+        {
+          "title": "Deployment",
+          "description": "Deployment checklist",
+          "position": "e"
+        }
+      ]
+    }
   ]
 }
