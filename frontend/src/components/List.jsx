@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
@@ -21,7 +21,6 @@ export function List({
   listIndex,
   onMoveAllCards,
 }) {
-  const [cards, setCards] = useState(list.cards);
   const [anchorEl, setAnchorEl] = useState(null);
   const [addCardToEnd, setAddCardToEnd] = useState(true);
   const navigate = useNavigate();
@@ -29,10 +28,6 @@ export function List({
   const listContentRef = useRef(null);
   const scrollListToEdge = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    setCards(list.cards);
-  }, [list.cards]);
 
   function handleOpenModal(card) {
     navigate(`${list.id}/${card.id}`, {
@@ -75,13 +70,7 @@ export function List({
     setActiveAddCardListId(null);
   }
 
-  function handleCardAdded(addedCard) {
-    const updatedCards = addCardToEnd
-      ? [...list.cards, addedCard]
-      : [addedCard, ...list.cards];
-
-    setCards(updatedCards);
-
+  function scrollToAddedCard() {
     requestAnimationFrame(() => {
       requestAnimationFrame(() =>
         scrollListToEdge({
@@ -115,14 +104,14 @@ export function List({
           <AddCardForm
             listId={list.id}
             addCardToEnd={addCardToEnd}
-            onCardAdded={handleCardAdded}
+            onCardAdded={scrollToAddedCard}
             onHideAddCardForm={handleHideAddCardForm}
           />
         )}
       </div>
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
-          {cards.map(card => {
+          {list.cards.map(card => {
             return (
               <li key={card.id}>
                 <Card
@@ -143,7 +132,7 @@ export function List({
           <AddCardForm
             listId={list.id}
             addCardToEnd={addCardToEnd}
-            onCardAdded={handleCardAdded}
+            onCardAdded={scrollToAddedCard}
             onHideAddCardForm={handleHideAddCardForm}
           />
         ) : (
