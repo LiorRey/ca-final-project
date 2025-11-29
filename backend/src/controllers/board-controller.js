@@ -10,6 +10,9 @@ export async function createBoard(req, res) {
     });
     res.status(201).json({ board });
   } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
     res.status(500).json({ error: "Failed to create board" });
   }
 }
@@ -46,6 +49,9 @@ export async function updateBoard(req, res) {
 
     res.json({ board });
   } catch (err) {
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
     res.status(500).json({ error: "Failed to update board" });
   }
 }
