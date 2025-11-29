@@ -11,6 +11,14 @@ function errorHandler(err, _req, res, _next) {
     error = createError(400, messages);
   }
 
+  if (err.name === "JsonWebTokenError") {
+    error = createError(401, "Invalid token");
+  }
+
+  if (err.name === "TokenExpiredError") {
+    error = createError(401, "Token expired");
+  }
+
   // Some unexpected programming error
   if (!createError.isHttpError(error)) {
     console.error("Unexpected error:", error);
