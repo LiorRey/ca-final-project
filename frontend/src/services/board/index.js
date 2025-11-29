@@ -16,17 +16,6 @@ function getEmptyBoard() {
   };
 }
 
-function getEmptyCard() {
-  return {
-    id: crypto.randomUUID(),
-    title: "",
-    description: "",
-    labels: [],
-    createdAt: null,
-    archivedAt: null,
-  };
-}
-
 export function getEmptyLabel() {
   return {
     id: crypto.randomUUID(),
@@ -38,7 +27,6 @@ export function getEmptyLabel() {
 const service = VITE_LOCAL === "true" ? local : local; // "true" ? local : remote;
 export const boardService = {
   getEmptyBoard,
-  getEmptyCard,
   getEmptyLabel,
   ...service,
 };

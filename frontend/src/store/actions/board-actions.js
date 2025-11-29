@@ -145,12 +145,21 @@ export async function moveAllCards(
   }
 }
 
-export async function addCard(boardId, card, listId) {
+export async function addCard(boardId, listId, card, addCardToEnd = true) {
   try {
-    const newCard = await boardService.addCard(boardId, card, listId);
-    store.dispatch(addCardAction(newCard, listId));
+    store.dispatch({ type: ADD_CARD.REQUEST });
+    const addedCard = await boardService.addCard(
+      boardId,
+      listId,
+      card,
+      addCardToEnd
+    );
+    store.dispatch({
+      type: ADD_CARD.SUCCESS,
+      payload: { listId, addedCard, addCardToEnd },
+    });
   } catch (error) {
-    store.dispatch(setError("addCard", `Error adding card: ${error.message}`));
+    store.dispatch({ type: ADD_CARD.FAILURE, payload: error.message });
     throw error;
   }
 }
@@ -177,10 +186,6 @@ export async function deleteCard(boardId, cardId, listId) {
     );
     throw error;
   }
-}
-
-export function addCardAction(card, listId) {
-  return { type: ADD_CARD, payload: { card, listId } };
 }
 
 export function editCardAction(card, listId) {

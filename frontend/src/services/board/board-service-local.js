@@ -16,6 +16,7 @@ export const boardService = {
   moveList,
   clearData,
   reCreateBoards,
+  getEmptyCard,
   addCard,
   editCard,
   deleteCard,
@@ -242,15 +243,30 @@ async function archiveAllCardsInList(boardId, listId) {
   }
 }
 
-export async function addCard(boardId, card, listId) {
+function getEmptyCard() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    labels: [],
+    createdAt: null,
+    archivedAt: null,
+  };
+}
+
+export async function addCard(boardId, listId, card, addCardToEnd = true) {
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
+
     const list = _findList(board, listId);
-    const newCard = { ...getEmptyCard(), ...card };
-    list.cards.push(newCard);
-    const updatedBoard = await updateBoard(boardId, list, listId);
-    return newCard;
+    const addedCard = { ...card, createdAt: Date.now() };
+
+    list.cards = addCardToEnd ? [...list.cards, card] : [card, ...list.cards];
+
+    await updateBoard(boardId, list, { listId });
+
+    return addedCard;
   } catch (error) {
     console.error("Cannot add card:", error);
     throw error;
@@ -261,7 +277,7 @@ export async function editCard(boardId, card, listId) {
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
-    const updatedBoard = await updateBoard(boardId, card, {
+    const _updatedBoard = await updateBoard(boardId, card, {
       listId,
       cardId: card.id,
     });
@@ -280,7 +296,7 @@ export async function deleteCard(boardId, cardId, listId) {
     const cardIdx = _findCardIndex(list, cardId);
     const deletedCard = _findCard(list, cardId);
     list.cards.splice(cardIdx, 1);
-    const updatedBoard = await updateBoard(boardId, list, { listId });
+    const _updatedBoard = await updateBoard(boardId, list, { listId });
     return deletedCard; // return the deleted card
   } catch (error) {
     console.error("Cannot delete card:", error);
@@ -471,7 +487,7 @@ async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
-    const updatedBoard = await updateBoard(
+    const _updatedBoard = await updateBoard(
       boardId,
       { labels: updatedCardLabels },
       {

@@ -31,6 +31,7 @@
 @import "components/Board";
 @import "components/List";
 @import "components/ListActionsMenu";
+@import "components/AddCardForm";
 @import "components/CopyListForm";
 @import "components/MoveListForm";
 @import "components/Card";

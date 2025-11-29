@@ -13,7 +13,7 @@ export const UNARCHIVE_LIST = createAsyncActionTypes("UNARCHIVE_LIST");
 export const ARCHIVE_ALL_CARDS_IN_LIST = createAsyncActionTypes(
   "ARCHIVE_ALL_CARDS_IN_LIST"
 );
-export const ADD_CARD = "ADD_CARD";
+export const ADD_CARD = createAsyncActionTypes("ADD_CARD");
 export const EDIT_CARD = "EDIT_CARD";
 export const DELETE_CARD = "DELETE_CARD";
 export const MOVE_LIST = "MOVE_LIST";
@@ -110,17 +110,29 @@ const handlers = {
       lists: action.payload,
     },
   }),
-  [ADD_CARD]: (state, action) => ({
-    ...state,
-    board: {
-      ...state.board,
-      lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
-          ? { ...list, cards: [...list.cards, action.payload.card] }
-          : list
-      ),
-    },
-  }),
+  ...createAsyncHandlers(ADD_CARD, ADD_CARD.KEY),
+  [ADD_CARD.SUCCESS]: (state, action) => {
+    const { listId, addedCard, addCardToEnd } = action.payload;
+
+    const updateListCards = list => {
+      if (list.id !== listId) return list;
+
+      const cards = addCardToEnd
+        ? [...list.cards, addedCard]
+        : [addedCard, ...list.cards];
+
+      return { ...list, cards };
+    };
+
+    return {
+      ...state,
+      loading: { ...state.loading, [ADD_CARD.KEY]: false },
+      board: {
+        ...state.board,
+        lists: state.board.lists.map(updateListCards),
+      },
+    };
+  },
   [EDIT_CARD]: (state, action) => ({
     ...state,
     board: {
