@@ -1,26 +1,29 @@
 import {
   SET_BOARDS,
+  SET_BOARD,
   ADD_BOARD,
   UPDATE_BOARD,
   DELETE_BOARD,
-  SET_BOARD,
-  MOVE_LIST,
-  SET_LOADING,
-  SET_ERROR,
-  SET_FILTERS,
-  CLEAR_ALL_FILTERS,
   ADD_LIST,
+  MOVE_LIST,
+  COPY_LIST,
+  ARCHIVE_LIST,
+  UNARCHIVE_LIST,
+  ARCHIVE_ALL_CARDS_IN_LIST,
   MOVE_ALL_CARDS,
   ADD_CARD,
   EDIT_CARD,
   DELETE_CARD,
+  COPY_CARD,
+  MOVE_CARD,
   CREATE_LABEL,
   EDIT_LABEL,
   DELETE_LABEL,
   UPDATE_CARD_LABELS,
-  ARCHIVE_LIST,
-  UNARCHIVE_LIST,
-  ARCHIVE_ALL_CARDS_IN_LIST,
+  SET_FILTERS,
+  CLEAR_ALL_FILTERS,
+  SET_LOADING,
+  SET_ERROR,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -100,18 +103,6 @@ export async function deleteBoard(boardId) {
   }
 }
 
-export async function copyList(boardId, listId, newName) {
-  try {
-    const updatedLists = await boardService.copyList(boardId, listId, newName);
-    updateBoard(boardId, { lists: updatedLists });
-  } catch (error) {
-    store.dispatch(
-      setError("copyList", `Error copying list: ${error.message}`)
-    );
-    throw error;
-  }
-}
-
 export async function createList(boardId, listData) {
   try {
     store.dispatch({ type: ADD_LIST.REQUEST });
@@ -123,6 +114,53 @@ export async function createList(boardId, listData) {
     throw error;
   }
 }
+
+export async function moveList(
+  sourceBoardId,
+  sourceIndex,
+  targetIndex,
+  targetBoardId,
+  currentBoardId
+) {
+  try {
+    const updatedLists = await boardService.moveList(
+      sourceBoardId,
+      sourceIndex,
+      targetIndex,
+      targetBoardId,
+      currentBoardId
+    );
+    store.dispatch(moveListAction(updatedLists));
+    return updatedLists;
+  } catch (error) {
+    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
+    throw error;
+  }
+}
+
+export const copyList = createAsyncAction(
+  COPY_LIST,
+  boardService.copyList,
+  store
+);
+
+export const archiveList = createAsyncAction(
+  ARCHIVE_LIST,
+  boardService.archiveList,
+  store
+);
+
+export const unarchiveList = createAsyncAction(
+  UNARCHIVE_LIST,
+  boardService.unarchiveList,
+  store
+);
+
+export const archiveAllCardsInList = createAsyncAction(
+  ARCHIVE_ALL_CARDS_IN_LIST,
+  boardService.archiveAllCardsInList,
+  store
+);
 
 export async function moveAllCards(
   boardId,
@@ -164,17 +202,11 @@ export async function addCard(boardId, listId, card, addCardToEnd = true) {
   }
 }
 
-export async function editCard(boardId, card, listId) {
-  try {
-    const updatedCard = await boardService.editCard(boardId, card, listId);
-    store.dispatch(editCardAction(updatedCard, listId));
-  } catch (error) {
-    store.dispatch(
-      setError("editCard", `Error editing card: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const editCard = createAsyncAction(
+  EDIT_CARD,
+  boardService.editCard,
+  store
+);
 
 export async function deleteCard(boardId, cardId, listId) {
   try {
@@ -188,36 +220,17 @@ export async function deleteCard(boardId, cardId, listId) {
   }
 }
 
-export function editCardAction(card, listId) {
-  return { type: EDIT_CARD, payload: { card, listId } };
-}
+export const copyCard = createAsyncAction(
+  COPY_CARD,
+  boardService.copyCard,
+  store
+);
 
-export function deleteCardAction(cardId, listId) {
-  return { type: DELETE_CARD, payload: { cardId, listId } };
-}
-
-export async function moveList(
-  sourceBoardId,
-  sourceIndex,
-  targetIndex,
-  targetBoardId,
-  currentBoardId
-) {
-  try {
-    const updatedLists = await boardService.moveList(
-      sourceBoardId,
-      sourceIndex,
-      targetIndex,
-      targetBoardId,
-      currentBoardId
-    );
-    store.dispatch(moveListAction(updatedLists));
-    return updatedLists;
-  } catch (error) {
-    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
-    throw error;
-  }
-}
+export const moveCard = createAsyncAction(
+  MOVE_CARD,
+  boardService.moveCard,
+  store
+);
 
 export async function createLabel(boardId, label) {
   try {
@@ -279,26 +292,12 @@ export async function updateCardLabels(
   }
 }
 
-export const archiveList = createAsyncAction(
-  ARCHIVE_LIST,
-  boardService.archiveList,
-  store
-);
-
-export const unarchiveList = createAsyncAction(
-  UNARCHIVE_LIST,
-  boardService.unarchiveList,
-  store
-);
-
-export const archiveAllCardsInList = createAsyncAction(
-  ARCHIVE_ALL_CARDS_IN_LIST,
-  boardService.archiveAllCardsInList,
-  store
-);
-
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };
+}
+
+export function setBoard(board) {
+  return { type: SET_BOARD, payload: board };
 }
 
 export function addBoard(board) {
@@ -313,16 +312,12 @@ export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
 }
 
-export function setBoard(board) {
-  return { type: SET_BOARD, payload: board };
+export function moveListAction(lists) {
+  return { type: MOVE_LIST, payload: lists };
 }
 
-export function setLoading(key, isLoading) {
-  return { type: SET_LOADING, payload: { key, isLoading } };
-}
-
-export function setError(key, error) {
-  return { type: SET_ERROR, payload: { key, error } };
+export function deleteCardAction(cardId, listId) {
+  return { type: DELETE_CARD, payload: { cardId, listId } };
 }
 
 export function setFilters(filterBy) {
@@ -333,6 +328,10 @@ export function clearAllFilters() {
   return { type: CLEAR_ALL_FILTERS };
 }
 
-export function moveListAction(lists) {
-  return { type: MOVE_LIST, payload: lists };
+export function setLoading(key, isLoading) {
+  return { type: SET_LOADING, payload: { key, isLoading } };
+}
+
+export function setError(key, error) {
+  return { type: SET_ERROR, payload: { key, error } };
 }

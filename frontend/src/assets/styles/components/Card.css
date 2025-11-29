@@ -140,14 +140,26 @@
 }
 
 .card-menu-button {
+  width: fit-content;
   display: flex;
   justify-content: start;
   gap: 0.5rem;
   border-radius: 0.2rem;
-  color: black;
+  color: var(--gray1);
+  background-color: var(--gray3);
   padding: 0.5rem;
-  background-color: var(--gray1);
+  transition: background-color 0.15s ease, transform 0.05s ease,
+    box-shadow 0.1s ease;
+
   > svg {
     font-size: 16px;
+  }
+  &.is-active {
+    background-color: var(--gray4);
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.12);
+  }
+  &:hover {
+    background-color: var(--gray5);
   }
 }

@@ -16,11 +16,7 @@
 @import "components/Footer";
 @import "components/UserMessage";
 @import "components/Popover";
-
-@import "components/car/CarIndex";
-@import "components/car/CarList";
-@import "components/car/CarPreview";
-@import "components/car/CarFilter";
+@import "components/MainMenu";
 
 @import "components/label/ModalLabel";
 @import "components/label/CardLabel";
@@ -29,18 +25,17 @@
 @import "components/label/LabelEditor";
 
 @import "components/Board";
+@import "components/FilterMenu";
+@import "components/auth/AuthFormLayout";
+
 @import "components/List";
 @import "components/ListActionsMenu";
 @import "components/AddCardForm";
 @import "components/CopyListForm";
 @import "components/MoveListForm";
-@import "components/Card";
-@import "components/FilterMenu";
-@import "components/auth/AuthFormLayout";
 
-@import "components/review/ReviewEdit";
-@import "components/review/ReviewList";
-@import "components/review/ReviewPreview";
+@import "components/Card";
+@import "components/CardFormMenu";
 @import "components/CardModal";
 
 @import "pages/BoardDetails";

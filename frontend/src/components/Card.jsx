@@ -1,14 +1,14 @@
-import {
-  ChatRounded,
-  NotesRounded,
-  RemoveRedEyeOutlined,
-  DriveFileRenameOutline,
-} from "@mui/icons-material";
-import CardPopover from "./CardPopover";
-import { Box } from "@mui/material";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { editCard, deleteCard } from "../store/actions/board-actions";
+import {
+  ChatRounded,
+  DriveFileRenameOutline,
+  NotesRounded,
+  RemoveRedEyeOutlined,
+} from "@mui/icons-material";
+import { Box } from "@mui/material";
+import { CardPopover } from "./CardPopover";
+import { deleteCard, editCard } from "../store/actions/board-actions";
 
 export function Card({
   card,
@@ -24,6 +24,7 @@ export function Card({
 
   function handleClickCard() {
     onClickCard(card);
+    setAnchorEl(null);
   }
 
   function handleClick(e) {
@@ -38,12 +39,9 @@ export function Card({
 
   function handleClose() {
     setAnchorEl(null);
-    setTitle(card.title);
   }
 
   function handleSave() {
-    card.title = title;
-    handleClose();
     handleUpdateCard({ ...card, title });
   }
 
@@ -131,7 +129,11 @@ export function Card({
       <CardPopover
         open={open}
         anchorEl={anchorEl}
+        card={card}
         id={id}
+        cardId={card.id}
+        listId={listId}
+        openCard={handleClickCard}
         handleClose={handleClose}
         handleDelete={handleDelete}
         handleSave={handleSave}

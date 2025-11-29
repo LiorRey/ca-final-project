@@ -3,9 +3,9 @@ import {
   InboxRounded,
   CalendarMonthRounded,
   ViewWeekOutlined,
-  ViewKanbanOutlined,
   LibraryBooksOutlined,
 } from "@mui/icons-material";
+
 export function Footer() {
   return (
     <footer className="app-footer">
@@ -24,7 +24,6 @@ export function Footer() {
         </FooterButton>
         <span className="footer-separator" />
         <FooterButton>
-          {/* <ViewKanbanOutlined /> */}
           <LibraryBooksOutlined />
           Switch Board
         </FooterButton>

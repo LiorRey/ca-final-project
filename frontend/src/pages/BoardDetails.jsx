@@ -1,33 +1,34 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
-import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
-
-import {
-  loadBoard,
-  loadBoards,
-  updateBoard,
-  copyList,
-  moveAllCards,
-  createList,
-} from "../store/actions/board-actions";
-import { Footer } from "../components/Footer";
-import { List } from "../components/List";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
+import { Footer } from "../components/Footer";
+import { List } from "../components/List";
+import { BoardMenu } from "../components/ui/BoardMenu";
+import { useCardFilters } from "../hooks/useCardFilters";
+import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
 } from "../services/filter-service";
-import { useCardFilters } from "../hooks/useCardFilters";
-import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
+import {
+  copyList,
+  createList,
+  loadBoard,
+  loadBoards,
+  moveAllCards,
+  updateBoard,
+} from "../store/actions/board-actions";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
+  const [mainMenuAnchorEl, setMainMenuAnchorEl] = useState(null);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
@@ -65,11 +66,14 @@ export function BoardDetails() {
   async function onRemoveList(listId) {}
 
   async function onAddList(newList) {
-    await createList(board._id, newList);
-
-    requestAnimationFrame(() =>
-      scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
-    );
+    try {
+      await createList(board._id, newList);
+      requestAnimationFrame(() =>
+        scrollBoardToEnd({ direction: SCROLL_DIRECTION.HORIZONTAL })
+      );
+    } catch (error) {
+      console.error("List creation failed:", error);
+    }
   }
 
   async function onMoveAllCards(sourceListId, targetListId) {
@@ -86,7 +90,23 @@ export function BoardDetails() {
     }
   }
 
-  if (!board) return <div>Loading board...</div>;
+  function handleOpenMainMenu(event) {
+    setMainMenuAnchorEl(event.currentTarget);
+  }
+
+  function handleCloseMainMenu() {
+    setMainMenuAnchorEl(null);
+  }
+
+  function handleMenuItemClick(itemId) {
+    // Handle menu item clicks here
+    console.log(`${itemId} clicked`);
+    // Add your custom logic for each menu item
+  }
+
+  if (!board) {
+    return <section className="board-container">Loading...</section>;
+  }
 
   return (
     <section className="board-container">
@@ -103,7 +123,7 @@ export function BoardDetails() {
           <button className="icon-button">
             <LockOutlineRounded />
           </button>
-          <button className="icon-button">
+          <button className="icon-button" onClick={handleOpenMainMenu}>
             <MoreHoriz />
           </button>
         </div>
@@ -113,7 +133,6 @@ export function BoardDetails() {
           {board.lists.map((list, listIndex) => (
             <li key={list.id}>
               <List
-                key={list.id}
                 list={list}
                 boardLabels={board.labels}
                 labelsIsOpen={labelsIsOpen}
@@ -135,6 +154,12 @@ export function BoardDetails() {
           <Footer />
         </nav>
       </div>
+      <BoardMenu
+        anchorEl={mainMenuAnchorEl}
+        open={Boolean(mainMenuAnchorEl)}
+        onClose={handleCloseMainMenu}
+        onItemClick={handleMenuItemClick}
+      />
     </section>
   );
 }

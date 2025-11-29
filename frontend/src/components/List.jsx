@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
+import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import { Card } from "./Card";
 import { ListActionsMenu } from "./ListActionsMenu";
 import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
-import { useNavigate, useLocation } from "react-router-dom";
 import { setActiveListIndex } from "../store/actions/ui-actions";
 import { AddCardForm } from "./AddCardForm";
 

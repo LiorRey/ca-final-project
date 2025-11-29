@@ -1,8 +1,13 @@
 import { storageService } from "../async-storage-service";
 import { loadFromStorage, saveToStorage } from "../util-service";
-import boardDataGenerator from "./board-data-generator";
+import { boardDataGenerator } from "./board-data-generator";
 import { USER_STORAGE_KEY } from "../user/user-service-local.js";
 import { getFilteredBoard } from "../filter-service";
+import {
+  calculateNewPosition,
+  generatePositionAtEnd,
+  sortByPosition,
+} from "./fractional-index-service";
 
 const BOARDS_STORAGE_KEY = "boardDB";
 _createBoards();
@@ -13,24 +18,26 @@ export const boardService = {
   remove,
   save,
   updateBoard,
-  moveList,
-  clearData,
-  reCreateBoards,
   getEmptyCard,
   addCard,
   editCard,
   deleteCard,
+  copyCard,
+  moveCard,
   getEmptyList,
-  copyList,
-  moveAllCards,
   createList,
+  moveList,
+  copyList,
+  archiveList,
+  unarchiveList,
+  moveAllCards,
+  archiveAllCardsInList,
+  updateCardLabels,
   createLabel,
   editLabel,
   deleteLabel,
-  updateCardLabels,
-  archiveList,
-  unarchiveList,
-  archiveAllCardsInList,
+  clearData,
+  reCreateBoards,
 };
 window.bs = boardService;
 
@@ -38,104 +45,331 @@ async function query() {
   try {
     return await storageService.query(BOARDS_STORAGE_KEY);
   } catch (error) {
-    console.log("Cannot load boards:", error);
+    console.error("Cannot load boards:", error);
 
     throw error;
   }
 }
 
-export async function copyList(boardId, listId, newName) {
+async function getById(boardId, filterBy = {}) {
+  try {
+    const board = await storageService.get(BOARDS_STORAGE_KEY, boardId);
+
+    if (board && board.lists) {
+      board.lists = sortByPosition(board.lists);
+    }
+
+    return getFilteredBoard(board, filterBy);
+  } catch (error) {
+    console.error("Cannot get board:", error);
+
+    throw error;
+  }
+}
+
+async function remove(boardId) {
+  try {
+    await storageService.remove(BOARDS_STORAGE_KEY, boardId);
+  } catch (error) {
+    console.error("Cannot remove board:", error);
+
+    throw error;
+  }
+}
+
+export async function save(board) {
+  try {
+    if (board._id) {
+      return await storageService.put(BOARDS_STORAGE_KEY, { ...board });
+    } else {
+      return await storageService.post(BOARDS_STORAGE_KEY, { ...board });
+    }
+  } catch (error) {
+    console.error("Cannot save board:", error);
+
+    throw error;
+  }
+}
+
+export async function updateBoard(
+  boardId,
+  updates,
+  { listId = null, cardId = null } = {}
+) {
   try {
     const board = await getById(boardId);
-    const originalListIndex = board.lists.findIndex(l => l.id === listId);
-    if (originalListIndex === -1) throw new Error("List not found");
 
-    const listToCopy = board.lists[originalListIndex];
+    let updatedBoard;
+    if (cardId) {
+      updatedBoard = updateCardFields(board, listId, cardId, updates);
+    } else if (listId) {
+      updatedBoard = updateListFields(board, listId, updates);
+    } else {
+      updatedBoard = updateBoardFields(board, updates);
+    }
 
-    const clonedCards = listToCopy.cards.map(card => ({
-      ...card,
-      id: crypto.randomUUID(),
-    }));
-
-    const clonedList = {
-      ...listToCopy,
-      id: crypto.randomUUID(),
-      title: newName,
-      cards: clonedCards,
-    };
-
-    // insert the cloned list right after the original list
-    const updatedLists = [
-      ...board.lists.slice(0, originalListIndex + 1),
-      clonedList,
-      ...board.lists.slice(originalListIndex + 1),
-    ];
-
-    return updatedLists;
+    return save(updatedBoard);
   } catch (error) {
-    console.error("Error copying list:", error);
+    console.error("Cannot update board:", error);
+
     throw error;
   }
 }
 
-function removeListFromArray(lists, index) {
-  return lists.filter((_, idx) => idx !== index);
+function updateBoardFields(board, updates) {
+  return { ...board, ...updates };
 }
 
-function insertListInArray(lists, list, index) {
-  return [...lists.slice(0, index), list, ...lists.slice(index)];
-}
-
-async function moveSameBoard(board, sourceIndex, targetIndex) {
-  const movedList = board.lists[sourceIndex];
-  if (!movedList) throw new Error("List not found at source index");
-
-  const listsWithoutMoved = removeListFromArray(board.lists, sourceIndex);
-  const updatedLists = insertListInArray(
-    listsWithoutMoved,
-    movedList,
-    targetIndex
+function updateListFields(board, listId, updates) {
+  const list = _findList(board, listId);
+  const updatedList = { ...list, ...updates };
+  const updatedLists = board.lists.map(list =>
+    list.id === listId ? updatedList : list
   );
+  return updateBoardFields(board, { lists: updatedLists });
+}
 
-  const updatedBoard = updateBoardFields(board, { lists: updatedLists });
+function updateCardFields(board, listId, cardId, updates) {
+  const list = _findList(board, listId);
+  const card = _findCard(list, cardId);
+  const updatedCard = { ...card, ...updates };
+  const updatedCards = list.cards.map(card =>
+    card.id === cardId ? updatedCard : card
+  );
+  const updatedList = { ...list, cards: updatedCards };
+  return updateListFields(board, listId, updatedList);
+}
+
+function getEmptyCard() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    labels: [],
+    createdAt: null,
+    archivedAt: null,
+  };
+}
+
+export async function addCard(boardId, listId, card, addCardToEnd = true) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const list = _findList(board, listId);
+    const addedCard = { ...card, createdAt: Date.now() };
+
+    list.cards = addCardToEnd ? [...list.cards, card] : [card, ...list.cards];
+
+    await updateBoard(boardId, list, { listId });
+
+    return addedCard;
+  } catch (error) {
+    console.error("Cannot archive list:", error);
+    throw error;
+  }
+}
+
+export async function editCard(boardId, card, listId) {
+  try {
+    await updateBoard(boardId, card, {
+      listId,
+      cardId: card.id,
+    });
+    return { listId, card };
+  } catch (error) {
+    console.error("Cannot edit card:", error);
+    throw error;
+  }
+}
+
+export async function deleteCard(boardId, cardId, listId) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+    const list = _findList(board, listId);
+    const cardIdx = _findCardIndex(list, cardId);
+    const deletedCard = _findCard(list, cardId);
+    list.cards.splice(cardIdx, 1);
+    await updateBoard(boardId, list, { listId });
+    return deletedCard;
+  } catch (error) {
+    console.error("Cannot delete card:", error);
+    throw error;
+  }
+}
+
+export async function copyCard(copyData, card) {
+  try {
+    const {
+      destinationBoardId,
+      destinationListId,
+      keepLabels,
+      keepMembers,
+      position,
+      title,
+    } = copyData;
+
+    const board = await getById(destinationBoardId);
+    if (!board) throw new Error("Board not found");
+
+    const destinationList = _findList(board, destinationListId);
+
+    const clonedCard = {
+      ...card,
+      id: crypto.randomUUID(),
+      title,
+      assignedTo: keepMembers ? card.assignedTo : [],
+      labels: keepLabels ? card.labels : [],
+    };
+
+    if (position !== null && position !== undefined) {
+      destinationList.cards.splice(position, 0, clonedCard);
+    } else {
+      destinationList.cards.push(clonedCard);
+    }
+
+    await updateBoard(destinationBoardId, destinationList, {
+      listId: destinationListId,
+    });
+
+    return destinationList;
+  } catch (error) {
+    console.error("Error copying card:", error);
+    throw error;
+  }
+}
+
+export async function moveCard(moveData, card) {
+  try {
+    const {
+      sourceBoardId,
+      sourceListId,
+      destinationBoardId,
+      destinationListId,
+      position,
+    } = moveData;
+
+    const sourceBoard = await getById(sourceBoardId);
+    if (sourceBoardId === destinationBoardId) {
+      return moveCardSameBoard(
+        sourceBoard,
+        sourceListId,
+        destinationListId,
+        card,
+        position
+      );
+    } else {
+      const destinationBoard = await getById(destinationBoardId);
+      return moveCardCrossBoard(
+        sourceBoard,
+        destinationBoard,
+        sourceListId,
+        destinationListId,
+        card,
+        position
+      );
+    }
+  } catch (error) {
+    console.error("Error moving card:", error);
+    throw error;
+  }
+}
+
+async function moveCardSameBoard(
+  board,
+  sourceListId,
+  targetListId,
+  card,
+  position
+) {
+  const sourceList = _findList(board, sourceListId);
+  const destinationList = _findList(board, targetListId);
+  const cardIndex = _findCardIndex(sourceList, card.id);
+  let updatedBoard;
+
+  if (sourceListId === targetListId) {
+    const listWithoutCard = removeFromArray(sourceList.cards, cardIndex);
+    const listWithCard = insertInArray(listWithoutCard, card, position);
+    updatedBoard = updateListFields(board, targetListId, {
+      cards: listWithCard,
+    });
+  } else {
+    const listWithoutCard = removeFromArray(sourceList.cards, cardIndex);
+    const listWithCard = insertInArray(destinationList.cards, card, position);
+    updatedBoard = updateListFields(board, sourceListId, {
+      cards: listWithoutCard,
+    });
+    updatedBoard = updateListFields(updatedBoard, targetListId, {
+      cards: listWithCard,
+    });
+  }
+
   await save(updatedBoard);
 
-  return updatedLists;
+  return updatedBoard.lists;
 }
 
-async function moveCrossBoard(
+async function moveCardCrossBoard(
   sourceBoard,
-  targetBoard,
-  sourceIndex,
-  targetIndex,
-  currentBoardId
+  destinationBoard,
+  sourceListId,
+  targetListId,
+  card,
+  position
 ) {
-  const movedList = sourceBoard.lists[sourceIndex];
-  if (!movedList) throw new Error("List not found at source index");
+  const sourceList = _findList(sourceBoard, sourceListId);
+  const destinationList = _findList(destinationBoard, targetListId);
+  const cardIndex = _findCardIndex(sourceList, card.id);
+  const listWithoutCard = removeFromArray(sourceList.cards, cardIndex);
+  const listWithCard = insertInArray(destinationList.cards, card, position);
 
-  const updatedSourceLists = removeListFromArray(
-    sourceBoard.lists,
-    sourceIndex
-  );
-  const updatedTargetLists = insertListInArray(
-    targetBoard.lists,
-    movedList,
-    targetIndex
-  );
-
-  const updatedSourceBoard = updateBoardFields(sourceBoard, {
-    lists: updatedSourceLists,
-  });
-  const updatedTargetBoard = updateBoardFields(targetBoard, {
-    lists: updatedTargetLists,
+  const updatedSrcBoard = updateListFields(sourceBoard, sourceListId, {
+    cards: listWithoutCard,
   });
 
-  await save(updatedSourceBoard);
-  await save(updatedTargetBoard);
+  const updatedDesBoard = updateListFields(destinationBoard, targetListId, {
+    cards: listWithCard,
+  });
 
-  return currentBoardId === sourceBoard._id
-    ? updatedSourceLists
-    : updatedTargetLists;
+  await save(updatedSrcBoard);
+  await save(updatedDesBoard);
+
+  return updatedSrcBoard.lists;
+}
+
+export function getEmptyList() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    cards: [],
+    archivedAt: null,
+    position: null,
+  };
+}
+
+export async function createList(boardId, listData) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    const lastList =
+      board.lists.length > 0 ? board.lists[board.lists.length - 1] : null;
+    const newPosition = generatePositionAtEnd(lastList?.position || null);
+
+    const newList = {
+      ...getEmptyList(),
+      ...listData,
+      position: newPosition,
+    };
+
+    const updatedLists = [...board.lists, newList];
+    await updateBoard(boardId, { lists: updatedLists });
+    return newList;
+  } catch (error) {
+    console.error("Cannot create new list:", error);
+    throw error;
+  }
 }
 
 export async function moveList(
@@ -168,140 +402,138 @@ export async function moveList(
   }
 }
 
-async function getById(boardId, filterBy = {}) {
-  try {
-    const board = await storageService.get(BOARDS_STORAGE_KEY, boardId);
-    return getFilteredBoard(board, filterBy);
-  } catch (error) {
-    console.log("Cannot get board:", error);
+async function moveSameBoard(board, sourceIndex, targetIndex) {
+  const movedList = board.lists[sourceIndex];
+  if (!movedList) throw new Error("List not found at source index");
 
-    throw error;
-  }
+  const newPosition = calculateNewPosition(
+    board.lists,
+    targetIndex,
+    movedList.id
+  );
+
+  const updatedList = { ...movedList, position: newPosition };
+
+  const updatedLists = board.lists.map(list =>
+    list.id === movedList.id ? updatedList : list
+  );
+
+  const sortedLists = sortByPosition(updatedLists);
+
+  const updatedBoard = updateBoardFields(board, { lists: sortedLists });
+  await save(updatedBoard);
+
+  return sortedLists;
 }
 
-async function remove(boardId) {
-  try {
-    await storageService.remove(BOARDS_STORAGE_KEY, boardId);
-  } catch (error) {
-    console.log("Cannot remove board:", error);
-
-    throw error;
-  }
-}
-
-export async function updateBoard(
-  boardId,
-  updates,
-  { listId = null, cardId = null } = {}
+async function moveCrossBoard(
+  sourceBoard,
+  targetBoard,
+  sourceIndex,
+  targetIndex,
+  currentBoardId
 ) {
+  const movedList = sourceBoard.lists[sourceIndex];
+  if (!movedList) throw new Error("List not found at source index");
+
+  const newPosition = calculateNewPosition(targetBoard.lists, targetIndex);
+
+  const updatedList = { ...movedList, position: newPosition };
+
+  const updatedSourceLists = sourceBoard.lists.filter(
+    list => list.id !== movedList.id
+  );
+
+  const updatedTargetLists = sortByPosition([
+    ...targetBoard.lists,
+    updatedList,
+  ]);
+
+  const updatedSourceBoard = updateBoardFields(sourceBoard, {
+    lists: updatedSourceLists,
+  });
+  const updatedTargetBoard = updateBoardFields(targetBoard, {
+    lists: updatedTargetLists,
+  });
+
+  await save(updatedSourceBoard);
+  await save(updatedTargetBoard);
+
+  return currentBoardId === sourceBoard._id
+    ? updatedSourceLists
+    : updatedTargetLists;
+}
+
+export async function copyList(boardId, listId, newName) {
   try {
-    // debug logs
-    console.log("boardId", boardId);
-    console.log("updates", updates);
-    console.log("listId", listId);
-    console.log("cardId", cardId);
     const board = await getById(boardId);
+    const originalListIndex = board.lists.findIndex(l => l.id === listId);
+    if (originalListIndex === -1) throw new Error("List not found");
 
-    if (!board) throw new Error("Board not found");
+    const listToCopy = board.lists[originalListIndex];
 
-    let updatedBoard;
-    if (cardId) {
-      updatedBoard = updateCardFields(board, listId, cardId, updates);
-    } else if (listId) {
-      updatedBoard = updateListFields(board, listId, updates);
-    } else {
-      updatedBoard = updateBoardFields(board, updates);
-    }
+    const clonedCards = listToCopy.cards.map(card => ({
+      ...card,
+      id: crypto.randomUUID(),
+    }));
 
-    return save(updatedBoard);
+    // Calculate position for the cloned list (right after the original)
+    const newPosition = calculateNewPosition(
+      board.lists,
+      originalListIndex + 1
+    );
+
+    const clonedList = {
+      ...listToCopy,
+      id: crypto.randomUUID(),
+      title: newName,
+      cards: clonedCards,
+      position: newPosition,
+    };
+
+    // Add the cloned list and sort by position
+    const updatedLists = sortByPosition([...board.lists, clonedList]);
+    await updateBoard(boardId, { lists: updatedLists });
+
+    return updatedLists;
   } catch (error) {
-    console.error("Cannot update board:", error);
-
+    console.error("Error copying list:", error);
     throw error;
   }
 }
 
-async function archiveAllCardsInList(boardId, listId) {
+export async function archiveList(boardId, listId) {
   try {
-    const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
-
-    const list = _findList(board, listId);
-    if (!list) throw new Error("List not found");
-
-    list.cards.forEach(card => {
-      if (!card.archivedAt) {
-        card.archivedAt = Date.now();
-      }
-    });
-
-    await updateBoard(boardId, board);
-    return list;
+    return await updateListArchiveStatus(boardId, listId, Date.now());
   } catch (error) {
-    console.error("Cannot archive all cards in list:", error);
+    console.error("Cannot archive list:", error);
     throw error;
   }
 }
 
-function getEmptyCard() {
-  return {
-    id: crypto.randomUUID(),
-    title: "",
-    description: "",
-    labels: [],
-    createdAt: null,
-    archivedAt: null,
-  };
-}
-
-export async function addCard(boardId, listId, card, addCardToEnd = true) {
+export async function unarchiveList(boardId, listId) {
   try {
-    const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
-
-    const list = _findList(board, listId);
-    const addedCard = { ...card, createdAt: Date.now() };
-
-    list.cards = addCardToEnd ? [...list.cards, card] : [card, ...list.cards];
-
-    await updateBoard(boardId, list, { listId });
-
-    return addedCard;
+    return await updateListArchiveStatus(boardId, listId, null);
   } catch (error) {
-    console.error("Cannot add card:", error);
+    console.error("Cannot unarchive list:", error);
     throw error;
   }
 }
 
-export async function editCard(boardId, card, listId) {
-  try {
-    const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
-    const _updatedBoard = await updateBoard(boardId, card, {
-      listId,
-      cardId: card.id,
-    });
-    return card;
-  } catch (error) {
-    console.error("Cannot edit card:", error);
-    throw error;
-  }
-}
+async function updateListArchiveStatus(boardId, listId, archivedAt) {
+  const board = await getById(boardId);
+  const list = _findList(board, listId);
 
-export async function deleteCard(boardId, cardId, listId) {
-  try {
-    const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
-    const list = _findList(board, listId);
-    const cardIdx = _findCardIndex(list, cardId);
-    const deletedCard = _findCard(list, cardId);
-    list.cards.splice(cardIdx, 1);
-    const _updatedBoard = await updateBoard(boardId, list, { listId });
-    return deletedCard; // return the deleted card
-  } catch (error) {
-    console.error("Cannot delete card:", error);
-    throw error;
+  if (archivedAt && list.archivedAt) {
+    throw new Error("List is already archived");
   }
+  if (!archivedAt && !list.archivedAt) {
+    throw new Error("List is not archived");
+  }
+
+  const updatedList = { ...list, archivedAt };
+  await updateBoard(boardId, { archivedAt }, { listId });
+  return updatedList;
 }
 
 export async function moveAllCards(
@@ -342,91 +574,26 @@ export async function moveAllCards(
   }
 }
 
-export async function createList(boardId, listData) {
+async function archiveAllCardsInList(boardId, listId) {
   try {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
-    const newList = {
-      ...getEmptyList(),
-      ...listData,
-    };
+    const list = _findList(board, listId);
+    if (!list) throw new Error("List not found");
 
-    const updatedLists = [...board.lists, newList];
-    await updateBoard(boardId, { lists: updatedLists });
-    return newList;
+    list.cards.forEach(card => {
+      if (!card.archivedAt) {
+        card.archivedAt = Date.now();
+      }
+    });
+
+    await updateBoard(boardId, board);
+    return list;
   } catch (error) {
-    console.error("Cannot create new list:", error);
+    console.error("Cannot archive all cards in list:", error);
     throw error;
   }
-}
-
-export function getEmptyList() {
-  return {
-    id: crypto.randomUUID(),
-    title: "",
-    cards: [],
-    archivedAt: null,
-  };
-}
-
-async function updateListArchiveStatus(boardId, listId, archivedAt) {
-  const board = await getById(boardId);
-  const list = _findList(board, listId);
-
-  if (archivedAt && list.archivedAt) {
-    throw new Error("List is already archived");
-  }
-  if (!archivedAt && !list.archivedAt) {
-    throw new Error("List is not archived");
-  }
-
-  const updatedList = { ...list, archivedAt };
-  await updateBoard(boardId, { archivedAt }, { listId });
-  return updatedList;
-}
-
-export async function archiveList(boardId, listId) {
-  try {
-    return await updateListArchiveStatus(boardId, listId, Date.now());
-  } catch (error) {
-    console.error("Cannot archive list:", error);
-    throw error;
-  }
-}
-
-export async function unarchiveList(boardId, listId) {
-  try {
-    return await updateListArchiveStatus(boardId, listId, null);
-  } catch (error) {
-    console.error("Cannot unarchive list:", error);
-    throw error;
-  }
-}
-
-function updateBoardFields(board, updates) {
-  return { ...board, ...updates };
-}
-
-function updateListFields(board, listId, updates) {
-  console.log("updates", updates);
-  const list = _findList(board, listId);
-  const updatedList = { ...list, ...updates };
-  const updatedLists = board.lists.map(list =>
-    list.id === listId ? updatedList : list
-  );
-  return updateBoardFields(board, { lists: updatedLists });
-}
-
-function updateCardFields(board, listId, cardId, updates) {
-  const list = _findList(board, listId);
-  const card = _findCard(list, cardId);
-  const updatedCard = { ...card, ...updates };
-  const updatedCards = list.cards.map(card =>
-    card.id === cardId ? updatedCard : card
-  );
-  const updatedList = { ...list, cards: updatedCards };
-  return updateListFields(board, listId, updatedList);
 }
 
 async function createLabel(boardId, label) {
@@ -487,7 +654,7 @@ async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
-    const _updatedBoard = await updateBoard(
+    await updateBoard(
       boardId,
       { labels: updatedCardLabels },
       {
@@ -503,28 +670,31 @@ async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
   }
 }
 
-export async function save(board) {
-  try {
-    if (board._id) {
-      return await storageService.put(BOARDS_STORAGE_KEY, { ...board });
-    } else {
-      return await storageService.post(BOARDS_STORAGE_KEY, { ...board });
-    }
-  } catch (error) {
-    console.log("Cannot save board:", error);
-
-    throw error;
-  }
+// Helper functions used by multiple functions
+function _findList(board, listId) {
+  const list = board.lists?.find(l => l.id === listId);
+  if (!list) throw new Error("List not found");
+  return list;
 }
 
-function _createBoards() {
-  let boards = loadFromStorage(BOARDS_STORAGE_KEY);
-  if (!boards || !boards.length) {
-    const data = boardDataGenerator.generateSampleData();
-    const { sampleBoards, allUsers } = data;
-    saveToStorage(BOARDS_STORAGE_KEY, sampleBoards);
-    saveToStorage(USER_STORAGE_KEY, allUsers);
-  }
+function _findCard(list, cardId) {
+  const card = list.cards?.find(c => c.id === cardId);
+  if (!card) throw new Error("Card not found");
+  return card;
+}
+
+function _findCardIndex(list, cardId) {
+  const indx = list.cards?.findIndex(c => c.id === cardId);
+  if (indx === -1 || indx == null) throw new Error("Card not found");
+  return indx;
+}
+
+function removeFromArray(arr, index) {
+  return arr.filter((_, idx) => idx !== index);
+}
+
+function insertInArray(arr, obj, index) {
+  return [...arr.slice(0, index), obj, ...arr.slice(index)];
 }
 
 function clearData() {
@@ -537,26 +707,12 @@ function reCreateBoards() {
   _createBoards();
 }
 
-function _findListIndex(board, listId) {
-  const indx = board.lists?.findIndex(l => l.id === listId);
-  if (indx === -1 || indx == null) throw new Error("List not found");
-  return indx;
-}
-
-function _findCardIndex(list, cardId) {
-  const indx = list.cards?.findIndex(c => c.id === cardId);
-  if (indx === -1 || indx == null) throw new Error("Card not found");
-  return indx;
-}
-
-function _findList(board, listId) {
-  const list = board.lists?.find(l => l.id === listId);
-  if (!list) throw new Error("List not found");
-  return list;
-}
-
-function _findCard(list, cardId) {
-  const card = list.cards?.find(c => c.id === cardId);
-  if (!card) throw new Error("Card not found");
-  return card;
+function _createBoards() {
+  let boards = loadFromStorage(BOARDS_STORAGE_KEY);
+  if (!boards || !boards.length) {
+    const data = boardDataGenerator.generateSampleData();
+    const { sampleBoards, allUsers } = data;
+    saveToStorage(BOARDS_STORAGE_KEY, sampleBoards);
+    saveToStorage(USER_STORAGE_KEY, allUsers);
+  }
 }

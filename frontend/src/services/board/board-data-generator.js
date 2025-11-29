@@ -3,6 +3,7 @@ import {
   generateMultipleUsers,
   generateSampleUsers,
 } from "../user/user-data-generator.js";
+import { generateInitialPositions } from "./fractional-index-service";
 
 const PROJECT_TYPES = [
   "Project Alpha",
@@ -148,9 +149,17 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
 
   const boardLabels = generateBoardLabels();
 
-  const lists = Array.from({ length: listCount }, () => {
+  // Generate fractional positions for all lists
+  const positions = generateInitialPositions(listCount);
+
+  const lists = Array.from({ length: listCount }, (_, index) => {
     const cardCount = faker.number.int({ min: 0, max: cardsPerList * 2 });
-    return generateList(cardCount, {}, [], boardLabels);
+    return generateList(
+      cardCount,
+      { position: positions[index] },
+      [],
+      boardLabels
+    );
   });
 
   const listOrder = lists.map(list => list.id);
@@ -299,9 +308,17 @@ export function generateBoardWithUsers(
 
   const boardLabels = generateBoardLabels();
 
-  const lists = Array.from({ length: listCount }, () => {
+  // Generate fractional positions for all lists
+  const positions = generateInitialPositions(listCount);
+
+  const lists = Array.from({ length: listCount }, (_, index) => {
     const cardCount = faker.number.int({ min: 0, max: cardsPerList * 2 });
-    return generateList(cardCount, {}, users, boardLabels);
+    return generateList(
+      cardCount,
+      { position: positions[index] },
+      users,
+      boardLabels
+    );
   });
 
   const listOrder = lists.map(list => list.id);
@@ -391,9 +408,16 @@ export function generateMultipleBoardsWithUsers(count = 5, options = {}) {
           .getTime(),
       }));
 
-      board.lists = Array.from({ length: listCount }, () => {
+      // Generate fractional positions for all lists
+      const positions = generateInitialPositions(listCount);
+      board.lists = Array.from({ length: listCount }, (_, index) => {
         const cardCount = faker.number.int({ min: 0, max: cardsPerList * 2 });
-        return generateList(cardCount, {}, boardUsers, board.labels);
+        return generateList(
+          cardCount,
+          { position: positions[index] },
+          boardUsers,
+          board.labels
+        );
       });
       board.activities = generateBoardActivities(
         board._id,
@@ -454,7 +478,7 @@ export function generateSampleData() {
   };
 }
 
-export default {
+export const boardDataGenerator = {
   generateCard,
   generateList,
   generateBoard,

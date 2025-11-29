@@ -1,17 +1,17 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import Popover from "@mui/material/Popover";
-import IconButton from "@mui/material/IconButton";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import FilterList from "@mui/icons-material/FilterList";
-import { useCardFilters } from "../hooks/useCardFilters";
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
-import Autocomplete from "@mui/material/Autocomplete";
+import IconButton from "@mui/material/IconButton";
+import Popover from "@mui/material/Popover";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useCardFilters } from "../hooks/useCardFilters";
 import {
   CURRENT_USER_ID_PLACEHOLDER,
   getMembersFilterOptions,
@@ -21,7 +21,7 @@ export function FilterMenu() {
   const members = useSelector(state => state.boards.board.members);
   const [isOpen, setIsOpen] = useState(false);
   const [localTitle, setLocalTitle] = useState("");
-  const anchorRef = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const {
     filters,
     updateFilterDebounced,
@@ -43,11 +43,14 @@ export function FilterMenu() {
     clearAllFilters();
   }
 
-  function handleOpen() {
+  function handleOpen(event) {
+    setAnchorEl(event.currentTarget);
+    setLocalTitle(filters.title || "");
     setIsOpen(true);
   }
 
   function handleClose() {
+    setAnchorEl(null);
     setIsOpen(false);
   }
 
@@ -113,13 +116,13 @@ export function FilterMenu() {
 
   return (
     <>
-      <IconButton ref={anchorRef} onClick={handleOpen}>
+      <IconButton onClick={handleOpen}>
         <FilterList />
       </IconButton>
 
       <Popover
         open={isOpen}
-        anchorEl={anchorRef.current}
+        anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",

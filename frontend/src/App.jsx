@@ -1,17 +1,17 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/Header";
 import { UserMessage } from "./components/UserMessage";
-import { HomePage } from "./pages/HomePage";
-import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
-import { BoardIndex } from "./pages/BoardIndex";
-import { BoardDetails } from "./pages/BoardDetails";
-import { CardDetails } from "./pages/CardDetails";
-import { UserDetails } from "./pages/UserDetails";
-import { ChatApp } from "./pages/Chat";
 import { AdminIndex } from "./pages/AdminIndex";
+import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
+import { BoardDetails } from "./pages/BoardDetails";
+import { BoardIndex } from "./pages/BoardIndex";
+import { CardDetails } from "./pages/CardDetails";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
 // import { Login } from "./pages/LoginSignup";
 import { SignupPage } from "./pages/SignupPage";
-import { LoginPage } from "./pages/LoginPage";
+import { ThemeComparison } from "./pages/ThemeComparison";
+import { UserDetails } from "./pages/UserDetails";
 
 export function App() {
   const location = useLocation();
@@ -32,10 +32,14 @@ export function App() {
           <Route path="board" element={<BoardIndex />} />
           <Route path="board/:boardId" element={<BoardDetails />} />
           <Route path="user/:userId" element={<UserDetails />} />
-          <Route path="chat" element={<ChatApp />} />
           <Route path="admin" element={<AdminIndex />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route
+            path="board/:boardId/:listId/:cardId"
+            element={<CardDetails />}
+          />
+          <Route path="theme-comparison" element={<ThemeComparison />} />
         </Routes>
         {backgroundLocation && (
           <Routes>

@@ -1,9 +1,9 @@
-import PopoverMUI from "@mui/material/Popover";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import ArrowBack from "@mui/icons-material/ArrowBack";
 import Close from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
+import PopoverMUI from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 
 export function Popover({
   anchorEl,
