@@ -1,16 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
-import Close from "@mui/icons-material/Close";
-import { SquareIconButton } from "./ui/buttons/SquareIconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { boardService } from "../services/board/board-service-local";
 import { addCard } from "../store/actions/board-actions";
 
 export function AddCardForm({
   listId,
+  addCardToEnd = true,
   onCardAdded,
   onHideAddCardForm,
-  addCardToEnd = true,
 }) {
   const [title, setTitle] = useState("");
   const boardId = useSelector(state => state.boards.board._id);
@@ -58,14 +57,9 @@ export function AddCardForm({
         >
           Add card
         </Button>
-        <button className="icon-button" onClick={onHideAddCardForm}>
-          ✕
+        <button className="form-close-icon-button" onClick={onHideAddCardForm}>
+          <CloseIcon aria-label="Close" />
         </button>
-        {/* <SquareIconButton
-                      icon={<Close />}
-                      aria-label="Close"
-                      onClick={handleHideAddCard}
-                    /> */}
       </div>
     </section>
   );

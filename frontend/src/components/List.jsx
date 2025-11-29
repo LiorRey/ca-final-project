@@ -114,9 +114,9 @@ export function List({
         {isAddingCard && !addCardToEnd && (
           <AddCardForm
             listId={list.id}
+            addCardToEnd={addCardToEnd}
             onCardAdded={handleCardAdded}
             onHideAddCardForm={handleHideAddCardForm}
-            addCardToEnd={addCardToEnd}
           />
         )}
       </div>
@@ -142,9 +142,9 @@ export function List({
         {isAddingCard && addCardToEnd ? (
           <AddCardForm
             listId={list.id}
+            addCardToEnd={addCardToEnd}
             onCardAdded={handleCardAdded}
             onHideAddCardForm={handleHideAddCardForm}
-            addCardToEnd={addCardToEnd}
           />
         ) : (
           <button

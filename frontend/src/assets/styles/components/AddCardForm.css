@@ -35,12 +35,11 @@
   }
 }
 
-.add-card-buttons-container .icon-button {
+.add-card-buttons-container .form-close-icon-button {
+  display: flex;
   width: auto;
-  padding: 4px 8px;
   color: var(--gray2);
-  font-size: 1.2em;
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.75rem;
 
   &:hover {
     color: var(--gray1);
