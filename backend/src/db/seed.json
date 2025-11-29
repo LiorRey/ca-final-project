@@ -292,5 +292,182 @@
         }
       ]
     }
+  ],
+  "cards": [
+    {
+      "boardTitle": "Mobile App Development",
+      "lists": [
+        {
+          "listTitle": "QA",
+          "cards": [
+            {
+              "title": "extend next-generation lifetime value",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "gamify viral infrastructures",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "grow viral metrics",
+              "description": "Dummy card description",
+              "position": "c"
+            },
+            {
+              "title": "facilitate 24/7 synergies",
+              "description": "Dummy card description",
+              "position": "d"
+            },
+            {
+              "title": "mesh synergistic platforms",
+              "description": "Dummy card description",
+              "position": "e"
+            },
+            {
+              "title": "transform granular users",
+              "description": "Dummy card description",
+              "position": "f"
+            },
+            {
+              "title": "deploy transparent architectures",
+              "description": "Dummy card description",
+              "position": "g"
+            },
+            {
+              "title": "integrate intuitive applications",
+              "description": "Dummy card description",
+              "position": "h"
+            }
+          ]
+        },
+        {
+          "listTitle": "Waiting for Review",
+          "cards": [
+            {
+              "title": "syndicate intuitive architectures",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "grow cross-media supply-chains",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "iterate dynamic communities",
+              "description": "Dummy card description",
+              "position": "c"
+            }
+          ]
+        },
+        {
+          "listTitle": "Done",
+          "cards": [
+            {
+              "title": "incubate cross-platform platforms",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "engage immersive ROI",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "unleash scalable ROI",
+              "description": "Dummy card description",
+              "position": "c"
+            },
+            {
+              "title": "target impactful schemas",
+              "description": "Dummy card description",
+              "position": "d"
+            },
+            {
+              "title": "seize plug-and-play solutions",
+              "description": "Dummy card description",
+              "position": "e"
+            },
+            {
+              "title": "evolve sustainable blockchains",
+              "description": "Dummy card description",
+              "position": "f"
+            },
+            {
+              "title": "collaborate vertical models",
+              "description": "Dummy card description",
+              "position": "g"
+            },
+            {
+              "title": "brand sticky paradigms",
+              "description": "Dummy card description",
+              "position": "h"
+            },
+            {
+              "title": "reinvent 24/7 ROI",
+              "description": "Dummy card description",
+              "position": "i"
+            },
+            {
+              "title": "implement leading-edge niches",
+              "description": "Dummy card description",
+              "position": "j"
+            }
+          ]
+        },
+        {
+          "listTitle": "In Progress",
+          "cards": [
+            {
+              "title": "embrace distributed paradigms",
+              "description": "Dummy card description",
+              "position": "a"
+            }
+          ]
+        },
+        {
+          "listTitle": "To Do",
+          "cards": [
+            {
+              "title": "monetize compelling smart contracts",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "optimize holistic communities",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "aggregate extensible systems",
+              "description": "Dummy card description",
+              "position": "c"
+            },
+            {
+              "title": "engage leading-edge schemas",
+              "description": "Dummy card description",
+              "position": "d"
+            },
+            {
+              "title": "deploy plug-and-play models",
+              "description": "Dummy card description",
+              "position": "e"
+            },
+            {
+              "title": "brand magnetic AI",
+              "description": "Dummy card description",
+              "position": "f"
+            },
+            {
+              "title": "incubate magnetic communities",
+              "description": "Dummy card description",
+              "position": "g"
+            }
+          ]
+        }
+      ]
+    }
   ]
 }
