@@ -303,42 +303,58 @@
             {
               "title": "extend next-generation lifetime value",
               "description": "Dummy card description",
-              "position": "a"
+              "position": "a",
+              "archivedAt": null,
+              "comments": []
             },
             {
-              "title": "gamify viral infrastructures",
-              "description": "Dummy card description",
-              "position": "b"
+              "title": "QA",
+              "description": "Quality assurance tasks and bugs",
+              "position": "a",
+              "archivedAt": null,
+              "deletedAt": null
             },
             {
               "title": "grow viral metrics",
               "description": "Dummy card description",
-              "position": "c"
+              "position": "c",
+              "archivedAt": null,
+              "comments": []
             },
             {
               "title": "facilitate 24/7 synergies",
               "description": "Dummy card description",
-              "position": "d"
+              "position": "d",
+              "archivedAt": null,
+              "comments": []
             },
             {
               "title": "mesh synergistic platforms",
               "description": "Dummy card description",
-              "position": "e"
+              "position": "e",
+              "archivedAt": null,
+              "comments": []
             },
             {
               "title": "transform granular users",
               "description": "Dummy card description",
-              "position": "f"
+              "position": "f",
+              "archivedAt": null,
+              "comments": []
             },
             {
               "title": "deploy transparent architectures",
               "description": "Dummy card description",
-              "position": "g"
+              "position": "g",
+              "archivedAt": null,
+              "comments": []
             },
             {
               "title": "integrate intuitive applications",
               "description": "Dummy card description",
-              "position": "h"
+              "position": "h",
+              "archivedAt": null,
+              "comments": []
             }
           ]
         },

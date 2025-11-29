@@ -19,6 +19,10 @@ export const up = async ({ context }) => {
         title: list.title,
         description: list.description,
         position: list.position,
+        archivedAt: list.archivedAt ?? null,
+        deletedAt: list.deletedAt ?? null,
+        createdAt: list.createdAt ?? new Date(),
+        updatedAt: list.updatedAt ?? new Date(),
       });
     }
   }
