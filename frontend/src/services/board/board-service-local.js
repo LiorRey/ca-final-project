@@ -157,13 +157,13 @@ export async function addCard(boardId, listId, card, addCardToEnd = true) {
     if (!board) throw new Error("Board not found");
 
     const list = _findList(board, listId);
-    const addedCard = { ...card, createdAt: Date.now() };
 
+    card = { ...card, createdAt: Date.now() };
     list.cards = addCardToEnd ? [...list.cards, card] : [card, ...list.cards];
 
     await updateBoard(boardId, list, { listId });
 
-    return addedCard;
+    return list;
   } catch (error) {
     console.error("Cannot archive list:", error);
     throw error;

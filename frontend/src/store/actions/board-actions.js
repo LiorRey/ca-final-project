@@ -183,24 +183,7 @@ export async function moveAllCards(
   }
 }
 
-export async function addCard(boardId, listId, card, addCardToEnd = true) {
-  try {
-    store.dispatch({ type: ADD_CARD.REQUEST });
-    const addedCard = await boardService.addCard(
-      boardId,
-      listId,
-      card,
-      addCardToEnd
-    );
-    store.dispatch({
-      type: ADD_CARD.SUCCESS,
-      payload: { listId, addedCard, addCardToEnd },
-    });
-  } catch (error) {
-    store.dispatch({ type: ADD_CARD.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const addCard = createAsyncAction(ADD_CARD, boardService.addCard, store);
 
 export const editCard = createAsyncAction(
   EDIT_CARD,

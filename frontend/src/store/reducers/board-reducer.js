@@ -123,28 +123,16 @@ const handlers = {
     },
   }),
   ...createAsyncHandlers(ADD_CARD, ADD_CARD.KEY),
-  [ADD_CARD.SUCCESS]: (state, action) => {
-    const { listId, addedCard, addCardToEnd } = action.payload;
-
-    const updateListCards = list => {
-      if (list.id !== listId) return list;
-
-      const cards = addCardToEnd
-        ? [...list.cards, addedCard]
-        : [addedCard, ...list.cards];
-
-      return { ...list, cards };
-    };
-
-    return {
-      ...state,
-      loading: { ...state.loading, [ADD_CARD.KEY]: false },
-      board: {
-        ...state.board,
-        lists: state.board.lists.map(updateListCards),
-      },
-    };
-  },
+  [ADD_CARD.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [ADD_CARD.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list.id === action.payload.id ? action.payload : list
+      ),
+    },
+  }),
   ...createAsyncHandlers(EDIT_CARD, EDIT_CARD.KEY),
   [EDIT_CARD.SUCCESS]: (state, action) => ({
     ...state,
