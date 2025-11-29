@@ -66,6 +66,7 @@
   max-width: 350px;
 }
 
+.list-add-card-header,
 .list-footer {
   display: flex;
   flex-direction: column;
@@ -74,7 +75,7 @@
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
 }
 
-.list-footer button {
+:is(.list-add-card-header, .list-footer) button {
   padding: 0.5rem;
   border-radius: 6px;
   color: var(--gray1);
@@ -83,6 +84,6 @@
   justify-content: start;
 }
 
-.list-footer button:hover {
+:is(.list-add-card-header, .list-footer) button:hover {
   background-color: var(--gray3);
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Close from "@mui/icons-material/Close";
@@ -14,6 +14,11 @@ export function AddCardForm({
 }) {
   const [title, setTitle] = useState("");
   const boardId = useSelector(state => state.boards.board._id);
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   async function handleAddCard() {
     if (!title) {
@@ -40,7 +45,7 @@ export function AddCardForm({
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Enter a title or paste a link"
-          autoFocus
+          ref={inputRef}
         />
       </div>
       <div className="add-card-buttons-container">
