@@ -1,13 +1,9 @@
-import { Board } from "../models/Board.js";
+import * as boardService from "../services/board-service.js";
 
 export async function createBoard(req, res) {
   try {
     const { title, description, owner } = req.body;
-    const board = await Board.create({
-      title,
-      description,
-      owner,
-    });
+    const board = await boardService.createBoard({ title, description, owner });
     res.status(201).json({ board });
   } catch (err) {
     if (err.name === "ValidationError") {
@@ -19,7 +15,7 @@ export async function createBoard(req, res) {
 
 export async function getAllBoards(_req, res) {
   try {
-    const boards = await Board.find();
+    const boards = await boardService.getAllBoards();
     res.json({ boards });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch boards" });
@@ -28,7 +24,7 @@ export async function getAllBoards(_req, res) {
 
 export async function getBoardById(req, res) {
   try {
-    const board = await Board.findById(req.params.id);
+    const board = await boardService.getBoardById(req.params.id);
     if (!board) return res.status(404).json({ error: "Board not found" });
 
     res.json({ board });
@@ -40,11 +36,11 @@ export async function getBoardById(req, res) {
 export async function updateBoard(req, res) {
   try {
     const { title, description, owner } = req.body;
-    const board = await Board.findByIdAndUpdate(
-      req.params.id,
-      { title, description, owner },
-      { new: true, runValidators: true }
-    );
+    const board = await boardService.updateBoard(req.params.id, {
+      title,
+      description,
+      owner,
+    });
     if (!board) return res.status(404).json({ error: "Board not found" });
 
     res.json({ board });
@@ -58,7 +54,7 @@ export async function updateBoard(req, res) {
 
 export async function deleteBoard(req, res) {
   try {
-    const board = await Board.findByIdAndDelete(req.params.id);
+    const board = await boardService.deleteBoard(req.params.id);
     if (!board) return res.status(404).json({ error: "Board not found" });
 
     res.status(204).send();
