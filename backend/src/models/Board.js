@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
 
+const labelSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  color: {
+    type: String,
+    required: true,
+  },
+});
+
 const boardSchema = new mongoose.Schema(
   {
     title: {
@@ -12,18 +23,7 @@ const boardSchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
-    labels: [
-      {
-        title: {
-          type: String,
-          required: true,
-        },
-        color: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    labels: [labelSchema],
     owner: {
       userId: {
         type: mongoose.Schema.Types.ObjectId,
