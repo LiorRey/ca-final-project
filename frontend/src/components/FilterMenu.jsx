@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import FilterList from "@mui/icons-material/FilterList";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -8,9 +8,9 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import IconButton from "@mui/material/IconButton";
-import Popover from "@mui/material/Popover";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { Popover } from "./Popover";
 import { useCardFilters } from "../hooks/useCardFilters";
 import {
   CURRENT_USER_ID_PLACEHOLDER,
@@ -33,10 +33,6 @@ export function FilterMenu() {
     () => getMembersFilterOptions(members),
     [members]
   );
-
-  useEffect(() => {
-    setLocalTitle(filters.title || "");
-  }, [filters.title]);
 
   function handleClearFilters() {
     setLocalTitle("");
@@ -119,11 +115,11 @@ export function FilterMenu() {
       <IconButton onClick={handleOpen}>
         <FilterList />
       </IconButton>
-
       <Popover
-        open={isOpen}
+        isOpen={isOpen}
         anchorEl={anchorEl}
         onClose={handleClose}
+        title="Filter"
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
@@ -132,16 +128,9 @@ export function FilterMenu() {
           vertical: "top",
           horizontal: "left",
         }}
-        slotProps={{
-          paper: {
-            sx: { width: 320, p: 2 },
-          },
-        }}
+        paperProps={{ sx: { width: 320, p: 2 } }}
       >
         <Box>
-          <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
-            Filter
-          </Typography>
           <Box sx={{ mb: 2 }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Title
