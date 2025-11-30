@@ -1,21 +1,82 @@
 import mongoose from "mongoose";
 
-const cardSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true,
+const commentSchema = new mongoose.Schema(
+  {
+    author: {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+      },
+    },
+    text: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
-  description: String,
-  labels: [String],
-  assignedTo: [String],
-  dueDate: Number,
-  createdAt: {
-    type: Number,
-    default: Date.now,
+  { timestamps: true }
+);
+
+const cardSchema = new mongoose.Schema(
+  {
+    boardId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Board",
+    },
+    listId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "List",
+    },
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    position: {
+      type: String,
+      required: true,
+    },
+    labelIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+      },
+    ],
+    assignees: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        username: {
+          type: String,
+          required: true,
+        },
+        assignedAt: {
+          type: Date,
+          default: Date.now,
+        },
+        assignedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+      },
+    ],
+    archivedAt: {
+      type: Date,
+      default: null,
+    },
+    comments: [commentSchema],
   },
-});
+  { timestamps: true }
+);
 
-const Card = mongoose.model("Card", cardSchema);
-
-export default Card;
+export const Card = mongoose.model("Card", cardSchema);
