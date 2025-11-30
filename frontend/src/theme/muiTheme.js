@@ -241,6 +241,112 @@ const muiTheme = createTheme({
       )
     ), // Indices 3-24 (22 elements)
   ],
+
+  /**
+   * Component Style Overrides (Dark Theme)
+   *
+   * Custom styling for form components with dark mode colors.
+   */
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#2a2b2d",
+          color: "#e0e0e0",
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#9e9e9e",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#579DFF",
+          },
+        },
+        notchedOutline: {
+          borderColor: "#3d3e40",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "#fdfdfd",
+          "&.Mui-focused": {
+            color: "#579DFF",
+          },
+        },
+      },
+    },
+    MuiAutocomplete: {
+      defaultProps: {
+        slotProps: {
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 4],
+                },
+              },
+            ],
+          },
+        },
+      },
+      styleOverrides: {
+        popper: {
+          zIndex: 1500,
+        },
+        paper: {
+          backgroundColor: "#1e1f21",
+          color: "var(--gray1)",
+          border: "none",
+        },
+        listbox: {
+          "& .MuiAutocomplete-option": {
+            color: "var(--gray1)",
+            "&:hover": {
+              backgroundColor: "#2a2b2d",
+            },
+            "&.Mui-focused": {
+              backgroundColor: "#2a2b2d",
+            },
+            "&[aria-selected='true']": {
+              backgroundColor: "transparent",
+              "&:hover": {
+                backgroundColor: "rgba(87, 157, 255, 0.3)",
+              },
+              "&.Mui-focused": {
+                backgroundColor: "rgba(87, 157, 255, 0.3)",
+              },
+            },
+          },
+        },
+        popupIndicator: {
+          color: "var(--gray1)",
+        },
+        clearIndicator: {
+          color: "var(--gray1)",
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: "#9e9e9e",
+          "& .MuiSvgIcon-root": {
+            color: "#9e9e9e",
+          },
+          "&.Mui-checked": {
+            color: "#579DFF",
+            "& .MuiSvgIcon-root": {
+              color: "#579DFF",
+            },
+          },
+          "&:hover": {
+            backgroundColor: "rgba(87, 157, 255, 0.1)",
+          },
+        },
+      },
+    },
+  },
 });
 
 export { muiTheme };
