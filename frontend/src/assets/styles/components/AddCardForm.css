@@ -1,4 +1,4 @@
-.add-card-container {
+.add-card-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -8,9 +8,10 @@
   width: 100%;
   padding: 0.25rem 0.5rem 0.75rem 0.5rem;
   border: none;
-  color: var(--gray1);
-  background-color: transparent;
-  font-size: 1em;
+  color: var(--ds-text);
+  font: var(--ds-font-body);
+  font-size: 16px;
+  font-weight: var(--ds-font-weight-medium);
 
   &:focus {
     outline: none;
@@ -24,25 +25,9 @@
 }
 
 .add-card-buttons-container .add-card-contained-button {
-  width: fit-content;
-  padding: 0.4rem 0.75rem 0.3rem 0.75rem;
-  color: var(--button-black-text);
-  background-color: var(--button-soft-blue-bg);
+  padding: 0.6rem 1rem 0.6rem 1rem;
   text-transform: none;
-
-  &:hover {
-    background-color: var(--button-very-soft-blue-bg);
-  }
-}
-
-.add-card-buttons-container .form-close-icon-button {
-  display: flex;
-  width: auto;
-  color: var(--gray2);
-  padding: 0.4rem 0.75rem;
-
-  &:hover {
-    color: var(--gray1);
-    background-color: var(--gray3);
-  }
+  font: var(--ds-font-body);
+  font-size: 16px;
+  font-weight: var(--ds-font-weight-medium, 500);
 }

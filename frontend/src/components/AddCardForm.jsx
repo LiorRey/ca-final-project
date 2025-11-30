@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
+import Close from "@mui/icons-material/Close";
+import { ActionButton } from "./ui/buttons/ActionButton";
+import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { boardService } from "../services/board/board-service-local";
 import { addCard } from "../store/actions/board-actions";
 
@@ -19,7 +20,9 @@ export function AddCardForm({
     inputRef.current?.focus();
   }, []);
 
-  async function handleAddCard() {
+  async function handleAddCard(e) {
+    e.preventDefault();
+
     if (!title) {
       onHideAddCardForm();
       return;
@@ -36,7 +39,7 @@ export function AddCardForm({
   }
 
   return (
-    <section className="add-card-container">
+    <form className="add-card-form" onSubmit={handleAddCard}>
       <div className="card-content">
         <input
           type="text"
@@ -48,19 +51,19 @@ export function AddCardForm({
         />
       </div>
       <div className="add-card-buttons-container">
-        <Button
+        <ActionButton
           className="add-card-contained-button"
-          variant="contained"
-          size="large"
-          onClick={handleAddCard}
-          onMouseDown={e => e.preventDefault()}
+          type="submit"
+          size="small"
         >
           Add card
-        </Button>
-        <button className="form-close-icon-button" onClick={onHideAddCardForm}>
-          <CloseIcon aria-label="Close" />
-        </button>
+        </ActionButton>
+        <SquareIconButton
+          icon={<Close />}
+          aria-label="Close"
+          onClick={onHideAddCardForm}
+        />
       </div>
-    </section>
+    </form>
   );
 }

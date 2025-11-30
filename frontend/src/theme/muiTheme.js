@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 import { setGlobalTheme, token } from "@atlaskit/tokens";
 
 setGlobalTheme({
-  colorMode: "light",
+  colorMode: "dark",
   shape: "shape",
   typography: "typography",
   elevation: "elevation",

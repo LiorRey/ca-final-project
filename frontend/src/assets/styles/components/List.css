@@ -70,20 +70,11 @@
 .list-footer {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
 }
 
 :is(.list-add-card-header, .list-footer) button {
+  justify-content: start;
   padding: 0.5rem;
   border-radius: 6px;
-  color: var(--gray1);
-  background-color: transparent;
-  width: 100%;
-  justify-content: start;
-}
-
-:is(.list-add-card-header, .list-footer) button:hover {
-  background-color: var(--gray3);
 }
