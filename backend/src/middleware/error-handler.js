@@ -11,6 +11,10 @@ function errorHandler(err, _req, res, _next) {
     error = createError(400, messages);
   }
 
+  if (err.name === "CastError") {
+    error = createError(400, `${err.path} is invalid`);
+  }
+
   if (err.name === "JsonWebTokenError") {
     error = createError(401, "Invalid token");
   }
