@@ -63,14 +63,7 @@ export function BoardDetails() {
     }
   }
 
-  async function onUpdateList(list, updates) {
-    try {
-      const options = { listId: list.id };
-      updateBoard(board._id, updates, options);
-    } catch (error) {
-      console.error("List update failed:", error);
-    }
-  }
+  async function onRemoveList(listId) {}
 
   async function onAddList(newList) {
     try {
@@ -144,7 +137,7 @@ export function BoardDetails() {
                 boardLabels={board.labels}
                 labelsIsOpen={labelsIsOpen}
                 setLabelsIsOpen={setLabelsIsOpen}
-                onUpdateList={onUpdateList}
+                onRemoveList={onRemoveList}
                 onCopyList={onCopyList}
                 onMoveAllCards={onMoveAllCards}
                 isAddingCard={activeAddCardListId === list.id}

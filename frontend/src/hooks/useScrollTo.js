@@ -6,8 +6,12 @@ export const SCROLL_DIRECTION = {
 };
 
 export function useScrollTo(ref) {
-  const scrollToEnd = useCallback(
-    ({ direction = SCROLL_DIRECTION.VERTICAL, smooth = true } = {}) => {
+  const scrollToEdge = useCallback(
+    ({
+      direction = SCROLL_DIRECTION.VERTICAL,
+      scrollToBottom = true,
+      smooth = true,
+    } = {}) => {
       const element = ref.current;
 
       if (!element) {
@@ -20,7 +24,7 @@ export function useScrollTo(ref) {
       };
 
       if (direction === SCROLL_DIRECTION.VERTICAL) {
-        scrollOptions.top = element.scrollHeight;
+        scrollOptions.top = scrollToBottom ? element.scrollHeight : 0;
       } else if (direction === SCROLL_DIRECTION.HORIZONTAL) {
         scrollOptions.left = element.scrollWidth;
       } else {
@@ -36,5 +40,5 @@ export function useScrollTo(ref) {
     [ref]
   );
 
-  return scrollToEnd;
+  return scrollToEdge;
 }

@@ -18,6 +18,7 @@ export const boardService = {
   remove,
   save,
   updateBoard,
+  getEmptyCard,
   addCard,
   editCard,
   deleteCard,
@@ -139,16 +140,32 @@ function updateCardFields(board, listId, cardId, updates) {
   return updateListFields(board, listId, updatedList);
 }
 
-export async function addCard(boardId, card, listId) {
+function getEmptyCard() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    labels: [],
+    createdAt: null,
+    archivedAt: null,
+  };
+}
+
+export async function addCard(boardId, listId, card, addCardToEnd = true) {
   try {
     const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
     const list = _findList(board, listId);
-    const newCard = { cardId: crypto.randomUUID(), ...card };
-    list.cards.push(newCard);
-    await updateBoard(boardId, list, listId);
-    return newCard;
+
+    card = { ...card, createdAt: Date.now() };
+    list.cards = addCardToEnd ? [...list.cards, card] : [card, ...list.cards];
+
+    await updateBoard(boardId, list, { listId });
+
+    return list;
   } catch (error) {
-    console.error("Cannot add card:", error);
+    console.error("Cannot archive list:", error);
     throw error;
   }
 }
@@ -169,6 +186,7 @@ export async function editCard(boardId, card, listId) {
 export async function deleteCard(boardId, cardId, listId) {
   try {
     const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
     const list = _findList(board, listId);
     const cardIdx = _findCardIndex(list, cardId);
     const deletedCard = _findCard(list, cardId);
@@ -578,27 +596,6 @@ async function archiveAllCardsInList(boardId, listId) {
   }
 }
 
-async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
-  try {
-    const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
-
-    await updateBoard(
-      boardId,
-      { labels: updatedCardLabels },
-      {
-        listId,
-        cardId,
-      }
-    );
-
-    return updatedCardLabels;
-  } catch (error) {
-    console.error("Cannot update card labels:", error);
-    throw error;
-  }
-}
-
 async function createLabel(boardId, label) {
   try {
     const board = await getById(boardId);
@@ -648,6 +645,27 @@ async function deleteLabel(boardId, labelId) {
     });
   } catch (error) {
     console.error("Cannot delete label:", error);
+    throw error;
+  }
+}
+
+async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    await updateBoard(
+      boardId,
+      { labels: updatedCardLabels },
+      {
+        listId,
+        cardId,
+      }
+    );
+
+    return updatedCardLabels;
+  } catch (error) {
+    console.error("Cannot update card labels:", error);
     throw error;
   }
 }

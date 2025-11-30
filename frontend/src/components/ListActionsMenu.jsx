@@ -21,6 +21,7 @@ export function ListActionsMenu({
   anchorEl,
   isOpen,
   onClose,
+  onAddCardAtTop,
   onCopyList,
   onMoveAllCards,
 }) {
@@ -32,16 +33,18 @@ export function ListActionsMenu({
   function handleMenuClick(key) {
     if (!listActionsMenuItems().find(item => item.key === key)) return;
 
-    if (key === "archiveList") {
+    if (key === "add") {
+      onAddCardAtTop();
+      setActiveAction(null);
+      onClose();
+    } else if (key === "archiveList") {
       archiveList(currentBoard._id, list.id);
       onClose();
+    } else if (key === "archiveAllCards") {
+      archiveAllCardsInList(currentBoard._id, list.id);
+      onClose();
     } else {
-      if (key === "archiveAllCards") {
-        archiveAllCardsInList(currentBoard._id, list.id);
-        onClose();
-      } else {
-        setActiveAction(key);
-      }
+      setActiveAction(key);
     }
   }
 
