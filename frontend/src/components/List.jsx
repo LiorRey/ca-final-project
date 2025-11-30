@@ -14,7 +14,6 @@ export function List({
   boardLabels,
   labelsIsOpen,
   setLabelsIsOpen,
-  onRemoveList,
   onCopyList,
   isAddingCard,
   setActiveAddCardListId,
@@ -46,11 +45,6 @@ export function List({
   }
 
   function handleEditList() {
-    handleClose();
-  }
-
-  function handleDeleteList() {
-    onRemoveList(list.id);
     handleClose();
   }
 
@@ -151,7 +145,6 @@ export function List({
         isOpen={open}
         onClose={handleClose}
         onEditList={handleEditList}
-        onDeleteList={handleDeleteList}
         onAddCardAtTop={() => handleShowAddCardForm(false)}
         onCopyList={onCopyList}
         onMoveAllCards={onMoveAllCards}

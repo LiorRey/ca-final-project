@@ -63,8 +63,6 @@ export function BoardDetails() {
     }
   }
 
-  async function onRemoveList(listId) {}
-
   async function onAddList(newList) {
     try {
       await createList(board._id, newList);
@@ -137,7 +135,6 @@ export function BoardDetails() {
                 boardLabels={board.labels}
                 labelsIsOpen={labelsIsOpen}
                 setLabelsIsOpen={setLabelsIsOpen}
-                onRemoveList={onRemoveList}
                 onCopyList={onCopyList}
                 onMoveAllCards={onMoveAllCards}
                 isAddingCard={activeAddCardListId === list.id}
