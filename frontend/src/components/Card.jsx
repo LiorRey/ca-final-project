@@ -7,12 +7,14 @@ import {
   RemoveRedEyeOutlined,
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
 
 export function Card({
   card,
   listId,
+  index,
   labels = [],
   onClickCard,
   labelsIsOpen,
@@ -59,85 +61,99 @@ export function Card({
   const id = open ? `card-popover` : undefined;
 
   return (
-    <section className="card-container">
-      {open ? (
-        <Box
-          className="floating-card-content"
-          sx={{ zIndex: theme => theme.zIndex.modal + 2 }}
+    <Draggable draggableId={card.id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          className={`card-container ${
+            snapshot.isDragging ? "card-container--dragging" : ""
+          }`}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
-          {labels.length > 0 && (
-            <div className="card-labels">
-              {labels.map(label => (
-                <div
-                  key={`${card.id}-${label.id}`}
-                  className={`card-label ${label.color}`}
-                >
-                  <span className="card-label-text">{label.title}</span>
+          {open ? (
+            <Box
+              className="floating-card-content"
+              sx={{ zIndex: theme => theme.zIndex.modal + 2 }}
+            >
+              {labels.length > 0 && (
+                <div className="card-labels">
+                  {labels.map(label => (
+                    <div
+                      key={`${card.id}-${label.id}`}
+                      className={`card-label ${label.color}`}
+                    >
+                      <span className="card-label-text">{label.title}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+              <textarea
+                className="card-title-input"
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+              />
+              <div className="card-footer">
+                <div className="empty-card-footer" />
+              </div>
+              <button className="icon-button card-edit-button" />
+              <button
+                onClick={handleSave}
+                className="icon-button card-save-button"
+              >
+                Save
+              </button>
+            </Box>
+          ) : (
+            <Box className="card-content" onClick={handleClickCard}>
+              {labels.length > 0 && (
+                <div className="card-labels" onClick={handleClickLabels}>
+                  {labels.map(label => (
+                    <div
+                      key={`${card.id}-${label.id}`}
+                      className={`card-label ${label.color} ${
+                        labelsIsOpen ? "open" : "closed"
+                      }`}
+                    >
+                      <span className="card-label-text">{label.title}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <h3 className={`card-title ${labels.length === 0 ? "mr-2" : ""}`}>
+                {card.title}
+              </h3>
+
+              <div className="card-footer">
+                <RemoveRedEyeOutlined />
+                <ChatRounded />
+                <NotesRounded />
+              </div>
+              <button
+                onClick={handleClick}
+                aria-describedby={id}
+                aria-label="Edit card"
+                className="icon-button card-edit-button"
+              >
+                <DriveFileRenameOutline />
+              </button>
+            </Box>
           )}
-          <textarea
-            className="card-title-input"
-            value={title}
-            onChange={e => setTitle(e.target.value)}
+          <CardPopover
+            open={open}
+            anchorEl={anchorEl}
+            card={card}
+            id={id}
+            cardId={card.id}
+            listId={listId}
+            openCard={handleClickCard}
+            handleClose={handleClose}
+            handleDelete={handleDelete}
+            handleSave={handleSave}
           />
-          <div className="card-footer">
-            <div className="empty-card-footer" />
-          </div>
-          <button className="icon-button card-edit-button" />
-          <button onClick={handleSave} className="icon-button card-save-button">
-            Save
-          </button>
-        </Box>
-      ) : (
-        <Box className="card-content" onClick={handleClickCard}>
-          {labels.length > 0 && (
-            <div className="card-labels" onClick={handleClickLabels}>
-              {labels.map(label => (
-                <div
-                  key={`${card.id}-${label.id}`}
-                  className={`card-label ${label.color} ${
-                    labelsIsOpen ? "open" : "closed"
-                  }`}
-                >
-                  <span className="card-label-text">{label.title}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <h3 className={`card-title ${labels.length === 0 ? "mr-2" : ""}`}>
-            {card.title}
-          </h3>
-
-          <div className="card-footer">
-            <RemoveRedEyeOutlined />
-            <ChatRounded />
-            <NotesRounded />
-          </div>
-          <button
-            onClick={handleClick}
-            aria-describedby={id}
-            aria-label="Edit card"
-            className="icon-button card-edit-button"
-          >
-            <DriveFileRenameOutline />
-          </button>
-        </Box>
+        </div>
       )}
-      <CardPopover
-        open={open}
-        anchorEl={anchorEl}
-        card={card}
-        id={id}
-        cardId={card.id}
-        listId={listId}
-        openCard={handleClickCard}
-        handleClose={handleClose}
-        handleDelete={handleDelete}
-        handleSave={handleSave}
-      />
-    </section>
+    </Draggable>
   );
 }
