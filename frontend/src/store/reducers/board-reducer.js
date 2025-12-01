@@ -19,7 +19,7 @@ export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
-export const MOVE_LIST = "MOVE_LIST";
+export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
 export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
 export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
@@ -107,7 +107,8 @@ const handlers = {
     ...state,
     board: action.payload,
   }),
-  [MOVE_LIST]: (state, action) => {
+  ...createAsyncHandlers(MOVE_LIST, MOVE_LIST.KEY),
+  [MOVE_LIST.SUCCESS]: (state, action) => {
     let lists;
     // list was moved to another board
     if (action.payload.boardId && state.board._id !== action.payload.boardId) {
