@@ -104,8 +104,8 @@ export function reorderLists(lists, sourceIndex, destinationIndex) {
   const [listToMove] = newLists.splice(sourceIndex, 1);
   newLists.splice(destinationIndex, 0, listToMove);
 
-  const before = newLists[destinationIndex - 1]?.title || null;
-  const after = newLists[destinationIndex + 1]?.title || null;
+  const before = newLists[destinationIndex - 1]?.id || null;
+  const after = newLists[destinationIndex + 1]?.id || null;
 
   return { newLists, listToMove, before, after };
 }
