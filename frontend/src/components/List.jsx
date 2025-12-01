@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Button from "@mui/material/Button";
-import { Droppable } from "@hello-pangea/dnd";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { Card } from "./Card";
 import { ListActionsMenu } from "./ListActionsMenu";
 import { SquareIconButton } from "./ui/buttons/SquareIconButton";
@@ -94,96 +94,109 @@ export function List({
   }
 
   return (
-    <section className="list-container">
-      <div className="list-header">
-        <h2>{list.title}</h2>
-        <SquareIconButton
-          icon={<MoreHoriz />}
-          onClick={handleMoreClick}
-          selected={open}
-        />
-      </div>
-      <div className="list-content-container" ref={listContentRef}>
-        <Droppable droppableId={list.id}>
-          {(provided, snapshot) => {
-            return (
-              <div
-                className={`cards-list ${
-                  snapshot.isDraggingOver ? "drag-over" : ""
-                }`}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
+    <Draggable draggableId={list.id} index={listIndex} type="LIST">
+      {(provided, snapshot) => (
+        <section
+          className={`list-container ${
+            snapshot.isDragging ? "list-dragging" : ""
+          }`}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+        >
+          <div className="list-header" {...provided.dragHandleProps}>
+            <h2>{list.title}</h2>
+            <SquareIconButton
+              icon={<MoreHoriz />}
+              onClick={handleMoreClick}
+              selected={open}
+            />
+          </div>
+          <div className="list-content-container" ref={listContentRef}>
+            <Droppable droppableId={list.id}>
+              {(provided, snapshot) => {
+                return (
+                  <div
+                    className={`cards-list ${
+                      snapshot.isDraggingOver ? "drag-over" : ""
+                    }`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    {list.cards.map((card, index) => (
+                      <Card
+                        key={card.id}
+                        card={card}
+                        listId={list.id}
+                        index={index}
+                        labels={getCardLabels(card)}
+                        onClickCard={card => handleOpenModal(card)}
+                        labelsIsOpen={labelsIsOpen}
+                        setLabelsIsOpen={setLabelsIsOpen}
+                      />
+                    ))}
+                    <div
+                      className={`placeholder ${
+                        snapshot.isDraggingOver
+                          ? "placeholder--visible"
+                          : "placeholder--hidden"
+                      }`}
+                    >
+                      {provided.placeholder}
+                    </div>
+                  </div>
+                );
+              }}
+            </Droppable>
+          </div>
+          <div className="list-footer">
+            {!isAddingCard ? (
+              <button
+                className="add-card-card-button"
+                onClick={handleShowAddCard}
               >
-                {list.cards.map((card, index) => (
-                  <Card
-                    key={card.id}
-                    card={card}
-                    listId={list.id}
-                    index={index}
-                    labels={getCardLabels(card)}
-                    onClickCard={card => handleOpenModal(card)}
-                    labelsIsOpen={labelsIsOpen}
-                    setLabelsIsOpen={setLabelsIsOpen}
-                  />
-                ))}
-                <div
-                  className={`placeholder ${
-                    snapshot.isDraggingOver
-                      ? "placeholder--visible"
-                      : "placeholder--hidden"
-                  }`}
-                >
-                  {provided.placeholder}
-                </div>
-              </div>
-            );
-          }}
-        </Droppable>
-      </div>
-      <div className="list-footer">
-        {!isAddingCard ? (
-          <button className="add-card-card-button" onClick={handleShowAddCard}>
-            <AddRounded /> Add a card
-          </button>
-        ) : (
-          <section className="add-card-container">
-            <div className="card-content">
-              <input
-                type="text"
-                className="card-title-input"
-                value={newCardTitle}
-                onChange={e => setNewCardTitle(e.target.value)}
-                placeholder="Enter a title or paste a link"
-                autoFocus
-              />
-            </div>
-            <div className="add-card-buttons-container">
-              <Button
-                className="add-card-contained-button"
-                variant="contained"
-                size="large"
-                onClick={handleAddCard}
-                onMouseDown={e => e.preventDefault()}
-              >
-                Add card
-              </Button>
-              <button className="icon-button" onClick={handleHideAddCard}>
-                ✕
+                <AddRounded /> Add a card
               </button>
-            </div>
-          </section>
-        )}
-      </div>
+            ) : (
+              <section className="add-card-container">
+                <div className="card-content">
+                  <input
+                    type="text"
+                    className="card-title-input"
+                    value={newCardTitle}
+                    onChange={e => setNewCardTitle(e.target.value)}
+                    placeholder="Enter a title or paste a link"
+                    autoFocus
+                  />
+                </div>
+                <div className="add-card-buttons-container">
+                  <Button
+                    className="add-card-contained-button"
+                    variant="contained"
+                    size="large"
+                    onClick={handleAddCard}
+                    onMouseDown={e => e.preventDefault()}
+                  >
+                    Add card
+                  </Button>
+                  <button className="icon-button" onClick={handleHideAddCard}>
+                    ✕
+                  </button>
+                </div>
+              </section>
+            )}
+          </div>
 
-      <ListActionsMenu
-        list={list}
-        anchorEl={anchorEl}
-        isOpen={open}
-        onClose={handleClose}
-        onEditList={handleEditList}
-        onCopyList={onCopyList}
-        onMoveAllCards={onMoveAllCards}
-      />
-    </section>
+          <ListActionsMenu
+            list={list}
+            anchorEl={anchorEl}
+            isOpen={open}
+            onClose={handleClose}
+            onEditList={handleEditList}
+            onCopyList={onCopyList}
+            onMoveAllCards={onMoveAllCards}
+          />
+        </section>
+      )}
+    </Draggable>
   );
 }

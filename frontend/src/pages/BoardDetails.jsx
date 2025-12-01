@@ -6,7 +6,7 @@ import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
-import { DragDropContext } from "@hello-pangea/dnd";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
 import { Footer } from "../components/Footer";
@@ -18,7 +18,7 @@ import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
 } from "../services/filter-service";
-import { reorderCards } from "../services/dnd-service";
+import { reorderCards, reorderLists } from "../services/dnd-service";
 import {
   copyList,
   createList,
@@ -26,6 +26,7 @@ import {
   loadBoards,
   moveAllCards,
   moveCard,
+  moveList,
   updateBoard,
 } from "../store/actions/board-actions";
 
@@ -124,7 +125,7 @@ export function BoardDetails() {
   function handleDragStart() {}
 
   function handleDragEnd(result) {
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
 
     if (!destination) {
       return;
@@ -138,6 +139,32 @@ export function BoardDetails() {
     }
 
     try {
+      // Check if this is a list drag if not it will default to card drag
+      if (type === "LIST") {
+        const { newLists, listToMove, before, after } = reorderLists(
+          lists,
+          source.index,
+          destination.index
+        );
+
+        setLists(newLists);
+
+        //beforeId afterId
+        console.log(before, after);
+
+        if (listToMove) {
+          moveList(
+            board._id, // sourceBoardId
+            source.index, // sourceIndex
+            destination.index, // targetIndex
+            board._id, // targetBoardId (same board)
+            board._id // currentBoardId
+          );
+        }
+        return;
+      }
+
+      // Handle card reordering (existing logic)
       const { newLists, cardToMove } = reorderCards(
         lists, // current lists
         source.droppableId, // source list id
@@ -157,11 +184,10 @@ export function BoardDetails() {
           destinationListId: destination.droppableId,
           position: destination.index,
         };
-
         moveCard(moveData, cardToMove);
       }
     } catch (error) {
-      console.error("Card reorder failed:", error);
+      console.error("Drag and drop failed:", error);
     }
   }
 
@@ -194,27 +220,39 @@ export function BoardDetails() {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <ul className="lists-list">
-            {lists.map((list, listIndex) => (
-              <li key={list.id}>
-                <List
-                  list={list}
-                  boardLabels={board.labels}
-                  labelsIsOpen={labelsIsOpen}
-                  setLabelsIsOpen={setLabelsIsOpen}
-                  onUpdateList={onUpdateList}
-                  onCopyList={onCopyList}
-                  onMoveAllCards={onMoveAllCards}
-                  isAddingCard={activeAddCardListId === list.id}
-                  setActiveAddCardListId={setActiveAddCardListId}
-                  listIndex={listIndex}
-                />
-              </li>
-            ))}
-            <li>
-              <AddList onAddList={onAddList} />
-            </li>
-          </ul>
+          <Droppable
+            droppableId="lists-container"
+            direction="horizontal"
+            type="LIST"
+          >
+            {provided => (
+              <div
+                className="lists-list"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {lists.map((list, listIndex) => (
+                  <List
+                    key={list.id}
+                    list={list}
+                    boardLabels={board.labels}
+                    labelsIsOpen={labelsIsOpen}
+                    setLabelsIsOpen={setLabelsIsOpen}
+                    onUpdateList={onUpdateList}
+                    onCopyList={onCopyList}
+                    onMoveAllCards={onMoveAllCards}
+                    isAddingCard={activeAddCardListId === list.id}
+                    setActiveAddCardListId={setActiveAddCardListId}
+                    listIndex={listIndex}
+                  />
+                ))}
+                {provided.placeholder}
+                <div>
+                  <AddList onAddList={onAddList} />
+                </div>
+              </div>
+            )}
+          </Droppable>
         </DragDropContext>
         <nav className="board-footer">
           <Footer />

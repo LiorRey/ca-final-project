@@ -12,6 +12,12 @@
   border-radius: 10px;
   background-color: var(--gray5);
   color: var(--gray1);
+  margin: 0.2rem 0.35rem 0.2rem 0.35rem;
+}
+
+.list-container.list-dragging {
+  opacity: 0.5;
+  transition: none;
 }
 
 .list-header {

@@ -80,3 +80,32 @@ export function reorderCards(
 
   return { newLists, cardToMove };
 }
+
+/**
+ * Reorders lists within a board based on drag and drop operation
+ * @param {Array} lists - Array of list objects
+ * @param {number} sourceIndex - Index of the list being moved
+ * @param {number} destinationIndex - Index where the list should be placed
+ * @returns {Object} Object containing the new lists array and the list that was moved
+ */
+export function reorderLists(lists, sourceIndex, destinationIndex) {
+  // Validate indices
+  if (
+    sourceIndex < 0 ||
+    sourceIndex >= lists.length ||
+    destinationIndex < 0 ||
+    destinationIndex >= lists.length
+  ) {
+    throw new Error("Invalid source or destination index");
+  }
+
+  // Create a new array to avoid mutating the original
+  const newLists = Array.from(lists);
+  const [listToMove] = newLists.splice(sourceIndex, 1);
+  newLists.splice(destinationIndex, 0, listToMove);
+
+  const before = newLists[destinationIndex - 1]?.title || null;
+  const after = newLists[destinationIndex + 1]?.title || null;
+
+  return { newLists, listToMove, before, after };
+}
