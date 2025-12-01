@@ -18,6 +18,7 @@ import {
   parseFiltersFromSearchParams,
   serializeFiltersToSearchParams,
 } from "../services/filter-service";
+import { reorderCards } from "../services/dnd-service";
 import {
   copyList,
   createList,
@@ -125,12 +126,10 @@ export function BoardDetails() {
   function handleDragEnd(result) {
     const { destination, source, draggableId } = result;
 
-    // Dropped outside of a droppable area
     if (!destination) {
       return;
     }
 
-    // Dropped in the same position
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -138,66 +137,32 @@ export function BoardDetails() {
       return;
     }
 
-    // Find source and destination lists
-    const sourceListIndex = lists.findIndex(
-      list => list.id === source.droppableId
-    );
-    const destinationListIndex = lists.findIndex(
-      list => list.id === destination.droppableId
-    );
-
-    const sourceList = lists[sourceListIndex];
-    const destinationList = lists[destinationListIndex];
-
-    // Find the card being moved
-    const cardToMove = sourceList.cards.find(card => card.id === draggableId);
-
-    // Create new lists array
-    const newLists = [...lists];
-
-    // Moving within the same list
-    if (sourceListIndex === destinationListIndex) {
-      const newCards = Array.from(sourceList.cards);
-      newCards.splice(source.index, 1);
-      newCards.splice(destination.index, 0, cardToMove);
-
-      newLists[sourceListIndex] = {
-        ...sourceList,
-        cards: newCards,
-      };
-    } else {
-      // Moving to a different list
-      // Remove from source
-      const newSourceCards = sourceList.cards.filter(
-        (_, index) => index !== source.index
+    try {
+      const { newLists, cardToMove } = reorderCards(
+        lists, // current lists
+        source.droppableId, // source list id
+        destination.droppableId, // destination list id
+        source.index, // source index of the card
+        destination.index, // destination index of the card
+        draggableId // card id
       );
 
-      // Add to destination
-      const newDestinationCards = Array.from(destinationList.cards);
-      newDestinationCards.splice(destination.index, 0, cardToMove);
+      setLists(newLists);
 
-      newLists[sourceListIndex] = {
-        ...sourceList,
-        cards: newSourceCards,
-      };
+      if (cardToMove) {
+        const moveData = {
+          sourceBoardId: board._id,
+          sourceListId: source.droppableId,
+          destinationBoardId: board._id,
+          destinationListId: destination.droppableId,
+          position: destination.index,
+        };
 
-      newLists[destinationListIndex] = {
-        ...destinationList,
-        cards: newDestinationCards,
-      };
+        moveCard(moveData, cardToMove);
+      }
+    } catch (error) {
+      console.error("Card reorder failed:", error);
     }
-
-    setLists(newLists);
-
-    const moveData = {
-      sourceBoardId: board._id,
-      sourceListId: source.droppableId,
-      destinationBoardId: board._id,
-      destinationListId: destination.droppableId,
-      position: destination.index,
-    };
-
-    moveCard(moveData, cardToMove);
   }
 
   if (!board) {
