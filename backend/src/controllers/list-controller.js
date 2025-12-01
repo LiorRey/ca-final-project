@@ -29,7 +29,8 @@ export async function updateList(req, res) {
 }
 
 export async function moveList(req, res) {
-  const list = await listService.moveList(req.params.id, req.body.position);
+  const { boardId, targetIndex } = req.body;
+  const list = await listService.moveList(req.params.id, boardId, targetIndex);
   if (!list) throw createError(404, "List not found");
 
   res.status(200).json({ list });
