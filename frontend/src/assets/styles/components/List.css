@@ -32,6 +32,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0.2rem 0 0.2rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Custom scrollbar styling */
@@ -64,6 +68,7 @@
   padding: 0 0.5rem 0 0.5rem;
   max-width: 350px;
   transition: background-color 0.2s ease;
+  min-height: 1px;
 }
 
 /*
