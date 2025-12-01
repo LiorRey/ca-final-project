@@ -1,5 +1,6 @@
 import { getDefaultFilter } from "../../services/filter-service";
 import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
+import { sortByPosition } from "../../services/board/fractional-index-service";
 
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
@@ -106,13 +107,26 @@ const handlers = {
     ...state,
     board: action.payload,
   }),
-  [MOVE_LIST]: (state, action) => ({
-    ...state,
-    board: {
-      ...state.board,
-      lists: action.payload,
-    },
-  }),
+  [MOVE_LIST]: (state, action) => {
+    let lists;
+    // list was moved to another board
+    if (action.payload.boardId && state.board._id !== action.payload.boardId) {
+      lists = state.board.lists.filter(list => list.id !== action.payload.id);
+      // list was moved within the same board - update it and re-sort lists
+    } else {
+      lists = state.board.lists.map(list =>
+        list.id === action.payload.id ? action.payload : list
+      );
+      lists = sortByPosition(lists);
+    }
+    return {
+      ...state,
+      board: {
+        ...state.board,
+        lists,
+      },
+    };
+  },
   ...createAsyncHandlers(COPY_LIST, COPY_LIST.KEY),
   [COPY_LIST.SUCCESS]: (state, action) => ({
     ...state,
