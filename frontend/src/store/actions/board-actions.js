@@ -123,15 +123,15 @@ export async function moveList(
   currentBoardId
 ) {
   try {
-    const updatedLists = await boardService.moveList(
+    const updatedList = await boardService.moveList(
       sourceBoardId,
       sourceIndex,
       targetIndex,
       targetBoardId,
       currentBoardId
     );
-    store.dispatch(moveListAction(updatedLists));
-    return updatedLists;
+    store.dispatch(moveListAction(updatedList));
+    return updatedList;
   } catch (error) {
     store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
     throw error;
@@ -295,8 +295,8 @@ export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
 }
 
-export function moveListAction(lists) {
-  return { type: MOVE_LIST, payload: lists };
+export function moveListAction(list) {
+  return { type: MOVE_LIST, payload: list };
 }
 
 export function deleteCardAction(cardId, listId) {

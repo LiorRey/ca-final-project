@@ -426,7 +426,7 @@ async function moveSameBoard(board, sourceIndex, targetIndex) {
   const updatedBoard = updateBoardFields(board, { lists: sortedLists });
   await save(updatedBoard);
 
-  return sortedLists;
+  return updatedList;
 }
 
 async function moveCrossBoard(
@@ -462,9 +462,7 @@ async function moveCrossBoard(
   await save(updatedSourceBoard);
   await save(updatedTargetBoard);
 
-  return currentBoardId === sourceBoard._id
-    ? updatedSourceLists
-    : updatedTargetLists;
+  return updatedList;
 }
 
 export async function copyList(boardId, listId, newName) {
