@@ -37,7 +37,7 @@ export function List({
   function handleMoreClick(event) {
     setAnchorEl(event.currentTarget);
     setActiveListIndex(listIndex);
-    handleHideAddCardForm();
+    setActiveAddCardListId(null);
   }
 
   function handleClose() {
@@ -58,10 +58,6 @@ export function List({
         scrollToBottom,
       })
     );
-  }
-
-  function handleHideAddCardForm() {
-    setActiveAddCardListId(null);
   }
 
   function scrollToAddedCard() {
@@ -93,16 +89,16 @@ export function List({
           selected={open}
         />
       </div>
-      <div className="list-add-card-header">
-        {isAddingCard && !addCardToEnd && (
+      {isAddingCard && !addCardToEnd && (
+        <div className="list-add-card-header">
           <AddCardForm
             listId={list.id}
             addCardToEnd={addCardToEnd}
             onCardAdded={scrollToAddedCard}
-            onHideAddCardForm={handleHideAddCardForm}
+            onHideAddCardForm={() => setActiveAddCardListId(null)}
           />
-        )}
-      </div>
+        </div>
+      )}
       <div className="list-content-container" ref={listContentRef}>
         <ul className="cards-list">
           {list.cards.map(card => {
@@ -127,7 +123,7 @@ export function List({
             listId={list.id}
             addCardToEnd={addCardToEnd}
             onCardAdded={scrollToAddedCard}
-            onHideAddCardForm={handleHideAddCardForm}
+            onHideAddCardForm={() => setActiveAddCardListId(null)}
           />
         ) : (
           <button

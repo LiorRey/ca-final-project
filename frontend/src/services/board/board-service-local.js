@@ -188,7 +188,6 @@ export async function editCard(boardId, card, listId) {
 export async function deleteCard(boardId, cardId, listId) {
   try {
     const board = await getById(boardId);
-    if (!board) throw new Error("Board not found");
     const list = _findList(board, listId);
     const cardIdx = _findCardIndex(list, cardId);
     const deletedCard = _findCard(list, cardId);
