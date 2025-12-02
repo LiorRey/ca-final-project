@@ -32,7 +32,7 @@ export async function login(req, res) {
     expiresIn: "1h",
   });
   res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
-  res.json({ data: user.getSafeUser(), error: null });
+  res.json({ user: user.getSafeUser() });
 }
 
 export function logout(_req, res) {
