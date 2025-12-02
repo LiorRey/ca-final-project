@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const listSchema = new mongoose.Schema(
   {
     boardId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Board",
       required: true,
     },
     title: {
