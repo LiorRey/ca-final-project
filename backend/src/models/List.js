@@ -32,4 +32,10 @@ const listSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+listSchema.virtual("cards", {
+  ref: "Card",
+  localField: "_id",
+  foreignField: "listId",
+});
+
 export const List = mongoose.model("List", listSchema);
