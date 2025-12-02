@@ -35,6 +35,8 @@ export const boardService = {
   createLabel,
   editLabel,
   deleteLabel,
+  getBoardPreviews,
+  getBoardListPreviews,
   clearData,
   reCreateBoards,
 };
@@ -648,6 +650,44 @@ async function deleteLabel(boardId, labelId) {
     });
   } catch (error) {
     console.error("Cannot delete label:", error);
+    throw error;
+  }
+}
+
+/**
+ * Retrieves all board names (id and title only)
+ * @returns {Promise<Array<{_id: string, title: string}>>}
+ */
+async function getBoardPreviews() {
+  try {
+    const boards = await query();
+    return boards.map(board => ({
+      _id: board._id,
+      title: board.title,
+    }));
+  } catch (error) {
+    console.error("Cannot get board names:", error);
+    throw error;
+  }
+}
+
+/**
+ * Retrieves lists for a specific board with card counts
+ * @param {string} boardId - The board ID
+ * @returns {Promise<Array<{id: string, title: string, cardCount: number}>>}
+ */
+async function getBoardListPreviews(boardId) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    return (board.lists || []).map(list => ({
+      id: list.id,
+      title: list.title,
+      cardCount: list.cards?.length || 0,
+    }));
+  } catch (error) {
+    console.error("Cannot get board lists with card count:", error);
     throw error;
   }
 }
