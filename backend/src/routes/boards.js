@@ -3,6 +3,7 @@ import {
   createBoard,
   getAllBoards,
   getBoardById,
+  getFullBoardById,
   updateBoard,
   deleteBoard,
 } from "../controllers/board-controller.js";
@@ -13,7 +14,8 @@ const router = express.Router();
 
 // Public routes
 router.get("/", getAllBoards);
-router.get("/:id", loadBoard, getBoardById);
+router.get("/:id", getBoardById);
+router.get("/:id/full", getFullBoardById);
 
 // Protected routes
 const protectedRouter = express.Router();

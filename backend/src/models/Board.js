@@ -52,4 +52,10 @@ const boardSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+boardSchema.virtual("lists", {
+  ref: "List",
+  localField: "_id",
+  foreignField: "boardId",
+});
+
 export const Board = mongoose.model("Board", boardSchema);
