@@ -24,18 +24,19 @@
 
   padding: 0.2em;
   border-radius: 20%;
-  background-color: transparent;
+  color: var(--ds-text-subtle);
+  background-color: var(--icon-btn-bg-default);
   box-sizing: border-box;
-  font-size: 15px;
+  font: var(--ds-font-body);
+  font-size: 16px;
+  font-weight: var(--ds-font-weight-medium);
   > svg {
-    width: 16px;
-    height: 16px;
-    color: var(--gray1);
-    margin-bottom: 0.05em;
+    color: var(--ds-text-subtle);
+    font-size: 18px;
     margin-inline-end: 0.2em;
   }
 }
 
 .add-card-card-button:hover {
-  background-color: var(--gray3);
+  background-color: var(--ds-background-neutral-hovered);
 }

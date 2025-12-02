@@ -18,6 +18,7 @@ export const boardService = {
   remove,
   save,
   updateBoard,
+  getEmptyCard,
   addCard,
   editCard,
   deleteCard,
@@ -141,14 +142,32 @@ function updateCardFields(board, listId, cardId, updates) {
   return updateListFields(board, listId, updatedList);
 }
 
-export async function addCard(boardId, card, listId) {
+function getEmptyCard() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    labels: [],
+    createdAt: null,
+    archivedAt: null,
+  };
+}
+
+export async function addCard(boardId, listId, card, addCardToEnd = true) {
   try {
     const board = await getById(boardId);
     const list = _findList(board, listId);
-    const newCard = { cardId: crypto.randomUUID(), ...card };
-    list.cards.push(newCard);
-    await updateBoard(boardId, list, listId);
-    return newCard;
+
+    card = { ...card, createdAt: Date.now() };
+    if (addCardToEnd) {
+      list.cards.push(card);
+    } else {
+      list.cards.unshift(card);
+    }
+
+    await updateBoard(boardId, list, { listId });
+
+    return list;
   } catch (error) {
     console.error("Cannot add card:", error);
     throw error;
