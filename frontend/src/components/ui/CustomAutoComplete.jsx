@@ -29,19 +29,9 @@ export function CustomAutoComplete({
 
   const renderOption = (props, option) => {
     const { key: _key, ...rest } = props;
-    const isSelected = option.id === value;
 
     return (
-      <li
-        key={option.id}
-        {...rest}
-        style={{
-          ...rest.style,
-          borderLeft: isSelected
-            ? "3px solid #1976d2"
-            : "3px solid transparent",
-        }}
-      >
+      <li key={option.id} {...rest}>
         {option.title}
       </li>
     );
@@ -56,22 +46,6 @@ export function CustomAutoComplete({
       getOptionLabel={option =>
         typeof option === "string" ? option : option?.title || ""
       }
-      sx={{
-        cursor: "pointer",
-        "& .MuiInputBase-root": {
-          cursor: "pointer",
-        },
-        "& .MuiInputBase-input": {
-          cursor: "pointer",
-          caretColor: "transparent",
-          "&::selection": {
-            backgroundColor: "transparent",
-          },
-        },
-        "& .MuiInputBase-input:focus": {
-          caretColor: "auto",
-        },
-      }}
       getOptionKey={option => option.id}
       isOptionEqualToValue={(option, val) => option?.id === val?.id}
       value={selectedOption}

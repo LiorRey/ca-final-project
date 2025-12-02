@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import East from "@mui/icons-material/East";
@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import { useFormState } from "../../hooks/useFormState";
 import { ActionButton } from "../ui/buttons/ActionButton";
 import { CustomAutoComplete } from "../ui/CustomAutoComplete";
+import { boardService } from "../../services/board";
 
 const SELECT_IDS = {
   BOARD: "card-board-select",
@@ -26,9 +27,23 @@ export function CardActionForm({
   listId,
   submitButtonText,
 }) {
-  const boards = useSelector(state => state.boards.boards);
   const board = useSelector(state => state.boards.board);
+  const [boards, setBoards] = useState([]);
+  const [selectedBoardLists, setSelectedBoardLists] = useState([]);
+
   const cardTitle = card?.title || "";
+
+  useEffect(() => {
+    async function loadBoards() {
+      try {
+        const boardNames = await boardService.getBoardPreviews();
+        setBoards(boardNames);
+      } catch (error) {
+        console.error("Error loading boards:", error);
+      }
+    }
+    loadBoards();
+  }, []);
 
   const initialValues = useMemo(() => {
     const currentList = board?.lists?.find(l => l.id === listId);
@@ -36,7 +51,7 @@ export function CardActionForm({
       currentList?.cards?.findIndex(c => c.id === card?.id) ?? 0;
 
     const baseValues = {
-      boardId: board._id || boards[0]._id || "",
+      boardId: board?._id || boards[0]?._id || "",
       listId: listId || board?.lists?.[0]?.id || "",
       position: currentPosition,
     };
@@ -54,12 +69,19 @@ export function CardActionForm({
 
   const { values, handleChange, setValues } = useFormState(initialValues);
 
-  const selectedBoardLists = useMemo(() => {
-    if (board?._id === values.boardId) {
-      return board?.lists || [];
+  useEffect(() => {
+    async function loadLists() {
+      if (!values.boardId) return;
+      try {
+        const lists = await boardService.getBoardListPreviews(values.boardId);
+        setSelectedBoardLists(lists);
+      } catch (error) {
+        console.error("Error loading lists:", error);
+        setSelectedBoardLists([]);
+      }
     }
-    return boards.find(b => b._id === values.boardId)?.lists || [];
-  }, [boards, board, values.boardId]);
+    loadLists();
+  }, [values.boardId]);
 
   const selectedList = useMemo(
     () => selectedBoardLists.find(l => l.id === values.listId) || null,
@@ -72,7 +94,7 @@ export function CardActionForm({
   );
 
   const maxPosition = useMemo(
-    () => (selectedList?.cards?.length ? selectedList.cards.length + 1 : 1),
+    () => (selectedList?.cardCount ? selectedList.cardCount + 1 : 1),
     [selectedList]
   );
 
@@ -81,17 +103,20 @@ export function CardActionForm({
   const cardMembers = card?.assignedTo || [];
   const cardMembersCount = Array.isArray(cardMembers) ? cardMembers.length : 0;
 
-  function handleBoardChange(newBoardId) {
-    const newBoard = boards.find(b => b._id === newBoardId);
-    const newBoardLists = newBoard?.lists || [];
-    const firstListId = newBoardLists[0]?.id || "";
+  async function handleBoardChange(newBoardId) {
+    try {
+      const lists = await boardService.getBoardListPreviews(newBoardId);
+      const firstListId = lists[0]?.id || "";
 
-    setValues(prev => ({
-      ...prev,
-      boardId: newBoardId,
-      listId: firstListId,
-      position: 0,
-    }));
+      setValues(prev => ({
+        ...prev,
+        boardId: newBoardId,
+        listId: firstListId,
+        position: 0,
+      }));
+    } catch (error) {
+      console.error("Error loading lists for board:", error);
+    }
   }
 
   function handleSuggestedClick() {
