@@ -183,15 +183,7 @@ export async function moveAllCards(
   }
 }
 
-export async function addCard(boardId, card, listId) {
-  try {
-    const newCard = await boardService.addCard(boardId, card, listId);
-    store.dispatch(addCardAction(newCard, listId));
-  } catch (error) {
-    store.dispatch(setError("addCard", `Error adding card: ${error.message}`));
-    throw error;
-  }
-}
+export const addCard = createAsyncAction(ADD_CARD, boardService.addCard, store);
 
 export const editCard = createAsyncAction(
   EDIT_CARD,
@@ -305,14 +297,6 @@ export function deleteBoardAction(boardId) {
 
 export function moveListAction(lists) {
   return { type: MOVE_LIST, payload: lists };
-}
-
-export function addCardAction(card, listId) {
-  return { type: ADD_CARD, payload: { card, listId } };
-}
-
-export function editCardAction(card, listId) {
-  return { type: EDIT_CARD, payload: { card, listId } };
 }
 
 export function deleteCardAction(cardId, listId) {

@@ -12,7 +12,7 @@ import {
 } from "@mui/icons-material";
 import { Backdrop, Popover } from "@mui/material";
 import { CardActionForm } from "./card/CardActionForm";
-import { PopoverMenuProvider } from "./card/PopoverMenuProvider";
+import { PopoverMenu } from "./ui/PopoverMenu";
 import { copyCard, moveCard } from "../store/actions/board-actions";
 
 export function CardPopover({
@@ -165,7 +165,6 @@ export function CardPopover({
             },
           },
         }}
-        onClick={e => e.stopPropagation()}
       >
         <div className="card-popover-content">
           {cardActionsMenuItems().map(({ label, key, icon }) => (
@@ -187,18 +186,11 @@ export function CardPopover({
         </div>
       </Popover>
       {popoverOpen && (
-        <PopoverMenuProvider
+        <PopoverMenu
           anchorEl={popoverAnchorEl}
           isOpen={popoverOpen}
           onClose={handlePopoverClose}
-          activeMenuItem={activeMenuItem}
-          card={card}
-          menuTitle={
-            activeMenuItem === "copyCard" ? "Copy to..." : "Move to..."
-          }
-          submitButtonText={
-            activeMenuItem === "copyCard" ? "Create card" : "Move"
-          }
+          title={activeMenuItem === "copyCard" ? "Copy to..." : "Move to..."}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "left",
@@ -210,11 +202,15 @@ export function CardPopover({
         >
           <CardActionForm
             card={card}
+            listId={listId}
             isCopyMode={activeMenuItem === "copyCard"}
             onCopySubmit={handleCopyCardSubmit}
             onMoveSubmit={handleMoveCardSubmit}
+            submitButtonText={
+              activeMenuItem === "copyCard" ? "Create card" : "Move"
+            }
           />
-        </PopoverMenuProvider>
+        </PopoverMenu>
       )}
     </Backdrop>
   );

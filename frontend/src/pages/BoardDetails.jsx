@@ -26,7 +26,6 @@ import {
   loadBoards,
   moveAllCards,
   moveCard,
-  updateBoard,
 } from "../store/actions/board-actions";
 
 export function BoardDetails() {
@@ -70,15 +69,6 @@ export function BoardDetails() {
       await copyList(board._id, listId, newName);
     } catch (error) {
       console.error("List copy failed:", error);
-    }
-  }
-
-  async function onUpdateList(list, updates) {
-    try {
-      const options = { listId: list.id };
-      updateBoard(board._id, updates, options);
-    } catch (error) {
-      console.error("List update failed:", error);
     }
   }
 
@@ -202,7 +192,6 @@ export function BoardDetails() {
                   boardLabels={board.labels}
                   labelsIsOpen={labelsIsOpen}
                   setLabelsIsOpen={setLabelsIsOpen}
-                  onUpdateList={onUpdateList}
                   onCopyList={onCopyList}
                   onMoveAllCards={onMoveAllCards}
                   isAddingCard={activeAddCardListId === list.id}

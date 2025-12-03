@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material/styles";
 import { setGlobalTheme, token } from "@atlaskit/tokens";
 
 setGlobalTheme({
-  colorMode: "light",
+  colorMode: "dark",
   shape: "shape",
   typography: "typography",
   elevation: "elevation",
@@ -205,6 +205,10 @@ const muiTheme = createTheme({
       disabled: token("color.text.disabled", "#7D818A"),
     },
     divider: token("color.border", "rgba(11, 18, 14, 0.14)"),
+    input: {
+      backgroundColor: token("color.background.input", "#292a2e"),
+      color: token("color.text", "#e0e0e0"),
+    },
   },
 
   /**
@@ -241,6 +245,145 @@ const muiTheme = createTheme({
       )
     ), // Indices 3-24 (22 elements)
   ],
+
+  /**
+   * Component Style Overrides (Dark Theme)
+   *
+   * Custom styling for form components with dark mode colors.
+   */
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: token("color.background.input", "#242528"), // Input field background color (dark gray)
+          color: token("color.text", "#CECFD2"), // Input text color (light gray)
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: token("color.border.focused", "#8FB8F6"), // Input border color on hover (blue)
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: token("color.border.focused", "#8FB8F6"), // Input border color when focused (blue)
+          },
+        },
+        notchedOutline: {
+          borderColor: token("color.border.input", "#7E8188"), // Default input border color (dark gray)
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: token("color.text", "#CECFD2"), // Label text color (off-white)
+          "&.Mui-focused": {
+            color: token("color.text.brand", "#669DF1"), // Label text color when input is focused (blue)
+          },
+        },
+      },
+    },
+    MuiAutocomplete: {
+      defaultProps: {
+        slotProps: {
+          popper: {
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  offset: [0, 4],
+                },
+              },
+            ],
+          },
+        },
+      },
+      styleOverrides: {
+        root: {
+          cursor: "pointer", // Autocomplete root cursor (pointer)
+          "& .MuiInputBase-root": {
+            cursor: "pointer", // Input base cursor (pointer)
+          },
+          "& .MuiInputBase-input": {
+            cursor: "pointer", // Input cursor (pointer)
+            caretColor: "transparent", // Hide caret when not focused
+            "&::selection": {
+              backgroundColor: "transparent", // Transparent text selection
+            },
+          },
+          "& .MuiInputBase-input:focus": {
+            caretColor: "auto", // Show caret when focused
+          },
+        },
+        popper: {
+          zIndex: 1500,
+        },
+        paper: {
+          backgroundColor: token("color.background.input", "#2B2C2F"), // Autocomplete dropdown background color (very dark gray)
+          color: token("color.text", "#CECFD2"), // Autocomplete dropdown text color (light gray)
+          border: "none",
+        },
+        listbox: {
+          "& .MuiAutocomplete-option": {
+            color: token("color.text", "#CECFD2"), // Autocomplete option text color (light gray)
+            borderLeft: "3px solid transparent", // Default transparent border to maintain spacing
+            "&:hover": {
+              backgroundColor: token(
+                "color.background.input.hovered",
+                "#303134"
+              ), // Autocomplete option background on hover (lighter dark gray)
+            },
+            "&.Mui-focused": {
+              backgroundColor: token(
+                "color.background.input.hovered",
+                "#303134"
+              ), // Autocomplete option background when focused (lighter dark gray)
+            },
+            "&[aria-selected='true']": {
+              backgroundColor: "transparent", // Selected option background (transparent)
+              borderLeft: `3px solid ${token("color.text.brand", "#669DF1")}`, // Selected option left border (blue)
+              "&:hover": {
+                backgroundColor: token(
+                  "color.background.selected.hovered",
+                  "#123263"
+                ), // Selected option background on hover (blue)
+              },
+              "&.Mui-focused": {
+                backgroundColor: token(
+                  "color.background.selected.hovered",
+                  "#123263"
+                ), // Selected option background when focused (blue)
+              },
+            },
+          },
+        },
+        popupIndicator: {
+          color: token("color.icon", "#CECFD2"), // Dropdown arrow icon color (light gray)
+        },
+        clearIndicator: {
+          color: token("color.icon", "#CECFD2"), // Clear/close button icon color (light gray)
+        },
+      },
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: token("color.icon.subtle", "#A9ABAF"), // Unchecked checkbox border/icon color (medium gray)
+          "& .MuiSvgIcon-root": {
+            color: token("color.icon.subtle", "#A9ABAF"), // Unchecked checkbox icon color (medium gray)
+          },
+          "&.Mui-checked": {
+            color: token("color.text.brand", "#669DF1"), // Checked checkbox color (blue)
+            "& .MuiSvgIcon-root": {
+              color: token("color.text.brand", "#669DF1"), // Checked checkbox icon color (blue)
+            },
+          },
+          "&:hover": {
+            backgroundColor: token(
+              "color.background.neutral.subtle.hovered",
+              "#CECED912"
+            ), // Checkbox background on hover (very light gray)
+          },
+        },
+      },
+    },
+  },
 });
 
 export { muiTheme };

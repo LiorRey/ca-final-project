@@ -18,6 +18,7 @@ export const boardService = {
   remove,
   save,
   updateBoard,
+  getEmptyCard,
   addCard,
   editCard,
   deleteCard,
@@ -35,6 +36,8 @@ export const boardService = {
   createLabel,
   editLabel,
   deleteLabel,
+  getBoardPreviews,
+  getBoardListPreviews,
   clearData,
   reCreateBoards,
 };
@@ -139,14 +142,32 @@ function updateCardFields(board, listId, cardId, updates) {
   return updateListFields(board, listId, updatedList);
 }
 
-export async function addCard(boardId, card, listId) {
+function getEmptyCard() {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    labels: [],
+    createdAt: null,
+    archivedAt: null,
+  };
+}
+
+export async function addCard(boardId, listId, card, addCardToEnd = true) {
   try {
     const board = await getById(boardId);
     const list = _findList(board, listId);
-    const newCard = { cardId: crypto.randomUUID(), ...card };
-    list.cards.push(newCard);
-    await updateBoard(boardId, list, listId);
-    return newCard;
+
+    card = { ...card, createdAt: Date.now() };
+    if (addCardToEnd) {
+      list.cards.push(card);
+    } else {
+      list.cards.unshift(card);
+    }
+
+    await updateBoard(boardId, list, { listId });
+
+    return list;
   } catch (error) {
     console.error("Cannot add card:", error);
     throw error;
@@ -648,6 +669,44 @@ async function deleteLabel(boardId, labelId) {
     });
   } catch (error) {
     console.error("Cannot delete label:", error);
+    throw error;
+  }
+}
+
+/**
+ * Retrieves all board names (id and title only)
+ * @returns {Promise<Array<{_id: string, title: string}>>}
+ */
+async function getBoardPreviews() {
+  try {
+    const boards = await query();
+    return boards.map(board => ({
+      _id: board._id,
+      title: board.title,
+    }));
+  } catch (error) {
+    console.error("Cannot get board names:", error);
+    throw error;
+  }
+}
+
+/**
+ * Retrieves lists for a specific board with card counts
+ * @param {string} boardId - The board ID
+ * @returns {Promise<Array<{id: string, title: string, cardCount: number}>>}
+ */
+async function getBoardListPreviews(boardId) {
+  try {
+    const board = await getById(boardId);
+    if (!board) throw new Error("Board not found");
+
+    return (board.lists || []).map(list => ({
+      id: list.id,
+      title: list.title,
+      cardCount: list.cards?.length || 0,
+    }));
+  } catch (error) {
+    console.error("Cannot get board lists with card count:", error);
     throw error;
   }
 }

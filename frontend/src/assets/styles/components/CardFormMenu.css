@@ -29,22 +29,14 @@
 
 .card-form-textarea {
   width: 100%;
-  background-color: var(--gray3);
+  background-color: var(--gray4);
   color: var(--gray1);
-  border: 1px solid var(--gray2);
+  border: 1px solid var(--gray3);
   border-radius: 4px;
-  padding: 16.5px 14px;
+  padding: 0.4rem 0.75rem 0.75rem 0.75rem;
   font-family: inherit;
   font-size: 1rem;
   outline: none;
-}
-
-.card-form-checkbox .MuiSvgIcon-root {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.card-form-checkbox.Mui-checked .MuiSvgIcon-root {
-  color: rgba(255, 255, 255, 0.9);
 }
 
 .card-form-checkbox-label {

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import AutoAwesome from "@mui/icons-material/AutoAwesome";
 import East from "@mui/icons-material/East";
@@ -10,8 +10,8 @@ import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Typography from "@mui/material/Typography";
 import { useFormState } from "../../hooks/useFormState";
 import { ActionButton } from "../ui/buttons/ActionButton";
-import { CustomSelect } from "../ui/CustomSelect";
-import { usePopoverMenuContext } from "./PopoverMenuContext";
+import { CustomAutoComplete } from "../ui/CustomAutoComplete";
+import { boardService } from "../../services/board";
 
 const SELECT_IDS = {
   BOARD: "card-board-select",
@@ -24,23 +24,36 @@ export function CardActionForm({
   onMoveSubmit,
   isCopyMode,
   card,
+  listId,
+  submitButtonText,
 }) {
-  const {
-    submitButtonText,
-    openSelectMenuId,
-    handleSelectOpen,
-    handleSelectClose,
-  } = usePopoverMenuContext();
-
-  const boards = useSelector(state => state.boards.boards);
   const board = useSelector(state => state.boards.board);
+  const [boards, setBoards] = useState([]);
+  const [selectedBoardLists, setSelectedBoardLists] = useState([]);
+
   const cardTitle = card?.title || "";
 
+  useEffect(() => {
+    async function loadBoards() {
+      try {
+        const boardNames = await boardService.getBoardPreviews();
+        setBoards(boardNames);
+      } catch (error) {
+        console.error("Error loading boards:", error);
+      }
+    }
+    loadBoards();
+  }, []);
+
   const initialValues = useMemo(() => {
+    const currentList = board?.lists?.find(l => l.id === listId);
+    const currentPosition =
+      currentList?.cards?.findIndex(c => c.id === card?.id) ?? 0;
+
     const baseValues = {
-      boardId: board?._id || "",
-      listId: board?.lists?.[0]?.id || "",
-      position: 0,
+      boardId: board?._id || boards[0]?._id || "",
+      listId: listId || board?.lists?.[0]?.id || "",
+      position: currentPosition,
     };
 
     if (isCopyMode) {
@@ -52,16 +65,23 @@ export function CardActionForm({
       };
     }
     return baseValues;
-  }, [isCopyMode, cardTitle, board]);
+  }, [isCopyMode, cardTitle, board, card, listId, boards]);
 
   const { values, handleChange, setValues } = useFormState(initialValues);
 
-  const selectedBoardLists = useMemo(() => {
-    if (board?._id === values.boardId) {
-      return board?.lists || [];
+  useEffect(() => {
+    async function loadLists() {
+      if (!values.boardId) return;
+      try {
+        const lists = await boardService.getBoardListPreviews(values.boardId);
+        setSelectedBoardLists(lists);
+      } catch (error) {
+        console.error("Error loading lists:", error);
+        setSelectedBoardLists([]);
+      }
     }
-    return boards.find(b => b._id === values.boardId)?.lists || [];
-  }, [boards, board, values.boardId]);
+    loadLists();
+  }, [values.boardId]);
 
   const selectedList = useMemo(
     () => selectedBoardLists.find(l => l.id === values.listId) || null,
@@ -74,7 +94,7 @@ export function CardActionForm({
   );
 
   const maxPosition = useMemo(
-    () => (selectedList?.cards?.length ? selectedList.cards.length + 1 : 1),
+    () => (selectedList?.cardCount ? selectedList.cardCount + 1 : 1),
     [selectedList]
   );
 
@@ -83,18 +103,20 @@ export function CardActionForm({
   const cardMembers = card?.assignedTo || [];
   const cardMembersCount = Array.isArray(cardMembers) ? cardMembers.length : 0;
 
-  function handleBoardChange(e) {
-    const newBoardId = e.target.value;
-    const newBoard = boards.find(b => b._id === newBoardId);
-    const newBoardLists = newBoard?.lists || [];
-    const firstListId = newBoardLists[0]?.id || "";
+  async function handleBoardChange(newBoardId) {
+    try {
+      const lists = await boardService.getBoardListPreviews(newBoardId);
+      const firstListId = lists[0]?.id || "";
 
-    setValues(prev => ({
-      ...prev,
-      boardId: newBoardId,
-      listId: firstListId,
-      position: 0,
-    }));
+      setValues(prev => ({
+        ...prev,
+        boardId: newBoardId,
+        listId: firstListId,
+        position: 0,
+      }));
+    } catch (error) {
+      console.error("Error loading lists for board:", error);
+    }
   }
 
   function handleSuggestedClick() {
@@ -106,18 +128,18 @@ export function CardActionForm({
     }
   }
 
-  function handleListChange(e) {
+  function handleListChange(listId) {
     setValues(prev => ({
       ...prev,
-      listId: e.target.value,
+      listId,
       position: 0,
     }));
   }
 
-  function handlePositionChange(e) {
+  function handlePositionChange(position) {
     setValues(prev => ({
       ...prev,
-      position: e.target.value,
+      position,
     }));
   }
 
@@ -155,8 +177,8 @@ export function CardActionForm({
             name="title"
             value={values.title}
             onChange={handleChange}
+            onClick={e => e.stopPropagation()}
             minRows={2}
-            autoFocus
             className="card-form-textarea"
           />
         </Box>
@@ -227,19 +249,15 @@ export function CardActionForm({
           </Typography>
         )}
         <Box sx={{ mb: 2 }}>
-          <CustomSelect
+          <CustomAutoComplete
             id={SELECT_IDS.BOARD}
             name="boardId"
             label="Board"
-            labelId={`${SELECT_IDS.BOARD}-label`}
             value={values.boardId}
-            open={openSelectMenuId === SELECT_IDS.BOARD}
-            onOpen={() => handleSelectOpen(SELECT_IDS.BOARD)}
-            onClose={handleSelectClose}
             onChange={handleBoardChange}
             options={boards.map(b => ({
-              value: b._id,
-              label: b.title,
+              id: b._id,
+              title: b.title,
             }))}
           />
         </Box>
@@ -250,35 +268,24 @@ export function CardActionForm({
           gap={2}
           sx={{ mb: 2 }}
         >
-          <CustomSelect
+          <CustomAutoComplete
             id={SELECT_IDS.LIST}
             name="listId"
             label="List"
-            labelId={`${SELECT_IDS.LIST}-label`}
             value={values.listId}
-            open={openSelectMenuId === SELECT_IDS.LIST}
-            onOpen={() => handleSelectOpen(SELECT_IDS.LIST)}
-            onClose={handleSelectClose}
             onChange={handleListChange}
-            options={selectedBoardLists.map(list => ({
-              value: list.id,
-              label: list.title,
-            }))}
+            options={selectedBoardLists}
           />
 
-          <CustomSelect
+          <CustomAutoComplete
             id={SELECT_IDS.POSITION}
             name="position"
             label="Position"
-            labelId={`${SELECT_IDS.POSITION}-label`}
-            value={values.position.toString()}
-            open={openSelectMenuId === SELECT_IDS.POSITION}
-            onOpen={() => handleSelectOpen(SELECT_IDS.POSITION)}
-            onClose={handleSelectClose}
+            value={values.position}
             onChange={handlePositionChange}
             options={Array.from({ length: maxPosition }, (_, i) => ({
-              value: i,
-              label: (i + 1).toString(),
+              id: i,
+              title: (i + 1).toString(),
             }))}
           />
         </Box>
