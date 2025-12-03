@@ -1,0 +1,489 @@
+{
+  "users": [
+    {
+      "email": "admin@example.com",
+      "username": "admin",
+      "fullName": "System Administrator",
+      "password": "FPRsqmZp"
+    },
+    {
+      "email": "test@example.com",
+      "username": "testuser",
+      "fullName": "Test User",
+      "password": "test"
+    },
+    {
+      "email": "Chadd.Ullrich@yahoo.com",
+      "username": "Robin59",
+      "fullName": "Chadd Ullrich",
+      "password": "pd55bkiN"
+    },
+    {
+      "email": "Gilberto.Nolan@hotmail.com",
+      "username": "Godfrey.Wintheiser16",
+      "fullName": "Gilberto Nolan",
+      "password": "NdLbnFlD"
+    },
+    {
+      "email": "Luigi_Cormier13@yahoo.com",
+      "username": "Marisol_Lueilwitz",
+      "fullName": "Luigi Cormier",
+      "password": "fbaIRmZo"
+    },
+    {
+      "email": "Winifred.Jerde@yahoo.com",
+      "username": "Nicholas_Hilpert",
+      "fullName": "Winifred Jerde",
+      "password": "vAkrHW6I"
+    },
+    {
+      "email": "Jacquelyn_Stanton@gmail.com",
+      "username": "Arden29",
+      "fullName": "Jacquelyn Stanton",
+      "password": "x_8R7Aqw"
+    },
+    {
+      "email": "Joelle.Cronin62@hotmail.com",
+      "username": "Keyon_Johnson74",
+      "fullName": "Joelle Cronin",
+      "password": "vLxHdg3C"
+    },
+    {
+      "email": "Moises_Casper71@hotmail.com",
+      "username": "Verna_Jerde46",
+      "fullName": "Moises Casper",
+      "password": "d9dWOWPH"
+    },
+    {
+      "email": "Rosa_Wyman51@hotmail.com",
+      "username": "Diana94",
+      "fullName": "Rosa Wyman",
+      "password": "kFAtKRAI"
+    }
+  ],
+  "boards": [
+    {
+      "title": "Mobile App Development",
+      "description": "Exclusive motivating software - Tertius caelestis adstringo tabella conscendo thymum arto ventus animadverto terror.",
+      "labels": [
+        {
+          "title": "enhancement",
+          "color": "green"
+        },
+        {
+          "title": "documentation",
+          "color": "gray"
+        },
+        {
+          "title": "priority:low",
+          "color": "gray"
+        },
+        {
+          "title": "review",
+          "color": "orange"
+        },
+        {
+          "title": "design",
+          "color": "purple"
+        },
+        {
+          "title": "blocked",
+          "color": "red"
+        },
+        {
+          "title": "frontend",
+          "color": "blue"
+        }
+      ],
+      "owner": {
+        "username": "admin"
+      },
+      "members": [
+        {
+          "username": "testuser"
+        },
+        {
+          "username": "Robin59"
+        },
+        {
+          "username": "admin"
+        },
+        {
+          "username": "Godfrey.Wintheiser16"
+        },
+        {
+          "username": "Marisol_Lueilwitz"
+        }
+      ]
+    },
+    {
+      "title": "Website Redesign",
+      "description": "Seamless clear-thinking function - Quam tamquam apparatus auxilium ver.",
+      "labels": [
+        {
+          "title": "priority:low",
+          "color": "gray"
+        },
+        {
+          "title": "review",
+          "color": "orange"
+        },
+        {
+          "title": "blocked",
+          "color": "red"
+        },
+        {
+          "title": "frontend",
+          "color": "blue"
+        }
+      ],
+      "owner": {
+        "username": "Nicholas_Hilpert"
+      },
+      "members": [
+        {
+          "username": "Arden29"
+        },
+        {
+          "username": "Keyon_Johnson74"
+        },
+        {
+          "username": "Verna_Jerde46"
+        },
+        {
+          "username": "Nicholas_Hilpert"
+        },
+        {
+          "username": "Diana94"
+        }
+      ]
+    },
+    {
+      "title": "Product Launch",
+      "description": "Profit-focused empowering analyzer - Anser culpa texo.",
+      "labels": [
+        {
+          "title": "feature",
+          "color": "blue"
+        },
+        {
+          "title": "frontend",
+          "color": "blue"
+        },
+        {
+          "title": "documentation",
+          "color": "gray"
+        },
+        {
+          "title": "priority:high",
+          "color": "red"
+        },
+        {
+          "title": "backend",
+          "color": "green"
+        },
+        {
+          "title": "priority:medium",
+          "color": "yellow"
+        },
+        {
+          "title": "testing",
+          "color": "orange"
+        },
+        {
+          "title": "bug",
+          "color": "red"
+        }
+      ],
+      "owner": {
+        "username": "testuser"
+      },
+      "members": [
+        {
+          "username": "Robin59"
+        },
+        {
+          "username": "Godfrey.Wintheiser16"
+        },
+        {
+          "username": "Marisol_Lueilwitz"
+        },
+        {
+          "username": "testuser"
+        },
+        {
+          "username": "Nicholas_Hilpert"
+        }
+      ]
+    }
+  ],
+  "lists": [
+    {
+      "boardTitle": "Mobile App Development",
+      "lists": [
+        {
+          "title": "QA",
+          "description": "Quality assurance tasks and bugs",
+          "position": "a"
+        },
+        {
+          "title": "Waiting for Review",
+          "description": "Items pending review",
+          "position": "b"
+        },
+        { "title": "Done", "description": "Completed tasks", "position": "c" },
+        {
+          "title": "In Progress",
+          "description": "Currently being worked on",
+          "position": "d"
+        },
+        { "title": "To Do", "description": "Planned tasks", "position": "e" }
+      ]
+    },
+    {
+      "boardTitle": "Website Redesign",
+      "lists": [
+        {
+          "title": "Code Review",
+          "description": "Review code for issues",
+          "position": "a"
+        },
+        {
+          "title": "Sprint Planning",
+          "description": "Plan upcoming sprints",
+          "position": "b"
+        },
+        {
+          "title": "Ideas",
+          "description": "Brainstorm new features",
+          "position": "c"
+        },
+        {
+          "title": "Deployment",
+          "description": "Deployment tasks",
+          "position": "d"
+        },
+        { "title": "Testing", "description": "Testing and QA", "position": "e" }
+      ]
+    },
+    {
+      "boardTitle": "Product Launch",
+      "lists": [
+        {
+          "title": "Ready for Production",
+          "description": "Ready for deployment",
+          "position": "a"
+        },
+        { "title": "To Do", "description": "Upcoming tasks", "position": "b" },
+        {
+          "title": "Waiting for Review",
+          "description": "Awaiting approval",
+          "position": "c"
+        },
+        {
+          "title": "Sprint Planning",
+          "description": "Sprint planning items",
+          "position": "d"
+        },
+        {
+          "title": "Deployment",
+          "description": "Deployment checklist",
+          "position": "e"
+        }
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "boardTitle": "Mobile App Development",
+      "lists": [
+        {
+          "listTitle": "QA",
+          "cards": [
+            {
+              "title": "extend next-generation lifetime value",
+              "description": "Dummy card description",
+              "position": "a",
+              "archivedAt": null,
+              "comments": []
+            },
+            {
+              "title": "QA",
+              "description": "Quality assurance tasks and bugs",
+              "position": "a",
+              "archivedAt": null,
+              "deletedAt": null
+            },
+            {
+              "title": "grow viral metrics",
+              "description": "Dummy card description",
+              "position": "c",
+              "archivedAt": null,
+              "comments": []
+            },
+            {
+              "title": "facilitate 24/7 synergies",
+              "description": "Dummy card description",
+              "position": "d",
+              "archivedAt": null,
+              "comments": []
+            },
+            {
+              "title": "mesh synergistic platforms",
+              "description": "Dummy card description",
+              "position": "e",
+              "archivedAt": null,
+              "comments": []
+            },
+            {
+              "title": "transform granular users",
+              "description": "Dummy card description",
+              "position": "f",
+              "archivedAt": null,
+              "comments": []
+            },
+            {
+              "title": "deploy transparent architectures",
+              "description": "Dummy card description",
+              "position": "g",
+              "archivedAt": null,
+              "comments": []
+            },
+            {
+              "title": "integrate intuitive applications",
+              "description": "Dummy card description",
+              "position": "h",
+              "archivedAt": null,
+              "comments": []
+            }
+          ]
+        },
+        {
+          "listTitle": "Waiting for Review",
+          "cards": [
+            {
+              "title": "syndicate intuitive architectures",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "grow cross-media supply-chains",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "iterate dynamic communities",
+              "description": "Dummy card description",
+              "position": "c"
+            }
+          ]
+        },
+        {
+          "listTitle": "Done",
+          "cards": [
+            {
+              "title": "incubate cross-platform platforms",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "engage immersive ROI",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "unleash scalable ROI",
+              "description": "Dummy card description",
+              "position": "c"
+            },
+            {
+              "title": "target impactful schemas",
+              "description": "Dummy card description",
+              "position": "d"
+            },
+            {
+              "title": "seize plug-and-play solutions",
+              "description": "Dummy card description",
+              "position": "e"
+            },
+            {
+              "title": "evolve sustainable blockchains",
+              "description": "Dummy card description",
+              "position": "f"
+            },
+            {
+              "title": "collaborate vertical models",
+              "description": "Dummy card description",
+              "position": "g"
+            },
+            {
+              "title": "brand sticky paradigms",
+              "description": "Dummy card description",
+              "position": "h"
+            },
+            {
+              "title": "reinvent 24/7 ROI",
+              "description": "Dummy card description",
+              "position": "i"
+            },
+            {
+              "title": "implement leading-edge niches",
+              "description": "Dummy card description",
+              "position": "j"
+            }
+          ]
+        },
+        {
+          "listTitle": "In Progress",
+          "cards": [
+            {
+              "title": "embrace distributed paradigms",
+              "description": "Dummy card description",
+              "position": "a"
+            }
+          ]
+        },
+        {
+          "listTitle": "To Do",
+          "cards": [
+            {
+              "title": "monetize compelling smart contracts",
+              "description": "Dummy card description",
+              "position": "a"
+            },
+            {
+              "title": "optimize holistic communities",
+              "description": "Dummy card description",
+              "position": "b"
+            },
+            {
+              "title": "aggregate extensible systems",
+              "description": "Dummy card description",
+              "position": "c"
+            },
+            {
+              "title": "engage leading-edge schemas",
+              "description": "Dummy card description",
+              "position": "d"
+            },
+            {
+              "title": "deploy plug-and-play models",
+              "description": "Dummy card description",
+              "position": "e"
+            },
+            {
+              "title": "brand magnetic AI",
+              "description": "Dummy card description",
+              "position": "f"
+            },
+            {
+              "title": "incubate magnetic communities",
+              "description": "Dummy card description",
+              "position": "g"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

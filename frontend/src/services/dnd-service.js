@@ -1,8 +1,4 @@
 /**
- * Service for handling drag and drop operations
- */
-
-/**
  * Reorders cards within lists based on drag and drop operation
  * @param {Array} lists - Array of list objects
  * @param {string} sourceDroppableId - ID of the source list
@@ -20,7 +16,6 @@ export function reorderCards(
   destinationIndex,
   draggableId
 ) {
-  // Find source and destination lists
   const sourceListIndex = lists.findIndex(
     list => list.id === sourceDroppableId
   );
@@ -28,7 +23,6 @@ export function reorderCards(
     list => list.id === destinationDroppableId
   );
 
-  // Validate that both lists exist
   if (sourceListIndex === -1 || destinationListIndex === -1) {
     throw new Error("Source or destination list not found");
   }
@@ -36,17 +30,14 @@ export function reorderCards(
   const sourceList = lists[sourceListIndex];
   const destinationList = lists[destinationListIndex];
 
-  // Find the card being moved
   const cardToMove = sourceList.cards.find(card => card.id === draggableId);
 
   if (!cardToMove) {
     throw new Error("Card not found in source list");
   }
 
-  // Create new lists array
   const newLists = [...lists];
 
-  // Moving within the same list
   if (sourceListIndex === destinationListIndex) {
     const newCards = Array.from(sourceList.cards);
     newCards.splice(sourceIndex, 1);
@@ -57,13 +48,10 @@ export function reorderCards(
       cards: newCards,
     };
   } else {
-    // Moving to a different list
-    // Remove from source
     const newSourceCards = sourceList.cards.filter(
       (_, index) => index !== sourceIndex
     );
 
-    // Add to destination
     const newDestinationCards = Array.from(destinationList.cards);
     newDestinationCards.splice(destinationIndex, 0, cardToMove);
 
@@ -89,7 +77,6 @@ export function reorderCards(
  * @returns {Object} Object containing the new lists array and the list that was moved
  */
 export function reorderLists(lists, sourceIndex, destinationIndex) {
-  // Validate indices
   if (
     sourceIndex < 0 ||
     sourceIndex >= lists.length ||
@@ -99,7 +86,6 @@ export function reorderLists(lists, sourceIndex, destinationIndex) {
     throw new Error("Invalid source or destination index");
   }
 
-  // Create a new array to avoid mutating the original
   const newLists = Array.from(lists);
   const [listToMove] = newLists.splice(sourceIndex, 1);
   newLists.splice(destinationIndex, 0, listToMove);

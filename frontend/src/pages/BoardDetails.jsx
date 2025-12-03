@@ -27,7 +27,6 @@ import {
   moveAllCards,
   moveCard,
   moveList,
-  updateBoard,
 } from "../store/actions/board-actions";
 
 export function BoardDetails() {
@@ -71,15 +70,6 @@ export function BoardDetails() {
       await copyList(board._id, listId, newName);
     } catch (error) {
       console.error("List copy failed:", error);
-    }
-  }
-
-  async function onUpdateList(list, updates) {
-    try {
-      const options = { listId: list.id };
-      updateBoard(board._id, updates, options);
-    } catch (error) {
-      console.error("List update failed:", error);
     }
   }
 
@@ -139,7 +129,6 @@ export function BoardDetails() {
     }
 
     try {
-      // Check if this is a list drag if not it will default to card drag
       if (type === "LIST") {
         const { newLists, listToMove, before, after } = reorderLists(
           lists,
@@ -149,29 +138,27 @@ export function BoardDetails() {
 
         setLists(newLists);
 
-        //beforeId afterId
         console.log(before, after);
 
         if (listToMove) {
           moveList(
-            board._id, // sourceBoardId
-            source.index, // sourceIndex
-            destination.index, // targetIndex
-            board._id, // targetBoardId (same board)
-            board._id // currentBoardId
+            board._id,
+            source.index,
+            destination.index,
+            board._id,
+            board._id
           );
         }
         return;
       }
 
-      // Handle card reordering (existing logic)
       const { newLists, cardToMove } = reorderCards(
-        lists, // current lists
-        source.droppableId, // source list id
-        destination.droppableId, // destination list id
-        source.index, // source index of the card
-        destination.index, // destination index of the card
-        draggableId // card id
+        lists,
+        source.droppableId,
+        destination.droppableId,
+        source.index,
+        destination.index,
+        draggableId
       );
 
       setLists(newLists);
@@ -238,7 +225,6 @@ export function BoardDetails() {
                     boardLabels={board.labels}
                     labelsIsOpen={labelsIsOpen}
                     setLabelsIsOpen={setLabelsIsOpen}
-                    onUpdateList={onUpdateList}
                     onCopyList={onCopyList}
                     onMoveAllCards={onMoveAllCards}
                     isAddingCard={activeAddCardListId === list.id}
