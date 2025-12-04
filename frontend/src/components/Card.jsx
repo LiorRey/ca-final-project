@@ -53,7 +53,7 @@ export function Card({
   }
 
   function handleDelete() {
-    deleteCard(boardId, card.id, listId);
+    deleteCard(boardId, card._id, listId);
     handleClose();
   }
 
@@ -61,7 +61,7 @@ export function Card({
   const id = open ? `card-popover` : undefined;
 
   return (
-    <Draggable draggableId={card.id} index={index}>
+    <Draggable draggableId={card._id} index={index}>
       {(provided, snapshot) => (
         <div
           className={`card-container ${
@@ -80,7 +80,7 @@ export function Card({
                 <div className="card-labels">
                   {labels.map(label => (
                     <div
-                      key={`${card.id}-${label.id}`}
+                      key={`${card._id}-${label._id}`}
                       className={`card-label ${label.color}`}
                     >
                       <span className="card-label-text">{label.title}</span>
@@ -110,7 +110,7 @@ export function Card({
                 <div className="card-labels" onClick={handleClickLabels}>
                   {labels.map(label => (
                     <div
-                      key={`${card.id}-${label.id}`}
+                      key={`${card._id}-${label._id}`}
                       className={`card-label ${label.color} ${
                         labelsIsOpen ? "open" : "closed"
                       }`}
@@ -145,7 +145,7 @@ export function Card({
             anchorEl={anchorEl}
             card={card}
             id={id}
-            cardId={card.id}
+            cardId={card._id}
             listId={listId}
             openCard={handleClickCard}
             handleClose={handleClose}

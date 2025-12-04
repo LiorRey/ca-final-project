@@ -46,7 +46,7 @@ export function LabelMenu({
 
   async function handleCreateLabel(label) {
     await createLabel(boardId, label);
-    handleToggleLabel(label.id);
+    handleToggleLabel(label._id);
     setSearchTerm("");
     handleBack();
   }
@@ -66,12 +66,12 @@ export function LabelMenu({
       ? card.labels.filter(id => id !== labelId)
       : [...card.labels, labelId];
 
-    updateCardLabels(boardId, listId, card.id, updatedCardLabels);
+    updateCardLabels(boardId, listId, card._id, updatedCardLabels);
   }
 
   function getPopoverTitle() {
     if (!viewEditor) return "Labels";
-    return labelToEdit.id ? "Edit label" : "Create label";
+    return labelToEdit._id ? "Edit label" : "Create label";
   }
 
   return (
@@ -93,7 +93,7 @@ export function LabelMenu({
       {viewEditor ? (
         <LabelEditor
           labelToEdit={labelToEdit}
-          onSaveLabel={labelToEdit.id ? handleEditLabel : handleCreateLabel}
+          onSaveLabel={labelToEdit._id ? handleEditLabel : handleCreateLabel}
           onDeleteLabel={handleDeleteLabel}
         />
       ) : (
@@ -112,11 +112,11 @@ export function LabelMenu({
           <ul className="labels-list">
             {filteredLabels.length > 0 ? (
               filteredLabels.map(label => {
-                const isChecked = card.labels.some(
-                  cardLabelId => cardLabelId === label.id
-                );
+                const isChecked =
+                  card.labels &&
+                  card.labels.some(cardLabelId => cardLabelId === label._id);
                 return (
-                  <li key={label.id}>
+                  <li key={label._id}>
                     <LabelMenuItem
                       label={label}
                       isChecked={isChecked}

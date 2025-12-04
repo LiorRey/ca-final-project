@@ -30,7 +30,7 @@ export function List({
   const open = Boolean(anchorEl);
 
   function handleOpenModal(card) {
-    navigate(`${list.id}/${card.id}`, {
+    navigate(`${list._id}/${card._id}`, {
       state: { backgroundLocation: location },
     });
   }
@@ -50,7 +50,7 @@ export function List({
   }
 
   function handleShowAddCardForm(scrollToBottom = true) {
-    setActiveAddCardListId(list.id);
+    setActiveAddCardListId(list._id);
     setAddCardToEnd(scrollToBottom);
 
     requestAnimationFrame(() =>
@@ -81,7 +81,7 @@ export function List({
   }
 
   return (
-    <Draggable draggableId={list.id} index={listIndex} type="LIST">
+    <Draggable draggableId={list._id} index={listIndex} type="LIST">
       {(provided, snapshot) => (
         <section
           className={`list-container ${
@@ -101,7 +101,7 @@ export function List({
           {isAddingCard && !addCardToEnd && (
             <div className="list-add-card-header">
               <AddCardForm
-                listId={list.id}
+                listId={list._id}
                 addCardToEnd={addCardToEnd}
                 onCardAdded={scrollToAddedCard}
                 onHideAddCardForm={() => setActiveAddCardListId(null)}
@@ -109,7 +109,7 @@ export function List({
             </div>
           )}
           <div className="list-content-container" ref={listContentRef}>
-            <Droppable droppableId={list.id}>
+            <Droppable droppableId={list._id}>
               {(provided, snapshot) => {
                 return (
                   <div
@@ -121,9 +121,9 @@ export function List({
                   >
                     {list.cards.map((card, index) => (
                       <Card
-                        key={card.id}
+                        key={card._id}
                         card={card}
-                        listId={list.id}
+                        listId={list._id}
                         index={index}
                         labels={getCardLabels(card)}
                         onClickCard={card => handleOpenModal(card)}
@@ -148,7 +148,7 @@ export function List({
           <div className="list-footer">
             {isAddingCard && addCardToEnd ? (
               <AddCardForm
-                listId={list.id}
+                listId={list._id}
                 addCardToEnd={addCardToEnd}
                 onCardAdded={scrollToAddedCard}
                 onHideAddCardForm={() => setActiveAddCardListId(null)}
