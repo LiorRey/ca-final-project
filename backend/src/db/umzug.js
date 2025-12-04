@@ -1,7 +1,7 @@
 import { Umzug, MongoDBStorage } from "umzug";
 import mongoose from "mongoose";
 import path from "path";
-import { fileURLToPath } from "url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,16 +18,18 @@ export async function getUmzug() {
 
   const umzug = new Umzug({
     migrations: {
-      glob: path.join(__dirname, "migrations", "*.js"),
+      glob: path.join(__dirname, "migrations", "*.js").replace(/\\/g, "/"),
       resolve: ({ name, path: filepath }) => {
         return {
           name,
           up: async () => {
-            const migration = await import(filepath);
+            const fileUrl = pathToFileURL(filepath).href;
+            const migration = await import(fileUrl);
             return migration.up({ context: mongoose.connection.db });
           },
           down: async () => {
-            const migration = await import(filepath);
+            const fileUrl = pathToFileURL(filepath).href;
+            const migration = await import(fileUrl);
             return migration.down({ context: mongoose.connection.db });
           },
         };
