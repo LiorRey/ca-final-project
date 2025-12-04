@@ -4,10 +4,12 @@ const labelSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    trim: true,
   },
   color: {
     type: String,
     required: true,
+    trim: true,
   },
 });
 
