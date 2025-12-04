@@ -1,4 +1,5 @@
 import * as boardService from "../services/board-service.js";
+import createError from "http-errors";
 
 export async function createBoard(req, res) {
   try {
@@ -31,6 +32,13 @@ export async function getBoardById(req, res) {
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch board" });
   }
+}
+
+export async function getFullBoardById(req, res) {
+  const fullBoard = await boardService.getFullBoardById(req.params.id);
+  if (!fullBoard) throw createError(404, "Board not found");
+
+  res.json({ board: fullBoard });
 }
 
 export async function updateBoard(req, res) {

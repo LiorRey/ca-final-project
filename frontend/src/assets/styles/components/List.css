@@ -12,6 +12,12 @@
   border-radius: 10px;
   background-color: var(--gray5);
   color: var(--gray1);
+  margin: 0.2rem 0.35rem 0.2rem 0.35rem;
+}
+
+.list-container.list-dragging {
+  opacity: 0.5;
+  transition: none;
 }
 
 .list-header {
@@ -32,6 +38,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 0.2rem 0 0.2rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
 }
 
 /* Custom scrollbar styling */
@@ -62,8 +72,9 @@
   flex-direction: column;
   flex-wrap: wrap;
   padding: 0 0.5rem 0 0.5rem;
-  gap: 10px;
   max-width: 350px;
+  transition: background-color 0.2s ease;
+  min-height: 1px;
 }
 
 .list-add-card-header,
@@ -73,7 +84,8 @@
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
 }
 
-:is(.list-add-card-header, .list-footer) button {
+.list-add-card-header button,
+.list-footer button {
   justify-content: start;
   padding: 0.5rem;
   border-radius: 6px;
