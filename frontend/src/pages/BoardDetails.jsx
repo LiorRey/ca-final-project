@@ -11,6 +11,7 @@ import { FilterMenu } from "../components/FilterMenu";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { BoardMenu } from "../components/ui/BoardMenu";
+import { BackgroundSelector } from "../components/BackgroundSelector";
 import { useCardFilters } from "../hooks/useCardFilters";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import {
@@ -25,10 +26,13 @@ import {
   moveAllCards,
   updateBoard,
 } from "../store/actions/board-actions";
+import { setBoardColorVariables } from "../services/color-utils";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const [mainMenuAnchorEl, setMainMenuAnchorEl] = useState(null);
+  const [backgroundSelectorAnchorEl, setBackgroundSelectorAnchorEl] =
+    useState(null);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
@@ -54,6 +58,12 @@ export function BoardDetails() {
     const filterBy = serializeFiltersToSearchParams(filters);
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
+
+  useEffect(() => {
+    if (board?.appearance?.background) {
+      setBoardColorVariables(board.appearance.background);
+    }
+  }, [board?.appearance?.background]);
 
   async function onCopyList(listId, newName) {
     try {
@@ -97,9 +107,25 @@ export function BoardDetails() {
   }
 
   function handleMenuItemClick(itemId) {
-    // Handle menu item clicks here
-    console.log(`${itemId} clicked`);
-    // Add your custom logic for each menu item
+    if (itemId === "background") {
+      setBackgroundSelectorAnchorEl(mainMenuAnchorEl);
+    }
+  }
+
+  function handleCloseBackgroundSelector() {
+    setBackgroundSelectorAnchorEl(null);
+  }
+
+  async function handleSelectBackground(selectedColor) {
+    try {
+      setBoardColorVariables(selectedColor);
+
+      await updateBoard(board._id, {
+        appearance: { background: selectedColor },
+      });
+    } catch (error) {
+      console.error("Update background failed:", error);
+    }
   }
 
   if (!board) {
@@ -156,6 +182,13 @@ export function BoardDetails() {
         open={Boolean(mainMenuAnchorEl)}
         onClose={handleCloseMainMenu}
         onItemClick={handleMenuItemClick}
+      />
+      <BackgroundSelector
+        anchorEl={backgroundSelectorAnchorEl}
+        open={Boolean(backgroundSelectorAnchorEl)}
+        onClose={handleCloseBackgroundSelector}
+        currentBackground={board.appearance?.background || "#0079bf"}
+        onSelectBackground={handleSelectBackground}
       />
     </section>
   );
