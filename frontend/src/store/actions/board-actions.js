@@ -47,7 +47,7 @@ export async function loadBoards() {
 export async function loadBoard(boardId, filterBy = {}) {
   try {
     store.dispatch(setLoading("loadBoard", true));
-    const board = await boardService.getById(boardId, filterBy);
+    const board = await boardService.getFullById(boardId, filterBy);
     store.dispatch(setBoard(board));
   } catch (error) {
     store.dispatch(

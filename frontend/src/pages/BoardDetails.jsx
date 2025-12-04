@@ -214,14 +214,14 @@ export function BoardDetails() {
               >
                 {lists.map((list, listIndex) => (
                   <List
-                    key={list.id}
+                    key={list._id}
                     list={list}
                     boardLabels={board.labels}
                     labelsIsOpen={labelsIsOpen}
                     setLabelsIsOpen={setLabelsIsOpen}
                     onCopyList={onCopyList}
                     onMoveAllCards={onMoveAllCards}
-                    isAddingCard={activeAddCardListId === list.id}
+                    isAddingCard={activeAddCardListId === list._id}
                     setActiveAddCardListId={setActiveAddCardListId}
                     listIndex={listIndex}
                   />
