@@ -375,6 +375,21 @@ export async function createList(boardId, listData) {
   }
 }
 
+async function updateListPosition(board, list, targetIndex) {
+  const newPosition = calculateNewPosition(board.lists, targetIndex, list.id);
+
+  const updatedList = { ...list, position: newPosition };
+  const updatedLists = board.lists.map(l =>
+    l.id === list.id ? updatedList : l
+  );
+  const sortedLists = sortByPosition(updatedLists);
+
+  const boardToUpdate = updateBoardFields(board, { lists: sortedLists });
+  await save(boardToUpdate);
+
+  return sortedLists;
+}
+
 export async function moveList(listId, targetBoardId, targetIndex) {
   try {
     const allBoards = await query();
@@ -385,7 +400,6 @@ export async function moveList(listId, targetBoardId, targetIndex) {
     if (!sourceBoard) throw new Error("Source board not found");
 
     const movedList = _findList(sourceBoard, listId);
-    let updatedList;
 
     if (sourceBoard._id !== targetBoardId) {
       sourceBoard.lists = sourceBoard.lists.filter(l => l.id !== listId);
@@ -394,40 +408,11 @@ export async function moveList(listId, targetBoardId, targetIndex) {
       const targetBoard = allBoards.find(board => board._id === targetBoardId);
       if (!targetBoard) throw new Error("Board not found");
 
-      const newPosition = calculateNewPosition(
-        targetBoard.lists,
-        targetIndex,
-        movedList.id
-      );
-
-      updatedList = { ...movedList, position: newPosition };
-      const updatedLists = sourceBoard.lists.map(list =>
-        list.id === movedList.id ? updatedList : list
-      );
-      const sortedLists = sortByPosition(updatedLists);
-
-      const updatedTargetBoard = updateBoardFields(targetBoard, {
-        lists: sortedLists,
-      });
-      await save(updatedTargetBoard);
+      targetBoard.lists.push(movedList);
+      return await updateListPosition(targetBoard, movedList, targetIndex);
     } else {
-      const newPosition = calculateNewPosition(
-        sourceBoard.lists,
-        targetIndex,
-        movedList.id
-      );
-      updatedList = { ...movedList, position: newPosition };
-      const updatedLists = sourceBoard.lists.map(list =>
-        list.id === movedList.id ? updatedList : list
-      );
-      const sortedLists = sortByPosition(updatedLists);
-
-      const updatedSourceBoard = updateBoardFields(sourceBoard, {
-        lists: sortedLists,
-      });
-      await save(updatedSourceBoard);
+      return await updateListPosition(sourceBoard, movedList, targetIndex);
     }
-    return updatedList;
   } catch (error) {
     console.error("Error moving list:", error);
     throw error;
