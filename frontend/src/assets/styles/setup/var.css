@@ -36,6 +36,41 @@
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
 
+  /* Board Background Preset Colors */
+  --bg-blue: #0079bf;
+  --bg-orange: #d29034;
+  --bg-green: #519839;
+  --bg-red: #b04632;
+  --bg-purple: #89609e;
+  --bg-pink: #cd5a91;
+  --bg-emerald: #4bbf6b;
+  --bg-turquoise: #00aecc;
+  --bg-gray: #838c91;
+
+  /* Dynamic Board Background Colors - Set via JavaScript */
+  --board-hue: 35;
+  --board-saturation: 63.7%;
+  --board-lightness: 51.4%;
+
+  /* Calculated variants for board theming */
+  --board-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --dynamic-background-transparent: hsla(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64),
+    0.9
+  );
+  --board-header-background-color: rgba(0, 0, 0, 0.24);
+
   /* Label Colors */
   --label-green-bg: rgb(15, 92, 46);
   --label-green-border: rgb(25, 120, 60);
