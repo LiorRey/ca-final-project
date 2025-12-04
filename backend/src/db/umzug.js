@@ -2,37 +2,46 @@ import { Umzug, MongoDBStorage } from "umzug";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/**
- * Creates and configures an Umzug instance for MongoDB migrations
- * @returns {Promise<Umzug>} Configured Umzug instance
- */
 export async function getUmzug() {
   if (mongoose.connection.readyState !== 1) {
     const mongoURI = process.env.MONGODB_URI;
     await mongoose.connect(mongoURI);
   }
 
+  // Manually read migration files
+  const migrationsDir = path.join(__dirname, "migrations");
+  const files = fs
+    .readdirSync(migrationsDir)
+    .filter(file => file.endsWith(".js"))
+    .map(file => ({
+      name: file,
+      path: path.join(migrationsDir, file),
+    }));
+
+  console.log(
+    `[DEBUG] Found ${files.length} migration files:`,
+    files.map(f => f.name)
+  );
+
   const umzug = new Umzug({
-    migrations: {
-      glob: path.join(__dirname, "migrations", "*.js"),
-      resolve: ({ name, path: filepath }) => {
-        return {
-          name,
-          up: async () => {
-            const migration = await import(filepath);
-            return migration.up({ context: mongoose.connection.db });
-          },
-          down: async () => {
-            const migration = await import(filepath);
-            return migration.down({ context: mongoose.connection.db });
-          },
-        };
+    migrations: files.map(({ name, path: filepath }) => ({
+      name,
+      up: async () => {
+        console.log(`[DEBUG] Running migration up: ${name}`);
+        const migration = await import(`file://${filepath}`);
+        return migration.up({ context: mongoose.connection.db });
       },
-    },
+      down: async () => {
+        console.log(`[DEBUG] Running migration down: ${name}`);
+        const migration = await import(`file://${filepath}`);
+        return migration.down({ context: mongoose.connection.db });
+      },
+    })),
     create: {
       folder: path.join(__dirname, "migrations"),
       template: filepath => [
