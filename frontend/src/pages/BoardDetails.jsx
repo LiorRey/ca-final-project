@@ -141,13 +141,7 @@ export function BoardDetails() {
         console.log(before, after);
 
         if (listToMove) {
-          moveList(
-            board._id,
-            source.index,
-            destination.index,
-            board._id,
-            board._id
-          );
+          moveList(listToMove.id, board._id, destination.index);
         }
         return;
       }

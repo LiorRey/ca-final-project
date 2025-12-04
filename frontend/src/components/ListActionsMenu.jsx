@@ -60,13 +60,7 @@ export function ListActionsMenu({
   }
 
   async function handleMoveList({ targetBoardId, targetPosition }) {
-    await moveList(
-      currentBoard._id,
-      activeListIndex,
-      targetPosition,
-      targetBoardId,
-      currentBoard._id
-    );
+    await moveList(list.id, targetBoardId, targetPosition);
 
     if (targetBoardId !== currentBoard._id) {
       loadBoards();

@@ -1,5 +1,6 @@
 import { getDefaultFilter } from "../../services/filter-service";
 import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
+import { sortByPosition } from "../../services/board/fractional-index-service";
 
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
@@ -18,7 +19,7 @@ export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
-export const MOVE_LIST = "MOVE_LIST";
+export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
 export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
 export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
@@ -106,13 +107,16 @@ const handlers = {
     ...state,
     board: action.payload,
   }),
-  [MOVE_LIST]: (state, action) => ({
-    ...state,
-    board: {
-      ...state.board,
-      lists: action.payload,
-    },
-  }),
+  ...createAsyncHandlers(MOVE_LIST, MOVE_LIST.KEY),
+  [MOVE_LIST.SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      board: {
+        ...state.board,
+        lists: action.payload,
+      },
+    };
+  },
   ...createAsyncHandlers(COPY_LIST, COPY_LIST.KEY),
   [COPY_LIST.SUCCESS]: (state, action) => ({
     ...state,

@@ -115,28 +115,11 @@ export async function createList(boardId, listData) {
   }
 }
 
-export async function moveList(
-  sourceBoardId,
-  sourceIndex,
-  targetIndex,
-  targetBoardId,
-  currentBoardId
-) {
-  try {
-    const updatedLists = await boardService.moveList(
-      sourceBoardId,
-      sourceIndex,
-      targetIndex,
-      targetBoardId,
-      currentBoardId
-    );
-    store.dispatch(moveListAction(updatedLists));
-    return updatedLists;
-  } catch (error) {
-    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
-    throw error;
-  }
-}
+export const moveList = createAsyncAction(
+  MOVE_LIST,
+  boardService.moveList,
+  store
+);
 
 export const copyList = createAsyncAction(
   COPY_LIST,
@@ -295,8 +278,12 @@ export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
 }
 
-export function moveListAction(lists) {
-  return { type: MOVE_LIST, payload: lists };
+export function addCardAction(card, listId) {
+  return { type: ADD_CARD, payload: { card, listId } };
+}
+
+export function editCardAction(card, listId) {
+  return { type: EDIT_CARD, payload: { card, listId } };
 }
 
 export function deleteCardAction(cardId, listId) {

@@ -375,96 +375,48 @@ export async function createList(boardId, listData) {
   }
 }
 
-export async function moveList(
-  sourceBoardId,
-  sourceIndex,
-  targetIndex,
-  targetBoardId,
-  currentBoardId
-) {
+async function updateListPosition(board, list, targetIndex) {
+  const newPosition = calculateNewPosition(board.lists, targetIndex, list.id);
+
+  const updatedList = { ...list, position: newPosition };
+  const updatedLists = board.lists.map(l =>
+    l.id === list.id ? updatedList : l
+  );
+  const sortedLists = sortByPosition(updatedLists);
+
+  const boardToUpdate = updateBoardFields(board, { lists: sortedLists });
+  await save(boardToUpdate);
+
+  return sortedLists;
+}
+
+export async function moveList(listId, targetBoardId, targetIndex) {
   try {
-    if (sourceBoardId === targetBoardId) {
-      const board = await getById(sourceBoardId);
-      if (!board) throw new Error("Board not found");
-      return await moveSameBoard(board, sourceIndex, targetIndex);
+    const allBoards = await query();
+
+    const sourceBoard = allBoards.find(board =>
+      board.lists.some(l => l.id === listId)
+    );
+    if (!sourceBoard) throw new Error("Source board not found");
+
+    const movedList = _findList(sourceBoard, listId);
+
+    if (sourceBoard._id !== targetBoardId) {
+      sourceBoard.lists = sourceBoard.lists.filter(l => l.id !== listId);
+      await save(sourceBoard);
+
+      const targetBoard = allBoards.find(board => board._id === targetBoardId);
+      if (!targetBoard) throw new Error("Board not found");
+
+      targetBoard.lists.push(movedList);
+      return await updateListPosition(targetBoard, movedList, targetIndex);
     } else {
-      const sourceBoard = await getById(sourceBoardId);
-      const targetBoard = await getById(targetBoardId);
-      if (!sourceBoard || !targetBoard) throw new Error("Board not found");
-      return await moveCrossBoard(
-        sourceBoard,
-        targetBoard,
-        sourceIndex,
-        targetIndex,
-        currentBoardId
-      );
+      return await updateListPosition(sourceBoard, movedList, targetIndex);
     }
   } catch (error) {
     console.error("Error moving list:", error);
     throw error;
   }
-}
-
-async function moveSameBoard(board, sourceIndex, targetIndex) {
-  const movedList = board.lists[sourceIndex];
-  if (!movedList) throw new Error("List not found at source index");
-
-  const newPosition = calculateNewPosition(
-    board.lists,
-    targetIndex,
-    movedList.id
-  );
-
-  const updatedList = { ...movedList, position: newPosition };
-
-  const updatedLists = board.lists.map(list =>
-    list.id === movedList.id ? updatedList : list
-  );
-
-  const sortedLists = sortByPosition(updatedLists);
-
-  const updatedBoard = updateBoardFields(board, { lists: sortedLists });
-  await save(updatedBoard);
-
-  return sortedLists;
-}
-
-async function moveCrossBoard(
-  sourceBoard,
-  targetBoard,
-  sourceIndex,
-  targetIndex,
-  currentBoardId
-) {
-  const movedList = sourceBoard.lists[sourceIndex];
-  if (!movedList) throw new Error("List not found at source index");
-
-  const newPosition = calculateNewPosition(targetBoard.lists, targetIndex);
-
-  const updatedList = { ...movedList, position: newPosition };
-
-  const updatedSourceLists = sourceBoard.lists.filter(
-    list => list.id !== movedList.id
-  );
-
-  const updatedTargetLists = sortByPosition([
-    ...targetBoard.lists,
-    updatedList,
-  ]);
-
-  const updatedSourceBoard = updateBoardFields(sourceBoard, {
-    lists: updatedSourceLists,
-  });
-  const updatedTargetBoard = updateBoardFields(targetBoard, {
-    lists: updatedTargetLists,
-  });
-
-  await save(updatedSourceBoard);
-  await save(updatedTargetBoard);
-
-  return currentBoardId === sourceBoard._id
-    ? updatedSourceLists
-    : updatedTargetLists;
 }
 
 export async function copyList(boardId, listId, newName) {
