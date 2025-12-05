@@ -75,7 +75,7 @@ export function List({
   function getCardLabels(card) {
     return card && card.labels && boardLabels && card.labels.length > 0
       ? card.labels
-          .map(labelId => boardLabels.find(l => l.id === labelId))
+          .map(labelId => boardLabels.find(l => l._id === labelId))
           .filter(Boolean)
       : [];
   }

@@ -64,7 +64,7 @@ const handlers = {
     loading: { ...state.loading, [ARCHIVE_LIST.KEY]: false },
     board: {
       ...state.board,
-      lists: state.board.lists.filter(list => list.id !== action.payload.id),
+      lists: state.board.lists.filter(list => list._id !== action.payload._id),
     },
   }),
   ...createAsyncHandlers(UNARCHIVE_LIST, UNARCHIVE_LIST.KEY),
@@ -78,7 +78,7 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.id
+        list._id === action.payload._id
           ? {
               ...list,
               cards: action.payload.cards.filter(card => !card.archivedAt),
@@ -133,7 +133,7 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.id ? action.payload : list
+        list._id === action.payload._id ? action.payload : list
       ),
     },
   }),
@@ -144,11 +144,13 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card.id === action.payload.card.id ? action.payload.card : card
+                card._id === action.payload.card._id
+                  ? action.payload.card
+                  : card
               ),
             }
           : list
@@ -160,11 +162,11 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.filter(
-                card => card.id !== action.payload.cardId
+                card => card._id !== action.payload.cardId
               ),
             }
           : list
@@ -178,7 +180,7 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.id ? action.payload : list
+        list._id === action.payload._id ? action.payload : list
       ),
     },
   }),
@@ -207,7 +209,7 @@ const handlers = {
     board: {
       ...state.board,
       labels: state.board.labels.map(l =>
-        l.id === action.payload.id ? action.payload : l
+        l._id === action.payload._id ? action.payload : l
       ),
     },
   }),
@@ -217,7 +219,7 @@ const handlers = {
     loading: { ...state.loading, [DELETE_LABEL.KEY]: false },
     board: {
       ...state.board,
-      labels: state.board.labels.filter(l => l.id !== action.payload),
+      labels: state.board.labels.filter(l => l._id !== action.payload),
       lists: state.board.lists.map(list => ({
         ...list,
         cards: list.cards.map(card => ({
@@ -234,11 +236,11 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card.id === action.payload.cardId
+                card._id === action.payload.cardId
                   ? {
                       ...card,
                       labels: action.payload.updatedCardLabels,

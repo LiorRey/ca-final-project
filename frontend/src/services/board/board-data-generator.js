@@ -42,7 +42,7 @@ function generateBoardLabels() {
   return faker.helpers
     .arrayElements(LABEL_OPTIONS, numLabels)
     .map(({ title, color }) => ({
-      id: crypto.randomUUID(),
+      _id: crypto.randomUUID(),
       title,
       color,
     }));
@@ -59,7 +59,7 @@ export function generateCard(
   const numLabels = faker.number.int({ min: 0, max: 4 });
   const labels = boardLabels.length
     ? faker.helpers.arrayElements(
-        boardLabels.map(l => l.id),
+        boardLabels.map(l => l._id),
         numLabels
       )
     : [];
@@ -88,7 +88,7 @@ export function generateCard(
     : undefined;
 
   const card = {
-    id: cardId,
+    _id: cardId,
     title: faker.company.buzzPhrase(),
     description: faker.lorem.sentence({ min: 8, max: 15 }),
     labels,
@@ -130,7 +130,7 @@ export function generateList(
   );
 
   const list = {
-    id: crypto.randomUUID(),
+    _id: crypto.randomUUID(),
     title: faker.helpers.arrayElement(listNames),
     cards,
     archivedAt: null,
@@ -162,7 +162,7 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
     );
   });
 
-  const listOrder = lists.map(list => list.id);
+  const listOrder = lists.map(list => list._id);
 
   const activities = generateBoardActivities(boardId, lists, 5);
 
@@ -221,7 +221,7 @@ export function generateActivity(
   }
 
   const activity = {
-    id: crypto.randomUUID(),
+    _id: crypto.randomUUID(),
     type: type,
     createdAt: faker.date.recent({ days: 30 }).getTime(),
     byMember,
@@ -259,8 +259,8 @@ function generateBoardActivities(
 
     const activity = generateActivity(
       boardId,
-      randomList.id,
-      randomCard?.id || null,
+      randomList._id,
+      randomCard?._id || null,
       {},
       availableUsers
     );
@@ -321,7 +321,7 @@ export function generateBoardWithUsers(
     );
   });
 
-  const listOrder = lists.map(list => list.id);
+  const listOrder = lists.map(list => list._id);
 
   const activities = generateBoardActivities(boardId, lists, 8, users);
 

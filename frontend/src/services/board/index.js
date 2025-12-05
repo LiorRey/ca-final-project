@@ -19,7 +19,7 @@ function getEmptyBoard() {
 
 export function getEmptyLabel() {
   return {
-    id: crypto.randomUUID(),
+    _id: crypto.randomUUID(),
     title: "",
     color: "",
   };

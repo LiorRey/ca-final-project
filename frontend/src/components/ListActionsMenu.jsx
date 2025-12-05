@@ -38,10 +38,10 @@ export function ListActionsMenu({
       setActiveAction(null);
       onClose();
     } else if (key === "archiveList") {
-      archiveList(currentBoard._id, list.id);
+      archiveList(currentBoard._id, list._id);
       onClose();
     } else if (key === "archiveAllCards") {
-      archiveAllCardsInList(currentBoard._id, list.id);
+      archiveAllCardsInList(currentBoard._id, list._id);
       onClose();
     } else {
       setActiveAction(key);
@@ -49,7 +49,7 @@ export function ListActionsMenu({
   }
 
   function handleMoveAllCards(destinationListId) {
-    onMoveAllCards(list.id, destinationListId);
+    onMoveAllCards(list._id, destinationListId);
     onClose();
   }
 
@@ -95,16 +95,16 @@ export function ListActionsMenu({
       {activeAction === "copy" ? (
         <CopyListForm
           initialValue={list.title}
-          onCopy={newName => handleCopyList(list.id, newName)}
+          onCopy={newName => handleCopyList(list._id, newName)}
           onCancel={handleCopyCancel}
         />
       ) : activeAction === "moveAll" ? (
         <MenuList className="popover-menu" dense>
           {currentBoard.lists.map(listItem => (
             <MenuItem
-              key={listItem.id}
-              disabled={listItem.id === list.id}
-              onClick={() => handleMoveAllCards(listItem.id)}
+              key={listItem._id}
+              disabled={listItem._id === list._id}
+              onClick={() => handleMoveAllCards(listItem._id)}
             >
               <ListItemText>{listItem.title}</ListItemText>
             </MenuItem>

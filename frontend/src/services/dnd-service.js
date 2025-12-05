@@ -17,10 +17,11 @@ export function reorderCards(
   draggableId
 ) {
   const sourceListIndex = lists.findIndex(
-    list => list.id === sourceDroppableId
+    list => list._id === sourceDroppableId || list._id === sourceDroppableId
   );
   const destinationListIndex = lists.findIndex(
-    list => list.id === destinationDroppableId
+    list =>
+      list._id === destinationDroppableId || list._id === destinationDroppableId
   );
 
   if (sourceListIndex === -1 || destinationListIndex === -1) {
@@ -30,7 +31,9 @@ export function reorderCards(
   const sourceList = lists[sourceListIndex];
   const destinationList = lists[destinationListIndex];
 
-  const cardToMove = sourceList.cards.find(card => card.id === draggableId);
+  const cardToMove = sourceList.cards.find(
+    card => card._id === draggableId || card._id === draggableId
+  );
 
   if (!cardToMove) {
     throw new Error("Card not found in source list");
@@ -90,8 +93,8 @@ export function reorderLists(lists, sourceIndex, destinationIndex) {
   const [listToMove] = newLists.splice(sourceIndex, 1);
   newLists.splice(destinationIndex, 0, listToMove);
 
-  const before = newLists[destinationIndex - 1]?.id || null;
-  const after = newLists[destinationIndex + 1]?.id || null;
+  const before = newLists[destinationIndex - 1]?._id || null;
+  const after = newLists[destinationIndex + 1]?._id || null;
 
   return { newLists, listToMove, before, after };
 }

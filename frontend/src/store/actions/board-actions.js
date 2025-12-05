@@ -245,11 +245,13 @@ export async function updateCardLabels(
       cardId,
       updatedCardLabels
     );
+    console.log("updatedCardLabels", updatedCardLabels);
     store.dispatch({
       type: UPDATE_CARD_LABELS.SUCCESS,
       payload: { listId, cardId, updatedCardLabels },
     });
   } catch (error) {
+    console.error("Error updating card labels:", error);
     store.dispatch({
       type: UPDATE_CARD_LABELS.FAILURE,
       payload: error.message,

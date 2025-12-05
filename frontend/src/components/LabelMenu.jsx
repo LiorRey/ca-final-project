@@ -62,9 +62,16 @@ export function LabelMenu({
   }
 
   function handleToggleLabel(labelId) {
-    const updatedCardLabels = card.labels.includes(labelId)
-      ? card.labels.filter(id => id !== labelId)
-      : [...card.labels, labelId];
+    let updatedCardLabels;
+    if (card.labels) {
+      updatedCardLabels = card.labels?.includes(labelId)
+        ? card.labels.filter(id => id !== labelId)
+        : [...card.labels, labelId];
+    } else {
+      updatedCardLabels = [];
+    }
+
+    console.log("updatedCardLabels", updatedCardLabels);
 
     updateCardLabels(boardId, listId, card._id, updatedCardLabels);
   }
@@ -112,9 +119,9 @@ export function LabelMenu({
           <ul className="labels-list">
             {filteredLabels.length > 0 ? (
               filteredLabels.map(label => {
-                const isChecked =
-                  card.labels &&
-                  card.labels.some(cardLabelId => cardLabelId === label._id);
+                const isChecked = card.labels
+                  ? card.labels.some(cardLabelId => cardLabelId === label._id)
+                  : false;
                 return (
                   <li key={label._id}>
                     <LabelMenuItem

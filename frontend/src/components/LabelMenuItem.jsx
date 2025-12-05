@@ -10,13 +10,13 @@ export function LabelMenuItem({
     <div className="label-menu-item">
       <input
         type="checkbox"
-        id={`label-${label.id}`}
+        id={`label-${label._id}`}
         checked={isChecked}
-        onChange={() => onToggleLabel(label.id)}
+        onChange={() => onToggleLabel(label._id)}
         className="label-checkbox"
       />
       <label
-        htmlFor={`label-${label.id}`}
+        htmlFor={`label-${label._id}`}
         className={`label-color-box label-color-option ${label.color}`}
       >
         {label.title && <span className="label-title">{label.title}</span>}
