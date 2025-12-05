@@ -98,7 +98,7 @@ export function CardActionForm({
     [selectedList]
   );
 
-  const cardLabels = card?.labels || [];
+  const cardLabels = card?.labelIds || [];
   const cardLabelsCount = Array.isArray(cardLabels) ? cardLabels.length : 0;
   const cardMembers = card?.assignedTo || [];
   const cardMembersCount = Array.isArray(cardMembers) ? cardMembers.length : 0;

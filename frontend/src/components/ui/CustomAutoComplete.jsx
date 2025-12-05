@@ -53,7 +53,6 @@ export function CustomAutoComplete({
       disabled={disabled}
       fullWidth={fullWidth}
       disableClearable
-      clearOnFocus
       renderOption={renderOption}
       renderInput={params => (
         <TextField

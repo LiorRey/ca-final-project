@@ -176,8 +176,8 @@ export const editCard = createAsyncAction(
 
 export async function deleteCard(boardId, cardId, listId) {
   try {
-    const deletedCard = await boardService.deleteCard(boardId, cardId, listId);
-    store.dispatch(deleteCardAction(deletedCard.id, listId));
+    await boardService.deleteCard(boardId, cardId, listId);
+    store.dispatch(deleteCardAction(cardId, listId));
   } catch (error) {
     store.dispatch(
       setError("deleteCard", `Error deleting card: ${error.message}`)

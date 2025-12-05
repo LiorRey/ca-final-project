@@ -224,7 +224,7 @@ const handlers = {
         ...list,
         cards: list.cards.map(card => ({
           ...card,
-          labels: card.labels.filter(id => id !== action.payload),
+          labelIds: card.labelIds.filter(id => id !== action.payload),
         })),
       })),
     },
@@ -243,7 +243,7 @@ const handlers = {
                 card._id === action.payload.cardId
                   ? {
                       ...card,
-                      labels: action.payload.updatedCardLabels,
+                      labelIds: action.payload.updatedCardLabels,
                     }
                   : card
               ),

@@ -50,8 +50,8 @@ export function CardDetails() {
   }
 
   const cardLabels =
-    board.labels && card.labels && card.labels.length > 0
-      ? card.labels
+    board.labels && card.labelIds && card.labelIds.length > 0
+      ? card.labelIds
           .map(labelId => board.labels.find(l => l._id === labelId))
           .filter(Boolean)
       : [];

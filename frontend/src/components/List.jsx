@@ -73,8 +73,8 @@ export function List({
   }
 
   function getCardLabels(card) {
-    return card && card.labels && boardLabels && card.labels.length > 0
-      ? card.labels
+    return card && card.labelIds && boardLabels && card.labelIds.length > 0
+      ? card.labelIds
           .map(labelId => boardLabels.find(l => l._id === labelId))
           .filter(Boolean)
       : [];

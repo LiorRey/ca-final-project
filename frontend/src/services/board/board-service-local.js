@@ -152,7 +152,7 @@ function getEmptyCard() {
     _id: crypto.randomUUID(),
     title: "",
     description: "",
-    labels: [],
+    labelIds: [],
     createdAt: null,
     archivedAt: null,
   };
@@ -228,7 +228,7 @@ export async function copyCard(copyData, card) {
       _id: crypto.randomUUID(),
       title,
       assignedTo: keepMembers ? card.assignedTo : [],
-      labels: keepLabels ? card.labels : [],
+      labelIds: keepLabels ? card.labelIds : [],
     };
 
     if (position !== null && position !== undefined) {
@@ -563,7 +563,7 @@ async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
 
     await updateBoard(
       boardId,
-      { labels: updatedCardLabels },
+      { labelIds: updatedCardLabels },
       {
         listId,
         cardId,
@@ -616,7 +616,7 @@ async function deleteLabel(boardId, labelId) {
       ...list,
       cards: list.cards.map(card => ({
         ...card,
-        labels: card.labels.filter(id => id !== labelId),
+        labelIds: card.labelIds.filter(id => id !== labelId),
       })),
     }));
 

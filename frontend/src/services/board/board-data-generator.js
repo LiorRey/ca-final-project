@@ -57,7 +57,7 @@ export function generateCard(
   const createdAt = faker.date.past({ years: 1 }).getTime();
 
   const numLabels = faker.number.int({ min: 0, max: 4 });
-  const labels = boardLabels.length
+  const labelIds = boardLabels.length
     ? faker.helpers.arrayElements(
         boardLabels.map(l => l._id),
         numLabels
@@ -91,7 +91,7 @@ export function generateCard(
     _id: cardId,
     title: faker.company.buzzPhrase(),
     description: faker.lorem.sentence({ min: 8, max: 15 }),
-    labels,
+    labelIds,
     assignedTo,
     createdAt,
     archivedAt: null,
