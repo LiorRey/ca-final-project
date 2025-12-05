@@ -423,7 +423,6 @@ export async function moveList(listId, targetBoardId, targetIndex) {
     throw error;
   }
 }
-
 export async function copyList(boardId, listId, newName) {
   try {
     const board = await getById(boardId);
