@@ -13,16 +13,14 @@ export async function getBoardById(id) {
 }
 
 export async function getFullBoardById(id) {
-  const board = await Board.findById(id)
-    .populate({
-      path: "lists",
+  const board = await Board.findById(id).populate({
+    path: "lists",
+    options: { sort: { position: 1 } },
+    populate: {
+      path: "cards",
       options: { sort: { position: 1 } },
-      populate: {
-        path: "cards",
-        options: { sort: { position: 1 } },
-      },
-    })
-    .lean();
+    },
+  });
   return board;
 }
 

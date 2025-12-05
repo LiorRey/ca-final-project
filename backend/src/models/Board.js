@@ -54,6 +54,8 @@ const boardSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+boardSchema.set("toJSON", { virtuals: true });
+
 boardSchema.virtual("lists", {
   ref: "List",
   localField: "_id",
