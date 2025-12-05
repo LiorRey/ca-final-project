@@ -7,6 +7,7 @@ import {
   deleteCard,
   getCardsByLabel,
   getCardsByAssignedUser,
+  updateLabels,
 } from "../controllers/card-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 
@@ -20,6 +21,7 @@ protectedRouter.use(authenticate);
 
 protectedRouter.post("/", createCard);
 protectedRouter.put("/:id", updateCard);
+protectedRouter.put("/:id/labels", updateLabels);
 protectedRouter.delete("/:id", deleteCard);
 
 router.use("/", protectedRouter);

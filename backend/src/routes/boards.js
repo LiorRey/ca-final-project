@@ -6,6 +6,10 @@ import {
   getFullBoardById,
   updateBoard,
   deleteBoard,
+  getBoardLabels,
+  addBoardLabel,
+  updateBoardLabel,
+  deleteBoardLabel,
 } from "../controllers/board-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 import { loadBoard } from "../middleware/load-board.js";
@@ -25,6 +29,11 @@ protectedRouter.post("/", createBoard);
 // Routes with authorization and other middleware
 protectedRouter.put("/:id", loadBoard, updateBoard);
 protectedRouter.delete("/:id", loadBoard, deleteBoard);
+
+protectedRouter.get("/:id/labels", loadBoard, getBoardLabels);
+protectedRouter.post("/:id/labels", loadBoard, addBoardLabel);
+protectedRouter.put("/:id/labels/:labelId", loadBoard, updateBoardLabel);
+protectedRouter.delete("/:id/labels/:labelId", loadBoard, deleteBoardLabel);
 
 router.use("/", protectedRouter);
 

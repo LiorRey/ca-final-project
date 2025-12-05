@@ -1,7 +1,15 @@
 import { Card } from "../models/Card.js";
+import { calculateNewPosition } from "./position-service.js";
 
 export async function createCard(cardData) {
-  const { boardId, listId, title, description, position } = cardData;
+  const { boardId, listId, title, description, targetIndex } = cardData;
+  let position;
+  if (!targetIndex) {
+    const cards = await Card.find({ listId }).sort({ position: 1 });
+    position = calculateNewPosition(cards, cards.length);
+  } else {
+    // TODO: implement inserting at specific index
+  }
   const card = await Card.create({
     boardId,
     listId,
@@ -34,4 +42,15 @@ export async function updateCard(id, updateData) {
 
 export async function deleteCard(id) {
   return await Card.findByIdAndDelete(id);
+}
+
+export async function updateCardLabels(id, labelIds) {
+  return await Card.findByIdAndUpdate(
+    id,
+    { labelIds },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 }

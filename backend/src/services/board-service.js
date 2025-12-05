@@ -1,9 +1,4 @@
-// backend/src/services/board-service.js
-
 import { Board } from "../models/Board.js";
-import { List } from "../models/List.js";
-import { Card } from "../models/Card.js";
-import { groupBy } from "./utils-service.js";
 
 export async function createBoard(data) {
   return await Board.create(data);
@@ -40,4 +35,39 @@ export async function updateBoard(id, data) {
 
 export async function deleteBoard(id) {
   return await Board.findByIdAndDelete(id);
+}
+
+export async function getBoardLabels(boardId) {
+  const board = await Board.findById(boardId);
+  if (!board) throw new Error("Board not found");
+  return board;
+}
+
+export async function addLabelToBoard(boardId, labelData) {
+  return await Board.findByIdAndUpdate(
+    boardId,
+    { $push: { labels: labelData } },
+    { new: true, runValidators: true }
+  );
+}
+
+export async function updateLabelInBoard(boardId, labelId, labelData) {
+  return await Board.findOneAndUpdate(
+    { _id: boardId, "labels._id": labelId },
+    {
+      $set: {
+        "labels.$.title": labelData.title,
+        "labels.$.color": labelData.color,
+      },
+    },
+    { new: true, runValidators: true }
+  );
+}
+
+export async function removeLabelFromBoard(boardId, labelId) {
+  return await Board.findByIdAndUpdate(
+    boardId,
+    { $pull: { labels: { _id: labelId } } },
+    { new: true }
+  );
 }
