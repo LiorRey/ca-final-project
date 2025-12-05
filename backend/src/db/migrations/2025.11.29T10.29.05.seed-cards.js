@@ -27,7 +27,7 @@ export const up = async ({ context }) => {
           description: card.description,
           position: card.position,
           archivedAt: card.archivedAt ?? null,
-          comments: card.comments ?? [],
+          comments: [],
           createdAt: card.createdAt ?? new Date(),
           updatedAt: card.updatedAt ?? new Date(),
         });
