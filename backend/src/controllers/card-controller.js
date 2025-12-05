@@ -54,3 +54,33 @@ export async function updateLabels(req, res) {
 
   res.json({ card });
 }
+
+export async function addComment(req, res) {
+  const { cardId } = req.params;
+  const { text } = req.body;
+
+  const comment = await cardService.addComment(cardId, req.currentUser, text);
+  res.status(201).json({ comment });
+}
+
+export async function updateComment(req, res) {
+  const { cardId, commentId } = req.params;
+  const { text } = req.body;
+
+  const comment = await cardService.updateComment(cardId, commentId, text);
+  res.json({ comment });
+}
+
+export async function deleteComment(req, res) {
+  const { cardId, commentId } = req.params;
+
+  await cardService.deleteComment(cardId, commentId);
+  res.status(204).send();
+}
+
+export async function getComments(req, res) {
+  const { cardId } = req.params;
+
+  const comments = await cardService.getComments(cardId);
+  res.json({ comments });
+}
