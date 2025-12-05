@@ -43,3 +43,14 @@ export async function updateCard(id, updateData) {
 export async function deleteCard(id) {
   return await Card.findByIdAndDelete(id);
 }
+
+export async function updateCardLabels(id, labelIds) {
+  return await Card.findByIdAndUpdate(
+    id,
+    { labelIds },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+}

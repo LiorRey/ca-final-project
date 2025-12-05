@@ -46,3 +46,11 @@ export async function getCardsByAssignedUser(req, res) {
   });
   res.json({ cards });
 }
+
+export async function updateLabels(req, res) {
+  const { labelIds } = req.body;
+  const card = await cardService.updateCardLabels(req.params.id, labelIds);
+  if (!card) throw createError(404, "Card not found");
+
+  res.json({ card });
+}
