@@ -60,6 +60,13 @@ export async function updateBoard(req, res) {
   }
 }
 
+export async function deleteBoard(req, res) {
+  const board = await boardService.deleteBoard(req.params.id);
+  if (!board) throw createError(404, "Board not found");
+
+  res.status(204).send();
+}
+
 export async function getBoardLabels(req, res) {
   const board = await boardService.getBoardLabels(req.params.id);
   res.json({ labels: board.labels });
