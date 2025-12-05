@@ -47,29 +47,11 @@
   --bg-turquoise: #00aecc;
   --bg-gray: #838c91;
 
-  /* Dynamic Board Background Colors - Set via JavaScript */
-  --board-hue: 35;
-  --board-saturation: 63.7%;
-  --board-lightness: 51.4%;
-
-  /* Calculated variants for board theming */
-  --board-color: hsl(
-    var(--board-hue),
-    var(--board-saturation),
-    var(--board-lightness)
+  --board-bg-overlay-gradient: linear-gradient(
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.3)
   );
-  --board-color-darkened: hsl(
-    var(--board-hue),
-    var(--board-saturation),
-    calc(var(--board-lightness) * 0.64)
-  );
-  --dynamic-background-transparent: hsla(
-    var(--board-hue),
-    var(--board-saturation),
-    calc(var(--board-lightness) * 0.64),
-    0.9
-  );
-  --board-header-background-color: rgba(0, 0, 0, 0.24);
+  --board-header-bg-overlay: rgba(0, 0, 0, 0.24);
 
   /* Label Colors */
   --label-green-bg: rgb(15, 92, 46);
@@ -134,4 +116,239 @@
   --action-btn-color-active: var(--action-btn-color-default);
 
   --form-input-color-default: #bfc1c4;
+}
+
+/* Board Background Color Classes - Override HSL values */
+.board-bg-blue {
+  --board-hue: 203;
+  --board-saturation: 100%;
+  --board-lightness: 37.5%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-orange {
+  --board-hue: 35;
+  --board-saturation: 63.7%;
+  --board-lightness: 51.4%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-green {
+  --board-hue: 107;
+  --board-saturation: 45.5%;
+  --board-lightness: 35.9%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-red {
+  --board-hue: 9;
+  --board-saturation: 48%;
+  --board-lightness: 45.5%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-purple {
+  --board-hue: 271;
+  --board-saturation: 32.3%;
+  --board-lightness: 50.4%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-pink {
+  --board-hue: 334;
+  --board-saturation: 45.5%;
+  --board-lightness: 56.9%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-emerald {
+  --board-hue: 146;
+  --board-saturation: 45.8%;
+  --board-lightness: 51.2%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-turquoise {
+  --board-hue: 190;
+  --board-saturation: 100%;
+  --board-lightness: 40%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
+}
+
+.board-bg-gray {
+  --board-hue: 200;
+  --board-saturation: 6.1%;
+  --board-lightness: 54.9%;
+  --board-bg-color: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    var(--board-lightness)
+  );
+  --board-bg-color-darkened: hsl(
+    var(--board-hue),
+    var(--board-saturation),
+    calc(var(--board-lightness) * 0.64)
+  );
+  --board-header-bg-gradient: linear-gradient(
+    to bottom,
+    hsla(
+      var(--board-hue),
+      var(--board-saturation),
+      calc(var(--board-lightness) * 0.64),
+      0.9
+    ),
+    var(--board-header-bg-overlay)
+  );
 }

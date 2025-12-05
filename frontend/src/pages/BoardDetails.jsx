@@ -28,8 +28,8 @@ import {
   moveAllCards,
   moveCard,
   moveList,
+  updateBoard,
 } from "../store/actions/board-actions";
-import { setBoardColorVariables } from "../services/color-utils";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
@@ -68,12 +68,6 @@ export function BoardDetails() {
     const filterBy = serializeFiltersToSearchParams(filters);
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
-
-  useEffect(() => {
-    if (board?.appearance?.background) {
-      setBoardColorVariables(board.appearance.background);
-    }
-  }, [board?.appearance?.background]);
 
   async function onCopyList(listId, newName) {
     try {
@@ -128,8 +122,6 @@ export function BoardDetails() {
 
   async function handleSelectBackground(selectedColor) {
     try {
-      setBoardColorVariables(selectedColor);
-
       await updateBoard(board._id, {
         appearance: { background: selectedColor },
       });
@@ -208,9 +200,16 @@ export function BoardDetails() {
     return <section className="board-container">Loading...</section>;
   }
 
+  function getBackgroundClass(colorName) {
+    if (!colorName) return "board-bg-blue";
+    return `board-bg-${colorName}`;
+  }
+
+  const backgroundClass = getBackgroundClass(board.appearance.background);
+
   return (
-    <section className="board-container">
-      <header className="board-header">
+    <section className={`board-container ${backgroundClass}`}>
+      <header className={`board-header ${backgroundClass}`}>
         <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
           <FilterMenu />
@@ -280,7 +279,7 @@ export function BoardDetails() {
         anchorEl={backgroundSelectorAnchorEl}
         open={Boolean(backgroundSelectorAnchorEl)}
         onClose={handleCloseBackgroundSelector}
-        currentBackground={board.appearance?.background || "#0079bf"}
+        currentBackground={board.appearance.background || "blue"}
         onSelectBackground={handleSelectBackground}
       />
     </section>

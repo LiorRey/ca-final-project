@@ -8,20 +8,16 @@
   grid-template-rows: auto 1fr;
   height: 100%;
   width: 100%;
-  background-color: var(--board-color);
+  background-color: var(--board-bg-color);
   background-blend-mode: darken;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  background-image: var(--board-bg-overlay-gradient);
 }
 
 .board-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(
-    to bottom,
-    var(--dynamic-background-transparent),
-    var(--board-header-background-color)
-  );
+  background: var(--board-header-bg-gradient);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
