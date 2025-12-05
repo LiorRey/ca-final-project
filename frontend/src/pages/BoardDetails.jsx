@@ -208,8 +208,8 @@ export function BoardDetails() {
   const backgroundClass = getBackgroundClass(board.appearance.background);
 
   return (
-    <section className={`board-container ${backgroundClass}`}>
-      <header className={`board-header ${backgroundClass}`}>
+    <section className={`board-container board-bg-base ${backgroundClass}`}>
+      <header className={`board-header`}>
         <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
           <FilterMenu />
