@@ -3,7 +3,11 @@ import createError from "http-errors";
 
 export async function createBoard(req, res) {
   try {
-    const { title, description, owner } = req.body;
+    const { title, description } = req.body;
+    const owner = {
+      userId: req.currentUser._id,
+      username: req.currentUser.username,
+    };
     const board = await boardService.createBoard({ title, description, owner });
     res.status(201).json({ board });
   } catch (err) {

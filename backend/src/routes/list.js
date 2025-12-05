@@ -9,19 +9,16 @@ import {
   deleteList,
 } from "../controllers/list-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
+import { canModifyList, canCreateList } from "../middleware/authorize.js";
 
 const router = express.Router();
 
-const protectedRouter = express.Router();
-protectedRouter.use(authenticate);
-
 router.get("/", getListsByBoardId);
-protectedRouter.get("/:id", getListById);
-protectedRouter.post("/", createList);
-protectedRouter.put("/:id", updateList);
-protectedRouter.put("/:id/move", moveList);
-protectedRouter.put("/:id/archive", archiveList);
-protectedRouter.delete("/:id", deleteList);
+router.get("/:id", getListById);
+router.post("/", authenticate, canCreateList(), createList);
+router.put("/:id", authenticate, canModifyList(), updateList);
+router.put("/:id/move", authenticate, canModifyList(), moveList);
+router.put("/:id/archive", authenticate, canModifyList(), archiveList);
+router.delete("/:id", authenticate, canModifyList(), deleteList);
 
-router.use(protectedRouter);
 export default router;
