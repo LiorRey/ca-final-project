@@ -8,15 +8,30 @@ const commentSchema = new mongoose.Schema(
         ref: "User",
         required: true,
       },
+      username: {
+        type: String,
+        required: true,
+      },
     },
     text: {
       type: String,
       required: true,
       trim: true,
     },
+    isEdited: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
+
+commentSchema.pre("save", function (next) {
+  if (!this.isNew && this.isModified("text")) {
+    this.isEdited = true;
+  }
+  next();
+});
 
 const cardSchema = new mongoose.Schema(
   {
