@@ -74,15 +74,6 @@ const cardSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-        assignedAt: {
-          type: Date,
-          default: Date.now,
-        },
-        assignedBy: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
       },
     ],
     archivedAt: {
