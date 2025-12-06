@@ -80,6 +80,26 @@ const cardSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    startDate: {
+      type: Date,
+      default: null,
+      validate: {
+        validator: function (startDate) {
+          return !startDate || !this.dueDate || startDate <= this.dueDate;
+        },
+        message: "Start date must be before or equal to due date",
+      },
+    },
+    dueDate: {
+      type: Date,
+      default: null,
+      validate: {
+        validator: function (dueDate) {
+          return !dueDate || !this.startDate || this.startDate <= dueDate;
+        },
+        message: "Due date must be after or equal to start date",
+      },
+    },
     comments: [commentSchema],
   },
   { timestamps: true }
