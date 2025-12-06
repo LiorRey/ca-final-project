@@ -330,15 +330,39 @@
               "position": "a1",
               "archivedAt": null,
               "deletedAt": null,
-              "labels": ["review", "blocked"]
+              "labels": ["review", "blocked"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "This needs more testing before deployment",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "grow viral metrics",
               "description": "Dummy card description",
               "position": "a2",
               "archivedAt": null,
-              "comments": [],
-              "labels": ["enhancement", "frontend", "documentation", "design"]
+              "labels": ["enhancement", "frontend", "documentation", "design"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "testuser"
+                  },
+                  "text": "Great progress on the performance improvements!",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "Robin59"
+                  },
+                  "text": "Consider adding more unit tests to ensure stability",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "facilitate 24/7 synergies",
@@ -353,13 +377,35 @@
               "description": "Dummy card description",
               "position": "a4",
               "archivedAt": null,
-              "comments": [],
               "labels": [
                 "enhancement",
                 "frontend",
                 "design",
                 "review",
                 "documentation"
+              ],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "The architecture team should review this proposal",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "Godfrey.Wintheiser16"
+                  },
+                  "text": "Make sure to update documentation after changes",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "Marisol_Lueilwitz"
+                  },
+                  "text": "Let's schedule a planning meeting for next week",
+                  "isEdited": false
+                }
               ]
             },
             {
@@ -367,16 +413,39 @@
               "description": "Dummy card description",
               "position": "a5",
               "archivedAt": null,
-              "comments": [],
-              "labels": []
+              "labels": [],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "testuser"
+                  },
+                  "text": "User feedback has been very positive on this feature",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "deploy transparent architectures",
               "description": "Dummy card description",
               "position": "a6",
               "archivedAt": null,
-              "comments": [],
-              "labels": ["frontend", "documentation", "review"]
+              "labels": ["frontend", "documentation", "review"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "Robin59"
+                  },
+                  "text": "Deployment went smoothly, great job team!",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "Need to monitor performance metrics post-launch",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "integrate intuitive applications",
@@ -395,13 +464,23 @@
               "title": "syndicate intuitive architectures",
               "description": "Dummy card description",
               "position": "a0",
-              "labels": ["review", "frontend", "design", "priority:low"]
+              "labels": ["review", "frontend", "design", "priority:low"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "Robin59"
+                  },
+                  "text": "Architecture looks solid, ready for review",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "grow cross-media supply-chains",
               "description": "Dummy card description",
               "position": "a1",
-              "labels": ["review", "enhancement"]
+              "labels": ["review", "enhancement"],
+              "comments": []
             },
             {
               "title": "iterate dynamic communities",
@@ -413,6 +492,22 @@
                 "enhancement",
                 "design",
                 "documentation"
+              ],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "Excellent work on the community engagement feature",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "testuser"
+                  },
+                  "text": "Need to add more documentation for this feature",
+                  "isEdited": false
+                }
               ]
             }
           ]
