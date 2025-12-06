@@ -1,6 +1,7 @@
 import createError from "http-errors";
 import * as cardService from "../services/card-service.js";
 import { Card } from "../models/Card.js";
+import { User } from "../models/User.js";
 
 export async function createCard(req, res) {
   const card = await cardService.createCard(req.body);
@@ -53,4 +54,24 @@ export async function updateLabels(req, res) {
   if (!card) throw createError(404, "Card not found");
 
   res.json({ card });
+}
+
+export async function addAssignee(req, res) {
+  const card = await cardService.addCardAssignee(
+    req.params.id,
+    req.body.userId
+  );
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(200).json({ card });
+}
+
+export async function removeAssignee(req, res) {
+  const card = await cardService.removeCardAssignee(
+    req.params.id,
+    req.params.userId
+  );
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(200).json({ card });
 }

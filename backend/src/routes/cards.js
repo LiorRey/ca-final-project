@@ -8,6 +8,8 @@ import {
   getCardsByLabel,
   getCardsByAssignedUser,
   updateLabels,
+  addAssignee,
+  removeAssignee,
 } from "../controllers/card-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 import { canModifyCard, canCreateCard } from "../middleware/authorize.js";
@@ -23,5 +25,13 @@ router.put("/:id/labels", authenticate, canModifyCard(), updateLabels);
 
 // router.get("/label/:labelId", getCardsByLabel);
 // router.get("/assigned/:userId", getCardsByAssignedUser);
+
+router.post("/:id/assignees", authenticate, canModifyCard(), addAssignee);
+router.delete(
+  "/:id/assignees/:userId",
+  authenticate,
+  canModifyCard(),
+  removeAssignee
+);
 
 export default router;
