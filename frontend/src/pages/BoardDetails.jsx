@@ -12,7 +12,6 @@ import { FilterMenu } from "../components/FilterMenu";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { BoardMenu } from "../components/ui/BoardMenu";
-import { BackgroundSelector } from "../components/BackgroundSelector";
 import { useCardFilters } from "../hooks/useCardFilters";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import {
@@ -28,14 +27,11 @@ import {
   moveAllCards,
   moveCard,
   moveList,
-  updateBoard,
 } from "../store/actions/board-actions";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const [mainMenuAnchorEl, setMainMenuAnchorEl] = useState(null);
-  const [backgroundSelectorAnchorEl, setBackgroundSelectorAnchorEl] =
-    useState(null);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
@@ -108,26 +104,6 @@ export function BoardDetails() {
 
   function handleCloseMainMenu() {
     setMainMenuAnchorEl(null);
-  }
-
-  function handleMenuItemClick(itemId) {
-    if (itemId === "background") {
-      setBackgroundSelectorAnchorEl(mainMenuAnchorEl);
-    }
-  }
-
-  function handleCloseBackgroundSelector() {
-    setBackgroundSelectorAnchorEl(null);
-  }
-
-  async function handleSelectBackground(selectedColor) {
-    try {
-      await updateBoard(board._id, {
-        appearance: { background: selectedColor },
-      });
-    } catch (error) {
-      console.error("Update background failed:", error);
-    }
   }
 
   function handleDragStart() {}
@@ -271,16 +247,8 @@ export function BoardDetails() {
       </div>
       <BoardMenu
         anchorEl={mainMenuAnchorEl}
-        open={Boolean(mainMenuAnchorEl)}
-        onClose={handleCloseMainMenu}
-        onItemClick={handleMenuItemClick}
-      />
-      <BackgroundSelector
-        anchorEl={backgroundSelectorAnchorEl}
-        open={Boolean(backgroundSelectorAnchorEl)}
-        onClose={handleCloseBackgroundSelector}
-        currentBackground={board.appearance.background || "blue"}
-        onSelectBackground={handleSelectBackground}
+        isBoardMenuOpen={Boolean(mainMenuAnchorEl)}
+        onCloseBoardMenu={handleCloseMainMenu}
       />
     </section>
   );
