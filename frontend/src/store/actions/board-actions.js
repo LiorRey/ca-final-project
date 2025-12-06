@@ -47,7 +47,7 @@ export async function loadBoards() {
 export async function loadBoard(boardId, filterBy = {}) {
   try {
     store.dispatch(setLoading("loadBoard", true));
-    const board = await boardService.getById(boardId, filterBy);
+    const board = await boardService.getFullById(boardId, filterBy);
     store.dispatch(setBoard(board));
   } catch (error) {
     store.dispatch(
@@ -115,28 +115,11 @@ export async function createList(boardId, listData) {
   }
 }
 
-export async function moveList(
-  sourceBoardId,
-  sourceIndex,
-  targetIndex,
-  targetBoardId,
-  currentBoardId
-) {
-  try {
-    const updatedLists = await boardService.moveList(
-      sourceBoardId,
-      sourceIndex,
-      targetIndex,
-      targetBoardId,
-      currentBoardId
-    );
-    store.dispatch(moveListAction(updatedLists));
-    return updatedLists;
-  } catch (error) {
-    store.dispatch(setError("moveList", `Error moving list: ${error.message}`));
-    throw error;
-  }
-}
+export const moveList = createAsyncAction(
+  MOVE_LIST,
+  boardService.moveList,
+  store
+);
 
 export const copyList = createAsyncAction(
   COPY_LIST,
@@ -193,8 +176,8 @@ export const editCard = createAsyncAction(
 
 export async function deleteCard(boardId, cardId, listId) {
   try {
-    const deletedCard = await boardService.deleteCard(boardId, cardId, listId);
-    store.dispatch(deleteCardAction(deletedCard.id, listId));
+    await boardService.deleteCard(boardId, cardId, listId);
+    store.dispatch(deleteCardAction(cardId, listId));
   } catch (error) {
     store.dispatch(
       setError("deleteCard", `Error deleting card: ${error.message}`)
@@ -262,11 +245,13 @@ export async function updateCardLabels(
       cardId,
       updatedCardLabels
     );
+    console.log("updatedCardLabels", updatedCardLabels);
     store.dispatch({
       type: UPDATE_CARD_LABELS.SUCCESS,
       payload: { listId, cardId, updatedCardLabels },
     });
   } catch (error) {
+    console.error("Error updating card labels:", error);
     store.dispatch({
       type: UPDATE_CARD_LABELS.FAILURE,
       payload: error.message,
@@ -295,8 +280,12 @@ export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
 }
 
-export function moveListAction(lists) {
-  return { type: MOVE_LIST, payload: lists };
+export function addCardAction(card, listId) {
+  return { type: ADD_CARD, payload: { card, listId } };
+}
+
+export function editCardAction(card, listId) {
+  return { type: EDIT_CARD, payload: { card, listId } };
 }
 
 export function deleteCardAction(cardId, listId) {

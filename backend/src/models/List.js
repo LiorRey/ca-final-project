@@ -32,6 +32,8 @@ const listSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+listSchema.set("toJSON", { virtuals: true });
+
 listSchema.virtual("cards", {
   ref: "Card",
   localField: "_id",

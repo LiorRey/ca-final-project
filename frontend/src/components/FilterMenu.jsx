@@ -84,6 +84,7 @@ export function FilterMenu() {
   }
 
   function isSomeMembersSelected() {
+    if (!members || members.length === 0) return false;
     const filtered = members.filter(m => m._id !== CURRENT_USER_ID_PLACEHOLDER);
     const selectedCount = filtered.filter(m =>
       filters.members?.includes(m._id)

@@ -46,13 +46,13 @@ export function CardActionForm({
   }, []);
 
   const initialValues = useMemo(() => {
-    const currentList = board?.lists?.find(l => l.id === listId);
+    const currentList = board?.lists?.find(l => l._id === listId);
     const currentPosition =
-      currentList?.cards?.findIndex(c => c.id === card?.id) ?? 0;
+      currentList?.cards?.findIndex(c => c._id === card?._id) ?? 0;
 
     const baseValues = {
       boardId: board?._id || boards[0]?._id || "",
-      listId: listId || board?.lists?.[0]?.id || "",
+      listId: listId || board?.lists?.[0]?._id || "",
       position: currentPosition,
     };
 
@@ -84,12 +84,12 @@ export function CardActionForm({
   }, [values.boardId]);
 
   const selectedList = useMemo(
-    () => selectedBoardLists.find(l => l.id === values.listId) || null,
+    () => selectedBoardLists.find(l => l._id === values.listId) || null,
     [selectedBoardLists, values.listId]
   );
 
   const suggestedList = useMemo(
-    () => selectedBoardLists.find(l => l.id === values.listId) || null,
+    () => selectedBoardLists.find(l => l._id === values.listId) || null,
     [selectedBoardLists, values.listId]
   );
 
@@ -98,7 +98,7 @@ export function CardActionForm({
     [selectedList]
   );
 
-  const cardLabels = card?.labels || [];
+  const cardLabels = card?.labelIds || [];
   const cardLabelsCount = Array.isArray(cardLabels) ? cardLabels.length : 0;
   const cardMembers = card?.assignedTo || [];
   const cardMembersCount = Array.isArray(cardMembers) ? cardMembers.length : 0;
@@ -106,7 +106,7 @@ export function CardActionForm({
   async function handleBoardChange(newBoardId) {
     try {
       const lists = await boardService.getBoardListPreviews(newBoardId);
-      const firstListId = lists[0]?.id || "";
+      const firstListId = lists[0]?._id || "";
 
       setValues(prev => ({
         ...prev,
@@ -123,7 +123,7 @@ export function CardActionForm({
     if (suggestedList) {
       setValues(prev => ({
         ...prev,
-        listId: suggestedList.id,
+        listId: suggestedList._id,
       }));
     }
   }
@@ -256,7 +256,7 @@ export function CardActionForm({
             value={values.boardId}
             onChange={handleBoardChange}
             options={boards.map(b => ({
-              id: b._id,
+              _id: b._id,
               title: b.title,
             }))}
           />
@@ -284,7 +284,7 @@ export function CardActionForm({
             value={values.position}
             onChange={handlePositionChange}
             options={Array.from({ length: maxPosition }, (_, i) => ({
-              id: i,
+              _id: i,
               title: (i + 1).toString(),
             }))}
           />

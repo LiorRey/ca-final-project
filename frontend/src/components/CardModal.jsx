@@ -86,7 +86,7 @@ export function CardModal({
                   {cardLabels.map(label => (
                     <div
                       className={`modal-label ${label.color}`}
-                      key={label.id}
+                      key={label._id}
                     >
                       {label.title}
                     </div>

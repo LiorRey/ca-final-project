@@ -14,8 +14,8 @@ export function CardDetails() {
 
   const navigate = useNavigate();
   const board = useSelector(s => s.boards.board);
-  const list = board?.lists?.find(l => l.id === listId);
-  const card = list?.cards?.find(c => c.id === cardId);
+  const list = board?.lists?.find(l => l._id === listId);
+  const card = list?.cards?.find(c => c._id === cardId);
 
   useEffect(() => {
     if (!board || board._id !== boardId) {
@@ -50,9 +50,9 @@ export function CardDetails() {
   }
 
   const cardLabels =
-    board.labels && card.labels && card.labels.length > 0
-      ? card.labels
-          .map(labelId => board.labels.find(l => l.id === labelId))
+    board.labels && card.labelIds && card.labelIds.length > 0
+      ? card.labelIds
+          .map(labelId => board.labels.find(l => l._id === labelId))
           .filter(Boolean)
       : [];
 
@@ -60,7 +60,7 @@ export function CardDetails() {
     <section className="board-container">
       <CardModal
         boardId={boardId}
-        listId={list.id}
+        listId={list._id}
         listTitle={list.title}
         card={card}
         cardLabels={cardLabels}

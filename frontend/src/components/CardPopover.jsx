@@ -56,7 +56,7 @@ export function CardPopover({
   function handleCopyLinkClick(e) {
     e.stopPropagation();
     navigator.clipboard.writeText(
-      `${window.location.origin}/board/${boardId}/${listId}/${card.id}`
+      `${window.location.origin}/board/${boardId}/${listId}/${card._id}`
     );
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);

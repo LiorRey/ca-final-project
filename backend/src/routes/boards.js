@@ -6,26 +6,34 @@ import {
   getFullBoardById,
   updateBoard,
   deleteBoard,
+  getBoardLabels,
+  addBoardLabel,
+  updateBoardLabel,
+  deleteBoardLabel,
 } from "../controllers/board-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
-import { loadBoard } from "../middleware/load-board.js";
+import { canManageBoard, canCreateBoard } from "../middleware/authorize.js";
 
 const router = express.Router();
 
-// Public routes
 router.get("/", getAllBoards);
 router.get("/:id", getBoardById);
 router.get("/:id/full", getFullBoardById);
-
-// Protected routes
-const protectedRouter = express.Router();
-protectedRouter.use(authenticate);
-protectedRouter.post("/", createBoard);
-
-// Routes with authorization and other middleware
-protectedRouter.put("/:id", loadBoard, updateBoard);
-protectedRouter.delete("/:id", loadBoard, deleteBoard);
-
-router.use("/", protectedRouter);
-
+router.post("/", authenticate, canCreateBoard(), createBoard);
+router.put("/:id", authenticate, canManageBoard(), updateBoard);
+router.delete("/:id", authenticate, canManageBoard(), deleteBoard);
+router.get("/:id/labels", authenticate, canManageBoard(), getBoardLabels);
+router.post("/:id/labels", authenticate, canManageBoard(), addBoardLabel);
+router.put(
+  "/:id/labels/:labelId",
+  authenticate,
+  canManageBoard(),
+  updateBoardLabel
+);
+router.delete(
+  "/:id/labels/:labelId",
+  authenticate,
+  canManageBoard(),
+  deleteBoardLabel
+);
 export default router;

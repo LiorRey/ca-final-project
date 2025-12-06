@@ -34,7 +34,7 @@ export function generatePositionBetween(beforePosition, afterPosition) {
  */
 export function calculateNewPosition(items, targetIndex, movedItemId = null) {
   const relevantItems = movedItemId
-    ? items.filter(item => item.id !== movedItemId)
+    ? items.filter(item => item._id !== movedItemId)
     : items;
 
   const sortedItems = sortByPosition(relevantItems);

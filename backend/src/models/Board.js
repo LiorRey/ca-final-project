@@ -4,10 +4,12 @@ const labelSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    trim: true,
   },
   color: {
     type: String,
     required: true,
+    trim: true,
   },
 });
 
@@ -51,6 +53,8 @@ const boardSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+boardSchema.set("toJSON", { virtuals: true });
 
 boardSchema.virtual("lists", {
   ref: "List",

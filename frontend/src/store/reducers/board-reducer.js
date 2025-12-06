@@ -1,5 +1,6 @@
 import { getDefaultFilter } from "../../services/filter-service";
 import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
+import { sortByPosition } from "../../services/board/fractional-index-service";
 
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
@@ -18,7 +19,7 @@ export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
-export const MOVE_LIST = "MOVE_LIST";
+export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
 export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
 export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
@@ -63,7 +64,7 @@ const handlers = {
     loading: { ...state.loading, [ARCHIVE_LIST.KEY]: false },
     board: {
       ...state.board,
-      lists: state.board.lists.filter(list => list.id !== action.payload.id),
+      lists: state.board.lists.filter(list => list._id !== action.payload._id),
     },
   }),
   ...createAsyncHandlers(UNARCHIVE_LIST, UNARCHIVE_LIST.KEY),
@@ -77,7 +78,7 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.id
+        list._id === action.payload._id
           ? {
               ...list,
               cards: action.payload.cards.filter(card => !card.archivedAt),
@@ -106,13 +107,16 @@ const handlers = {
     ...state,
     board: action.payload,
   }),
-  [MOVE_LIST]: (state, action) => ({
-    ...state,
-    board: {
-      ...state.board,
-      lists: action.payload,
-    },
-  }),
+  ...createAsyncHandlers(MOVE_LIST, MOVE_LIST.KEY),
+  [MOVE_LIST.SUCCESS]: (state, action) => {
+    return {
+      ...state,
+      board: {
+        ...state.board,
+        lists: action.payload,
+      },
+    };
+  },
   ...createAsyncHandlers(COPY_LIST, COPY_LIST.KEY),
   [COPY_LIST.SUCCESS]: (state, action) => ({
     ...state,
@@ -129,7 +133,7 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.id ? action.payload : list
+        list._id === action.payload._id ? action.payload : list
       ),
     },
   }),
@@ -140,11 +144,13 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card.id === action.payload.card.id ? action.payload.card : card
+                card._id === action.payload.card._id
+                  ? action.payload.card
+                  : card
               ),
             }
           : list
@@ -156,11 +162,11 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.filter(
-                card => card.id !== action.payload.cardId
+                card => card._id !== action.payload.cardId
               ),
             }
           : list
@@ -174,7 +180,7 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.id ? action.payload : list
+        list._id === action.payload._id ? action.payload : list
       ),
     },
   }),
@@ -203,7 +209,7 @@ const handlers = {
     board: {
       ...state.board,
       labels: state.board.labels.map(l =>
-        l.id === action.payload.id ? action.payload : l
+        l._id === action.payload._id ? action.payload : l
       ),
     },
   }),
@@ -213,12 +219,12 @@ const handlers = {
     loading: { ...state.loading, [DELETE_LABEL.KEY]: false },
     board: {
       ...state.board,
-      labels: state.board.labels.filter(l => l.id !== action.payload),
+      labels: state.board.labels.filter(l => l._id !== action.payload),
       lists: state.board.lists.map(list => ({
         ...list,
         cards: list.cards.map(card => ({
           ...card,
-          labels: card.labels.filter(id => id !== action.payload),
+          labelIds: card.labelIds.filter(id => id !== action.payload),
         })),
       })),
     },
@@ -230,14 +236,14 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list.id === action.payload.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card.id === action.payload.cardId
+                card._id === action.payload.cardId
                   ? {
                       ...card,
-                      labels: action.payload.updatedCardLabels,
+                      labelIds: action.payload.updatedCardLabels,
                     }
                   : card
               ),

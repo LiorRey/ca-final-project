@@ -224,20 +224,28 @@
         {
           "title": "QA",
           "description": "Quality assurance tasks and bugs",
-          "position": "a"
+          "position": "a0"
         },
         {
           "title": "Waiting for Review",
           "description": "Items pending review",
-          "position": "b"
+          "position": "a1"
         },
-        { "title": "Done", "description": "Completed tasks", "position": "c" },
+        {
+          "title": "Done",
+          "description": "Completed tasks",
+          "position": "a2"
+        },
         {
           "title": "In Progress",
           "description": "Currently being worked on",
-          "position": "d"
+          "position": "a3"
         },
-        { "title": "To Do", "description": "Planned tasks", "position": "e" }
+        {
+          "title": "To Do",
+          "description": "Planned tasks",
+          "position": "a4"
+        }
       ]
     },
     {
@@ -246,24 +254,28 @@
         {
           "title": "Code Review",
           "description": "Review code for issues",
-          "position": "a"
+          "position": "a0"
         },
         {
           "title": "Sprint Planning",
           "description": "Plan upcoming sprints",
-          "position": "b"
+          "position": "a1"
         },
         {
           "title": "Ideas",
           "description": "Brainstorm new features",
-          "position": "c"
+          "position": "a2"
         },
         {
           "title": "Deployment",
           "description": "Deployment tasks",
-          "position": "d"
+          "position": "a3"
         },
-        { "title": "Testing", "description": "Testing and QA", "position": "e" }
+        {
+          "title": "Testing",
+          "description": "Testing and QA",
+          "position": "a4"
+        }
       ]
     },
     {
@@ -272,23 +284,27 @@
         {
           "title": "Ready for Production",
           "description": "Ready for deployment",
-          "position": "a"
+          "position": "a0"
         },
-        { "title": "To Do", "description": "Upcoming tasks", "position": "b" },
+        {
+          "title": "To Do",
+          "description": "Upcoming tasks",
+          "position": "a1"
+        },
         {
           "title": "Waiting for Review",
           "description": "Awaiting approval",
-          "position": "c"
+          "position": "a2"
         },
         {
           "title": "Sprint Planning",
           "description": "Sprint planning items",
-          "position": "d"
+          "position": "a3"
         },
         {
           "title": "Deployment",
           "description": "Deployment checklist",
-          "position": "e"
+          "position": "a4"
         }
       ]
     }
@@ -303,58 +319,141 @@
             {
               "title": "extend next-generation lifetime value",
               "description": "Dummy card description",
-              "position": "a",
+              "position": "a0",
               "archivedAt": null,
-              "comments": []
+              "comments": [],
+              "labels": ["enhancement", "frontend", "priority:low"]
             },
             {
               "title": "QA",
               "description": "Quality assurance tasks and bugs",
-              "position": "a",
+              "position": "a1",
               "archivedAt": null,
-              "deletedAt": null
+              "deletedAt": null,
+              "labels": ["review", "blocked"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "This needs more testing before deployment",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "grow viral metrics",
               "description": "Dummy card description",
-              "position": "c",
+              "position": "a2",
               "archivedAt": null,
-              "comments": []
+              "labels": ["enhancement", "frontend", "documentation", "design"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "testuser"
+                  },
+                  "text": "Great progress on the performance improvements!",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "Robin59"
+                  },
+                  "text": "Consider adding more unit tests to ensure stability",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "facilitate 24/7 synergies",
               "description": "Dummy card description",
-              "position": "d",
+              "position": "a3",
               "archivedAt": null,
-              "comments": []
+              "comments": [],
+              "labels": ["frontend"]
             },
             {
               "title": "mesh synergistic platforms",
               "description": "Dummy card description",
-              "position": "e",
+              "position": "a4",
               "archivedAt": null,
-              "comments": []
+              "labels": [
+                "enhancement",
+                "frontend",
+                "design",
+                "review",
+                "documentation"
+              ],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "The architecture team should review this proposal",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "Godfrey.Wintheiser16"
+                  },
+                  "text": "Make sure to update documentation after changes",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "Marisol_Lueilwitz"
+                  },
+                  "text": "Let's schedule a planning meeting for next week",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "transform granular users",
               "description": "Dummy card description",
-              "position": "f",
+              "position": "a5",
               "archivedAt": null,
-              "comments": []
+              "labels": [],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "testuser"
+                  },
+                  "text": "User feedback has been very positive on this feature",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "deploy transparent architectures",
               "description": "Dummy card description",
-              "position": "g",
+              "position": "a6",
               "archivedAt": null,
-              "comments": []
+              "labels": ["frontend", "documentation", "review"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "Robin59"
+                  },
+                  "text": "Deployment went smoothly, great job team!",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "Need to monitor performance metrics post-launch",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "integrate intuitive applications",
               "description": "Dummy card description",
-              "position": "h",
+              "position": "a7",
               "archivedAt": null,
-              "comments": []
+              "comments": [],
+              "labels": ["frontend", "enhancement"]
             }
           ]
         },
@@ -364,17 +463,52 @@
             {
               "title": "syndicate intuitive architectures",
               "description": "Dummy card description",
-              "position": "a"
+              "position": "a0",
+              "labels": ["review", "frontend", "design", "priority:low"],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "Robin59"
+                  },
+                  "text": "Architecture looks solid, ready for review",
+                  "isEdited": false
+                }
+              ]
             },
             {
               "title": "grow cross-media supply-chains",
               "description": "Dummy card description",
-              "position": "b"
+              "position": "a1",
+              "labels": ["review", "enhancement"],
+              "comments": []
             },
             {
               "title": "iterate dynamic communities",
               "description": "Dummy card description",
-              "position": "c"
+              "position": "a2",
+              "labels": [
+                "review",
+                "frontend",
+                "enhancement",
+                "design",
+                "documentation"
+              ],
+              "comments": [
+                {
+                  "author": {
+                    "userId": "admin"
+                  },
+                  "text": "Excellent work on the community engagement feature",
+                  "isEdited": false
+                },
+                {
+                  "author": {
+                    "userId": "testuser"
+                  },
+                  "text": "Need to add more documentation for this feature",
+                  "isEdited": false
+                }
+              ]
             }
           ]
         },
@@ -384,52 +518,68 @@
             {
               "title": "incubate cross-platform platforms",
               "description": "Dummy card description",
-              "position": "a"
+              "position": "a0",
+              "labels": ["frontend"]
             },
             {
               "title": "engage immersive ROI",
               "description": "Dummy card description",
-              "position": "b"
+              "position": "a1",
+              "labels": ["enhancement", "documentation", "priority:low"]
             },
             {
               "title": "unleash scalable ROI",
               "description": "Dummy card description",
-              "position": "c"
+              "position": "a2",
+              "labels": []
             },
             {
               "title": "target impactful schemas",
               "description": "Dummy card description",
-              "position": "d"
+              "position": "a3",
+              "labels": ["design", "frontend"]
             },
             {
               "title": "seize plug-and-play solutions",
               "description": "Dummy card description",
-              "position": "e"
+              "position": "a4",
+              "labels": ["enhancement", "frontend", "design", "review"]
             },
             {
               "title": "evolve sustainable blockchains",
               "description": "Dummy card description",
-              "position": "f"
+              "position": "a5",
+              "labels": ["enhancement", "documentation", "frontend"]
             },
             {
               "title": "collaborate vertical models",
               "description": "Dummy card description",
-              "position": "g"
+              "position": "a6",
+              "labels": [
+                "enhancement",
+                "frontend",
+                "design",
+                "review",
+                "documentation"
+              ]
             },
             {
               "title": "brand sticky paradigms",
               "description": "Dummy card description",
-              "position": "h"
+              "position": "a7",
+              "labels": ["design"]
             },
             {
               "title": "reinvent 24/7 ROI",
               "description": "Dummy card description",
-              "position": "i"
+              "position": "a8",
+              "labels": ["enhancement", "priority:low"]
             },
             {
               "title": "implement leading-edge niches",
               "description": "Dummy card description",
-              "position": "j"
+              "position": "a9",
+              "labels": ["frontend", "enhancement", "documentation", "review"]
             }
           ]
         },
@@ -439,7 +589,8 @@
             {
               "title": "embrace distributed paradigms",
               "description": "Dummy card description",
-              "position": "a"
+              "position": "a0",
+              "labels": ["frontend", "enhancement", "blocked"]
             }
           ]
         },
@@ -449,37 +600,50 @@
             {
               "title": "monetize compelling smart contracts",
               "description": "Dummy card description",
-              "position": "a"
+              "position": "a0",
+              "labels": []
             },
             {
               "title": "optimize holistic communities",
               "description": "Dummy card description",
-              "position": "b"
+              "position": "a1",
+              "labels": ["enhancement", "priority:low"]
             },
             {
               "title": "aggregate extensible systems",
               "description": "Dummy card description",
-              "position": "c"
+              "position": "a2",
+              "labels": ["enhancement", "frontend", "documentation", "design"]
             },
             {
               "title": "engage leading-edge schemas",
               "description": "Dummy card description",
-              "position": "d"
+              "position": "a3",
+              "labels": ["design"]
             },
             {
               "title": "deploy plug-and-play models",
               "description": "Dummy card description",
-              "position": "e"
+              "position": "a4",
+              "labels": [
+                "frontend",
+                "enhancement",
+                "design",
+                "documentation",
+                "review"
+              ]
             },
             {
               "title": "brand magnetic AI",
               "description": "Dummy card description",
-              "position": "f"
+              "position": "a5",
+              "labels": ["enhancement", "design", "priority:low"]
             },
             {
               "title": "incubate magnetic communities",
               "description": "Dummy card description",
-              "position": "g"
+              "position": "a6",
+              "labels": ["enhancement", "frontend"]
             }
           ]
         }

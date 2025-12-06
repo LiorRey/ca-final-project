@@ -19,11 +19,11 @@ export function CustomAutoComplete({
   disabled,
   ...otherProps
 }) {
-  const selectedOption = options.find(opt => opt.id === value) || null;
+  const selectedOption = options.find(opt => opt._id === value) || null;
 
   const handleChange = (_, newValue) => {
     if (onChange) {
-      onChange(newValue?.id ?? "");
+      onChange(newValue?._id ?? "");
     }
   };
 
@@ -31,7 +31,7 @@ export function CustomAutoComplete({
     const { key: _key, ...rest } = props;
 
     return (
-      <li key={option.id} {...rest}>
+      <li key={option._id} {...rest}>
         {option.title}
       </li>
     );
@@ -46,14 +46,13 @@ export function CustomAutoComplete({
       getOptionLabel={option =>
         typeof option === "string" ? option : option?.title || ""
       }
-      getOptionKey={option => option.id}
-      isOptionEqualToValue={(option, val) => option?.id === val?.id}
+      getOptionKey={option => option._id}
+      isOptionEqualToValue={(option, val) => option?._id === val?._id}
       value={selectedOption}
       onChange={handleChange}
       disabled={disabled}
       fullWidth={fullWidth}
       disableClearable
-      clearOnFocus
       renderOption={renderOption}
       renderInput={params => (
         <TextField

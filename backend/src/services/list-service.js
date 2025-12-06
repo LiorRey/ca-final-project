@@ -1,4 +1,6 @@
 import { List } from "../models/List.js";
+import { calculateNewPosition } from "../services/position-service.js";
+import { getBoardById } from "./board-service.js";
 import createHttpError from "http-errors";
 
 export async function createList(listData) {
@@ -20,8 +22,20 @@ export async function updateList(id, updateData) {
   });
 }
 
-export async function moveList(id, position) {
-  return List.findByIdAndUpdate(id, { position }, { new: true });
+export async function moveList(listId, boardId, targetIndex) {
+  const board = await getBoardById(boardId);
+  if (!board) {
+    throw createHttpError(404, "Board not found");
+  }
+
+  let lists = await List.find({ boardId }).sort({ position: 1 });
+  let newPosition = calculateNewPosition(lists, targetIndex);
+
+  return await List.findByIdAndUpdate(
+    listId,
+    { position: newPosition, boardId },
+    { new: true }
+  );
 }
 
 export async function archiveList(id) {

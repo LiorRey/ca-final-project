@@ -15,6 +15,7 @@ _createBoards();
 export const boardService = {
   query,
   getById,
+  getFullById,
   remove,
   save,
   updateBoard,
@@ -67,6 +68,10 @@ async function getById(boardId, filterBy = {}) {
 
     throw error;
   }
+}
+
+async function getFullById(boardId, filterBy = {}) {
+  return getById(boardId, filterBy);
 }
 
 async function remove(boardId) {
@@ -126,7 +131,7 @@ function updateListFields(board, listId, updates) {
   const list = _findList(board, listId);
   const updatedList = { ...list, ...updates };
   const updatedLists = board.lists.map(list =>
-    list.id === listId ? updatedList : list
+    list._id === listId ? updatedList : list
   );
   return updateBoardFields(board, { lists: updatedLists });
 }
@@ -136,7 +141,7 @@ function updateCardFields(board, listId, cardId, updates) {
   const card = _findCard(list, cardId);
   const updatedCard = { ...card, ...updates };
   const updatedCards = list.cards.map(card =>
-    card.id === cardId ? updatedCard : card
+    card._id === cardId ? updatedCard : card
   );
   const updatedList = { ...list, cards: updatedCards };
   return updateListFields(board, listId, updatedList);
@@ -144,10 +149,10 @@ function updateCardFields(board, listId, cardId, updates) {
 
 function getEmptyCard() {
   return {
-    id: crypto.randomUUID(),
+    _id: crypto.randomUUID(),
     title: "",
     description: "",
-    labels: [],
+    labelIds: [],
     createdAt: null,
     archivedAt: null,
   };
@@ -178,7 +183,7 @@ export async function editCard(boardId, card, listId) {
   try {
     await updateBoard(boardId, card, {
       listId,
-      cardId: card.id,
+      cardId: card._id,
     });
     return { listId, card };
   } catch (error) {
@@ -220,10 +225,10 @@ export async function copyCard(copyData, card) {
 
     const clonedCard = {
       ...card,
-      id: crypto.randomUUID(),
+      _id: crypto.randomUUID(),
       title,
       assignedTo: keepMembers ? card.assignedTo : [],
-      labels: keepLabels ? card.labels : [],
+      labelIds: keepLabels ? card.labelIds : [],
     };
 
     if (position !== null && position !== undefined) {
@@ -288,7 +293,7 @@ async function moveCardSameBoard(
 ) {
   const sourceList = _findList(board, sourceListId);
   const destinationList = _findList(board, targetListId);
-  const cardIndex = _findCardIndex(sourceList, card.id);
+  const cardIndex = _findCardIndex(sourceList, card._id);
   let updatedBoard;
 
   if (sourceListId === targetListId) {
@@ -323,7 +328,7 @@ async function moveCardCrossBoard(
 ) {
   const sourceList = _findList(sourceBoard, sourceListId);
   const destinationList = _findList(destinationBoard, targetListId);
-  const cardIndex = _findCardIndex(sourceList, card.id);
+  const cardIndex = _findCardIndex(sourceList, card._id);
   const listWithoutCard = removeFromArray(sourceList.cards, cardIndex);
   const listWithCard = insertInArray(destinationList.cards, card, position);
 
@@ -343,7 +348,7 @@ async function moveCardCrossBoard(
 
 export function getEmptyList() {
   return {
-    id: crypto.randomUUID(),
+    _id: crypto.randomUUID(),
     title: "",
     cards: [],
     archivedAt: null,
@@ -375,29 +380,43 @@ export async function createList(boardId, listData) {
   }
 }
 
-export async function moveList(
-  sourceBoardId,
-  sourceIndex,
-  targetIndex,
-  targetBoardId,
-  currentBoardId
-) {
+async function updateListPosition(board, list, targetIndex) {
+  const newPosition = calculateNewPosition(board.lists, targetIndex, list.id);
+
+  const updatedList = { ...list, position: newPosition };
+  const updatedLists = board.lists.map(l =>
+    l.id === list.id ? updatedList : l
+  );
+  const sortedLists = sortByPosition(updatedLists);
+
+  const boardToUpdate = updateBoardFields(board, { lists: sortedLists });
+  await save(boardToUpdate);
+
+  return sortedLists;
+}
+
+export async function moveList(listId, targetBoardId, targetIndex) {
   try {
-    if (sourceBoardId === targetBoardId) {
-      const board = await getById(sourceBoardId);
-      if (!board) throw new Error("Board not found");
-      return await moveSameBoard(board, sourceIndex, targetIndex);
+    const allBoards = await query();
+
+    const sourceBoard = allBoards.find(board =>
+      board.lists.some(l => l.id === listId)
+    );
+    if (!sourceBoard) throw new Error("Source board not found");
+
+    const movedList = _findList(sourceBoard, listId);
+
+    if (sourceBoard._id !== targetBoardId) {
+      sourceBoard.lists = sourceBoard.lists.filter(l => l.id !== listId);
+      await save(sourceBoard);
+
+      const targetBoard = allBoards.find(board => board._id === targetBoardId);
+      if (!targetBoard) throw new Error("Board not found");
+
+      targetBoard.lists.push(movedList);
+      return await updateListPosition(targetBoard, movedList, targetIndex);
     } else {
-      const sourceBoard = await getById(sourceBoardId);
-      const targetBoard = await getById(targetBoardId);
-      if (!sourceBoard || !targetBoard) throw new Error("Board not found");
-      return await moveCrossBoard(
-        sourceBoard,
-        targetBoard,
-        sourceIndex,
-        targetIndex,
-        currentBoardId
-      );
+      return await updateListPosition(sourceBoard, movedList, targetIndex);
     }
   } catch (error) {
     console.error("Error moving list:", error);
@@ -405,79 +424,17 @@ export async function moveList(
   }
 }
 
-async function moveSameBoard(board, sourceIndex, targetIndex) {
-  const movedList = board.lists[sourceIndex];
-  if (!movedList) throw new Error("List not found at source index");
-
-  const newPosition = calculateNewPosition(
-    board.lists,
-    targetIndex,
-    movedList.id
-  );
-
-  const updatedList = { ...movedList, position: newPosition };
-
-  const updatedLists = board.lists.map(list =>
-    list.id === movedList.id ? updatedList : list
-  );
-
-  const sortedLists = sortByPosition(updatedLists);
-
-  const updatedBoard = updateBoardFields(board, { lists: sortedLists });
-  await save(updatedBoard);
-
-  return sortedLists;
-}
-
-async function moveCrossBoard(
-  sourceBoard,
-  targetBoard,
-  sourceIndex,
-  targetIndex,
-  currentBoardId
-) {
-  const movedList = sourceBoard.lists[sourceIndex];
-  if (!movedList) throw new Error("List not found at source index");
-
-  const newPosition = calculateNewPosition(targetBoard.lists, targetIndex);
-
-  const updatedList = { ...movedList, position: newPosition };
-
-  const updatedSourceLists = sourceBoard.lists.filter(
-    list => list.id !== movedList.id
-  );
-
-  const updatedTargetLists = sortByPosition([
-    ...targetBoard.lists,
-    updatedList,
-  ]);
-
-  const updatedSourceBoard = updateBoardFields(sourceBoard, {
-    lists: updatedSourceLists,
-  });
-  const updatedTargetBoard = updateBoardFields(targetBoard, {
-    lists: updatedTargetLists,
-  });
-
-  await save(updatedSourceBoard);
-  await save(updatedTargetBoard);
-
-  return currentBoardId === sourceBoard._id
-    ? updatedSourceLists
-    : updatedTargetLists;
-}
-
 export async function copyList(boardId, listId, newName) {
   try {
     const board = await getById(boardId);
-    const originalListIndex = board.lists.findIndex(l => l.id === listId);
+    const originalListIndex = board.lists.findIndex(l => l._id === listId);
     if (originalListIndex === -1) throw new Error("List not found");
 
     const listToCopy = board.lists[originalListIndex];
 
     const clonedCards = listToCopy.cards.map(card => ({
       ...card,
-      id: crypto.randomUUID(),
+      _id: crypto.randomUUID(),
     }));
 
     // Calculate position for the cloned list (right after the original)
@@ -488,7 +445,7 @@ export async function copyList(boardId, listId, newName) {
 
     const clonedList = {
       ...listToCopy,
-      id: crypto.randomUUID(),
+      _id: crypto.randomUUID(),
       title: newName,
       cards: clonedCards,
       position: newPosition,
@@ -606,7 +563,7 @@ async function updateCardLabels(boardId, listId, cardId, updatedCardLabels) {
 
     await updateBoard(
       boardId,
-      { labels: updatedCardLabels },
+      { labelIds: updatedCardLabels },
       {
         listId,
         cardId,
@@ -638,7 +595,7 @@ async function editLabel(boardId, label) {
     if (!board) throw new Error("Board not found");
 
     const updatedLabels = board.labels.map(l =>
-      l.id === label.id ? label : l
+      l._id === label._id ? label : l
     );
 
     await updateBoard(boardId, { labels: updatedLabels });
@@ -653,13 +610,13 @@ async function deleteLabel(boardId, labelId) {
     const board = await getById(boardId);
     if (!board) throw new Error("Board not found");
 
-    const updatedLabels = board.labels.filter(l => l.id !== labelId);
+    const updatedLabels = board.labels.filter(l => l._id !== labelId);
 
     const updatedLists = board.lists.map(list => ({
       ...list,
       cards: list.cards.map(card => ({
         ...card,
-        labels: card.labels.filter(id => id !== labelId),
+        labelIds: card.labelIds.filter(id => id !== labelId),
       })),
     }));
 
@@ -693,7 +650,7 @@ async function getBoardPreviews() {
 /**
  * Retrieves lists for a specific board with card counts
  * @param {string} boardId - The board ID
- * @returns {Promise<Array<{id: string, title: string, cardCount: number}>>}
+ * @returns {Promise<Array<{_id: string, title: string, cardCount: number}>>}
  */
 async function getBoardListPreviews(boardId) {
   try {
@@ -701,7 +658,7 @@ async function getBoardListPreviews(boardId) {
     if (!board) throw new Error("Board not found");
 
     return (board.lists || []).map(list => ({
-      id: list.id,
+      _id: list._id,
       title: list.title,
       cardCount: list.cards?.length || 0,
     }));
@@ -713,19 +670,19 @@ async function getBoardListPreviews(boardId) {
 
 // Helper functions used by multiple functions
 function _findList(board, listId) {
-  const list = board.lists?.find(l => l.id === listId);
+  const list = board.lists?.find(l => l._id === listId);
   if (!list) throw new Error("List not found");
   return list;
 }
 
 function _findCard(list, cardId) {
-  const card = list.cards?.find(c => c.id === cardId);
+  const card = list.cards?.find(c => c._id === cardId);
   if (!card) throw new Error("Card not found");
   return card;
 }
 
 function _findCardIndex(list, cardId) {
-  const indx = list.cards?.findIndex(c => c.id === cardId);
+  const indx = list.cards?.findIndex(c => c._id === cardId);
   if (indx === -1 || indx == null) throw new Error("Card not found");
   return indx;
 }

@@ -13,24 +13,38 @@ export const up = async ({ context }) => {
       .findOne({ title: boardCards.boardTitle });
     if (!board) continue;
 
+    const labelMap = {};
+    for (const label of board.labels) {
+      labelMap[label.title] = label._id;
+    }
+
     for (const listCards of boardCards.lists) {
       const list = await context
         .collection("lists")
         .findOne({ title: listCards.listTitle, boardId: board._id });
       if (!list) continue;
 
-      for (const card of listCards.cards) {
-        await context.collection("cards").insertOne({
-          boardId: board._id,
+      for (const cardData of listCards.cards) {
+        const card = await context.collection("cards").findOne({
+          title: cardData.title,
           listId: list._id,
-          title: card.title,
-          description: card.description,
-          position: card.position,
-          archivedAt: card.archivedAt ?? null,
-          comments: [],
-          createdAt: card.createdAt ?? new Date(),
-          updatedAt: card.updatedAt ?? new Date(),
+          boardId: board._id,
         });
+        if (!card) continue;
+
+        const labelIds = [];
+        if (cardData.labels && Array.isArray(cardData.labels)) {
+          for (const labelTitle of cardData.labels) {
+            const labelId = labelMap[labelTitle];
+            if (labelId) {
+              labelIds.push(labelId);
+            }
+          }
+        }
+
+        await context
+          .collection("cards")
+          .updateOne({ _id: card._id }, { $set: { labelIds } });
       }
     }
   }
@@ -41,8 +55,12 @@ export const down = async ({ context }) => {
   const raw = fs.readFileSync(seedPath, "utf8");
   const seed = JSON.parse(raw);
   const cardsSeed = seed.cards || [];
+
   const allTitles = cardsSeed.flatMap(boardCards =>
     boardCards.lists.flatMap(listCards => listCards.cards.map(c => c.title))
   );
-  await context.collection("cards").deleteMany({ title: { $in: allTitles } });
+
+  await context
+    .collection("cards")
+    .updateMany({ title: { $in: allTitles } }, { $set: { labelIds: [] } });
 };

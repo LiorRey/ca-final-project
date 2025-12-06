@@ -46,7 +46,7 @@ export function LabelMenu({
 
   async function handleCreateLabel(label) {
     await createLabel(boardId, label);
-    handleToggleLabel(label.id);
+    handleToggleLabel(label._id);
     setSearchTerm("");
     handleBack();
   }
@@ -62,16 +62,23 @@ export function LabelMenu({
   }
 
   function handleToggleLabel(labelId) {
-    const updatedCardLabels = card.labels.includes(labelId)
-      ? card.labels.filter(id => id !== labelId)
-      : [...card.labels, labelId];
+    let updatedCardLabels;
+    if (card.labelIds) {
+      updatedCardLabels = card.labelIds?.includes(labelId)
+        ? card.labelIds.filter(id => id !== labelId)
+        : [...card.labelIds, labelId];
+    } else {
+      updatedCardLabels = [];
+    }
 
-    updateCardLabels(boardId, listId, card.id, updatedCardLabels);
+    console.log("updatedCardLabels", updatedCardLabels);
+
+    updateCardLabels(boardId, listId, card._id, updatedCardLabels);
   }
 
   function getPopoverTitle() {
     if (!viewEditor) return "Labels";
-    return labelToEdit.id ? "Edit label" : "Create label";
+    return labelToEdit._id ? "Edit label" : "Create label";
   }
 
   return (
@@ -93,7 +100,7 @@ export function LabelMenu({
       {viewEditor ? (
         <LabelEditor
           labelToEdit={labelToEdit}
-          onSaveLabel={labelToEdit.id ? handleEditLabel : handleCreateLabel}
+          onSaveLabel={labelToEdit._id ? handleEditLabel : handleCreateLabel}
           onDeleteLabel={handleDeleteLabel}
         />
       ) : (
@@ -112,11 +119,11 @@ export function LabelMenu({
           <ul className="labels-list">
             {filteredLabels.length > 0 ? (
               filteredLabels.map(label => {
-                const isChecked = card.labels.some(
-                  cardLabelId => cardLabelId === label.id
-                );
+                const isChecked = card.labelIds
+                  ? card.labelIds.some(cardLabelId => cardLabelId === label._id)
+                  : false;
                 return (
-                  <li key={label.id}>
+                  <li key={label._id}>
                     <LabelMenuItem
                       label={label}
                       isChecked={isChecked}

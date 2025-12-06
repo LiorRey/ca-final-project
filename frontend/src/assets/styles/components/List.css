@@ -7,7 +7,6 @@
   box-sizing: border-box;
   justify-content: space-between;
   max-width: 350px;
-  max-height: 100%;
   border: 1px solid var(--black);
   border-radius: 10px;
   background-color: var(--gray5);
@@ -39,6 +38,7 @@
   overflow-x: hidden;
   padding: 0.2rem 0 0.2rem 0;
   width: 100%;
+  max-height: 70vh;
   box-sizing: border-box;
   flex: 1;
   min-height: 0;

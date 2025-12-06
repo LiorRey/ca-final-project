@@ -21,7 +21,7 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
   );
 
   function handleSave() {
-    const label = labelToEdit.id ? labelToEdit : boardService.getEmptyLabel();
+    const label = labelToEdit._id ? labelToEdit : boardService.getEmptyLabel();
 
     const updatedLabel = {
       ...label,
@@ -67,12 +67,12 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
 
       <div className="label-editor-actions">
         <button className="save-btn" onClick={handleSave}>
-          {labelToEdit.id ? "Save" : "Create"}
+          {labelToEdit._id ? "Save" : "Create"}
         </button>
-        {labelToEdit.id && (
+        {labelToEdit._id && (
           <button
             className="delete-btn"
-            onClick={() => onDeleteLabel(labelToEdit.id)}
+            onClick={() => onDeleteLabel(labelToEdit._id)}
           >
             Delete
           </button>

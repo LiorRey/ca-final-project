@@ -3,7 +3,11 @@ import createError from "http-errors";
 
 export async function createBoard(req, res) {
   try {
-    const { title, description, owner } = req.body;
+    const { title, description } = req.body;
+    const owner = {
+      userId: req.currentUser._id,
+      username: req.currentUser.username,
+    };
     const board = await boardService.createBoard({ title, description, owner });
     res.status(201).json({ board });
   } catch (err) {
@@ -61,12 +65,42 @@ export async function updateBoard(req, res) {
 }
 
 export async function deleteBoard(req, res) {
-  try {
-    const board = await boardService.deleteBoard(req.params.id);
-    if (!board) return res.status(404).json({ error: "Board not found" });
+  const board = await boardService.deleteBoard(req.params.id);
+  if (!board) throw createError(404, "Board not found");
 
-    res.status(204).send();
-  } catch (err) {
-    res.status(500).json({ error: "Failed to delete board" });
-  }
+  res.status(204).send();
+}
+
+export async function getBoardLabels(req, res) {
+  const board = await boardService.getBoardLabels(req.params.id);
+  res.json({ labels: board.labels });
+}
+
+export async function addBoardLabel(req, res) {
+  const { title, color } = req.body;
+  const board = await boardService.addLabelToBoard(req.params.id, {
+    title,
+    color,
+  });
+  res.status(201).json({ labels: board.labels });
+}
+
+export async function updateBoardLabel(req, res) {
+  const { title, color } = req.body;
+  const board = await boardService.updateLabelInBoard(
+    req.params.id,
+    req.params.labelId,
+    { title, color }
+  );
+  if (!board) throw createError(404, "Label not found");
+  res.json({ labels: board.labels });
+}
+
+export async function deleteBoardLabel(req, res) {
+  const board = await boardService.removeLabelFromBoard(
+    req.params.id,
+    req.params.labelId
+  );
+  if (!board) throw createError(404, "Label not found");
+  res.json({ labels: board.labels });
 }

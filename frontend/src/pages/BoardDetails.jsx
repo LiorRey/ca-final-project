@@ -135,13 +135,7 @@ export function BoardDetails() {
         console.log(before, after);
 
         if (listToMove) {
-          moveList(
-            board._id,
-            source.index,
-            destination.index,
-            board._id,
-            board._id
-          );
+          moveList(listToMove.id, board._id, destination.index);
         }
         return;
       }
@@ -221,14 +215,14 @@ export function BoardDetails() {
               >
                 {lists.map((list, listIndex) => (
                   <List
-                    key={list.id}
+                    key={list._id}
                     list={list}
                     boardLabels={board.labels}
                     labelsIsOpen={labelsIsOpen}
                     setLabelsIsOpen={setLabelsIsOpen}
                     onCopyList={onCopyList}
                     onMoveAllCards={onMoveAllCards}
-                    isAddingCard={activeAddCardListId === list.id}
+                    isAddingCard={activeAddCardListId === list._id}
                     setActiveAddCardListId={setActiveAddCardListId}
                     listIndex={listIndex}
                   />
