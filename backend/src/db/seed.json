@@ -322,7 +322,11 @@
               "position": "a0",
               "archivedAt": null,
               "comments": [],
-              "labels": ["enhancement", "frontend", "priority:low"]
+              "labels": ["enhancement", "frontend", "priority:low"],
+              "assignees": [
+                { "username": "testuser" },
+                { "username": "Robin59" }
+              ]
             },
             {
               "title": "QA",
@@ -339,7 +343,8 @@
                   "text": "This needs more testing before deployment",
                   "isEdited": false
                 }
-              ]
+              ],
+              "assignees": [{ "username": "admin" }]
             },
             {
               "title": "grow viral metrics",
@@ -362,7 +367,8 @@
                   "text": "Consider adding more unit tests to ensure stability",
                   "isEdited": false
                 }
-              ]
+              ],
+              "assignees": []
             },
             {
               "title": "facilitate 24/7 synergies",
@@ -370,7 +376,11 @@
               "position": "a3",
               "archivedAt": null,
               "comments": [],
-              "labels": ["frontend"]
+              "labels": ["frontend"],
+              "assignees": [
+                { "username": "Godfrey.Wintheiser16" },
+                { "username": "Marisol_Lueilwitz" }
+              ]
             },
             {
               "title": "mesh synergistic platforms",
@@ -406,6 +416,11 @@
                   "text": "Let's schedule a planning meeting for next week",
                   "isEdited": false
                 }
+              ],
+              "assignees": [
+                { "username": "testuser" },
+                { "username": "admin" },
+                { "username": "Robin59" }
               ]
             },
             {
@@ -422,7 +437,8 @@
                   "text": "User feedback has been very positive on this feature",
                   "isEdited": false
                 }
-              ]
+              ],
+              "assignees": []
             },
             {
               "title": "deploy transparent architectures",
@@ -445,7 +461,8 @@
                   "text": "Need to monitor performance metrics post-launch",
                   "isEdited": false
                 }
-              ]
+              ],
+              "assignees": [{ "username": "Marisol_Lueilwitz" }]
             },
             {
               "title": "integrate intuitive applications",
@@ -453,7 +470,11 @@
               "position": "a7",
               "archivedAt": null,
               "comments": [],
-              "labels": ["frontend", "enhancement"]
+              "labels": ["frontend", "enhancement"],
+              "assignees": [
+                { "username": "testuser" },
+                { "username": "Godfrey.Wintheiser16" }
+              ]
             }
           ]
         },
@@ -473,14 +494,16 @@
                   "text": "Architecture looks solid, ready for review",
                   "isEdited": false
                 }
-              ]
+              ],
+              "assignees": [{ "username": "Robin59" }, { "username": "admin" }]
             },
             {
               "title": "grow cross-media supply-chains",
               "description": "Dummy card description",
               "position": "a1",
               "labels": ["review", "enhancement"],
-              "comments": []
+              "comments": [],
+              "assignees": [{ "username": "testuser" }]
             },
             {
               "title": "iterate dynamic communities",
@@ -508,7 +531,8 @@
                   "text": "Need to add more documentation for this feature",
                   "isEdited": false
                 }
-              ]
+              ],
+              "assignees": []
             }
           ]
         },
@@ -519,37 +543,43 @@
               "title": "incubate cross-platform platforms",
               "description": "Dummy card description",
               "position": "a0",
-              "labels": ["frontend"]
+              "labels": ["frontend"],
+              "assignees": []
             },
             {
               "title": "engage immersive ROI",
               "description": "Dummy card description",
               "position": "a1",
-              "labels": ["enhancement", "documentation", "priority:low"]
+              "labels": ["enhancement", "documentation", "priority:low"],
+              "assignees": [{ "username": "Godfrey.Wintheiser16" }]
             },
             {
               "title": "unleash scalable ROI",
               "description": "Dummy card description",
               "position": "a2",
-              "labels": []
+              "labels": [],
+              "assignees": []
             },
             {
               "title": "target impactful schemas",
               "description": "Dummy card description",
               "position": "a3",
-              "labels": ["design", "frontend"]
+              "labels": ["design", "frontend"],
+              "assignees": [{ "username": "admin" }, { "username": "testuser" }]
             },
             {
               "title": "seize plug-and-play solutions",
               "description": "Dummy card description",
               "position": "a4",
-              "labels": ["enhancement", "frontend", "design", "review"]
+              "labels": ["enhancement", "frontend", "design", "review"],
+              "assignees": [{ "username": "Robin59" }]
             },
             {
               "title": "evolve sustainable blockchains",
               "description": "Dummy card description",
               "position": "a5",
-              "labels": ["enhancement", "documentation", "frontend"]
+              "labels": ["enhancement", "documentation", "frontend"],
+              "assignees": []
             },
             {
               "title": "collaborate vertical models",
@@ -561,25 +591,36 @@
                 "design",
                 "review",
                 "documentation"
+              ],
+              "assignees": [
+                { "username": "Marisol_Lueilwitz" },
+                { "username": "testuser" }
               ]
             },
             {
               "title": "brand sticky paradigms",
               "description": "Dummy card description",
               "position": "a7",
-              "labels": ["design"]
+              "labels": ["design"],
+              "assignees": [{ "username": "admin" }]
             },
             {
               "title": "reinvent 24/7 ROI",
               "description": "Dummy card description",
               "position": "a8",
-              "labels": ["enhancement", "priority:low"]
+              "labels": ["enhancement", "priority:low"],
+              "assignees": []
             },
             {
               "title": "implement leading-edge niches",
               "description": "Dummy card description",
               "position": "a9",
-              "labels": ["frontend", "enhancement", "documentation", "review"]
+              "labels": ["frontend", "enhancement", "documentation", "review"],
+              "assignees": [
+                { "username": "testuser" },
+                { "username": "Robin59" },
+                { "username": "Godfrey.Wintheiser16" }
+              ]
             }
           ]
         },
@@ -590,7 +631,11 @@
               "title": "embrace distributed paradigms",
               "description": "Dummy card description",
               "position": "a0",
-              "labels": ["frontend", "enhancement", "blocked"]
+              "labels": ["frontend", "enhancement", "blocked"],
+              "assignees": [
+                { "username": "admin" },
+                { "username": "Marisol_Lueilwitz" }
+              ]
             }
           ]
         },
@@ -601,25 +646,29 @@
               "title": "monetize compelling smart contracts",
               "description": "Dummy card description",
               "position": "a0",
-              "labels": []
+              "labels": [],
+              "assignees": []
             },
             {
               "title": "optimize holistic communities",
               "description": "Dummy card description",
               "position": "a1",
-              "labels": ["enhancement", "priority:low"]
+              "labels": ["enhancement", "priority:low"],
+              "assignees": []
             },
             {
               "title": "aggregate extensible systems",
               "description": "Dummy card description",
               "position": "a2",
-              "labels": ["enhancement", "frontend", "documentation", "design"]
+              "labels": ["enhancement", "frontend", "documentation", "design"],
+              "assignees": [{ "username": "testuser" }]
             },
             {
               "title": "engage leading-edge schemas",
               "description": "Dummy card description",
               "position": "a3",
-              "labels": ["design"]
+              "labels": ["design"],
+              "assignees": []
             },
             {
               "title": "deploy plug-and-play models",
@@ -631,19 +680,25 @@
                 "design",
                 "documentation",
                 "review"
+              ],
+              "assignees": [
+                { "username": "Robin59" },
+                { "username": "Godfrey.Wintheiser16" }
               ]
             },
             {
               "title": "brand magnetic AI",
               "description": "Dummy card description",
               "position": "a5",
-              "labels": ["enhancement", "design", "priority:low"]
+              "labels": ["enhancement", "design", "priority:low"],
+              "assignees": []
             },
             {
               "title": "incubate magnetic communities",
               "description": "Dummy card description",
               "position": "a6",
-              "labels": ["enhancement", "frontend"]
+              "labels": ["enhancement", "frontend"],
+              "assignees": [{ "username": "admin" }]
             }
           ]
         }
