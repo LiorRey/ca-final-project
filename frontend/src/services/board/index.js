@@ -14,6 +14,9 @@ function getEmptyBoard() {
     lists: [],
     activities: [],
     listOrder: [],
+    appearance: {
+      background: "#0079bf",
+    },
   };
 }
 

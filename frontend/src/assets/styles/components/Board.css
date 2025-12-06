@@ -8,17 +8,18 @@
   grid-template-rows: auto 1fr;
   height: 100%;
   width: 100%;
-  background: linear-gradient(-180deg, var(--clr2), var(--clr1));
+  background-color: var(--board-bg-color);
+  background-blend-mode: darken;
+  background-image: var(--board-bg-overlay-gradient);
 }
 
 .board-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0, 166, 255, 0.12);
+  background: var(--board-header-bg-gradient);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(0, 166, 255, 0.2);
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 

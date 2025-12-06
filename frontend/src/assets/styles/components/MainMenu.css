@@ -107,6 +107,12 @@
   color: var(--gray1);
 }
 
+.board-bg-preview {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
 .board-menu-item-label {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.9);

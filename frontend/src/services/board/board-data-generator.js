@@ -176,6 +176,9 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
     lists,
     activities,
     listOrder,
+    appearance: {
+      background: "#0079bf",
+    },
     ...options,
   };
 
@@ -351,6 +354,9 @@ export function generateBoardWithUsers(
     lists,
     activities,
     listOrder,
+    appearance: {
+      background: "#0079bf",
+    },
     ...options,
   };
 

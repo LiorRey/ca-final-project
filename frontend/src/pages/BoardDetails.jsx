@@ -31,7 +31,7 @@ import {
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
-  const [mainMenuAnchorEl, setMainMenuAnchorEl] = useState(null);
+  const [boardMenuAnchorEl, setBoardMenuAnchorEl] = useState(null);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
@@ -98,18 +98,12 @@ export function BoardDetails() {
     }
   }
 
-  function handleOpenMainMenu(event) {
-    setMainMenuAnchorEl(event.currentTarget);
+  function handleOpenBoardMenu(event) {
+    setBoardMenuAnchorEl(event.currentTarget);
   }
 
-  function handleCloseMainMenu() {
-    setMainMenuAnchorEl(null);
-  }
-
-  function handleMenuItemClick(itemId) {
-    // Handle menu item clicks here
-    console.log(`${itemId} clicked`);
-    // Add your custom logic for each menu item
+  function handleCloseBoardMenu() {
+    setBoardMenuAnchorEl(null);
   }
 
   function handleDragStart() {}
@@ -176,9 +170,16 @@ export function BoardDetails() {
     return <section className="board-container">Loading...</section>;
   }
 
+  function getBackgroundClass(colorName) {
+    if (!colorName) return "board-bg-blue";
+    return `board-bg-${colorName}`;
+  }
+
+  const backgroundClass = getBackgroundClass(board.appearance.background);
+
   return (
-    <section className="board-container">
-      <header className="board-header">
+    <section className={`board-container board-bg-base ${backgroundClass}`}>
+      <header className={`board-header`}>
         <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
           <FilterMenu />
@@ -191,7 +192,7 @@ export function BoardDetails() {
           <button className="icon-button">
             <LockOutlineRounded />
           </button>
-          <button className="icon-button" onClick={handleOpenMainMenu}>
+          <button className="icon-button" onClick={handleOpenBoardMenu}>
             <MoreHoriz />
           </button>
         </div>
@@ -239,10 +240,9 @@ export function BoardDetails() {
         </nav>
       </div>
       <BoardMenu
-        anchorEl={mainMenuAnchorEl}
-        open={Boolean(mainMenuAnchorEl)}
-        onClose={handleCloseMainMenu}
-        onItemClick={handleMenuItemClick}
+        anchorEl={boardMenuAnchorEl}
+        isBoardMenuOpen={Boolean(boardMenuAnchorEl)}
+        onCloseBoardMenu={handleCloseBoardMenu}
       />
     </section>
   );
