@@ -27,6 +27,7 @@
 @import "components/Board";
 @import "components/FilterMenu";
 @import "components/auth/AuthFormLayout";
+@import "components/BackgroundSelector";
 
 @import "components/List";
 @import "components/ListActionsMenu";
