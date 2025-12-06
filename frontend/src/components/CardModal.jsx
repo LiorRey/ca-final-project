@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
+import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import AddIcon from "@mui/icons-material/Add";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
+import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import { LabelMenu } from "./LabelMenu";
+import { TextEditor } from "./ui/TextEditor";
 
 export function CardModal({
   boardId,
@@ -13,12 +18,12 @@ export function CardModal({
   card,
   cardLabels = [],
   onEditCard,
-  onDeleteCard,
   onClose,
   isOpen,
 }) {
   const [openSection, setOpenSection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
   const isLabelMenuOpen = Boolean(anchorEl);
@@ -31,6 +36,7 @@ export function CardModal({
   }
 
   function handleSaveCard() {
+    setIsEditorOpen(false);
     onEditCard(cardDetails);
     setIsEditing(false);
   }
@@ -46,9 +52,17 @@ export function CardModal({
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header">
           {listTitle}
-          <button className="icon-button" onClick={onClose}>
-            <CloseIcon />
-          </button>
+          <div className="card-modal-header-buttons">
+            <button className="icon-button">
+              <ImageOutlinedIcon />
+            </button>
+            <button className="icon-button">
+              <MoreHorizIcon />
+            </button>
+            <button className="icon-button" onClick={onClose}>
+              <CloseIcon />
+            </button>
+          </div>
         </div>
         <div className="card-modal-container">
           <section className="card-modal-content">
@@ -70,10 +84,16 @@ export function CardModal({
                 onClick={e => setAnchorEl(e.currentTarget)}
                 selected={isLabelMenuOpen}
               >
-                <AddIcon /> Add label
+                <AddIcon /> Add
               </button>
-              <button className="icon-button" onClick={onDeleteCard}>
-                <DeleteIcon /> Delete
+              <button className="icon-button">
+                <AccessTimeOutlinedIcon /> Dates
+              </button>
+              <button className="icon-button">
+                <TaskAltOutlinedIcon /> Checklist
+              </button>
+              <button className="icon-button">
+                <PersonAddAltOutlinedIcon /> Members
               </button>
               <button className="icon-button">
                 <AttachFileIcon /> Attach
@@ -97,14 +117,29 @@ export function CardModal({
             )}
             <div className="card-modal-description">
               <h3 className="description-title">Description</h3>
-              <textarea
-                className="description-input"
-                placeholder="Add a description"
-                spellCheck="false"
-                value={cardDetails.description}
-                onChange={e => handleChangeCard("description", e.target.value)}
-                onBlur={handleSaveCard}
-              />
+              {isEditorOpen ? (
+                <>
+                  <TextEditor
+                    content={cardDetails.description}
+                    onChange={html => handleChangeCard("description", html)}
+                  />
+                  <div className="editor-controls">
+                    <Button onClick={handleSaveCard}>Save</Button>
+                    <Button
+                      variant="outlined"
+                      onClick={() => setIsEditorOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div
+                  className="description-content"
+                  onClick={() => setIsEditorOpen(true)}
+                  dangerouslySetInnerHTML={{ __html: cardDetails.description }}
+                />
+              )}
             </div>
           </section>
           <aside

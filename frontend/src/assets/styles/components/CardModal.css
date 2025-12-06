@@ -6,7 +6,6 @@
   margin-top: 5rem;
   margin-bottom: 5rem;
   width: 620px;
-  background-color: #242528;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2), 0px 5px 8px rgba(0, 0, 0, 0.14),
     0px 1px 14px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
@@ -36,11 +35,198 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 0.5rem 1.5rem 3rem 1.5rem;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
   overflow-y: auto;
 }
 
-.card-modal-description h3 {
+.description-content {
+  background: var(--gray5);
+  padding: 1rem 1rem 1rem 1rem;
+  margin: 0.5rem 0 0.5rem 0;
+  min-height: 210px;
+  border: 1px solid var(--gray3);
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 16px;
+}
+
+/* ====================== Text Formatting ====================== */
+.description-content strong,
+.description-content b {
+  font-weight: 600;
+  color: var(--gray1);
+}
+
+.description-content em,
+.description-content i {
+  font-style: italic;
+  color: var(--gray1);
+}
+
+.description-content u {
+  text-decoration: underline;
+}
+
+.description-content s,
+.description-content strike {
+  text-decoration: line-through;
+}
+
+/* ====================== Code ====================== */
+.description-content code {
+  background-color: var(--label-purple-bg);
+  color: var(--label-purple-text);
+  border-radius: 0.4rem;
+  padding: 0.25em 0.35em;
+  font-size: 0.85rem;
+  font-family: "JetBrainsMono", monospace;
+}
+
+.description-content pre {
+  background: var(--black);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  color: #fff;
+  margin: 8px 0;
+  font-family: "JetBrainsMono", monospace;
+}
+
+.description-content pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+/* ====================== Headings ====================== */
+.description-content h1 {
+  font-size: 28px;
+  color: var(--gray1);
+  margin: 16px 0 8px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h2 {
+  font-size: 24px;
+  color: var(--gray1);
+  margin: 14px 0 8px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h3 {
+  font-size: 20px;
+  color: var(--gray1);
+  margin: 12px 0 6px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h4 {
+  font-size: 18px;
+  color: var(--gray1);
+  margin: 10px 0 6px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h5 {
+  font-size: 16px;
+  color: var(--gray1);
+  margin: 8px 0 4px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h6 {
+  font-size: 15px;
+  color: var(--gray1);
+  margin: 6px 0 4px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+/* ====================== Paragraphs ====================== */
+.description-content p {
+  margin: 8px 0;
+  line-height: 1.6;
+  color: var(--gray1);
+}
+
+.description-content p:first-child {
+  margin-top: 0;
+}
+
+.description-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ====================== Blockquote ====================== */
+.description-content blockquote {
+  border-left: 4px solid var(--action-btn-bg-default);
+  padding-left: 14px;
+  color: var(--gray2);
+  font-style: italic;
+  margin: 8px 0;
+  opacity: 0.85;
+}
+
+/* ====================== Links ====================== */
+.description-content a {
+  color: var(--action-btn-bg-default);
+  text-decoration: underline;
+}
+
+.description-content a:hover {
+  color: var(--action-btn-bg-hover);
+}
+
+/* ====================== Lists ====================== */
+.description-content ol,
+.description-content ul {
+  margin: 8px 0 8px 24px;
+  padding: 0;
+  color: var(--gray1);
+  list-style-position: outside;
+}
+
+.description-content ul {
+  list-style-type: disc;
+}
+
+.description-content ol {
+  list-style-type: decimal;
+}
+
+.description-content ul li,
+.description-content ol li {
+  margin: 4px 0;
+  padding-left: 4px;
+}
+
+.description-content ul li p,
+.description-content ol li p {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+/* ====================== Images ====================== */
+.description-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
+/* ====================== Horizontal Rule ====================== */
+.description-content hr {
+  border: none;
+  border-top: 1px solid var(--gray4);
+  margin: 12px 0;
+}
+
+.card-modal-description {
   font-size: 0.8rem;
   font-weight: normal;
   padding: 0.5rem 0 0.5rem 0;
@@ -49,11 +235,24 @@
   background: transparent;
 }
 
+.description-title {
+  font-weight: 653;
+  font-size: 16px;
+  size: 1rem;
+  padding: 0.5rem 0 0.5rem 0;
+}
+
 .description-input {
   width: 100%;
   border: none;
   background: transparent;
   color: var(--gray1);
+}
+
+.editor-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .card-modal-comments.closed {
@@ -114,8 +313,9 @@
 }
 
 .card-modal-title {
-  font-size: 1.75rem;
-  font-weight: normal;
+  font-size: 28px;
+  font-weight: 600;
+  word-wrap: break-word;
   padding: 0 0.5rem 0.5rem 0;
   word-break: break-word;
   color: var(--gray1);
@@ -127,13 +327,19 @@
   color: var(--gray1);
   justify-content: space-between;
   align-items: center;
+  background: var(--gray4);
   border-bottom: 1px solid var(--gray3);
+}
+
+.card-modal-header-buttons {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .card-modal-header .icon-button {
   color: var(--gray1);
   &:hover {
-    background-color: var(--gray4);
+    background-color: var(--gray3);
   }
 }
 
@@ -214,10 +420,13 @@
 }
 
 @media only screen and (min-width: 637px) and (max-width: 1095px) {
+  .card-modal-comments.open {
+    width: 45%;
+  }
   .card-modal-box.open {
     width: calc(100vw - 1rem);
   }
   .card-modal-box.closed {
-    width: calc(80vw - 1rem);
+    width: calc(100vw - 1rem);
   }
 }
