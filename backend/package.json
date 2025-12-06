@@ -16,7 +16,11 @@
     "migrate:down": "node src/db/migrate.js down",
     "migrate:pending": "node src/db/migrate.js pending",
     "migrate:executed": "node src/db/migrate.js executed",
-    "migrate:create": "node src/db/migrate.js create"
+    "migrate:create": "node src/db/migrate.js create",
+    "db:clean": "node src/db/clean-db.js",
+    "db:stats": "node src/db/clean-db.js --stats",
+    "db:clean:all": "node src/db/clean-db.js --all",
+    "db:clean:force": "node src/db/clean-db.js --force-all"
   },
   "keywords": [],
   "author": "",
