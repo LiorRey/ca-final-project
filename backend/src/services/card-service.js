@@ -32,10 +32,10 @@ export async function getCardById(id) {
 }
 
 export async function updateCard(id, updateData) {
-  const { title, description } = updateData;
+  const { title, description, startDate, dueDate } = updateData;
   return await Card.findByIdAndUpdate(
     id,
-    { title, description },
+    { title, description, startDate, dueDate },
     {
       new: true,
       runValidators: true,
