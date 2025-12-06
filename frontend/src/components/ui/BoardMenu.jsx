@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import MuiList from "@mui/material/List";
@@ -17,7 +18,6 @@ import {
   Share,
   Star,
   Settings,
-  Palette,
   Computer,
   Bolt,
   LocalOffer,
@@ -43,18 +43,17 @@ function BoardMenuSeparator() {
   );
 }
 
-function BoardMenuItem({ item, onItemClick }) {
+function BoardMenuItem({ item, onItemClick, currentBackground }) {
   return (
     <ListItem disablePadding className="board-menu-item">
-      <ListItemButton
-        onClick={() => onItemClick(item.id)}
-        disabled={item.disabled}
-      >
-        {item.icon && (
-          <ListItemIcon className="board-menu-item-icon">
-            {item.icon}
-          </ListItemIcon>
-        )}
+      <ListItemButton onClick={() => onItemClick(item.id)}>
+        <ListItemIcon className="board-menu-item-icon">
+          {item.iconType === "bg-preview" ? (
+            <div className={`board-bg-preview bg-${currentBackground}`} />
+          ) : (
+            item.icon
+          )}
+        </ListItemIcon>
         <ListItemText primary={item.label} />
         {item.badges && (
           <Box className="board-menu-badges-container">
@@ -99,7 +98,11 @@ function createMenuItems() {
     { id: "star", label: "Star", icon: <Star /> },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "settings", label: "Settings", icon: <Settings /> },
-    { id: "background", label: "Change background", icon: <Palette /> },
+    {
+      id: "background",
+      label: "Change background",
+      iconType: "bg-preview",
+    },
     { id: "upgrade", label: "Upgrade", icon: <Computer /> },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "automation", label: "Automation", icon: <Bolt /> },
@@ -118,6 +121,9 @@ function createMenuItems() {
 export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   const [menuItemId, setMenuItemId] = useState("");
   const menuItems = useMemo(() => createMenuItems(), []);
+  const currentBackground = useSelector(
+    state => state.boards.board.appearance.background
+  );
   const isMainMenu = menuItemId === "";
 
   function handleCloseBoardMenu() {
@@ -127,7 +133,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
 
   function renderContent() {
     if (menuItemId === "background") {
-      return <BackgroundSelector />;
+      return <BackgroundSelector currentBackground={currentBackground} />;
     }
 
     return (
@@ -140,6 +146,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
               key={item.id}
               item={item}
               onItemClick={() => setMenuItemId(item.id)}
+              currentBackground={currentBackground}
             />
           )
         )}

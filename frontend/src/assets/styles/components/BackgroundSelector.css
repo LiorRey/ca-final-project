@@ -47,38 +47,38 @@
   }
 }
 
-.background-color-option.bg-blue {
+.bg-blue {
   background-color: var(--bg-blue);
 }
 
-.background-color-option.bg-orange {
+.bg-orange {
   background-color: var(--bg-orange);
 }
 
-.background-color-option.bg-green {
+.bg-green {
   background-color: var(--bg-green);
 }
 
-.background-color-option.bg-red {
+.bg-red {
   background-color: var(--bg-red);
 }
 
-.background-color-option.bg-purple {
+.bg-purple {
   background-color: var(--bg-purple);
 }
 
-.background-color-option.bg-pink {
+.bg-pink {
   background-color: var(--bg-pink);
 }
 
-.background-color-option.bg-emerald {
+.bg-emerald {
   background-color: var(--bg-emerald);
 }
 
-.background-color-option.bg-turquoise {
+.bg-turquoise {
   background-color: var(--bg-turquoise);
 }
 
-.background-color-option.bg-gray {
+.bg-gray {
   background-color: var(--bg-gray);
 }

@@ -1,11 +1,8 @@
 import { useSelector } from "react-redux";
 import { updateBoard } from "../store/actions/board-actions";
 
-export function BackgroundSelector() {
+export function BackgroundSelector({ currentBackground }) {
   const boardId = useSelector(state => state.boards.board._id);
-  const currentBackground = useSelector(
-    state => state.boards.board.appearance.background
-  );
 
   const bgColors = [
     "blue",
