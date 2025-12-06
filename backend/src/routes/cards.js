@@ -12,6 +12,8 @@ import {
   updateComment,
   deleteComment,
   getComments,
+  addAssignee,
+  removeAssignee,
 } from "../controllers/card-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 import { canModifyCard, canCreateCard } from "../middleware/authorize.js";
@@ -41,5 +43,13 @@ router.get("/:cardId/comments", authenticate, getComments);
 
 // router.get("/label/:labelId", getCardsByLabel);
 // router.get("/assigned/:userId", getCardsByAssignedUser);
+
+router.post("/:id/assignees", authenticate, canModifyCard(), addAssignee);
+router.delete(
+  "/:id/assignees/:userId",
+  authenticate,
+  canModifyCard(),
+  removeAssignee
+);
 
 export default router;
