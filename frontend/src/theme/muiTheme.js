@@ -383,6 +383,69 @@ const muiTheme = createTheme({
         },
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: token("color.text.brand", "#8fb8f6"), // Button background color (light blue, matching card-save-button)
+          color: token("color.text.inverse", "#000000"), // Button text color (inverse text token)
+          padding: "6px 12px",
+          minWidth: 0, // Remove default min-width
+          lineHeight: "20px", // Line height
+          margin: "0.5rem 0rem", // Remove default margin
+          "&:hover": {
+            backgroundColor: token(
+              "color.background.brand.bold.pressed",
+              "#6f9ce6"
+            ), // Button background on hover (darker blue, matching card-save-button)
+            color: token("color.text.inverse", "#000000"), // Button text color on hover (inverse text token)
+          },
+          "&:active": {
+            backgroundColor: token(
+              "color.background.brand.bold.pressed",
+              "#6f9ce6"
+            ), // Button background when active (darker blue)
+            color: token("color.text.inverse", "#000000"), // Button text color when active (inverse text token)
+          },
+          "&.Mui-disabled": {
+            backgroundColor: token(
+              "color.background.neutral.subtle",
+              "#F7F8F9"
+            ), // Disabled button background (light gray)
+            color: token("color.text.disabled", "#7D818A"), // Disabled button text color (gray)
+            border: `1px solid ${token("color.border", "#7D818A")}`, // Disabled button border
+          },
+        },
+        outlined: {
+          backgroundColor: "transparent", // Outlined button background (transparent)
+          color: token("color.text.brand", "#8fb8f6"), // Outlined button text color (brand blue)
+          border: `1px solid ${token("color.text.brand", "#8fb8f6")}`, // Outlined button border (brand blue)
+          "&:hover": {
+            backgroundColor: token(
+              "color.background.brand.subtlest",
+              "rgba(143, 184, 246, 0.1)"
+            ), // Outlined button background on hover (subtle blue tint)
+            color: token("color.text.brand", "#8fb8f6"), // Outlined button text color on hover (brand blue)
+            border: `1px solid ${token("color.text.brand", "#8fb8f6")}`, // Outlined button border on hover
+          },
+          "&:active": {
+            backgroundColor: token(
+              "color.background.brand.bold.pressed",
+              "#6f9ce6"
+            ), // Outlined button background when active (darker blue)
+            color: token("color.text.inverse", "#000000"), // Outlined button text color when active (black)
+            border: `1px solid ${token(
+              "color.background.brand.bold.pressed",
+              "#6f9ce6"
+            )}`, // Outlined button border when active
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "transparent", // Disabled outlined button background (transparent)
+            color: token("color.text.disabled", "#7D818A"), // Disabled outlined button text color (gray)
+            border: `1px solid ${token("color.border", "#7D818A")}`, // Disabled outlined button border
+          },
+        },
+      },
+    },
   },
 });
 
