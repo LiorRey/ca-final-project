@@ -31,7 +31,7 @@ import {
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
-  const [mainMenuAnchorEl, setMainMenuAnchorEl] = useState(null);
+  const [boardMenuAnchorEl, setBoardMenuAnchorEl] = useState(null);
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
@@ -98,12 +98,12 @@ export function BoardDetails() {
     }
   }
 
-  function handleOpenMainMenu(event) {
-    setMainMenuAnchorEl(event.currentTarget);
+  function handleOpenBoardMenu(event) {
+    setBoardMenuAnchorEl(event.currentTarget);
   }
 
-  function handleCloseMainMenu() {
-    setMainMenuAnchorEl(null);
+  function handleCloseBoardMenu() {
+    setBoardMenuAnchorEl(null);
   }
 
   function handleDragStart() {}
@@ -198,7 +198,7 @@ export function BoardDetails() {
           <button className="icon-button">
             <LockOutlineRounded />
           </button>
-          <button className="icon-button" onClick={handleOpenMainMenu}>
+          <button className="icon-button" onClick={handleOpenBoardMenu}>
             <MoreHoriz />
           </button>
         </div>
@@ -246,9 +246,9 @@ export function BoardDetails() {
         </nav>
       </div>
       <BoardMenu
-        anchorEl={mainMenuAnchorEl}
-        isBoardMenuOpen={Boolean(mainMenuAnchorEl)}
-        onCloseBoardMenu={handleCloseMainMenu}
+        anchorEl={boardMenuAnchorEl}
+        isBoardMenuOpen={Boolean(boardMenuAnchorEl)}
+        onCloseBoardMenu={handleCloseBoardMenu}
       />
     </section>
   );
