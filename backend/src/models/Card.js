@@ -138,4 +138,6 @@ function validateDateOrder(startDate, dueDate) {
   return null;
 }
 
+cardSchema.index({ listId: 1, position: 1 }, { unique: true });
+
 export const Card = mongoose.model("Card", cardSchema);
