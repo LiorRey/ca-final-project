@@ -1,0 +1,487 @@
+/* ====================== Parent wrapper ====================== */
+.tiptap-editor-wrapper {
+  width: 100%;
+  background: var(--darkNeutral200);
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* ====================== Menu Bar / Control Group ====================== */
+.tiptap-editor-wrapper .control-group {
+  background: var(--gray5);
+  border-radius: 12px 12px 0 0;
+  padding: 6px 8px;
+  margin-bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.control-group {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--gray5);
+  border-bottom: 1px solid var(--gray3);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.tiptap-editor-wrapper .control-group::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tiptap-editor-wrapper .control-group::-webkit-scrollbar-track {
+  background: var(--gray4);
+  border-radius: 2px;
+}
+
+.tiptap-editor-wrapper .control-group::-webkit-scrollbar-thumb {
+  background: var(--gray3);
+  border-radius: 2px;
+}
+
+.tiptap-editor-wrapper .control-group::-webkit-scrollbar-thumb:hover {
+  background: var(--gray2);
+}
+
+/* ====================== Button Group ====================== */
+.tiptap-editor-wrapper .button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ====================== Button Separator ====================== */
+.tiptap-editor-wrapper .button-separator {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--gray3);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+.button-separator {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--gray3);
+  margin: 0 0.25rem;
+}
+
+/* ====================== Buttons ====================== */
+.tiptap-editor-wrapper .button-group button {
+  padding: 4px 6px;
+  background: transparent;
+  color: var(--gray1);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+}
+
+.button-group button {
+  padding: 0.5rem 0.75rem;
+  background: var(--gray4);
+  color: var(--gray1);
+  border: 1px solid var(--gray3);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tiptap-editor-wrapper .button-group button:hover {
+  background: var(--gray4);
+  color: var(--white);
+}
+
+.button-group button:hover {
+  background: var(--gray3);
+  border-color: var(--gray2);
+  color: var(--white);
+}
+
+.tiptap-editor-wrapper .button-group button.is-active {
+  background: var(--gray4);
+  color: var(--gray1);
+  border: none;
+  font-weight: 500;
+}
+
+.button-group button.is-active {
+  background: var(--ds-background-information-bold);
+  color: var(--ds-background-accent-blue-subtle-pressed);
+  border-color: var(--ds-background-information-bold);
+  font-weight: 500;
+}
+
+.tiptap-editor-wrapper .button-group button.is-active:hover {
+  background: var(--gray3);
+  color: var(--gray1);
+}
+
+.button-group button.is-active:hover {
+  background: var(--ds-link-pressed);
+  border-color: var(--ds-link-pressed);
+  color: var(--ds-background-accent-blue-subtle-pressed);
+}
+
+.tiptap-editor-wrapper .button-group button:disabled,
+.button-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====================== Heading Dropdown ====================== */
+.tiptap-editor-wrapper .button-group .heading-dropdown {
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--gray1);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  min-width: 120px;
+  height: 28px;
+  font-family: "Inter", sans-serif;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+
+.tiptap-editor-wrapper .button-group .heading-dropdown:hover {
+  background: var(--gray4);
+  color: var(--white);
+}
+
+.tiptap-editor-wrapper .button-group .heading-dropdown:focus {
+  outline: none;
+  background: var(--gray4);
+  color: var(--white);
+}
+
+.tiptap-editor-wrapper .button-group .heading-dropdown option {
+  background: var(--gray5);
+  color: var(--gray1);
+  padding: 8px;
+}
+
+/* ====================== Editor Container ====================== */
+.tiptap-editor-wrapper .text-editor-wrapper {
+  cursor: default;
+  background: var(--gray5);
+  border-radius: 0 0 12px 12px;
+  border: 1px solid var(--black);
+  border-top: none;
+  box-sizing: border-box;
+  min-height: 180px;
+}
+
+.text-editor-wrapper {
+  cursor: default;
+  min-height: 200px;
+}
+
+/* ====================== Editor Body ====================== */
+.tiptap-editor-wrapper .text-editor {
+  padding: 12px;
+  background: var(--gray5);
+  color: var(--ds-text);
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+  height: auto;
+  min-height: auto;
+}
+
+.text-editor {
+  padding: 1rem;
+  background: var(--ds-color-background-accent-purple-subtlest);
+  border-radius: 8px;
+  color: var(--gray1);
+  height: auto;
+  min-height: auto;
+}
+
+/* Remove default focus outline from ProseMirror */
+.tiptap-editor-wrapper .text-editor .ProseMirror,
+.tiptap-editor-wrapper .text-editor .ProseMirror:focus,
+.tiptap-editor-wrapper .text-editor .ProseMirror:focus-visible,
+.text-editor .ProseMirror,
+.text-editor .ProseMirror:focus,
+.text-editor .ProseMirror:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  cursor: text;
+}
+
+.tiptap-editor-wrapper
+  .text-editor
+  .ProseMirror
+  p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--gray2);
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.text-editor > :first-child {
+  margin-top: 0;
+}
+
+/* ====================== Headings ====================== */
+.tiptap-editor-wrapper .text-editor h1 {
+  font-size: 28px;
+  color: var(--gray1);
+  margin: 16px 0 8px;
+  line-height: 1.1;
+}
+
+.text-editor h1,
+.text-editor h2 {
+  line-height: 1.1;
+  margin-top: 2.5rem;
+  text-wrap: pretty;
+  color: var(--gray1);
+}
+
+.text-editor h1,
+.text-editor h2 {
+  margin-top: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.text-editor h1 {
+  font-size: 1.4rem;
+}
+
+.tiptap-editor-wrapper .text-editor h2 {
+  font-size: 24px;
+  color: var(--gray1);
+  margin: 14px 0 8px;
+  line-height: 1.1;
+}
+
+.text-editor h2 {
+  font-size: 1.2rem;
+}
+
+.tiptap-editor-wrapper .text-editor h3 {
+  font-size: 20px;
+  color: var(--gray1);
+  margin: 12px 0 6px;
+  line-height: 1.1;
+}
+
+.text-editor h3 {
+  font-size: 1.1rem;
+}
+
+.tiptap-editor-wrapper .text-editor h4 {
+  font-size: 18px;
+  color: var(--gray1);
+  margin: 10px 0 6px;
+  line-height: 1.1;
+}
+
+.tiptap-editor-wrapper .text-editor h5 {
+  font-size: 16px;
+  color: var(--gray1);
+  margin: 8px 0 4px;
+  line-height: 1.1;
+}
+
+.tiptap-editor-wrapper .text-editor h6 {
+  font-size: 15px;
+  color: var(--gray1);
+  margin: 6px 0 4px;
+  line-height: 1.1;
+}
+
+.text-editor h4,
+.text-editor h5,
+.text-editor h6 {
+  font-size: 1rem;
+}
+
+/* ====================== Paragraphs ====================== */
+.tiptap-editor-wrapper .text-editor p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.text-editor p {
+  margin: 0.75rem 0;
+  line-height: 1;
+}
+
+.tiptap-editor-wrapper .text-editor p:first-child,
+.text-editor p:first-child {
+  margin-top: 0;
+}
+
+.tiptap-editor-wrapper .text-editor p:last-child,
+.text-editor p:last-child {
+  margin-bottom: 0;
+}
+
+/* ====================== Lists ====================== */
+.tiptap-editor-wrapper .text-editor ul,
+.tiptap-editor-wrapper .text-editor ol {
+  margin: 8px 0 8px 24px;
+  padding: 0;
+  list-style-position: outside;
+}
+
+.text-editor ul,
+.text-editor ol {
+  padding: 0 1rem;
+  margin: 1.25rem 1rem 1.25rem 0.4rem;
+  list-style-position: outside;
+}
+
+.tiptap-editor-wrapper .text-editor ul {
+  list-style-type: disc;
+}
+
+.tiptap-editor-wrapper .text-editor ol {
+  list-style-type: decimal;
+}
+
+.tiptap-editor-wrapper .text-editor ul li,
+.tiptap-editor-wrapper .text-editor ol li {
+  margin: 4px 0;
+  padding-left: 4px;
+}
+
+.tiptap-editor-wrapper .text-editor ul li p,
+.tiptap-editor-wrapper .text-editor ol li p,
+.text-editor ul li p,
+.text-editor ol li p {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+/* ====================== Blockquote ====================== */
+.tiptap-editor-wrapper .text-editor blockquote {
+  border-left: 4px solid var(--ds-link);
+  padding-left: 14px;
+  color: var(--gray2);
+  font-style: italic;
+  margin: 8px 0;
+  opacity: 0.85;
+}
+
+.text-editor blockquote {
+  border-left: 3px solid var(--gray3);
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  color: var(--gray2);
+}
+
+/* ====================== Code Block ====================== */
+.tiptap-editor-wrapper .text-editor pre {
+  background: var(--black);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  color: var(--white);
+  margin: 8px 0;
+}
+
+.text-editor pre {
+  background: var(--black);
+  border-radius: 0.5rem;
+  color: var(--white);
+  font-family: "JetBrainsMono", monospace;
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+}
+
+.tiptap-editor-wrapper .text-editor code {
+  background: var(--label-purple-bg);
+  color: var(--label-purple-text);
+  border-radius: 0.4rem;
+  padding: 0.25em 0.35em;
+  font-size: 0.85rem;
+}
+
+.text-editor code {
+  background: var(--label-purple-bg);
+  border-radius: 0.4rem;
+  color: var(--label-purple-text);
+  font-size: 0.85rem;
+  padding: 0.25em 0.3em;
+}
+
+.tiptap-editor-wrapper .text-editor pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+.text-editor pre code {
+  background: none;
+  color: inherit;
+  font-size: 0.8rem;
+  padding: 0;
+}
+
+/* ====================== Links ====================== */
+.tiptap-editor-wrapper .text-editor a,
+.text-editor a {
+  color: var(--ds-background-brand-bold);
+  text-decoration: underline;
+}
+
+.tiptap-editor-wrapper .text-editor a:hover,
+.text-editor a:hover {
+  color: var(--ds-background-information-bold-hovered);
+}
+
+/* ====================== Images ====================== */
+.tiptap-editor-wrapper .text-editor img,
+.text-editor img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
+/* ====================== Horizontal Rule ====================== */
+.tiptap-editor-wrapper .text-editor hr {
+  border: none;
+  border-top: 1px solid var(--gray4);
+  margin: 12px 0;
+}
+
+.text-editor hr {
+  border: none;
+  border-top: 1px solid var(--gray2);
+  margin: 2rem 0;
+}
