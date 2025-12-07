@@ -1,4 +1,6 @@
 import { Card } from "../models/Card.js";
+import { Board } from "../models/Board.js";
+import { User } from "../models/User.js";
 import { calculateNewPosition } from "./position-service.js";
 import createError from "http-errors";
 
@@ -107,4 +109,55 @@ export async function getComments(cardId) {
   }
 
   return card.comments;
+}
+
+export async function addCardAssignee(cardId, userId) {
+  const card = await Card.findById(cardId);
+  if (!card) throw createError(404, "Card not found");
+
+  const board = await Board.findById(card.boardId);
+  if (!board) throw createError(404, "Board not found");
+
+  const user = await User.findById(userId);
+  if (!user) throw createError(404, "User not found");
+
+  const isBoardMember = board.members.some(
+    member => member.userId.toString() === userId
+  );
+  if (!isBoardMember) throw createError(400, "User is not a board member");
+
+  const isAlreadyAssigned = card.assignees.some(
+    assignee => assignee.userId.toString() === userId
+  );
+  if (isAlreadyAssigned) {
+    throw createError(400, "User is already assigned to this card");
+  }
+
+  return await Card.findByIdAndUpdate(
+    cardId,
+    {
+      $addToSet: {
+        assignees: { userId, username: user.username },
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+}
+
+export async function removeCardAssignee(cardId, userId) {
+  return await Card.findByIdAndUpdate(
+    cardId,
+    {
+      $pull: {
+        assignees: { userId },
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 }
