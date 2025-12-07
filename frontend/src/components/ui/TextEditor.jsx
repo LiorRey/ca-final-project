@@ -183,8 +183,11 @@ export function TextEditor({ content, onChange }) {
   });
 
   function handleEditorClick() {
-    if (editor) {
-      editor.commands.focus();
+    if (!editor) return;
+
+    if (!editor.isFocused) {
+      editor.commands.focus("end");
+      editor.commands.insertContent("<p></p>");
     }
   }
 

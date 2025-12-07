@@ -25,6 +25,7 @@
 
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 
+  --white: #fff;
   --gray1: #ddd;
   --gray2: #aaa;
   --gray3: #3c3d40;

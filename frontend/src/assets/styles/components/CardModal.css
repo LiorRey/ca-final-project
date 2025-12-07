@@ -314,6 +314,17 @@
 
 .card-modal-title {
   font-size: 28px;
+  line-height: 1.1;
+  font-weight: 600;
+  word-wrap: break-word;
+  padding: 0 0.5rem 0.5rem 0;
+  word-break: break-word;
+  color: var(--gray1);
+}
+
+.card-modal-title-input {
+  font-size: 28px;
+  line-height: 1.1;
   font-weight: 600;
   word-wrap: break-word;
   padding: 0 0.5rem 0.5rem 0;

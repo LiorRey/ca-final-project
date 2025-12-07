@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Modal, Box, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -27,10 +27,8 @@ export function CardModal({
   const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
   const isLabelMenuOpen = Boolean(anchorEl);
+  const textareaRef = useRef(null);
 
-  function handleEditCard() {
-    setIsEditing(true);
-  }
   function handleCommentSection() {
     setOpenSection(!openSection);
   }
@@ -66,17 +64,26 @@ export function CardModal({
         </div>
         <div className="card-modal-container">
           <section className="card-modal-content">
-            {isEditing ? (
-              <input
-                type="text"
-                value={cardDetails.title}
-                onChange={e => handleChangeCard("title", e.target.value)}
-                onBlur={handleSaveCard}
-              />
-            ) : (
-              <h1 className="card-modal-title" onClick={handleEditCard}>
+            {!isEditing ? (
+              <h1
+                className="card-modal-title"
+                onClick={() => setIsEditing(true)}
+              >
                 {cardDetails.title}
               </h1>
+            ) : (
+              <textarea
+                ref={textareaRef}
+                className="card-modal-title-input"
+                value={cardDetails.title}
+                onChange={e => handleChangeCard("title", e.target.value)}
+                onBlur={() => {
+                  setIsEditing(false);
+                  onEditCard(cardDetails);
+                }}
+                autoFocus
+                rows={1}
+              />
             )}
             <div className="card-modal-controls">
               <button
