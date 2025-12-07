@@ -5,6 +5,7 @@ import {
   getCardById,
   updateCard,
   deleteCard,
+  moveCard,
   getCardsByLabel,
   getCardsByAssignedUser,
   updateLabels,
@@ -25,6 +26,7 @@ router.get("/:id", getCardById);
 router.post("/", authenticate, canCreateCard(), createCard);
 router.put("/:id", authenticate, canModifyCard(), updateCard);
 router.delete("/:id", authenticate, canModifyCard(), deleteCard);
+router.put("/:id/move", authenticate, canModifyCard(), moveCard);
 router.put("/:id/labels", authenticate, canModifyCard(), updateLabels);
 router.post("/:cardId/comments", authenticate, canModifyCard(), addComment);
 router.put(

@@ -1,7 +1,9 @@
 import { Card } from "../models/Card.js";
 import { Board } from "../models/Board.js";
 import { User } from "../models/User.js";
+import { List } from "../models/List.js";
 import { calculateNewPosition } from "./position-service.js";
+import { getBoardById } from "./board-service.js";
 import createError from "http-errors";
 
 export async function createCard(cardData) {
@@ -45,6 +47,37 @@ export async function updateCard(id, updateData) {
 
 export async function deleteCard(id) {
   return await Card.findByIdAndDelete(id);
+}
+
+export async function moveCard(cardId, listId, boardId, targetIndex) {
+  const board = await getBoardById(boardId);
+  if (!board) {
+    throw createError(404, "Board not found");
+  }
+
+  const list = await List.findById(listId);
+  if (!list) {
+    throw createError(404, "List not found");
+  }
+
+  if (list.boardId.toString() !== boardId) {
+    throw createError(400, "List does not belong to the specified board");
+  }
+
+  // Get cards from target list, excluding the card being moved
+  // This prevents position calculation conflicts when moving within same list
+  let cards = await Card.find({
+    listId,
+    _id: { $ne: cardId },
+  }).sort({ position: 1 });
+
+  let newPosition = calculateNewPosition(cards, targetIndex);
+
+  return await Card.findByIdAndUpdate(
+    cardId,
+    { position: newPosition, listId, boardId },
+    { new: true }
+  );
 }
 
 export async function updateCardLabels(id, labelIds) {

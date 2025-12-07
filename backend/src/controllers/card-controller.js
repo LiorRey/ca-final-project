@@ -34,6 +34,19 @@ export async function deleteCard(req, res) {
   res.status(204).send();
 }
 
+export async function moveCard(req, res) {
+  const { listId, boardId, targetIndex } = req.body;
+  const card = await cardService.moveCard(
+    req.params.id,
+    listId,
+    boardId,
+    targetIndex
+  );
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(200).json({ card });
+}
+
 export async function getCardsByLabel(req, res) {
   const { labelId } = req.params;
   const cards = await Card.find({ labels: labelId }).sort({ createdAt: -1 });
