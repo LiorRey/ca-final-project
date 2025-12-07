@@ -16,6 +16,7 @@ import {
   Info,
   Lock,
   Share,
+  Palette,
   Star,
   Settings,
   Computer,
@@ -48,7 +49,7 @@ function BoardMenuItem({ item, onItemClick, currentBackground }) {
     <ListItem disablePadding className="board-menu-item">
       <ListItemButton onClick={() => onItemClick(item.id)}>
         <ListItemIcon className="board-menu-item-icon">
-          {item.iconType === "bg-preview" ? (
+          {item.id === "background" ? (
             <div className={`board-bg-preview bg-${currentBackground}`} />
           ) : (
             item.icon
@@ -98,11 +99,7 @@ function createMenuItems() {
     { id: "star", label: "Star", icon: <Star /> },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "settings", label: "Settings", icon: <Settings /> },
-    {
-      id: "background",
-      label: "Change background",
-      iconType: "bg-preview",
-    },
+    { id: "background", label: "Change background", icon: <Palette /> },
     { id: "upgrade", label: "Upgrade", icon: <Computer /> },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "automation", label: "Automation", icon: <Bolt /> },
@@ -122,7 +119,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   const [menuItemId, setMenuItemId] = useState("");
   const menuItems = useMemo(() => createMenuItems(), []);
   const currentBackground = useSelector(
-    state => state.boards.board.appearance.background
+    state => state.board?.appearance?.background || null
   );
   const isMainMenu = menuItemId === "";
 
@@ -159,6 +156,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   return (
     <Popover
       anchorEl={anchorEl}
+      transitionDuration={0}
       isOpen={isBoardMenuOpen}
       onClose={onCloseBoardMenu}
       title={isMainMenu ? "Menu" : activeItem.label}

@@ -175,7 +175,9 @@ export function BoardDetails() {
     return `board-bg-${colorName}`;
   }
 
-  const backgroundClass = getBackgroundClass(board.appearance.background);
+  const backgroundClass = getBackgroundClass(
+    board.appearance ? board.appearance.background : null
+  );
 
   return (
     <section className={`board-container board-bg-base ${backgroundClass}`}>

@@ -17,9 +17,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--board-header-bg-gradient);
+  background: rgba(0, 0, 0, 0.265);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 
