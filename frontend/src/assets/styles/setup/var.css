@@ -76,7 +76,7 @@
   --label-lime-border: #65a30d;
   --label-lime-text: #f7fee7;
 
-  --label-pink-bg: #c026d3; /* Adjusted to a rich magenta/fuchsia for professionalism */
+  --label-pink-bg: #c026d3;
   --label-pink-border: #d946ef;
   --label-pink-text: #fdf2f8;
 
@@ -106,6 +106,8 @@
   --action-btn-color-active: var(--action-btn-color-default);
 
   --form-input-color-default: #bfc1c4;
+  --form-input-border-color: #4a9eff;
+  --form-input-placeholder-color: var(--gray2);
 
   /* Board Background Preset Colors */
   --bg-blue: #0079bf;

@@ -258,18 +258,18 @@ const muiTheme = createTheme({
           backgroundColor: "var(--gray5, #040a10)", // Input field background color
           color: "var(--gray1, #ddd)", // Input text color
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#4a9eff", // Input border color on hover (light blue)
+            borderColor: "var(--form-input-border-color, #4a9eff)", // Input border color on hover (light blue)
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#4a9eff", // Input border color when focused (light blue)
+            borderColor: "var(--form-input-border-color, #4a9eff)", // Input border color when focused (light blue)
           },
           "& .MuiInputBase-input::placeholder": {
-            color: "var(--gray2, #aaa)", // Placeholder text color
+            color: "var(--form-input-placeholder-color, var(--gray2, #aaa))", // Placeholder text color
             opacity: 1, // Placeholder opacity
           },
         },
         notchedOutline: {
-          borderColor: "#4a9eff", // Default input border color (light blue)
+          borderColor: "var(--form-input-border-color, #4a9eff)", // Default input border color (light blue)
         },
       },
     },

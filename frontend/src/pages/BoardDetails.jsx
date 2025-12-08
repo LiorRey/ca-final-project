@@ -1,10 +1,9 @@
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
-import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { AddList } from "../components/AddList";
@@ -166,20 +165,20 @@ export function BoardDetails() {
     }
   }
 
-  if (!board) {
-    return (
-      <section className={`board-container board-bg-base`}>Loading...</section>
-    );
-  }
-
   function getBackgroundClass(colorName) {
     if (!colorName) return "bg-blue";
     return `bg-${colorName}`;
   }
 
   const backgroundClass = getBackgroundClass(
-    board.appearance ? board.appearance.background : null
+    board?.appearance?.background || "blue"
   );
+
+  if (!board) {
+    return (
+      <section className="board-container board-bg-base">Loading...</section>
+    );
+  }
 
   return (
     <section className={`board-container board-bg-base ${backgroundClass}`}>

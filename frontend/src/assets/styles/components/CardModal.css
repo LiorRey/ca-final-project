@@ -1,7 +1,16 @@
+.card-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  width: 100%;
+}
+
 .card-modal-box {
   position: relative;
-  justify-self: center;
   display: flex;
+  margin: auto;
   flex-direction: column;
   margin-top: 5rem;
   margin-bottom: 5rem;

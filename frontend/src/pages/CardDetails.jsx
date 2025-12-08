@@ -46,7 +46,7 @@ export function CardDetails() {
   }
 
   if (!card) {
-    return <section className="board-container" />;
+    return <section className="card-details-container" />;
   }
 
   const cardLabels =
@@ -57,7 +57,7 @@ export function CardDetails() {
       : [];
 
   return (
-    <section className="board-container">
+    <section className="card-details-container">
       <CardModal
         boardId={boardId}
         listId={list._id}
