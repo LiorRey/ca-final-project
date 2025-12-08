@@ -22,12 +22,7 @@ export function Header() {
         <NavLink to="/" className="logo">
           Trello
         </NavLink>
-        <div>
-          <NavLink to="about">About</NavLink>
-          <NavLink to="board">Boards</NavLink>
-          <NavLink to="chat">Chat</NavLink>
-          <NavLink to="review">Review</NavLink>
-        </div>
+
         <input className="search-input" type="text" placeholder="Search" />
 
         {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}

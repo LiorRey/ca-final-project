@@ -37,17 +37,6 @@
   --success: rgb(41, 189, 73);
   --error: rgb(216, 59, 59);
 
-  /* Board Background Preset Colors */
-  --bg-blue: #0079bf;
-  --bg-orange: #d29034;
-  --bg-green: #519839;
-  --bg-red: #b04632;
-  --bg-purple: #89609e;
-  --bg-pink: #cd5a91;
-  --bg-emerald: #4bbf6b;
-  --bg-turquoise: #00aecc;
-  --bg-gray: #838c91;
-
   --board-bg-overlay-gradient: linear-gradient(
     rgba(0, 0, 0, 0.3),
     rgba(0, 0, 0, 0.3)
@@ -55,45 +44,45 @@
   --board-header-bg-overlay: rgba(0, 0, 0, 0.24);
 
   /* Label Colors */
-  --label-green-bg: rgb(15, 92, 46);
-  --label-green-border: rgb(25, 120, 60);
-  --label-green-text: rgb(220, 255, 223);
+  --label-green-bg: #15803d;
+  --label-green-border: #16a34a;
+  --label-green-text: #e0f2f1;
 
-  --label-yellow-bg: rgb(120, 100, 0);
-  --label-yellow-border: rgb(160, 140, 0);
-  --label-yellow-text: rgb(255, 255, 220);
+  --label-yellow-bg: #a16207;
+  --label-yellow-border: #ca8a04;
+  --label-yellow-text: #fefce8;
 
-  --label-orange-bg: rgb(120, 60, 0);
-  --label-orange-border: rgb(160, 80, 0);
-  --label-orange-text: rgb(255, 240, 220);
+  --label-orange-bg: #c2410c;
+  --label-orange-border: #ea580c;
+  --label-orange-text: #fff7ed;
 
-  --label-red-bg: rgb(86, 1, 8);
-  --label-red-border: rgb(146, 1, 14);
-  --label-red-text: rgb(255, 220, 223);
+  --label-red-bg: #991b1b;
+  --label-red-border: #dc2626;
+  --label-red-text: #fef2f2;
 
-  --label-purple-bg: rgb(60, 0, 120);
-  --label-purple-border: rgb(80, 0, 160);
-  --label-purple-text: rgb(240, 220, 255);
+  --label-purple-bg: #6d28d9;
+  --label-purple-border: #8b5cf6;
+  --label-purple-text: #f5f3ff;
 
-  --label-blue-bg: rgb(0, 60, 120);
-  --label-blue-border: rgb(0, 80, 160);
-  --label-blue-text: rgb(220, 240, 255);
+  --label-blue-bg: #1d4ed8;
+  --label-blue-border: #3b82f6;
+  --label-blue-text: #eff6ff;
 
-  --label-sky-bg: rgb(0, 90, 120);
-  --label-sky-border: rgb(0, 120, 160);
-  --label-sky-text: rgb(220, 245, 255);
+  --label-sky-bg: #0369a1;
+  --label-sky-border: #0ea5e9;
+  --label-sky-text: #f0f9ff;
 
-  --label-lime-bg: rgb(60, 100, 20);
-  --label-lime-border: rgb(80, 140, 30);
-  --label-lime-text: rgb(240, 255, 220);
+  --label-lime-bg: #4d7c0f;
+  --label-lime-border: #65a30d;
+  --label-lime-text: #f7fee7;
 
-  --label-pink-bg: rgb(120, 20, 80);
-  --label-pink-border: rgb(160, 30, 110);
-  --label-pink-text: rgb(255, 220, 245);
+  --label-pink-bg: #c026d3;
+  --label-pink-border: #d946ef;
+  --label-pink-text: #fdf2f8;
 
-  --label-gray-bg: rgb(60, 60, 60);
-  --label-gray-border: rgb(100, 100, 100);
-  --label-gray-text: rgb(220, 220, 220);
+  --label-gray-bg: #475569;
+  --label-gray-border: #64748b;
+  --label-gray-text: #f8fafc;
 
   /* Button Colors */
   --button-soft-blue-bg: rgb(102, 157, 241);
@@ -101,7 +90,7 @@
   --button-black-text: rgb(21, 21, 23);
 
   --icon-btn-bg-default: transparent;
-  --icon-btn-bg-hover: #e3e4f21f;
+  --icon-btn-bg-hover: rgba(255, 255, 255, 0.216);
   --icon-btn-bg-active: #bfc1c4;
   --icon-btn-bg-active-hover: #cecfd2;
   --icon-btn-color-default: #a9abaf;
@@ -117,85 +106,100 @@
   --action-btn-color-active: var(--action-btn-color-default);
 
   --form-input-color-default: #bfc1c4;
+  --form-input-border-color: #4a9eff;
+  --form-input-placeholder-color: var(--gray2);
+
+  /* Board Background Preset Colors */
+  --bg-blue: #0079bf;
+  --bg-orange: #d29034;
+  --bg-green: #519839;
+  --bg-red: #b04632;
+  --bg-purple: #89609e;
+  --bg-pink: #cd5a91;
+  --bg-emerald: #4bbf6b;
+  --bg-turquoise: #00aecc;
+  --bg-gray: #838c91;
+  --bg-midnight-gradient: linear-gradient(to top, #0011a8, #2c0047);
+  --bg-slate-gradient: linear-gradient(to top left, #475569, #293441);
+  --bg-wine-gradient: linear-gradient(to right bottom, #880e4f, #5b0933);
+  --bg-cypress-gradient: linear-gradient(to top left, #0d9488, #075952);
+  --bg-mauve-gradient: linear-gradient(to top left, #7c3aed, #4c1d95);
+  --bg-terracotta-gradient: linear-gradient(to top left, #ea580c, #9a3412);
+  --bg-blush-gradient: linear-gradient(to top left, #be185d, #831043);
+  --bg-deep-teal-gradient: linear-gradient(to top left, #16a34a, #0c5729);
+  --bg-charcoal-gradient: linear-gradient(to top left, #334155, #2e61b3);
 }
 
-/* Base style for any board and header background color */
-.board-bg-base {
-  --board-bg-color: hsl(
-    var(--board-hue),
-    var(--board-saturation),
-    var(--board-lightness)
-  );
-
-  --board-bg-color-darkened: hsl(
-    var(--board-hue),
-    var(--board-saturation),
-    calc(var(--board-lightness) * 0.64)
-  );
-
-  --board-header-bg-gradient: linear-gradient(
-    to bottom,
-    hsla(
-      var(--board-hue),
-      var(--board-saturation),
-      calc(var(--board-lightness) * 0.64),
-      0.9
-    ),
-    var(--board-header-bg-overlay)
-  );
+/* Solid Color Background Classes */
+.bg-blue {
+  background-color: var(--bg-blue);
 }
 
-/* Board and header background color classes */
-.board-bg-blue {
-  --board-hue: 203;
-  --board-saturation: 100%;
-  --board-lightness: 37.5%;
+.bg-orange {
+  background-color: var(--bg-orange);
 }
 
-.board-bg-orange {
-  --board-hue: 35;
-  --board-saturation: 63.7%;
-  --board-lightness: 51.4%;
+.bg-green {
+  background-color: var(--bg-green);
 }
 
-.board-bg-green {
-  --board-hue: 107;
-  --board-saturation: 45.5%;
-  --board-lightness: 35.9%;
+.bg-red {
+  background-color: var(--bg-red);
 }
 
-.board-bg-red {
-  --board-hue: 9;
-  --board-saturation: 48%;
-  --board-lightness: 45.5%;
+.bg-purple {
+  background-color: var(--bg-purple);
 }
 
-.board-bg-purple {
-  --board-hue: 271;
-  --board-saturation: 32.3%;
-  --board-lightness: 50.4%;
+.bg-pink {
+  background-color: var(--bg-pink);
 }
 
-.board-bg-pink {
-  --board-hue: 334;
-  --board-saturation: 45.5%;
-  --board-lightness: 56.9%;
+.bg-emerald {
+  background-color: var(--bg-emerald);
 }
 
-.board-bg-emerald {
-  --board-hue: 146;
-  --board-saturation: 45.8%;
-  --board-lightness: 51.2%;
+.bg-turquoise {
+  background-color: var(--bg-turquoise);
 }
 
-.board-bg-turquoise {
-  --board-hue: 190;
-  --board-saturation: 100%;
-  --board-lightness: 40%;
+.bg-gray {
+  background-color: var(--bg-gray);
 }
 
-.board-bg-gray {
-  --board-hue: 200;
-  --board-saturation: 6.1%;
-  --board-lightness: 54.9%;
+/* Gradient Background Classes */
+.bg-midnight {
+  background: var(--bg-midnight-gradient);
+}
+
+.bg-slate {
+  background: var(--bg-slate-gradient);
+}
+
+.bg-wine {
+  background: var(--bg-wine-gradient);
+}
+
+.bg-cypress {
+  background: var(--bg-cypress-gradient);
+}
+
+.bg-mauve {
+  background: var(--bg-mauve-gradient);
+}
+
+.bg-terracotta {
+  background: var(--bg-terracotta-gradient);
+}
+
+.bg-blush {
+  background: var(--bg-blush-gradient);
+}
+
+.bg-deep-teal {
+  background: var(--bg-deep-teal-gradient);
+}
+
+.bg-charcoal {
+  background: var(--bg-charcoal-gradient);
 }

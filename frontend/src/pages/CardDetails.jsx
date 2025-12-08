@@ -11,9 +11,11 @@ import {
 export function CardDetails() {
   const { boardId, listId, cardId } = useParams();
   const [modalOpen, setModalOpen] = useState(true);
-
   const navigate = useNavigate();
   const board = useSelector(s => s.boards.board);
+  const backgroundClass = board?.appearance
+    ? `bg-${board?.appearance?.background}`
+    : "bg-blue";
   const list = board?.lists?.find(l => l._id === listId);
   const card = list?.cards?.find(c => c._id === cardId);
 
@@ -46,7 +48,7 @@ export function CardDetails() {
   }
 
   if (!card) {
-    return <section className="board-container" />;
+    return <section className={`card-details-container ${backgroundClass}`} />;
   }
 
   const cardLabels =
@@ -57,7 +59,7 @@ export function CardDetails() {
       : [];
 
   return (
-    <section className="board-container">
+    <section className={`card-details-container ${backgroundClass}`}>
       <CardModal
         boardId={boardId}
         listId={list._id}

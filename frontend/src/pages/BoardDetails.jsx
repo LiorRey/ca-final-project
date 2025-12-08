@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
-import Sort from "@mui/icons-material/Sort";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { AddList } from "../components/AddList";
@@ -28,7 +27,6 @@ import {
   moveCard,
   moveList,
 } from "../store/actions/board-actions";
-import { DEFAULT_BOARD_BG } from "../services/board";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
@@ -136,7 +134,7 @@ export function BoardDetails() {
         console.log(before, after);
 
         if (listToMove) {
-          moveList(listToMove.id, board._id, destination.index);
+          moveList(listToMove._id, board._id, destination.index);
         }
         return;
       }
@@ -167,18 +165,17 @@ export function BoardDetails() {
     }
   }
 
+  const backgroundClass = board?.appearance
+    ? `bg-${board?.appearance?.background || "blue"}`
+    : "bg-blue";
+
   if (!board) {
-    return <section className="board-container">Loading...</section>;
+    return (
+      <section className={`board-container board-bg-base ${backgroundClass}`}>
+        Loading...
+      </section>
+    );
   }
-
-  function getBackgroundClass(colorName) {
-    if (!colorName) return `board-bg-${DEFAULT_BOARD_BG}`;
-    return `board-bg-${colorName}`;
-  }
-
-  const backgroundClass = getBackgroundClass(
-    board.appearance ? board.appearance.background : null
-  );
 
   return (
     <section className={`board-container board-bg-base ${backgroundClass}`}>
@@ -186,9 +183,6 @@ export function BoardDetails() {
         <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
           <FilterMenu />
-          <button className="icon-button">
-            <Sort />
-          </button>
           <button className="icon-button">
             <StarBorderRounded />
           </button>
@@ -231,7 +225,7 @@ export function BoardDetails() {
                   />
                 ))}
                 {provided.placeholder}
-                <div>
+                <div className="add-list">
                   <AddList onAddList={onAddList} />
                 </div>
               </div>

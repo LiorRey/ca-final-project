@@ -52,19 +52,16 @@
 .list-content-container::-webkit-scrollbar-track {
   background: var(--gray3); /* Track color */
   border-radius: 3px;
-  border: 1px solid var(--gray3);
 }
 
 .list-content-container::-webkit-scrollbar-thumb {
-  background: var(--gray2); /* Thumb color */
+  background: var(--gray5); /* Thumb color */
   border-radius: 3px;
-  border: 1px solid var(--gray3);
 }
 
 .list-content-container::-webkit-scrollbar-thumb:hover {
-  background: var(--gray3); /* Hover color */
+  background: var(--gray4); /* Hover color */
   border-radius: 3px;
-  border: 1px solid var(--gray2);
 }
 
 .cards-list {
@@ -81,7 +78,7 @@
 .list-footer {
   display: flex;
   flex-direction: column;
-  padding: 0.25rem 0.5rem 0.5rem 0.5rem;
+  padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .list-add-card-header button,

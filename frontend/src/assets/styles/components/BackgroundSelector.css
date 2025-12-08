@@ -20,10 +20,8 @@
 .background-color-option {
   width: 100%;
   height: 64px;
-  border: 2px solid transparent;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +33,7 @@
   }
 
   &.selected {
-    border-color: #579dff;
+    border-color: #4392ff;
     box-shadow: 0 0 0 2px rgba(87, 157, 255, 0.3);
   }
 
@@ -45,40 +43,4 @@
     font-weight: bold;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
   }
-}
-
-.bg-blue {
-  background-color: var(--bg-blue);
-}
-
-.bg-orange {
-  background-color: var(--bg-orange);
-}
-
-.bg-green {
-  background-color: var(--bg-green);
-}
-
-.bg-red {
-  background-color: var(--bg-red);
-}
-
-.bg-purple {
-  background-color: var(--bg-purple);
-}
-
-.bg-pink {
-  background-color: var(--bg-pink);
-}
-
-.bg-emerald {
-  background-color: var(--bg-emerald);
-}
-
-.bg-turquoise {
-  background-color: var(--bg-turquoise);
-}
-
-.bg-gray {
-  background-color: var(--bg-gray);
 }

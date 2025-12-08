@@ -14,7 +14,7 @@
 }
 
 .icon-button:hover {
-  background-color: var(--gray1);
+  background-color: var(--icon-btn-bg-hover);
 }
 
 .add-card-card-button {

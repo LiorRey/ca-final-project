@@ -1,7 +1,6 @@
 .add-card-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .card-content .card-title-input {

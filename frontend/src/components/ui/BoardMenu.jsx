@@ -29,7 +29,6 @@ import {
   Email,
   ExitToApp,
 } from "@mui/icons-material";
-import { DEFAULT_BOARD_BG } from "../../services/board";
 
 const MENU_ITEM_TYPES = {
   SEPARATOR: "separator",
@@ -123,7 +122,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   const [menuItemId, setMenuItemId] = useState("");
   const menuItems = useMemo(() => createMenuItems(), []);
   const currentBackground = useSelector(
-    state => state.boards.board?.appearance?.background || DEFAULT_BOARD_BG
+    state => state.boards.board?.appearance?.background
   );
   const isMainMenu = menuItemId === "";
 

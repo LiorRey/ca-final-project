@@ -138,7 +138,6 @@ export function CardPopover({
       className="card-container"
     >
       <Popover
-        disableScrollLock
         disableEnforceFocus
         disableAutoFocus
         className="card-popover"
