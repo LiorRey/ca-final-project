@@ -23,7 +23,6 @@ export async function login(credentials) {
   try {
     store.dispatch({ type: LOGIN.REQUEST, key: LOGIN.KEY });
     const user = await authService.login(credentials);
-    authService.setCurrentUserInSession(user);
     store.dispatch({ type: LOGIN.SUCCESS, payload: user });
     return user;
   } catch (error) {
