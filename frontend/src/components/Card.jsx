@@ -7,6 +7,7 @@ import {
   RemoveRedEyeOutlined,
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
@@ -97,12 +98,13 @@ export function Card({
                 <div className="empty-card-footer" />
               </div>
               <button className="icon-button card-edit-button" />
-              <button
+              <Button
                 onClick={handleSave}
-                className="icon-button card-save-button"
+                onMouseDown={e => e.preventDefault()}
+                className="add-submit-button"
               >
                 Save
-              </button>
+              </Button>
             </Box>
           ) : (
             <Box className="card-content" onClick={handleClickCard}>

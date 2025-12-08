@@ -39,24 +39,10 @@
   overflow: visible;
 }
 
-.card-save-button {
+.floating-card-content .add-submit-button {
   position: absolute;
   bottom: -2.5rem;
   left: 0;
-  background: #8fb8f6;
-  color: black;
-  border: 1px solid var(--black);
-  border-radius: 6px;
-  padding: 0.5rem;
-  font-size: 1em;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  overflow: hidden;
-  transition: 0.2s ease;
-}
-
-.card-save-button:hover {
-  background: #6f9ce6;
 }
 
 .card-edit-button {

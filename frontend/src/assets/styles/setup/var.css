@@ -90,7 +90,7 @@
   --button-black-text: rgb(21, 21, 23);
 
   --icon-btn-bg-default: transparent;
-  --icon-btn-bg-hover: #e3e4f21f;
+  --icon-btn-bg-hover: rgba(255, 255, 255, 0.216);
   --icon-btn-bg-active: #bfc1c4;
   --icon-btn-bg-active-hover: #cecfd2;
   --icon-btn-color-default: #a9abaf;
@@ -127,7 +127,7 @@
   --bg-terracotta-gradient: linear-gradient(to top left, #ea580c, #9a3412);
   --bg-blush-gradient: linear-gradient(to top left, #be185d, #831043);
   --bg-deep-teal-gradient: linear-gradient(to top left, #16a34a, #0c5729);
-  --bg-charcoal-gradient: linear-gradient(to top left, #334155, #1e293b);
+  --bg-charcoal-gradient: linear-gradient(to top left, #334155, #2e61b3);
 }
 
 /* Solid Color Background Classes */

@@ -54,7 +54,7 @@ export function AddCardForm({
         <Button
           onClick={handleAddCard}
           onMouseDown={e => e.preventDefault()}
-          className="add-list-submit-button"
+          className="add-submit-button"
           type="submit"
         >
           Add card
@@ -66,7 +66,7 @@ export function AddCardForm({
           size="small"
           aria-label="close"
           onClick={onHideAddCardForm}
-          className="add-list-close-button"
+          className="add-close-button"
         >
           <CloseIcon />
         </IconButton>

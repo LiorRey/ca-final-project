@@ -53,7 +53,7 @@ export function AddList({ onAddList }) {
             <Button
               onClick={handleAddList}
               onMouseDown={e => e.preventDefault()}
-              className="add-list-submit-button"
+              className="add-submit-button"
             >
               Add list
             </Button>
@@ -64,7 +64,7 @@ export function AddList({ onAddList }) {
               size="small"
               aria-label="close"
               onClick={handleHideAddList}
-              className="add-list-close-button"
+              className="add-close-button"
             >
               <CloseIcon />
             </IconButton>

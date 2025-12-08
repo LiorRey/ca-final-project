@@ -165,14 +165,9 @@ export function BoardDetails() {
     }
   }
 
-  function getBackgroundClass(colorName) {
-    if (!colorName) return "bg-blue";
-    return `bg-${colorName}`;
-  }
-
-  const backgroundClass = getBackgroundClass(
-    board?.appearance?.background || "blue"
-  );
+  const backgroundClass = board?.appearance
+    ? `bg-${board?.appearance?.background}`
+    : "bg-blue";
 
   if (!board) {
     return (
