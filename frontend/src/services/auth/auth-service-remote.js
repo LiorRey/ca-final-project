@@ -1,14 +1,31 @@
+import { httpService } from "../http-service";
+
+const CURRENT_USER_SESSION_KEY = "currentUser";
+
 export const authService = {
   signup,
   login,
-  setCurrentUserInSession,
-  getCurrentUserFromSession,
+  logout,
+  getSession,
 };
 
-export async function signup(userData) {}
+async function signup(userData) {
+  const data = await httpService.post("auth/signup", userData);
+  const user = data.user;
+  return user;
+}
 
-export async function login(credentials) {}
+async function login(credentials) {
+  const data = await httpService.post("auth/login", credentials);
+  const user = data.user;
+  return user;
+}
 
-export function setCurrentUserInSession(user) {}
+async function logout() {
+  await httpService.post("auth/logout");
+}
 
-export function getCurrentUserFromSession() {}
+async function getSession() {
+  const data = await httpService.get("auth/session");
+  return data.user;
+}
