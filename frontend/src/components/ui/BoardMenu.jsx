@@ -16,7 +16,6 @@ import {
   Info,
   Lock,
   Share,
-  Palette,
   Star,
   Settings,
   Computer,
@@ -30,6 +29,7 @@ import {
   Email,
   ExitToApp,
 } from "@mui/icons-material";
+import { DEFAULT_BOARD_BG } from "../../services/board";
 
 const MENU_ITEM_TYPES = {
   SEPARATOR: "separator",
@@ -49,7 +49,7 @@ function BoardMenuItem({ item, onItemClick, currentBackground }) {
     <ListItem disablePadding className="board-menu-item">
       <ListItemButton onClick={() => onItemClick(item.id)}>
         <ListItemIcon className="board-menu-item-icon">
-          {item.id === "background" ? (
+          {item.iconType === "bg-preview" ? (
             <div className={`board-bg-preview bg-${currentBackground}`} />
           ) : (
             item.icon
@@ -99,7 +99,11 @@ function createMenuItems() {
     { id: "star", label: "Star", icon: <Star /> },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "settings", label: "Settings", icon: <Settings /> },
-    { id: "background", label: "Change background", icon: <Palette /> },
+    {
+      id: "background",
+      label: "Change background",
+      iconType: "bg-preview",
+    },
     { id: "upgrade", label: "Upgrade", icon: <Computer /> },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "automation", label: "Automation", icon: <Bolt /> },
@@ -119,7 +123,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   const [menuItemId, setMenuItemId] = useState("");
   const menuItems = useMemo(() => createMenuItems(), []);
   const currentBackground = useSelector(
-    state => state.board?.appearance?.background || null
+    state => state.boards.board?.appearance?.background || DEFAULT_BOARD_BG
   );
   const isMainMenu = menuItemId === "";
 

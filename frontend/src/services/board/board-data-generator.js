@@ -5,6 +5,8 @@ import {
 } from "../user/user-data-generator.js";
 import { generateInitialPositions } from "./fractional-index-service";
 
+const DEFAULT_BOARD_BG = "blue";
+
 const PROJECT_TYPES = [
   "Project Alpha",
   "Beta Release",
@@ -166,6 +168,10 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
 
   const activities = generateBoardActivities(boardId, lists, 5);
 
+  const appearance = {
+    background: DEFAULT_BOARD_BG,
+  };
+
   const board = {
     _id: boardId,
     title: faker.helpers.arrayElement(PROJECT_TYPES),
@@ -176,9 +182,7 @@ export function generateBoard(listCount = 3, cardsPerList = 3, options = {}) {
     lists,
     activities,
     listOrder,
-    appearance: {
-      background: "#0079bf",
-    },
+    appearance,
     ...options,
   };
 
@@ -328,6 +332,10 @@ export function generateBoardWithUsers(
 
   const activities = generateBoardActivities(boardId, lists, 8, users);
 
+  const appearance = {
+    background: DEFAULT_BOARD_BG,
+  };
+
   const board = {
     _id: boardId,
     title: faker.helpers.arrayElement(PROJECT_TYPES),
@@ -354,9 +362,7 @@ export function generateBoardWithUsers(
     lists,
     activities,
     listOrder,
-    appearance: {
-      background: "#0079bf",
-    },
+    appearance,
     ...options,
   };
 

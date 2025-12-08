@@ -4,6 +4,8 @@ import { boardService as local } from "./board-service-local";
 import { boardService as remote } from "./board-service-remote";
 import { boardDataGenerator } from "../board/board-data-generator.js";
 
+export const DEFAULT_BOARD_BG = "blue";
+
 function getEmptyBoard() {
   return {
     _id: crypto.randomUUID(),
@@ -15,7 +17,7 @@ function getEmptyBoard() {
     activities: [],
     listOrder: [],
     appearance: {
-      background: "#0079bf",
+      background: DEFAULT_BOARD_BG,
     },
   };
 }

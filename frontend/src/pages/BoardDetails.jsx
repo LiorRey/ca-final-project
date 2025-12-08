@@ -28,6 +28,7 @@ import {
   moveCard,
   moveList,
 } from "../store/actions/board-actions";
+import { DEFAULT_BOARD_BG } from "../services/board";
 
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
@@ -171,7 +172,7 @@ export function BoardDetails() {
   }
 
   function getBackgroundClass(colorName) {
-    if (!colorName) return "board-bg-blue";
+    if (!colorName) return `board-bg-${DEFAULT_BOARD_BG}`;
     return `board-bg-${colorName}`;
   }
 
