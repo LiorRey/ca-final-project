@@ -118,3 +118,10 @@ export async function removeAssignee(req, res) {
 
   res.status(200).json({ card });
 }
+
+export async function copyCard(req, res) {
+  const { id } = req.params;
+  const copyOptions = req.body;
+  const copiedCard = await cardService.copyCard(id, copyOptions);
+  res.status(201).json({ card: copiedCard });
+}
