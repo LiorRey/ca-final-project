@@ -349,6 +349,7 @@
   align-items: center;
   background: var(--gray4);
   border-bottom: 1px solid var(--gray3);
+  border-radius: 16px 16px 0 0;
 }
 
 .card-modal-header-buttons {

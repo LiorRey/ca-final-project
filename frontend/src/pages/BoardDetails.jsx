@@ -166,12 +166,14 @@ export function BoardDetails() {
   }
 
   const backgroundClass = board?.appearance
-    ? `bg-${board?.appearance?.background}`
+    ? `bg-${board?.appearance?.background || "blue"}`
     : "bg-blue";
 
   if (!board) {
     return (
-      <section className="board-container board-bg-base">Loading...</section>
+      <section className={`board-container board-bg-base ${backgroundClass}`}>
+        Loading...
+      </section>
     );
   }
 
