@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -135,7 +135,7 @@ export function BoardDetails() {
         console.log(before, after);
 
         if (listToMove) {
-          moveList(listToMove.id, board._id, destination.index);
+          moveList(listToMove._id, board._id, destination.index);
         }
         return;
       }
@@ -167,12 +167,14 @@ export function BoardDetails() {
   }
 
   if (!board) {
-    return <section className="board-container">Loading...</section>;
+    return (
+      <section className={`board-container board-bg-base`}>Loading...</section>
+    );
   }
 
   function getBackgroundClass(colorName) {
-    if (!colorName) return "board-bg-blue";
-    return `board-bg-${colorName}`;
+    if (!colorName) return "bg-blue";
+    return `bg-${colorName}`;
   }
 
   const backgroundClass = getBackgroundClass(
@@ -185,9 +187,6 @@ export function BoardDetails() {
         <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
           <FilterMenu />
-          <button className="icon-button">
-            <Sort />
-          </button>
           <button className="icon-button">
             <StarBorderRounded />
           </button>
@@ -230,7 +229,7 @@ export function BoardDetails() {
                   />
                 ))}
                 {provided.placeholder}
-                <div>
+                <div className="add-list">
                   <AddList onAddList={onAddList} />
                 </div>
               </div>

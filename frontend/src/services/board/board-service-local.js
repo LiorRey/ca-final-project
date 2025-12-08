@@ -381,11 +381,11 @@ export async function createList(boardId, listData) {
 }
 
 async function updateListPosition(board, list, targetIndex) {
-  const newPosition = calculateNewPosition(board.lists, targetIndex, list.id);
+  const newPosition = calculateNewPosition(board.lists, targetIndex, list._id);
 
   const updatedList = { ...list, position: newPosition };
   const updatedLists = board.lists.map(l =>
-    l.id === list.id ? updatedList : l
+    l._id === list._id ? updatedList : l
   );
   const sortedLists = sortByPosition(updatedLists);
 
@@ -400,14 +400,14 @@ export async function moveList(listId, targetBoardId, targetIndex) {
     const allBoards = await query();
 
     const sourceBoard = allBoards.find(board =>
-      board.lists.some(l => l.id === listId)
+      board.lists.some(l => l._id === listId)
     );
     if (!sourceBoard) throw new Error("Source board not found");
 
     const movedList = _findList(sourceBoard, listId);
 
     if (sourceBoard._id !== targetBoardId) {
-      sourceBoard.lists = sourceBoard.lists.filter(l => l.id !== listId);
+      sourceBoard.lists = sourceBoard.lists.filter(l => l._id !== listId);
       await save(sourceBoard);
 
       const targetBoard = allBoards.find(board => board._id === targetBoardId);

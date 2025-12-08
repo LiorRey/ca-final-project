@@ -152,7 +152,7 @@
   gap: 0.5rem;
   border-radius: 0.2rem;
   color: var(--gray1);
-  background-color: var(--gray3);
+  background: var(--gray4);
   padding: 0.5rem;
   transition: background-color 0.15s ease, transform 0.05s ease,
     box-shadow 0.1s ease;

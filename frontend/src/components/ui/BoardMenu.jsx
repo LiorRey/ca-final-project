@@ -119,7 +119,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   const [menuItemId, setMenuItemId] = useState("");
   const menuItems = useMemo(() => createMenuItems(), []);
   const currentBackground = useSelector(
-    state => state.board?.appearance?.background || null
+    state => state.boards.board.appearance.background
   );
   const isMainMenu = menuItemId === "";
 

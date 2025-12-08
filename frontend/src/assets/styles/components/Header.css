@@ -1,13 +1,12 @@
 .app-header {
   display: flex;
   width: 100%;
-
-  background: var(--gray3);
+  background: var(--gray4);
   padding: 0.8rem 1rem;
 
   & nav {
     display: grid;
-    grid-template-columns: auto auto 1fr auto;
+    grid-template-columns: auto 1fr auto;
     width: 100%;
     color: var(--gray1);
     align-items: center;
@@ -29,9 +28,10 @@
     }
 
     .logo {
-      font-size: 2em;
+      font-size: 2.5em;
       font-weight: bold;
       margin-inline-end: 2em;
+      text-decoration: none;
       color: white;
     }
 

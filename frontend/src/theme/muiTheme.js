@@ -255,17 +255,21 @@ const muiTheme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          backgroundColor: token("color.background.input", "#242528"), // Input field background color (dark gray)
-          color: token("color.text", "#CECFD2"), // Input text color (light gray)
+          backgroundColor: "var(--gray5, #040a10)", // Input field background color
+          color: "var(--gray1, #ddd)", // Input text color
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: token("color.border.focused", "#8FB8F6"), // Input border color on hover (blue)
+            borderColor: "#4a9eff", // Input border color on hover (light blue)
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: token("color.border.focused", "#8FB8F6"), // Input border color when focused (blue)
+            borderColor: "#4a9eff", // Input border color when focused (light blue)
+          },
+          "& .MuiInputBase-input::placeholder": {
+            color: "var(--gray2, #aaa)", // Placeholder text color
+            opacity: 1, // Placeholder opacity
           },
         },
         notchedOutline: {
-          borderColor: token("color.border.input", "#7E8188"), // Default input border color (dark gray)
+          borderColor: "#4a9eff", // Default input border color (light blue)
         },
       },
     },
@@ -391,7 +395,7 @@ const muiTheme = createTheme({
           padding: "6px 12px",
           minWidth: 0, // Remove default min-width
           lineHeight: "20px", // Line height
-          margin: "0.5rem 0rem", // Remove default margin
+          margin: "0.5rem 0rem 0", // Remove default margin
           "&:hover": {
             backgroundColor: token(
               "color.background.brand.bold.pressed",

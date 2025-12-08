@@ -31,31 +31,44 @@ export function AddList({ onAddList }) {
   return (
     <>
       {!showAddList ? (
-        <Button
-          startIcon={<AddIcon />}
+        <button
           className="add-list-button"
           onClick={() => setShowAddList(true)}
         >
-          Add another list
-        </Button>
+          <AddIcon /> Add another list
+        </button>
       ) : (
         <div className="add-list-container">
-          <div>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              value={newListTitle}
-              placeholder="Enter list name"
-              onChange={e => setNewListTitle(e.target.value)}
-              autoFocus
-            />
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            size="small"
+            value={newListTitle}
+            placeholder="Enter list name..."
+            onChange={e => setNewListTitle(e.target.value)}
+            autoFocus
+            className="add-list-input"
+          />
+          <div className="add-list-actions">
+            <Button
+              onClick={handleAddList}
+              onMouseDown={e => e.preventDefault()}
+              className="add-list-submit-button"
+            >
+              Add list
+            </Button>
+            <IconButton
+              sx={{
+                margin: "0.5rem 0 0 0",
+              }}
+              size="small"
+              aria-label="close"
+              onClick={handleHideAddList}
+              className="add-list-close-button"
+            >
+              <CloseIcon />
+            </IconButton>
           </div>
-          <Button onClick={handleAddList} onMouseDown={e => e.preventDefault()}>
-            Add List
-          </Button>
-          <IconButton aria-label="close" onClick={handleHideAddList}>
-            <CloseIcon />
-          </IconButton>
         </div>
       )}
     </>
