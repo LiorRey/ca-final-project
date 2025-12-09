@@ -4,7 +4,20 @@ import { getBoardById } from "./board-service.js";
 import createHttpError from "http-errors";
 
 export async function createList(listData) {
-  return new List(listData).save();
+  const { boardId, title, targetIndex } = listData;
+  let position;
+  if (!targetIndex) {
+    const lists = await List.find({ boardId }).sort({ position: 1 });
+    position = calculateNewPosition(lists, lists.length);
+  } else {
+    // TODO: implement inserting at specific index
+  }
+  const list = await List.create({
+    boardId,
+    title,
+    position,
+  });
+  return list;
 }
 
 export async function getListById(id) {
