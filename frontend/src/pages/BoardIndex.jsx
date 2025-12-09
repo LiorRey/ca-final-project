@@ -1,27 +1,30 @@
-import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   loadBoards,
   loadBoard,
   createBoard,
+  setBoardSearch,
 } from "../store/actions/board-actions";
+
 import AddIcon from "@mui/icons-material/Add";
-import SearchIcon from "@mui/icons-material/Search";
 import { BoardPreview } from "../components/ui/BoardPreview";
 
 export function BoardIndex() {
-  const [search, setSearch] = useState("");
-  const boards = useSelector(state => state.boards.boards);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const boards = useSelector(state => state.boards.boards);
+  const boardSearch = useSelector(state => state.boards.boardSearch);
 
   useEffect(() => {
     loadBoards();
+    dispatch(setBoardSearch(""));
   }, []);
 
   async function onOpenBoard(boardId) {
     await loadBoard(boardId);
-    navigate(`/board/${boardId}`);
+    await navigate(`/board/${boardId}`);
   }
 
   async function onCreateBoard() {
@@ -31,32 +34,20 @@ export function BoardIndex() {
       appearance: { background: "#0079bf" },
     });
 
-    onOpenBoard(newBoard);
+    onOpenBoard(newBoard._id);
   }
 
-  // Filter boards by search
   const filteredBoards = useMemo(() => {
-    const term = search.toLowerCase();
-    return boards.filter(b => b.title.toLowerCase().includes(term));
-  }, [search, boards]);
+    const term = boardSearch.toLowerCase();
+    return boards.filter(board => board.title.toLowerCase().includes(term));
+  }, [boardSearch, boards]);
 
   return (
     <section className="board-index-page">
       <header className="board-index-header">
         <h1>Boards</h1>
-
-        <div className="board-search-container">
-          <SearchIcon className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search boards…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-        </div>
       </header>
 
-      {/* 📋 All Boards */}
       <section className="board-section">
         <h2>All Boards</h2>
         <div className="boards-list">
@@ -69,7 +60,6 @@ export function BoardIndex() {
             />
           ))}
 
-          {/* ➕ Create Board Tile */}
           <div className="board-tile create-tile" onClick={onCreateBoard}>
             <AddIcon />
             <span>Create new board</span>

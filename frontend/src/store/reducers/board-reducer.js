@@ -7,6 +7,7 @@ export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
 export const ADD_BOARD = "ADD_BOARD";
 export const UPDATE_BOARD = "UPDATE_BOARD";
+export const SET_BOARD_SEARCH = "boards/SET_BOARD_SEARCH";
 export const ADD_LIST = createAsyncActionTypes("ADD_LIST");
 export const MOVE_ALL_CARDS = createAsyncActionTypes("MOVE_ALL_CARDS");
 export const ARCHIVE_LIST = createAsyncActionTypes("ARCHIVE_LIST");
@@ -34,6 +35,7 @@ export const CLEAR_ALL_FILTERS = "boards/CLEAR_ALL_FILTERS";
 const initialState = {
   boards: [],
   board: null,
+  boardSearch: "",
   loading: {},
   errors: {},
   filterBy: getDefaultFilter(),
@@ -319,6 +321,10 @@ const handlers = {
   [CLEAR_ALL_FILTERS]: state => ({
     ...state,
     filterBy: getDefaultFilter(),
+  }),
+  [SET_BOARD_SEARCH]: (state, action) => ({
+    ...state,
+    boardSearch: action.payload,
   }),
 };
 
