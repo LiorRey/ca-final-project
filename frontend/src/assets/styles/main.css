@@ -40,4 +40,5 @@
 @import "components/CardFormMenu";
 @import "components/CardModal";
 
+@import "pages/BoardIndex";
 @import "pages/BoardDetails";
