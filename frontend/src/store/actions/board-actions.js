@@ -280,10 +280,6 @@ export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
 }
 
-export function addCardAction(card, listId) {
-  return { type: ADD_CARD, payload: { card, listId } };
-}
-
 export function editCardAction(card, listId) {
   return { type: EDIT_CARD, payload: { card, listId } };
 }

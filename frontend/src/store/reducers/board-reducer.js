@@ -133,7 +133,12 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list._id === action.payload._id ? action.payload : list
+        list._id !== action.payload.card.listId
+          ? list
+          : {
+              ...list,
+              cards: sortByPosition([...list.cards, action.payload.card]),
+            }
       ),
     },
   }),
