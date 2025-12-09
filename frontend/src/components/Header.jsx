@@ -1,10 +1,13 @@
 import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/actions/user-actions";
+import { setBoardSearch } from "../store/actions/board-actions";
 
 export function Header() {
   const user = useSelector(storeState => storeState.users.currentUser);
+  const boardSearch = useSelector(storeState => storeState.boards.boardSearch);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   async function onLogout() {
@@ -16,6 +19,10 @@ export function Header() {
     }
   }
 
+  function onSearchChange(e) {
+    dispatch(setBoardSearch(e.target.value));
+  }
+
   return (
     <header className="app-header">
       <nav>
@@ -23,7 +30,13 @@ export function Header() {
           Trello
         </NavLink>
 
-        <input className="search-input" type="text" placeholder="Search" />
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search"
+          value={boardSearch}
+          onChange={onSearchChange}
+        />
 
         {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
 

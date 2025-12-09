@@ -4,6 +4,7 @@ import {
   ADD_BOARD,
   UPDATE_BOARD,
   DELETE_BOARD,
+  SET_BOARD_SEARCH,
   ADD_LIST,
   MOVE_LIST,
   COPY_LIST,
@@ -101,6 +102,10 @@ export async function deleteBoard(boardId) {
     );
     throw error;
   }
+}
+
+export function setBoardSearch(searchTerm) {
+  return { type: SET_BOARD_SEARCH, payload: searchTerm };
 }
 
 export async function createList(boardId, listData) {
@@ -245,13 +250,11 @@ export async function updateCardLabels(
       cardId,
       updatedCardLabels
     );
-    console.log("updatedCardLabels", updatedCardLabels);
     store.dispatch({
       type: UPDATE_CARD_LABELS.SUCCESS,
       payload: { listId, cardId, updatedCardLabels },
     });
   } catch (error) {
-    console.error("Error updating card labels:", error);
     store.dispatch({
       type: UPDATE_CARD_LABELS.FAILURE,
       payload: error.message,
