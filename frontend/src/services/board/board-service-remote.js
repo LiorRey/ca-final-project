@@ -9,7 +9,7 @@ export const boardService = {
   // updateBoard,
   // getEmptyCard,
   addCard,
-  // editCard,
+  editCard,
   // deleteCard,
   // copyCard,
   // moveCard,
@@ -80,13 +80,12 @@ async function addCard(boardId, listId, card) {
     listId,
     boardId,
   };
-  return await httpService.post("cards", cardData);;
+  return await httpService.post("cards", cardData);
 }
 
-// async function editCard(boardId, card, listId) {
-//   const data = await httpService.put(`cards/${card._id}`, card);
-//   return { listId, card: data.card };
-// }
+async function editCard(_boardId, card, _listId) {
+  return await httpService.put(`cards/${card._id}`, card);
+}
 
 // async function deleteCard(boardId, cardId, listId) {
 //   await httpService.delete(`cards/${cardId}`);
