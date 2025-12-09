@@ -19,7 +19,7 @@ export function Header() {
   return (
     <header className="app-header">
       <nav>
-        <NavLink to="/" className="logo">
+        <NavLink to="/board" className="logo">
           Trello
         </NavLink>
 
