@@ -8,6 +8,7 @@ import {
 } from "../store/actions/board-actions";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
+import { BoardPreview } from "../components/ui/BoardPreview";
 
 export function BoardIndex() {
   const [search, setSearch] = useState("");
@@ -18,9 +19,9 @@ export function BoardIndex() {
     loadBoards();
   }, []);
 
-  async function onOpenBoard(board) {
-    await loadBoard(board._id);
-    navigate(`/board/${board._id}`);
+  async function onOpenBoard(boardId) {
+    await loadBoard(boardId);
+    navigate(`/board/${boardId}`);
   }
 
   async function onCreateBoard() {
@@ -60,7 +61,12 @@ export function BoardIndex() {
         <h2>All Boards</h2>
         <div className="boards-list">
           {filteredBoards.map(board => (
-            <BoardPreview key={board._id} board={board} onOpen={onOpenBoard} />
+            <BoardPreview
+              key={board._id}
+              boardTitle={board.title}
+              boardAppearance={board.appearance}
+              onOpen={() => onOpenBoard(board._id)}
+            />
           ))}
 
           {/* ➕ Create Board Tile */}
@@ -71,21 +77,5 @@ export function BoardIndex() {
         </div>
       </section>
     </section>
-  );
-}
-
-// SINGLE BOARD PREVIEW COMPONENT
-function BoardPreview({ board, onOpen }) {
-  const backgroundClass = board?.appearance
-    ? `bg-${board?.appearance?.background || "blue"}`
-    : "bg-blue";
-
-  return (
-    <div
-      className={`board-tile board-bg-base ${backgroundClass}`}
-      onClick={() => onOpen(board)}
-    >
-      <span className="board-preview-title">{board.title}</span>
-    </div>
   );
 }
