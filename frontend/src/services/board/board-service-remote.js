@@ -10,7 +10,7 @@ export const boardService = {
   // getEmptyCard,
   addCard,
   editCard,
-  // deleteCard,
+  deleteCard,
   // copyCard,
   // moveCard,
   // getEmptyList,
@@ -87,10 +87,10 @@ async function editCard(_boardId, card, _listId) {
   return await httpService.put(`cards/${card._id}`, card);
 }
 
-// async function deleteCard(boardId, cardId, listId) {
-//   await httpService.delete(`cards/${cardId}`);
-//   return { cardId };
-// }
+async function deleteCard(boardId, cardId, listId) {
+  await httpService.delete(`cards/${cardId}`);
+  return { cardId };
+}
 
 // async function copyCard(copyData, card) {
 //   const {
