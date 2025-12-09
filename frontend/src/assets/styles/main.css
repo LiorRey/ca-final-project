@@ -41,4 +41,5 @@
 @import "components/CardModal";
 @import "components/Avatar";
 
+@import "pages/BoardIndex";
 @import "pages/BoardDetails";
