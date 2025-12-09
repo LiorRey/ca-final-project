@@ -414,7 +414,7 @@ export async function moveList(listId, targetBoardId, targetIndex) {
       if (!targetBoard) throw new Error("Board not found");
 
       targetBoard.lists.push(movedList);
-      return await updateListPosition(targetBoard, movedList, targetIndex);
+      return await updateListPosition(sourceBoard, movedList, targetIndex);
     } else {
       return await updateListPosition(sourceBoard, movedList, targetIndex);
     }
