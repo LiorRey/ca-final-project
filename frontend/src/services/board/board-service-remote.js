@@ -13,8 +13,8 @@ export const boardService = {
   deleteCard,
   // copyCard,
   // moveCard,
-  // getEmptyList,
-  // createList,
+  getEmptyList,
+  createList,
   // moveList,
   // copyList,
   // archiveList,
@@ -129,24 +129,25 @@ async function deleteCard(boardId, cardId, listId) {
 //   return data.card;
 // }
 
-// function getEmptyList() {
-//   return {
-//     _id: crypto.randomUUID(),
-//     title: "",
-//     cards: [],
-//     archivedAt: null,
-//     position: null,
-//   };
-// }
+function getEmptyList() {
+  return {
+    _id: crypto.randomUUID(),
+    title: "",
+    cards: [],
+    archivedAt: null,
+    position: null,
+  };
+}
 
-// async function createList(boardId, listData) {
-//   const payload = {
-//     ...listData,
-//     boardId,
-//   };
-//   const data = await httpService.post("lists", payload);
-//   return data.list;
-// }
+async function createList(boardId, listData) {
+  const payload = {
+    ...listData,
+    boardId,
+  };
+  const data = await httpService.post("lists", payload);
+  if (!data.list.cards) data.list.cards = [];
+  return data;
+}
 
 // async function moveList(listId, targetBoardId, targetIndex) {
 //   const payload = {

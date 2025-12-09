@@ -46,7 +46,7 @@ const handlers = {
     loading: { ...state.loading, [ADD_LIST.KEY]: false },
     board: {
       ...state.board,
-      lists: [...state.board.lists, action.payload],
+      lists: sortByPosition([...state.board.lists, action.payload.list]),
     },
   }),
   ...createAsyncHandlers(MOVE_ALL_CARDS, MOVE_ALL_CARDS.KEY),

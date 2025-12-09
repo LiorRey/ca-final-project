@@ -103,17 +103,11 @@ export async function deleteBoard(boardId) {
   }
 }
 
-export async function createList(boardId, listData) {
-  try {
-    store.dispatch({ type: ADD_LIST.REQUEST });
-    const newList = await boardService.createList(boardId, listData);
-    store.dispatch({ type: ADD_LIST.SUCCESS, payload: newList });
-    return newList;
-  } catch (error) {
-    store.dispatch({ type: ADD_LIST.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const createList = createAsyncAction(
+  ADD_LIST,
+  boardService.createList,
+  store
+);
 
 export const moveList = createAsyncAction(
   MOVE_LIST,
