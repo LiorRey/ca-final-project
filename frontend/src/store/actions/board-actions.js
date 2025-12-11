@@ -186,16 +186,11 @@ export const moveCard = createAsyncAction(
   store
 );
 
-export async function createLabel(boardId, label) {
-  try {
-    store.dispatch({ type: CREATE_LABEL.REQUEST });
-    await boardService.createLabel(boardId, label);
-    store.dispatch({ type: CREATE_LABEL.SUCCESS, payload: label });
-  } catch (error) {
-    store.dispatch({ type: CREATE_LABEL.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const createLabel = createAsyncAction(
+  CREATE_LABEL,
+  boardService.createLabel,
+  store
+);
 
 export async function editLabel(boardId, label) {
   try {

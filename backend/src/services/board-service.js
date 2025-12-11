@@ -42,11 +42,12 @@ export async function getBoardLabels(boardId) {
 }
 
 export async function addLabelToBoard(boardId, labelData) {
-  return await Board.findByIdAndUpdate(
+  const board = await Board.findByIdAndUpdate(
     boardId,
     { $push: { labels: labelData } },
     { new: true, runValidators: true }
   );
+  return board.labels.at(-1);
 }
 
 export async function updateLabelInBoard(boardId, labelId, labelData) {

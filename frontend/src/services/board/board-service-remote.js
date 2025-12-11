@@ -22,7 +22,7 @@ export const boardService = {
   // moveAllCards,
   // archiveAllCardsInList,
   updateCardLabels,
-  // createLabel,
+  createLabel,
   // editLabel,
   // deleteLabel,
   // getBoardPreviews,
@@ -242,10 +242,10 @@ async function updateCardLabels(_boardId, _listId, cardId, updatedCardLabels) {
   return updatedCardLabels;
 }
 
-// async function createLabel(boardId, label) {
-//   const data = await httpService.post(`boards/${boardId}/labels`, label);
-//   return data.labels;
-// }
+async function createLabel(boardId, label) {
+  const data = await httpService.post(`boards/${boardId}/labels`, label);
+  return data.label;
+}
 
 // async function editLabel(boardId, label) {
 //   const data = await httpService.put(
