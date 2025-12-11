@@ -1,7 +1,7 @@
 .labels-title {
   font-size: 0.8rem;
   font-weight: normal;
-  padding: 0.5rem 0 0 2.25rem;
+  padding: 0.5rem 0 0.5rem 0;
   word-break: break-word;
   color: var(--gray1);
   background: transparent;
@@ -11,7 +11,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 0.25rem 0 0.25rem 2.25rem;
+  padding: 0.1rem 0 0.25rem 0rem;
   margin: 0 2rem 0 0;
 }
 
@@ -39,12 +39,12 @@
 .add-label-button {
   background: transparent;
   border: none;
-  color: var(--gray1);
+  background: var(--ds-background-neutral);
   font-size: 1em;
   cursor: pointer;
   padding: 0.5rem;
   &:hover {
-    background: var(--gray4);
+    background: var(--ds-background-neutral-hovered);
   }
 }
 

@@ -1,7 +1,7 @@
 .card-label {
   display: flex;
   align-items: center;
-  height: 20px;
+  height: 16px;
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 4px;
@@ -31,11 +31,12 @@
 }
 
 .card-label.closed {
-  max-width: 20px;
+  max-width: 16px;
+  max-height: 16px;
   border-radius: 4px;
   padding: 0;
   transition: border-radius 0.15s ease-out 0s, max-width 0.3s ease 0s,
-    padding 0.25s ease 0s;
+    padding 0.25s ease 0s, max-height 0.3s ease 0s;
 }
 
 .card-label.closed .card-label-text {
@@ -46,60 +47,50 @@
 
 .card-label.green {
   background-color: var(--label-green-bg);
-  border: 1px solid var(--label-green-border);
   color: var(--label-green-text);
 }
 
 .card-label.yellow {
   background-color: var(--label-yellow-bg);
-  border: 1px solid var(--label-yellow-border);
   color: var(--label-yellow-text);
 }
 
 .card-label.orange {
   background-color: var(--label-orange-bg);
-  border: 1px solid var(--label-orange-border);
   color: var(--label-orange-text);
 }
 
 .card-label.red {
   background-color: var(--label-red-bg);
-  border: 1px solid var(--label-red-border);
   color: var(--label-red-text);
 }
 
 .card-label.purple {
   background-color: var(--label-purple-bg);
-  border: 1px solid var(--label-purple-border);
   color: var(--label-purple-text);
 }
 
 .card-label.blue {
   background-color: var(--label-blue-bg);
-  border: 1px solid var(--label-blue-border);
   color: var(--label-blue-text);
 }
 
 .card-label.sky {
   background-color: var(--label-sky-bg);
-  border: 1px solid var(--label-sky-border);
   color: var(--label-sky-text);
 }
 
 .card-label.lime {
   background-color: var(--label-lime-bg);
-  border: 1px solid var(--label-lime-border);
   color: var(--label-lime-text);
 }
 
 .card-label.pink {
   background-color: var(--label-pink-bg);
-  border: 1px solid var(--label-pink-border);
   color: var(--label-pink-text);
 }
 
 .card-label.gray {
   background-color: var(--label-gray-bg);
-  border: 1px solid var(--label-gray-border);
   color: var(--label-gray-text);
 }

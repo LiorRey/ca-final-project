@@ -7,6 +7,30 @@
   border-radius: 0.5rem;
 }
 
+.popover-header-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  min-width: 200px;
+}
+
+.popover-header-title-text {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  padding: 0.8rem 0rem;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.popover-header-close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
 .popover-header {
   display: flex;
   align-items: center;

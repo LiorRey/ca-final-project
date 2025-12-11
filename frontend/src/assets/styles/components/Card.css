@@ -51,17 +51,12 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  z-index: 10;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 .card-container:hover .card-edit-button {
   opacity: 1;
-}
-
-.card-edit-button:hover {
-  background-color: var(--black);
 }
 
 .card-labels {
@@ -79,7 +74,7 @@
   font-weight: normal;
   font-family: inherit;
   line-height: 1.4;
-  padding: 0.25rem 0.5rem 0.5rem 0.3rem;
+  padding: 0.5rem 1.5rem 0.5rem 0.5rem;
   word-break: break-word;
   color: var(--gray1);
 }
@@ -98,12 +93,25 @@
 
 .card-footer {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-footer-left {
+  display: flex;
   gap: 0.5rem;
-  padding: 0.25rem 0.25rem;
+  margin: 0.6rem 0.4rem 0.5rem 0.4rem;
   font-size: 0.75rem;
   > svg {
     font-size: 16px;
   }
+}
+
+.card-footer-right {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.75rem;
 }
 
 .empty-card-footer {

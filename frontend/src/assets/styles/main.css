@@ -39,5 +39,6 @@
 @import "components/Card";
 @import "components/CardFormMenu";
 @import "components/CardModal";
+@import "components/Avatar";
 
 @import "pages/BoardDetails";

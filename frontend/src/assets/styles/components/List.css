@@ -62,6 +62,8 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .cards-list::-webkit-scrollbar {
@@ -94,6 +96,17 @@
   overscroll-behavior: none;
   scrollbar-width: thin;
   scrollbar-color: var(--gray5) var(--gray3);
+}
+
+/* Hide scrollbar during drag to prevent flicker */
+.cards-list.drag-over {
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cards-list.drag-over::-webkit-scrollbar {
+  display: none;
 }
 
 .list-add-card-header,
