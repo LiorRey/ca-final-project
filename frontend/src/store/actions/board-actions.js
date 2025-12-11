@@ -198,16 +198,11 @@ export const editLabel = createAsyncAction(
   store
 );
 
-export async function deleteLabel(boardId, labelId) {
-  try {
-    store.dispatch({ type: DELETE_LABEL.REQUEST });
-    await boardService.deleteLabel(boardId, labelId);
-    store.dispatch({ type: DELETE_LABEL.SUCCESS, payload: labelId });
-  } catch (error) {
-    store.dispatch({ type: DELETE_LABEL.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const deleteLabel = createAsyncAction(
+  DELETE_LABEL,
+  boardService.deleteLabel,
+  store
+);
 
 export async function updateCardLabels(
   boardId,
