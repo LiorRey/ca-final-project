@@ -128,6 +128,12 @@
   --bg-blush-gradient: linear-gradient(to top left, #be185d, #831043);
   --bg-deep-teal-gradient: linear-gradient(to top left, #16a34a, #0c5729);
   --bg-charcoal-gradient: linear-gradient(to top left, #334155, #2e61b3);
+  --bg-flower: url("../../flower.svg");
+  --bg-bubble: url("../../bubble.svg");
+  --bg-sea: url("../../sea.svg");
+  --bg-snow: url("../../snow.svg");
+  --bg-volcano: url("../../volcano.svg");
+  --bg-crystal: url("../../crystal.svg");
 }
 
 /* Solid Color Background Classes */
@@ -202,4 +208,46 @@
 
 .bg-charcoal {
   background: var(--bg-charcoal-gradient);
+}
+
+.bg-flower {
+  background: var(--bg-flower);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-bubble {
+  background: var(--bg-bubble);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-sea {
+  background: var(--bg-sea);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-snow {
+  background: var(--bg-snow);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-volcano {
+  background: var(--bg-volcano);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg-crystal {
+  background: var(--bg-crystal);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

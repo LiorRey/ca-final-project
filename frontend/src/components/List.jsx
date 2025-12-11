@@ -1,13 +1,14 @@
 import { useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
+import { TextField } from "@mui/material";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { Card } from "./Card";
 import { ListActionsMenu } from "./ListActionsMenu";
-import { SquareIconButton } from "./ui/buttons/SquareIconButton";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { setActiveListIndex } from "../store/actions/ui-actions";
+import { updateBoard } from "../store/actions/board-actions";
 import { AddCardForm } from "./AddCardForm";
 
 export function List({
@@ -23,11 +24,15 @@ export function List({
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [addCardToEnd, setAddCardToEnd] = useState(true);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [listTitle, setListTitle] = useState(list.title);
   const navigate = useNavigate();
   const location = useLocation();
   const listContentRef = useRef(null);
+  const titleInputRef = useRef(null);
   const scrollListToEdge = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
+  const { boardId } = useParams();
 
   function handleOpenModal(card) {
     navigate(`${list._id}/${card._id}`, {
@@ -80,6 +85,26 @@ export function List({
       : [];
   }
 
+  async function handleSaveTitle() {
+    setIsEditingTitle(false);
+    if (listTitle.trim() && listTitle !== list.title) {
+      try {
+        await updateBoard(
+          boardId,
+          { title: listTitle.trim() },
+          {
+            listId: list._id,
+          }
+        );
+      } catch (error) {
+        console.error("Error updating list title:", error);
+        setListTitle(list.title);
+      }
+    } else {
+      setListTitle(list.title);
+    }
+  }
+
   return (
     <Draggable draggableId={list._id} index={listIndex} type="LIST">
       {(provided, snapshot) => (
@@ -91,12 +116,33 @@ export function List({
           {...provided.draggableProps}
         >
           <div className="list-header" {...provided.dragHandleProps}>
-            <h2>{list.title}</h2>
-            <SquareIconButton
-              icon={<MoreHoriz />}
-              onClick={handleMoreClick}
-              selected={open}
-            />
+            {isEditingTitle ? (
+              <TextField
+                inputRef={titleInputRef}
+                value={listTitle}
+                size="small"
+                variant="outlined"
+                onChange={e => setListTitle(e.target.value)}
+                onBlur={handleSaveTitle}
+                autoFocus
+                className="list-title-input"
+              />
+            ) : (
+              <h2
+                onClick={() => {
+                  setIsEditingTitle(true);
+                  setListTitle(list.title);
+                }}
+                className="list-title"
+                style={{ cursor: "pointer" }}
+              >
+                {list.title}
+              </h2>
+            )}
+
+            <button className="icon-button" onClick={handleMoreClick}>
+              <MoreHoriz />
+            </button>
           </div>
           {isAddingCard && !addCardToEnd && (
             <div className="list-add-card-header">
@@ -108,16 +154,20 @@ export function List({
               />
             </div>
           )}
-          <div className="list-content-container" ref={listContentRef}>
-            <Droppable droppableId={list._id}>
-              {(provided, snapshot) => {
-                return (
+
+          <Droppable droppableId={list._id}>
+            {(provided, snapshot) => {
+              return (
+                <div
+                  className="cards-droppable-wrapper"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
                   <div
                     className={`cards-list ${
                       snapshot.isDraggingOver ? "drag-over" : ""
                     }`}
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
+                    ref={listContentRef}
                   >
                     {list.cards.map((card, index) => (
                       <Card
@@ -141,10 +191,11 @@ export function List({
                       {provided.placeholder}
                     </div>
                   </div>
-                );
-              }}
-            </Droppable>
-          </div>
+                </div>
+              );
+            }}
+          </Droppable>
+
           <div className="list-footer">
             {isAddingCard && addCardToEnd ? (
               <AddCardForm
@@ -158,7 +209,8 @@ export function List({
                 className="add-card-card-button"
                 onClick={handleShowAddCardForm}
               >
-                <AddRounded /> Add a card
+                <AddRounded />
+                Add a card
               </button>
             )}
           </div>

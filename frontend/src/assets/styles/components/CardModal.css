@@ -24,7 +24,7 @@
 }
 
 .card-modal-box.closed {
-  width: calc(620px - 1rem);
+  width: calc(670px - 1rem);
 }
 
 .card-modal-box.open {
@@ -44,19 +44,26 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  padding: 1.5rem 2.5rem 2rem 1.25rem;
   overflow-y: auto;
 }
 
 .description-content {
+  grid-column: body;
   background: var(--gray5);
   padding: 1rem 1rem 1rem 1rem;
-  margin: 0.5rem 0 0.5rem 0;
   min-height: 210px;
   border: 1px solid var(--gray3);
   font-size: 14px;
   cursor: pointer;
-  border-radius: 16px;
+  border-radius: var(--ds-radius-small);
+}
+
+.card-modal-controls {
+  padding: 0.4rem 0.5rem 0.55rem 2.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 /* ====================== Text Formatting ====================== */
@@ -236,19 +243,28 @@
 }
 
 .card-modal-description {
-  font-size: 0.8rem;
-  font-weight: normal;
-  padding: 0.5rem 0 0.5rem 0;
-  word-break: break-word;
-  color: var(--gray1);
-  background: transparent;
+  display: grid;
+  z-index: 1;
+  margin-bottom: 32px;
+  row-gap: 12px;
+  grid-template-columns: [icon] 32px [body] minmax(0, 1fr);
+  column-gap: 4px;
+}
+
+.card-modal-description > svg {
+  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  grid-column: icon;
 }
 
 .description-title {
+  grid-column: body;
+  grid-row: 1;
   font-weight: 653;
   font-size: 16px;
   size: 1rem;
   padding: 0.5rem 0 0.5rem 0;
+  margin: 0;
 }
 
 .description-input {
@@ -258,10 +274,14 @@
   color: var(--gray1);
 }
 
+.tiptap-editor-wrapper {
+  grid-column: body;
+}
+
 .editor-controls {
+  grid-column: body;
   display: flex;
   gap: 0.5rem;
-  margin-left: 0.5rem;
 }
 
 .card-modal-comments.closed {
@@ -321,24 +341,52 @@
   }
 }
 
+.card-modal-title-container {
+  padding-left: 2rem;
+}
+
 .card-modal-title {
   font-size: 28px;
-  line-height: 1.1;
+  line-height: 1;
   font-weight: 600;
   word-wrap: break-word;
-  padding: 0 0.5rem 0.5rem 0;
+  padding: 0.21rem 0.8rem 0.8rem 0.3rem;
   word-break: break-word;
   color: var(--gray1);
 }
 
 .card-modal-title-input {
   font-size: 28px;
-  line-height: 1.1;
+  line-height: 1;
   font-weight: 600;
   word-wrap: break-word;
-  padding: 0 0.5rem 0.5rem 0;
   word-break: break-word;
   color: var(--gray1);
+  background-color: var(--gray5, #040a10);
+  border: 1px solid var(--form-input-border-color, #4a9eff);
+  border-radius: 4px;
+  resize: none;
+  overflow: hidden;
+  min-height: auto;
+  height: auto;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-modal-title-input:hover {
+  border-color: var(--form-input-border-color, #4a9eff);
+}
+
+.card-modal-title-input:focus {
+  outline: none;
+  border: none;
+  border-color: var(--form-input-border-color, #4a9eff);
+}
+
+.card-modal-title-input::placeholder {
+  color: var(--form-input-placeholder-color, var(--gray2, #aaa));
+  opacity: 1;
 }
 
 .card-modal-header {
@@ -372,24 +420,24 @@
   background: transparent;
 }
 
-.card-modal-footer button {
+.comment-section-button {
   position: absolute;
   background: var(--black);
-  bottom: -4.5rem;
   border: none;
+  bottom: -4rem;
   color: var(--gray1);
   font-size: 1em;
   cursor: pointer;
-  padding: 1rem;
-  border-radius: 4px;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
   &:hover {
-    background: var(--gray4);
+    border: 1px solid var(--action-btn-bg-default);
   }
 }
 
-.card-modal-controls {
-  display: flex;
-  gap: 0.5rem;
+.comment-section-button.active {
+  background-color: var(--bg-blue);
 }
 
 .card-modal-controls .icon-button {

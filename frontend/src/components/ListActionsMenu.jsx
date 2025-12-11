@@ -80,7 +80,6 @@ export function ListActionsMenu({
 
   return (
     <Popover
-      className="list-actions-menu-popover"
       anchorEl={anchorEl}
       open={isOpen}
       onClose={onClose}
@@ -89,7 +88,7 @@ export function ListActionsMenu({
         vertical: "bottom",
         horizontal: "left",
       }}
-      paperProps={{ sx: { mt: 1 } }}
+      paperProps={{ sx: { mt: 1, pt: 1 } }}
       slotProps={{ transition: { onExited: () => setActiveAction(null) } }}
     >
       {activeAction === "copy" ? (
