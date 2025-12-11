@@ -87,13 +87,13 @@ export async function addBoardLabel(req, res) {
 
 export async function updateBoardLabel(req, res) {
   const { title, color } = req.body;
-  const board = await boardService.updateLabelInBoard(
+  const updatedLabel = await boardService.updateLabelInBoard(
     req.params.id,
     req.params.labelId,
     { title, color }
   );
-  if (!board) throw createError(404, "Label not found");
-  res.json({ labels: board.labels });
+  if (!updatedLabel) throw createError(404, "Label not found");
+  res.json({ label: updatedLabel });
 }
 
 export async function deleteBoardLabel(req, res) {

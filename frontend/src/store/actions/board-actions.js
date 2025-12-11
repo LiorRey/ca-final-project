@@ -192,16 +192,11 @@ export const createLabel = createAsyncAction(
   store
 );
 
-export async function editLabel(boardId, label) {
-  try {
-    store.dispatch({ type: EDIT_LABEL.REQUEST });
-    await boardService.editLabel(boardId, label);
-    store.dispatch({ type: EDIT_LABEL.SUCCESS, payload: label });
-  } catch (error) {
-    store.dispatch({ type: EDIT_LABEL.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const editLabel = createAsyncAction(
+  EDIT_LABEL,
+  boardService.editLabel,
+  store
+);
 
 export async function deleteLabel(boardId, labelId) {
   try {

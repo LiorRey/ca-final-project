@@ -51,7 +51,7 @@ export async function addLabelToBoard(boardId, labelData) {
 }
 
 export async function updateLabelInBoard(boardId, labelId, labelData) {
-  return await Board.findOneAndUpdate(
+  const board = await Board.findOneAndUpdate(
     { _id: boardId, "labels._id": labelId },
     {
       $set: {
@@ -61,6 +61,7 @@ export async function updateLabelInBoard(boardId, labelId, labelData) {
     },
     { new: true, runValidators: true }
   );
+  return board.labels.id(labelId);
 }
 
 export async function removeLabelFromBoard(boardId, labelId) {
