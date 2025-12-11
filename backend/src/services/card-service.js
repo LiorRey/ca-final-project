@@ -194,3 +194,94 @@ export async function removeCardAssignee(cardId, userId) {
     }
   );
 }
+
+export async function copyCard(cardId, copyOptions = {}) {
+  const {
+    copyLabels = false,
+    copyAssignees = false,
+    copyComments = false,
+    copyDates = false,
+    targetListId = null,
+    targetBoardId = null,
+    targetIndex = null,
+    title,
+  } = copyOptions;
+  const sourceCard = await Card.findById(cardId);
+  if (!sourceCard) throw createError(404, "Source card not found");
+
+  let finalBoardId = targetBoardId ?? sourceCard.boardId;
+  let finalListId = targetListId ?? sourceCard.listId;
+  let targetBoard = null;
+
+  if (targetBoardId && targetBoardId !== sourceCard.boardId) {
+    targetBoard = await Board.findById(targetBoardId);
+    if (!targetBoard) throw createError(404, "Target board not found");
+  }
+
+  const targetCards = await Card.find({ listId: finalListId }).sort({
+    position: 1,
+  });
+
+  const finalIndex = targetIndex ?? targetCards.length;
+  const newPosition = calculateNewPosition(targetCards, finalIndex);
+
+  const copiedCardData = {
+    boardId: finalBoardId,
+    listId: finalListId,
+    title: title ?? sourceCard.title,
+    description: sourceCard.description,
+    position: newPosition,
+  };
+
+  if (copyLabels && sourceCard.labelIds.length > 0) {
+    copiedCardData.labelIds = [...sourceCard.labelIds];
+  }
+
+  if (copyAssignees && sourceCard.assignees.length > 0) {
+    const assigneeUserIds = sourceCard.assignees.map(a => a.userId);
+    const users = await User.find({ _id: { $in: assigneeUserIds } });
+    const validUserIds = new Set(users.map(u => u._id.toString()));
+    let targetBoardMemberIds = null;
+
+    if (targetBoard) {
+      targetBoardMemberIds = new Set(
+        targetBoard.members.map(m => m.userId.toString())
+      );
+    }
+
+    const validAssignees = sourceCard.assignees.filter(assignee => {
+      const userIdStr = assignee.userId.toString();
+      if (!validUserIds.has(userIdStr)) return false;
+
+      // If moving boards, user must be member of target board
+      if (targetBoardMemberIds) {
+        return targetBoardMemberIds.has(userIdStr);
+      }
+
+      return true;
+    });
+
+    copiedCardData.assignees = validAssignees;
+  }
+
+  if (copyDates) {
+    copiedCardData.startDate = sourceCard.startDate;
+    copiedCardData.dueDate = sourceCard.dueDate;
+  }
+
+  // Create the copied card
+  const copiedCard = await Card.create(copiedCardData);
+
+  if (copyComments && sourceCard.comments.length > 0) {
+    const copiedComments = sourceCard.comments.map(comment => ({
+      author: comment.author,
+      text: comment.text,
+      isEdited: false,
+    }));
+
+    copiedCard.comments = copiedComments;
+    await copiedCard.save();
+  }
+
+  return copiedCard;
+}

@@ -15,6 +15,7 @@ import {
   getComments,
   addAssignee,
   removeAssignee,
+  copyCard,
 } from "../controllers/card-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 import { canModifyCard, canCreateCard } from "../middleware/authorize.js";
@@ -53,5 +54,7 @@ router.delete(
   canModifyCard(),
   removeAssignee
 );
+
+router.post("/:id/copy", authenticate, canModifyCard(), copyCard);
 
 export default router;
