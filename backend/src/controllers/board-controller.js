@@ -78,11 +78,11 @@ export async function getBoardLabels(req, res) {
 
 export async function addBoardLabel(req, res) {
   const { title, color } = req.body;
-  const board = await boardService.addLabelToBoard(req.params.id, {
+  const label = await boardService.addLabelToBoard(req.params.id, {
     title,
     color,
   });
-  res.status(201).json({ labels: board.labels });
+  res.status(201).json({ label });
 }
 
 export async function updateBoardLabel(req, res) {
