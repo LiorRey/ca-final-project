@@ -102,5 +102,5 @@ export async function deleteBoardLabel(req, res) {
     req.params.labelId
   );
   if (!board) throw createError(404, "Label not found");
-  res.json({ labels: board.labels });
+  res.status(204).send();
 }
