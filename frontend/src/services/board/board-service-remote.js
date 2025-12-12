@@ -25,7 +25,7 @@ export const boardService = {
   createLabel,
   editLabel,
   deleteLabel,
-  // getBoardPreviews,
+  getBoardPreviews,
   // getBoardListPreviews,
 };
 
@@ -260,13 +260,13 @@ async function deleteLabel(boardId, labelId) {
   return labelId;
 }
 
-// async function getBoardPreviews() {
-//   const data = await httpService.get("boards");
-//   return data.boards.map(board => ({
-//     _id: board._id,
-//     title: board.title,
-//   }));
-// }
+async function getBoardPreviews() {
+  const data = await httpService.get("boards");
+  return data.boards.map(board => ({
+    _id: board._id,
+    title: board.title,
+  }));
+}
 
 // async function getBoardListPreviews(boardId) {
 //   const data = await httpService.get("lists", { boardId });
