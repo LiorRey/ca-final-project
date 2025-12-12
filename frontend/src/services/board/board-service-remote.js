@@ -26,7 +26,7 @@ export const boardService = {
   editLabel,
   deleteLabel,
   getBoardPreviews,
-  // getBoardListPreviews,
+  getBoardListPreviews,
 };
 
 async function query() {
@@ -268,11 +268,11 @@ async function getBoardPreviews() {
   }));
 }
 
-// async function getBoardListPreviews(boardId) {
-//   const data = await httpService.get("lists", { boardId });
-//   return data.lists.map(list => ({
-//     _id: list._id,
-//     title: list.title,
-//     cardCount: list.cards?.length || 0,
-//   }));
-// }
+async function getBoardListPreviews(boardId) {
+  const data = await httpService.get("lists", { boardId });
+  return data.lists.map(list => ({
+    _id: list._id,
+    title: list.title,
+    cardCount: list.cards?.length || 0,
+  }));
+}
