@@ -49,6 +49,7 @@ export async function loadBoard(boardId, filterBy = {}) {
     store.dispatch(setLoading("loadBoard", true));
     const board = await boardService.getFullById(boardId, filterBy);
     store.dispatch(setBoard(board));
+    return board;
   } catch (error) {
     store.dispatch(
       setError("loadBoard", `Error loading board: ${error.message}`)

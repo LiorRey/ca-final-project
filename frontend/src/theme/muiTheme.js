@@ -206,6 +206,10 @@ const muiTheme = createTheme({
       disabled: token("color.text.disabled", "#7D818A"),
     },
     divider: token("color.border", "rgba(11, 18, 14, 0.14)"),
+    background: {
+      default: "var(--bg-charcoal)",
+      paper: "var(--bg-charcoal)",
+    },
     input: {
       backgroundColor: token("color.background.input", "#292a2e"),
       color: token("color.text", "#e0e0e0"),
