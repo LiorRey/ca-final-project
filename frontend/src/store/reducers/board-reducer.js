@@ -160,12 +160,12 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list._id === action.payload.card.listId
+        list._id === action.payload.listId
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card._id === action.payload.card._id
-                  ? { ...card, ...action.payload.card }
+                card._id === action.payload._id
+                  ? { ...card, ...action.payload }
                   : card
               ),
             }

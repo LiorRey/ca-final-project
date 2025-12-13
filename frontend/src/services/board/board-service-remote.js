@@ -82,7 +82,8 @@ async function addCard(boardId, listId, card) {
 }
 
 async function editCard(_boardId, card, _listId) {
-  return await httpService.put(`cards/${card._id}`, card);
+  const data = await httpService.put(`cards/${card._id}`, card);
+  return data.card;
 }
 
 async function deleteCard(boardId, cardId, listId) {
