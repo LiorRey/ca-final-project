@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { boardService } from "../services/board/board-service-local";
+import { boardService } from "../services/board";
 import { addCard } from "../store/actions/board-actions";
 
 export function AddCardForm({
