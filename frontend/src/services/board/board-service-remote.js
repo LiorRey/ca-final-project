@@ -12,7 +12,7 @@ export const boardService = {
   editCard,
   deleteCard,
   copyCard,
-  // moveCard,
+  moveCard,
   getEmptyList,
   createList,
   // moveList,
@@ -115,18 +115,18 @@ async function copyCard(copyData, card) {
   return data.card;
 }
 
-// async function moveCard(moveData, card) {
-//   const { destinationListId, destinationBoardId, position } = moveData;
+async function moveCard(moveData, card) {
+  const { destinationListId, destinationBoardId, position } = moveData;
 
-//   const payload = {
-//     listId: destinationListId,
-//     boardId: destinationBoardId,
-//     targetIndex: position,
-//   };
+  const payload = {
+    listId: destinationListId,
+    boardId: destinationBoardId,
+    targetIndex: position,
+  };
 
-//   const data = await httpService.put(`cards/${card._id}/move`, payload);
-//   return data.card;
-// }
+  const data = await httpService.put(`cards/${card._id}/move`, payload);
+  return data.card;
+}
 
 function getEmptyList() {
   return {

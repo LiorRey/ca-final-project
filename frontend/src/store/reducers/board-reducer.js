@@ -200,7 +200,17 @@ const handlers = {
     loading: { ...state.loading, [MOVE_CARD.KEY]: false },
     board: {
       ...state.board,
-      lists: action.payload,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: sortByPosition([...list.cards, action.payload]),
+            }
+          : {
+              ...list,
+              cards: list.cards.filter(card => card._id !== action.payload._id),
+            }
+      ),
     },
   }),
   ...createAsyncHandlers(CREATE_LABEL, CREATE_LABEL.KEY),
