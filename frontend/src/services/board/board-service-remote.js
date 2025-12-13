@@ -7,7 +7,7 @@ export const boardService = {
   // remove,
   // save,
   // updateBoard,
-  // getEmptyCard,
+  getEmptyCard,
   addCard,
   editCard,
   deleteCard,
@@ -65,12 +65,9 @@ async function getFullById(boardId) {
 
 function getEmptyCard() {
   return {
-    _id: crypto.randomUUID(),
     title: "",
     description: "",
     labelIds: [],
-    createdAt: null,
-    archivedAt: null,
   };
 }
 
