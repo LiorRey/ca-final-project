@@ -71,3 +71,8 @@
   display: flex;
   gap: 0.5rem;
 }
+
+.board-members {
+  display: flex;
+  gap: 0.25rem;
+}

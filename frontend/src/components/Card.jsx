@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   ChatRounded,
@@ -7,10 +8,12 @@ import {
   RemoveRedEyeOutlined,
 } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import { AvatarGroup } from "./ui/AvatarGroup";
 import Button from "@mui/material/Button";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
+import { Avatar } from "./ui/Avatar";
 
 export function Card({
   card,
@@ -24,6 +27,17 @@ export function Card({
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
   const { boardId } = useParams();
+  const members = useSelector(state => state.boards.board.members);
+
+  function getCardMembers(card) {
+    return card && card.assignedTo && card.assignedTo.length > 0 && members
+      ? card.assignedTo
+          .map(assignee => members.find(member => member._id === assignee))
+          .filter(Boolean)
+      : [];
+  }
+
+  const cardMembers = getCardMembers(card);
 
   function handleClickCard() {
     onClickCard(card);
@@ -95,9 +109,22 @@ export function Card({
                 onChange={e => setTitle(e.target.value)}
               />
               <div className="card-footer">
-                <div className="empty-card-footer" />
+                <div className="card-footer-left">
+                  <RemoveRedEyeOutlined />
+                  <ChatRounded />
+                  <NotesRounded />
+                </div>
+                <div className="card-footer-right">
+                  {cardMembers.length > 0 && (
+                    <AvatarGroup max={4}>
+                      {cardMembers.map(member => (
+                        <Avatar key={member._id} user={member} />
+                      ))}
+                    </AvatarGroup>
+                  )}
+                </div>
               </div>
-              <button className="icon-button card-edit-button" />
+              <button className="card-edit-button" disabled />
               <Button
                 onClick={handleSave}
                 onMouseDown={e => e.preventDefault()}
@@ -128,9 +155,20 @@ export function Card({
               </h3>
 
               <div className="card-footer">
-                <RemoveRedEyeOutlined />
-                <ChatRounded />
-                <NotesRounded />
+                <div className="card-footer-left">
+                  <RemoveRedEyeOutlined />
+                  <ChatRounded />
+                  <NotesRounded />
+                </div>
+                <div className="card-footer-right">
+                  {cardMembers.length > 0 && (
+                    <AvatarGroup max={4}>
+                      {cardMembers.map(member => (
+                        <Avatar key={member._id} user={member} />
+                      ))}
+                    </AvatarGroup>
+                  )}
+                </div>
               </div>
               <button
                 onClick={handleClick}

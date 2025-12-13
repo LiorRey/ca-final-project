@@ -9,10 +9,12 @@ import {
   OpenInNew,
   PermIdentity,
   TurnedInNotOutlined,
+  DriveFileRenameOutline,
 } from "@mui/icons-material";
 import { Backdrop, Popover } from "@mui/material";
 import { CardActionForm } from "./card/CardActionForm";
 import { PopoverMenu } from "./ui/PopoverMenu";
+import { AddMemberMenu } from "./AddMemberMenu";
 import { copyCard, moveCard } from "../store/actions/board-actions";
 
 export function CardPopover({
@@ -51,6 +53,11 @@ export function CardPopover({
   function handleMoveCardClick(e) {
     setPopoverAnchorEl(e.currentTarget);
     setActiveMenuItem("moveCard");
+  }
+
+  function handleChangeMembersClick(e) {
+    setPopoverAnchorEl(e.currentTarget);
+    setActiveMenuItem("changeMembers");
   }
 
   function handleCopyLinkClick(e) {
@@ -116,6 +123,7 @@ export function CardPopover({
       copyCard: handleCopyCardClick,
       copyLink: handleCopyLinkClick,
       moveCard: handleMoveCardClick,
+      changeMembers: handleChangeMembersClick,
       archive: handleArchive,
     };
     menuHandlers[key]?.(e);
@@ -184,33 +192,47 @@ export function CardPopover({
           ))}
         </div>
       </Popover>
-      {popoverOpen && (
-        <PopoverMenu
+      {popoverOpen && activeMenuItem === "changeMembers" && (
+        <AddMemberMenu
+          boardId={boardId}
+          listId={listId}
+          card={card}
           anchorEl={popoverAnchorEl}
-          isOpen={popoverOpen}
-          onClose={handlePopoverClose}
-          title={activeMenuItem === "copyCard" ? "Copy to..." : "Move to..."}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          paperProps={{ sx: { mt: 1 } }}
+          isMemberMenuOpen={popoverOpen}
+          onCloseMemberMenu={handlePopoverClose}
           sx={{
             zIndex: theme => theme.zIndex.modal + 2,
           }}
-        >
-          <CardActionForm
-            card={card}
-            listId={listId}
-            isCopyMode={activeMenuItem === "copyCard"}
-            onCopySubmit={handleCopyCardSubmit}
-            onMoveSubmit={handleMoveCardSubmit}
-            submitButtonText={
-              activeMenuItem === "copyCard" ? "Create card" : "Move"
-            }
-          />
-        </PopoverMenu>
+        />
       )}
+      {popoverOpen &&
+        (activeMenuItem === "copyCard" || activeMenuItem === "moveCard") && (
+          <PopoverMenu
+            anchorEl={popoverAnchorEl}
+            isOpen={popoverOpen}
+            onClose={handlePopoverClose}
+            title={activeMenuItem === "copyCard" ? "Copy to..." : "Move to..."}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            paperProps={{ sx: { mt: 1 } }}
+            sx={{
+              zIndex: theme => theme.zIndex.modal + 2,
+            }}
+          >
+            <CardActionForm
+              card={card}
+              listId={listId}
+              isCopyMode={activeMenuItem === "copyCard"}
+              onCopySubmit={handleCopyCardSubmit}
+              onMoveSubmit={handleMoveCardSubmit}
+              submitButtonText={
+                activeMenuItem === "copyCard" ? "Create card" : "Move"
+              }
+            />
+          </PopoverMenu>
+        )}
     </Backdrop>
   );
 }

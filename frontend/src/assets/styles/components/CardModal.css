@@ -66,180 +66,10 @@
   gap: 0.5rem;
 }
 
-/* ====================== Text Formatting ====================== */
-.description-content strong,
-.description-content b {
-  font-weight: 600;
-  color: var(--gray1);
-}
-
-.description-content em,
-.description-content i {
-  font-style: italic;
-  color: var(--gray1);
-}
-
-.description-content u {
-  text-decoration: underline;
-}
-
-.description-content s,
-.description-content strike {
-  text-decoration: line-through;
-}
-
-/* ====================== Code ====================== */
-.description-content code {
-  background-color: var(--label-purple-bg);
-  color: var(--label-purple-text);
-  border-radius: 0.4rem;
-  padding: 0.25em 0.35em;
-  font-size: 0.85rem;
-  font-family: "JetBrainsMono", monospace;
-}
-
-.description-content pre {
-  background: var(--black);
-  padding: 12px;
-  border-radius: 8px;
-  overflow-x: auto;
-  color: #fff;
-  margin: 8px 0;
-  font-family: "JetBrainsMono", monospace;
-}
-
-.description-content pre code {
-  background: none;
-  color: inherit;
-  padding: 0;
-  font-size: 0.85rem;
-}
-
-/* ====================== Headings ====================== */
-.description-content h1 {
-  font-size: 28px;
-  color: var(--gray1);
-  margin: 16px 0 8px;
-  line-height: 1.1;
-  font-weight: 600;
-}
-
-.description-content h2 {
-  font-size: 24px;
-  color: var(--gray1);
-  margin: 14px 0 8px;
-  line-height: 1.1;
-  font-weight: 600;
-}
-
-.description-content h3 {
-  font-size: 20px;
-  color: var(--gray1);
-  margin: 12px 0 6px;
-  line-height: 1.1;
-  font-weight: 600;
-}
-
-.description-content h4 {
-  font-size: 18px;
-  color: var(--gray1);
-  margin: 10px 0 6px;
-  line-height: 1.1;
-  font-weight: 600;
-}
-
-.description-content h5 {
-  font-size: 16px;
-  color: var(--gray1);
-  margin: 8px 0 4px;
-  line-height: 1.1;
-  font-weight: 600;
-}
-
-.description-content h6 {
-  font-size: 15px;
-  color: var(--gray1);
-  margin: 6px 0 4px;
-  line-height: 1.1;
-  font-weight: 600;
-}
-
-/* ====================== Paragraphs ====================== */
-.description-content p {
-  margin: 8px 0;
-  line-height: 1.6;
-  color: var(--gray1);
-}
-
-.description-content p:first-child {
-  margin-top: 0;
-}
-
-.description-content p:last-child {
-  margin-bottom: 0;
-}
-
-/* ====================== Blockquote ====================== */
-.description-content blockquote {
-  border-left: 4px solid var(--action-btn-bg-default);
-  padding-left: 14px;
-  color: var(--gray2);
-  font-style: italic;
-  margin: 8px 0;
-  opacity: 0.85;
-}
-
-/* ====================== Links ====================== */
-.description-content a {
-  color: var(--action-btn-bg-default);
-  text-decoration: underline;
-}
-
-.description-content a:hover {
-  color: var(--action-btn-bg-hover);
-}
-
-/* ====================== Lists ====================== */
-.description-content ol,
-.description-content ul {
-  margin: 8px 0 8px 24px;
-  padding: 0;
-  color: var(--gray1);
-  list-style-position: outside;
-}
-
-.description-content ul {
-  list-style-type: disc;
-}
-
-.description-content ol {
-  list-style-type: decimal;
-}
-
-.description-content ul li,
-.description-content ol li {
-  margin: 4px 0;
-  padding-left: 4px;
-}
-
-.description-content ul li p,
-.description-content ol li p {
-  margin-top: 0.25em;
-  margin-bottom: 0.25em;
-}
-
-/* ====================== Images ====================== */
-.description-content img {
-  max-width: 100%;
-  border-radius: 6px;
-  margin: 8px 0;
-}
-
-/* ====================== Horizontal Rule ====================== */
-.description-content hr {
-  border: none;
-  border-top: 1px solid var(--gray4);
-  margin: 12px 0;
+.card-modal-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5rem 0 0 2.25rem;
 }
 
 .card-modal-description {
@@ -452,6 +282,222 @@
   &:hover {
     background-color: var(--gray3);
   }
+}
+
+.members-title {
+  font-size: 0.8rem;
+  font-weight: normal;
+  word-break: break-word;
+  color: var(--gray1);
+  background: transparent;
+  padding: 0.5rem 0 0.5rem 0;
+}
+
+.modal-members {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0 2rem 0 0;
+}
+
+.modal-members .card-members {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.add-member-button {
+  background: var(--ds-background-neutral);
+  border: none;
+  color: var(--gray1);
+  cursor: pointer;
+  padding: 0.5rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  &:hover {
+    background: var(--ds-background-neutral-hovered);
+  }
+}
+
+/* ====================== Text Formatting ====================== */
+.description-content strong,
+.description-content b {
+  font-weight: 600;
+  color: var(--gray1);
+}
+
+.description-content em,
+.description-content i {
+  font-style: italic;
+  color: var(--gray1);
+}
+
+.description-content u {
+  text-decoration: underline;
+}
+
+.description-content s,
+.description-content strike {
+  text-decoration: line-through;
+}
+
+/* ====================== Code ====================== */
+.description-content code {
+  background-color: var(--label-purple-bg);
+  color: var(--label-purple-text);
+  border-radius: 0.4rem;
+  padding: 0.25em 0.35em;
+  font-size: 0.85rem;
+  font-family: "JetBrainsMono", monospace;
+}
+
+.description-content pre {
+  background: var(--black);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  color: #fff;
+  margin: 8px 0;
+  font-family: "JetBrainsMono", monospace;
+}
+
+.description-content pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+/* ====================== Headings ====================== */
+.description-content h1 {
+  font-size: 28px;
+  color: var(--gray1);
+  margin: 16px 0 8px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h2 {
+  font-size: 24px;
+  color: var(--gray1);
+  margin: 14px 0 8px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h3 {
+  font-size: 20px;
+  color: var(--gray1);
+  margin: 12px 0 6px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h4 {
+  font-size: 18px;
+  color: var(--gray1);
+  margin: 10px 0 6px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h5 {
+  font-size: 16px;
+  color: var(--gray1);
+  margin: 8px 0 4px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+.description-content h6 {
+  font-size: 15px;
+  color: var(--gray1);
+  margin: 6px 0 4px;
+  line-height: 1.1;
+  font-weight: 600;
+}
+
+/* ====================== Paragraphs ====================== */
+.description-content p {
+  margin: 8px 0;
+  line-height: 1.6;
+  color: var(--gray1);
+}
+
+.description-content p:first-child {
+  margin-top: 0;
+}
+
+.description-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ====================== Blockquote ====================== */
+.description-content blockquote {
+  border-left: 4px solid var(--action-btn-bg-default);
+  padding-left: 14px;
+  color: var(--gray2);
+  font-style: italic;
+  margin: 8px 0;
+  opacity: 0.85;
+}
+
+/* ====================== Links ====================== */
+.description-content a {
+  color: var(--action-btn-bg-default);
+  text-decoration: underline;
+}
+
+.description-content a:hover {
+  color: var(--action-btn-bg-hover);
+}
+
+/* ====================== Lists ====================== */
+.description-content ol,
+.description-content ul {
+  margin: 8px 0 8px 24px;
+  padding: 0;
+  color: var(--gray1);
+  list-style-position: outside;
+}
+
+.description-content ul {
+  list-style-type: disc;
+}
+
+.description-content ol {
+  list-style-type: decimal;
+}
+
+.description-content ul li,
+.description-content ol li {
+  margin: 4px 0;
+  padding-left: 4px;
+}
+
+.description-content ul li p,
+.description-content ol li p {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+/* ====================== Images ====================== */
+.description-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
+/* ====================== Horizontal Rule ====================== */
+.description-content hr {
+  border: none;
+  border-top: 1px solid var(--gray4);
+  margin: 12px 0;
 }
 
 @media only screen and (max-width: 637px) {

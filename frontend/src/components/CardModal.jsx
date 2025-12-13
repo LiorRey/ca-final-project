@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -11,6 +12,8 @@ import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import NotesIcon from "@mui/icons-material/Notes";
 import { LabelMenu } from "./LabelMenu";
 import { TextEditor } from "./ui/TextEditor";
+import { Avatar } from "./ui/Avatar";
+import { AddMemberMenu } from "./AddMemberMenu";
 
 export function CardModal({
   boardId,
@@ -27,7 +30,21 @@ export function CardModal({
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [memberAnchorEl, setMemberAnchorEl] = useState(null);
+  const membersContainerRef = useRef(null);
   const isLabelMenuOpen = Boolean(anchorEl);
+  const isMemberMenuOpen = Boolean(memberAnchorEl);
+  const members = useSelector(state => state.boards.board.members);
+
+  function getCardMembers(card) {
+    return card && card.assignedTo && card.assignedTo.length > 0 && members
+      ? card.assignedTo
+          .map(assignee => members.find(member => member._id === assignee))
+          .filter(Boolean)
+      : [];
+  }
+
+  const cardMembers = getCardMembers(cardDetails);
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -105,29 +122,56 @@ export function CardModal({
               <button className="icon-button">
                 <TaskAltOutlinedIcon /> Checklist
               </button>
-              <button className="icon-button">
+              <button
+                className="icon-button"
+                onClick={e => setMemberAnchorEl(e.currentTarget)}
+              >
                 <PersonAddAltOutlinedIcon /> Members
               </button>
               <button className="icon-button">
                 <AttachFileIcon /> Attach
               </button>
             </div>
-            {cardLabels && cardLabels.length > 0 && (
-              <>
-                <h3 className="labels-title">Labels</h3>
-                <div className="modal-labels">
-                  {cardLabels.map(label => (
-                    <div
-                      className={`modal-label ${label.color}`}
-                      key={label._id}
+            <div className="card-modal-tags-container">
+              {((cardMembers && cardMembers.length > 0) || memberAnchorEl) && (
+                <div className="card-modal-members">
+                  <h3 className="members-title">Members</h3>
+                  <div className="modal-members" ref={membersContainerRef}>
+                    {cardMembers && cardMembers.length > 0 && (
+                      <>
+                        {cardMembers.map(member => (
+                          <Avatar key={member._id} user={member} size={36} />
+                        ))}
+                      </>
+                    )}
+                    <button
+                      className="add-member-button"
+                      onClick={() =>
+                        setMemberAnchorEl(membersContainerRef.current)
+                      }
                     >
-                      {label.title}
-                    </div>
-                  ))}
-                  <button className="add-label-button">+</button>
+                      <AddIcon fontSize="small" />
+                    </button>
+                  </div>
                 </div>
-              </>
-            )}
+              )}
+              {cardLabels && cardLabels.length > 0 && (
+                <div className="card-modal-labels">
+                  <h3 className="labels-title">Labels</h3>
+                  <div className="modal-labels">
+                    {cardLabels.map(label => (
+                      <div
+                        className={`modal-label ${label.color}`}
+                        key={label._id}
+                      >
+                        {label.title}
+                      </div>
+                    ))}
+                    <button className="add-label-button">+</button>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="card-modal-description">
               <NotesIcon fontSize="small" />
               <h3 className="description-title">Description</h3>
@@ -177,6 +221,15 @@ export function CardModal({
             Comments
           </button>
         </footer>
+        <AddMemberMenu
+          boardId={boardId}
+          listId={listId}
+          card={cardDetails}
+          anchorEl={memberAnchorEl}
+          isMemberMenuOpen={isMemberMenuOpen}
+          onCloseMemberMenu={() => setMemberAnchorEl(null)}
+          onUpdateCard={updatedCard => setCardDetails(updatedCard)}
+        />
 
         <LabelMenu
           boardId={boardId}

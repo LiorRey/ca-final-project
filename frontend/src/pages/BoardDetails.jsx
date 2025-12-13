@@ -11,6 +11,8 @@ import { FilterMenu } from "../components/FilterMenu";
 import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { BoardMenu } from "../components/ui/BoardMenu";
+import { Avatar } from "../components/ui/Avatar";
+import { AvatarGroup } from "../components/ui/AvatarGroup";
 import { useCardFilters } from "../hooks/useCardFilters";
 import { useDragToScroll } from "../hooks/useDragBoard";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
@@ -133,8 +135,6 @@ export function BoardDetails() {
 
         setLists(newLists);
 
-        console.log(before, after);
-
         if (listToMove) {
           moveList(listToMove._id, board._id, destination.index);
         }
@@ -184,6 +184,13 @@ export function BoardDetails() {
       <header className={`board-header`}>
         <h2 className="board-title">{board.title}</h2>
         <div className="board-header-right">
+          {board.members && board.members.length > 0 && (
+            <AvatarGroup size={32} max={4}>
+              {board.members.map(member => (
+                <Avatar size={32} key={member._id} user={member} />
+              ))}
+            </AvatarGroup>
+          )}
           <FilterMenu />
           <button className="icon-button">
             <StarBorderRounded />

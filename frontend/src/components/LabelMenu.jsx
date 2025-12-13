@@ -71,8 +71,6 @@ export function LabelMenu({
       updatedCardLabels = [];
     }
 
-    console.log("updatedCardLabels", updatedCardLabels);
-
     updateCardLabels(boardId, listId, card._id, updatedCardLabels);
   }
 

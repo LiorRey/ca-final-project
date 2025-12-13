@@ -44,15 +44,17 @@ export function PopoverMenu({
       }}
       sx={sx}
     >
-      <Box className="popover-header">
-        <Typography className="popover-header-title">{title}</Typography>
+      <Box className="popover-header-container">
+        <Typography className="popover-header-title-text">{title}</Typography>
         {showClose && (
-          <Box className="popover-header-close">
-            <SquareIconButton
-              icon={<Close />}
+          <Box>
+            <button
+              className="icon-button popover-header-close-button"
               aria-label="Close"
               onClick={onClose}
-            />
+            >
+              <Close />
+            </button>
           </Box>
         )}
       </Box>
