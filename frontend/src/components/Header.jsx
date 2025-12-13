@@ -1,14 +1,27 @@
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { Link, NavLink } from "react-router-dom";
-import { useNavigate } from "react-router";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { logout } from "../store/actions/user-actions";
-import { setBoardSearch } from "../store/actions/board-actions";
 
 export function Header() {
-  const user = useSelector(storeState => storeState.users.currentUser);
-  const boardSearch = useSelector(storeState => storeState.boards.boardSearch);
-  const dispatch = useDispatch();
+  const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const user = useSelector(storeState => storeState.users.currentUser);
+
+  const isBoardIndex = location.pathname === "/board";
+
+  const search = isBoardIndex ? searchParams.get("search") || "" : "";
+
+  function onSearchChange(e) {
+    if (!isBoardIndex) return;
+
+    const value = e.target.value;
+
+    if (isBoardIndex) {
+      navigate(value ? `/board?search=${encodeURIComponent(value)}` : "/board");
+    }
+  }
 
   async function onLogout() {
     try {
@@ -17,10 +30,6 @@ export function Header() {
     } catch (err) {
       console.error("Cannot logout: " + err.message);
     }
-  }
-
-  function onSearchChange(e) {
-    dispatch(setBoardSearch(e.target.value));
   }
 
   return (
@@ -33,8 +42,8 @@ export function Header() {
         <input
           className="search-input"
           type="text"
-          placeholder="Search"
-          value={boardSearch}
+          placeholder={isBoardIndex ? "Search boards..." : "Search..."}
+          value={search}
           onChange={onSearchChange}
         />
 

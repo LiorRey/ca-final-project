@@ -1,55 +1,53 @@
 import { useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import AddIcon from "@mui/icons-material/Add";
 import {
   loadBoards,
   loadBoard,
   createBoard,
-  setBoardSearch,
 } from "../store/actions/board-actions";
-
-import AddIcon from "@mui/icons-material/Add";
 import { BoardPreview } from "../components/ui/BoardPreview";
 
 export function BoardIndex() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
   const boards = useSelector(state => state.boards.boards);
-  const boardSearch = useSelector(state => state.boards.boardSearch);
+
+  const searchTerm = searchParams.get("search")?.toLowerCase() || "";
 
   useEffect(() => {
     loadBoards();
-    dispatch(setBoardSearch(""));
   }, []);
 
   async function onOpenBoard(boardId) {
     await loadBoard(boardId);
-    await navigate(`/board/${boardId}`);
+    navigate(`/board/${boardId}`);
   }
 
   async function onCreateBoard() {
     const newBoard = await createBoard({
       title: "New Board",
       lists: [],
-      appearance: { background: "#0079bf" },
+      appearance: { background: "blue" },
     });
 
     onOpenBoard(newBoard._id);
   }
 
   const filteredBoards = useMemo(() => {
-    const term = boardSearch.toLowerCase();
-    return boards.filter(board => board.title.toLowerCase().includes(term));
-  }, [boardSearch, boards]);
+    return boards.filter(board =>
+      board.title.toLowerCase().includes(searchTerm)
+    );
+  }, [boards, searchTerm]);
 
   return (
     <section className="board-index-page">
       <header className="board-index-header">
-        <h1>Boards</h1>
+        <h1>All boards</h1>
       </header>
 
       <section className="board-section">
-        <h2>All Boards</h2>
         <div className="boards-list">
           {filteredBoards.map(board => (
             <BoardPreview
