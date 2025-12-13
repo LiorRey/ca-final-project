@@ -15,7 +15,7 @@ export const boardService = {
   moveCard,
   getEmptyList,
   createList,
-  // moveList,
+  moveList,
   // copyList,
   // archiveList,
   // unarchiveList,
@@ -148,14 +148,14 @@ async function createList(boardId, listData) {
   return data;
 }
 
-// async function moveList(listId, targetBoardId, targetIndex) {
-//   const payload = {
-//     boardId: targetBoardId,
-//     targetIndex,
-//   };
-//   const data = await httpService.put(`lists/${listId}/move`, payload);
-//   return data.list;
-// }
+async function moveList(listId, targetBoardId, targetIndex) {
+  const payload = {
+    boardId: targetBoardId,
+    targetIndex,
+  };
+  const data = await httpService.put(`lists/${listId}/move`, payload);
+  return data.list;
+}
 
 // async function copyList(boardId, listId, newName) {
 //   const list = await httpService.get(`lists/${listId}`);
