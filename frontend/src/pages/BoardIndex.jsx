@@ -1,35 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { BoardDetails } from "./BoardDetails";
-import { boardService } from "../services/board";
 import { loadBoard, loadBoards } from "../store/actions/board-actions";
-
-// export function BoardIndex() {
-//   const boards = useSelector(state => state.boards.boards);
-//   const navigate = useNavigate();
-
-//   async function fetchBoard() {
-//     const boards = await boardService.query();
-//     await loadBoard(boards[0]._id);
-//   }
-
-//   useEffect(() => {
-//     loadBoards();
-//   }, []);
-
-//   useEffect(() => {
-//     if (boards.length === 0) return;
-//     fetchBoard();
-//     navigate(`/board/${boards[0]._id}`);
-//   }, [boards, navigate]);
-
-//   return (
-//     <section className="board-index">
-//       <div>Loading boards...</div>
-//     </section>
-//   );
-// }
 
 export function BoardIndex() {
   const boards = useSelector(state => state.boards.boards);
@@ -39,20 +11,42 @@ export function BoardIndex() {
     loadBoards();
   }, []);
 
-  useEffect(() => {
-    if (boards.length === 0) return;
+  async function handleBoardClick(boardId) {
+    await loadBoard(boardId);
+    navigate(`/board/${boardId}`);
+  }
 
-    navigate(`/board/${boards[0]._id}`);
-  }, [boards]);
+  const backgroundClass = board => {
+    if (!board?.appearance?.background) return "bg-blue";
+    return `bg-${board.appearance.background}`;
+  };
 
-  async function fetchBoard() {
-    const boards = await boardService.query();
-    await loadBoard(boards[0]._id);
+  if (!boards || boards.length === 0) {
+    return (
+      <div className="board-index">
+        <div className="board-index-loading">Loading boards…</div>
+      </div>
+    );
   }
 
   return (
-    <section className="board-index">
-      <BoardDetails />
-    </section>
+    <div className="board-index">
+      <div className="board-index-header">
+        <h1>Your Boards</h1>
+      </div>
+      <div className="board-index-grid">
+        {boards.map(board => (
+          <div
+            key={board._id}
+            className={`board-card ${backgroundClass(board)}`}
+            onClick={() => handleBoardClick(board._id)}
+          >
+            <div className="board-card-content">
+              <h3 className="board-card-title">{board.title}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

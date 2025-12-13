@@ -34,29 +34,21 @@ import {
 export function BoardDetails() {
   const [activeAddCardListId, setActiveAddCardListId] = useState(null);
   const [boardMenuAnchorEl, setBoardMenuAnchorEl] = useState(null);
-  const params = useParams();
+  const { boardId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
-  const boards = useSelector(state => state.boards.boards);
   const [labelsIsOpen, setLabelsIsOpen] = useState(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
   useDragToScroll(boardCanvasRef, { sensitivity: 1, enabled: !!board }); //drag to scroll the board experimentall
   const { filters, updateFilters } = useCardFilters();
-  const [lists, setLists] = useState(board?.lists || []);
+  const [lists, setLists] = useState(() => board?.lists || []);
 
   useEffect(() => {
-    if (board) {
+    loadBoard(boardId, filters).then(board => {
       setLists(board.lists);
-    }
-  }, [board]);
-
-  useEffect(() => {
-    loadBoard(params.boardId, filters);
-    if (!boards || boards.length === 0) {
-      loadBoards();
-    }
-  }, [params.boardId, filters]);
+    });
+  }, [filters, boardId]);
 
   useEffect(() => {
     const filterBy = parseFiltersFromSearchParams(searchParams);
@@ -127,7 +119,7 @@ export function BoardDetails() {
 
     try {
       if (type === "LIST") {
-        const { newLists, listToMove, before, after } = reorderLists(
+        const { newLists, listToMove } = reorderLists(
           lists,
           source.index,
           destination.index
