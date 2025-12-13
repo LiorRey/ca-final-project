@@ -73,6 +73,7 @@ const muiTheme = createTheme({
    */
   typography: {
     fontFamily: token("font.family.body", FONT_FALLBACK),
+    fontSize: 14,
     fontWeightLight: 300,
     fontWeightRegular: token("font.weight.regular", "400"),
     fontWeightMedium: token("font.weight.medium", "500"),
@@ -303,16 +304,22 @@ const muiTheme = createTheme({
           cursor: "pointer", // Autocomplete root cursor (pointer)
           "& .MuiInputBase-root": {
             cursor: "pointer", // Input base cursor (pointer)
+            padding: "4px 8px", // Reduced padding for smaller size
           },
           "& .MuiInputBase-input": {
             cursor: "pointer", // Input cursor (pointer)
             caretColor: "transparent", // Hide caret when not focused
+            padding: "4px 8px", // Reduced padding for smaller size
+            fontSize: "14px", // Smaller font size
             "&::selection": {
               backgroundColor: "transparent", // Transparent text selection
             },
           },
           "& .MuiInputBase-input:focus": {
             caretColor: "auto", // Show caret when focused
+          },
+          "& .MuiInputLabel-root": {
+            fontSize: "14px", // Smaller label font size
           },
         },
         popper: {
@@ -446,6 +453,47 @@ const muiTheme = createTheme({
             backgroundColor: "transparent", // Disabled outlined button background (transparent)
             color: token("color.text.disabled", "#7D818A"), // Disabled outlined button text color (gray)
             border: `1px solid ${token("color.border", "#7D818A")}`, // Disabled outlined button border
+          },
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: "14px",
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        primary: {
+          fontSize: "14px",
+        },
+        secondary: {
+          fontSize: "14px",
+        },
+      },
+    },
+    MuiTextareaAutosize: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "var(--gray5, #040a10)", // Input field background color
+          color: "var(--gray1, #ddd)", // Input text color
+          border: "1px solid var(--form-input-border-color, #4a9eff)", // Default border color
+          borderRadius: "4px",
+          padding: "0.5rem",
+          fontFamily: "inherit",
+          fontSize: "inherit",
+          "&:hover": {
+            borderColor: "var(--form-input-border-color, #4a9eff)", // Border color on hover
+          },
+          "&:focus": {
+            outline: "none",
+            borderColor: "var(--form-input-border-color, #4a9eff)", // Border color when focused
+          },
+          "&::placeholder": {
+            color: "var(--form-input-placeholder-color, var(--gray2, #aaa))", // Placeholder text color
+            opacity: 1, // Placeholder opacity
           },
         },
       },

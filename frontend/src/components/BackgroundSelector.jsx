@@ -16,6 +16,15 @@ export function BackgroundSelector({ currentBackground }) {
     "charcoal",
   ];
 
+  const imageBackgrounds = [
+    "flower",
+    "bubble",
+    "sea",
+    "snow",
+    "volcano",
+    "crystal",
+  ];
+
   const solidColors = [
     "blue",
     "orange",
@@ -59,6 +68,25 @@ export function BackgroundSelector({ currentBackground }) {
 
       <div className="background-colors-grid">
         {solidColors.map(bgColor => (
+          <button
+            key={bgColor}
+            className={`background-color-option bg-${bgColor} ${
+              currentBackground === bgColor ? "selected" : ""
+            }`}
+            onClick={() => handleSelectBackground(bgColor)}
+            aria-label={`Select ${bgColor} background`}
+          >
+            {currentBackground === bgColor && (
+              <span className="checkmark">✓</span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <label className="background-selector-label">Images</label>
+
+      <div className="background-colors-grid">
+        {imageBackgrounds.map(bgColor => (
           <button
             key={bgColor}
             className={`background-color-option bg-${bgColor} ${

@@ -1,12 +1,12 @@
-/* List */
 .list-container {
   display: flex;
   flex-direction: column;
-  flex-grow: 0;
-  flex-shrink: 0;
   box-sizing: border-box;
   justify-content: space-between;
   max-width: 350px;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
   border: 1px solid var(--black);
   border-radius: 10px;
   background-color: var(--gray5);
@@ -14,64 +14,86 @@
   margin: 0.2rem 0.35rem 0.2rem 0.35rem;
 }
 
+/* Disable grab/grabbing cursor inside lists */
+.list-container *[data-rbd-drag-handle-context-id] {
+  cursor: default !important;
+}
+
+.list-container *[data-rbd-drag-handle-context-id]:active {
+  cursor: default !important;
+}
+
 .list-container.list-dragging {
   opacity: 0.5;
   transition: none;
+  cursor: default !important;
 }
 
 .list-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  padding: 0.5rem 0.5rem 0 0.5rem;
 }
 
 .list-header h2 {
   margin: 0;
-  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
   font-size: 1em;
   font-weight: 500;
 }
 
-.list-content-container {
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0.2rem 0 0.2rem 0;
-  width: 100%;
-  max-height: 70vh;
-  box-sizing: border-box;
+.list-title-input {
+  flex: 1;
+}
+
+.list-title-input .MuiInputBase-input {
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  margin: 0;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.cards-droppable-wrapper {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
+  overflow: hidden;
 }
 
-/* Custom scrollbar styling */
-.list-content-container::-webkit-scrollbar {
-  width: 5px; /* Make scrollbar thinner */
+.cards-list::-webkit-scrollbar {
+  width: 5px;
 }
 
-.list-content-container::-webkit-scrollbar-track {
-  background: var(--gray3); /* Track color */
+.cards-list::-webkit-scrollbar-track {
+  background: var(--gray3);
   border-radius: 3px;
 }
 
-.list-content-container::-webkit-scrollbar-thumb {
-  background: var(--gray5); /* Thumb color */
+.cards-list::-webkit-scrollbar-thumb {
+  background: var(--gray5);
   border-radius: 3px;
 }
 
-.list-content-container::-webkit-scrollbar-thumb:hover {
-  background: var(--gray4); /* Hover color */
+.cards-list::-webkit-scrollbar-thumb:hover {
+  background: var(--gray4);
   border-radius: 3px;
 }
 
 .cards-list {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
-  padding: 0 0.5rem 0 0.5rem;
-  max-width: 350px;
-  transition: background-color 0.2s ease;
+  flex: 1;
   min-height: 1px;
+  padding: 0 0.5rem 0 0.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray5) var(--gray3);
 }
 
 .list-add-card-header,
@@ -79,6 +101,7 @@
   display: flex;
   flex-direction: column;
   padding: 0 0.5rem 0.5rem 0.5rem;
+  margin: 0.5rem 0 0 0;
 }
 
 .list-add-card-header button,

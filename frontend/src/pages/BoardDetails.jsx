@@ -12,6 +12,7 @@ import { Footer } from "../components/Footer";
 import { List } from "../components/List";
 import { BoardMenu } from "../components/ui/BoardMenu";
 import { useCardFilters } from "../hooks/useCardFilters";
+import { useDragToScroll } from "../hooks/useDragBoard";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import {
   parseFiltersFromSearchParams,
@@ -38,6 +39,7 @@ export function BoardDetails() {
   const [labelsIsOpen, setLabelsIsOpen] = useState(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
+  useDragToScroll(boardCanvasRef, { sensitivity: 1, enabled: !!board }); //drag to scroll the board experimentall
   const { filters, updateFilters } = useCardFilters();
   const [lists, setLists] = useState(board?.lists || []);
 

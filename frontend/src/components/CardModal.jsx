@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Modal, Box, Button } from "@mui/material";
+import { useState } from "react";
+import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -8,6 +8,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import TaskAltOutlinedIcon from "@mui/icons-material/TaskAltOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
+import NotesIcon from "@mui/icons-material/Notes";
 import { LabelMenu } from "./LabelMenu";
 import { TextEditor } from "./ui/TextEditor";
 
@@ -27,7 +28,6 @@ export function CardModal({
   const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
   const isLabelMenuOpen = Boolean(anchorEl);
-  const textareaRef = useRef(null);
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -37,6 +37,12 @@ export function CardModal({
     setIsEditorOpen(false);
     onEditCard(cardDetails);
     setIsEditing(false);
+  }
+
+  function handleCancelCard() {
+    setIsEditorOpen(false);
+    setIsEditing(false);
+    setCardDetails(card);
   }
 
   function handleChangeCard(key, value) {
@@ -64,27 +70,27 @@ export function CardModal({
         </div>
         <div className="card-modal-container">
           <section className="card-modal-content">
-            {!isEditing ? (
-              <h1
-                className="card-modal-title"
-                onClick={() => setIsEditing(true)}
-              >
-                {cardDetails.title}
-              </h1>
-            ) : (
-              <textarea
-                ref={textareaRef}
-                className="card-modal-title-input"
-                value={cardDetails.title}
-                onChange={e => handleChangeCard("title", e.target.value)}
-                onBlur={() => {
-                  setIsEditing(false);
-                  onEditCard(cardDetails);
-                }}
-                autoFocus
-                rows={1}
-              />
-            )}
+            <div className="card-modal-title-container">
+              {!isEditing ? (
+                <h1
+                  className="card-modal-title"
+                  onClick={() => setIsEditing(true)}
+                >
+                  {cardDetails.title}
+                </h1>
+              ) : (
+                <TextareaAutosize
+                  className="card-modal-title-input"
+                  value={cardDetails.title}
+                  onChange={e => handleChangeCard("title", e.target.value)}
+                  onBlur={() => {
+                    setIsEditing(false);
+                    onEditCard(cardDetails);
+                  }}
+                  autoFocus
+                />
+              )}
+            </div>
             <div className="card-modal-controls">
               <button
                 className="icon-button"
@@ -123,6 +129,7 @@ export function CardModal({
               </>
             )}
             <div className="card-modal-description">
+              <NotesIcon fontSize="small" />
               <h3 className="description-title">Description</h3>
               {isEditorOpen ? (
                 <>
@@ -132,10 +139,7 @@ export function CardModal({
                   />
                   <div className="editor-controls">
                     <Button onClick={handleSaveCard}>Save</Button>
-                    <Button
-                      variant="outlined"
-                      onClick={() => setIsEditorOpen(false)}
-                    >
+                    <Button variant="outlined" onClick={handleCancelCard}>
                       Cancel
                     </Button>
                   </div>
@@ -144,7 +148,9 @@ export function CardModal({
                 <div
                   className="description-content"
                   onClick={() => setIsEditorOpen(true)}
-                  dangerouslySetInnerHTML={{ __html: cardDetails.description }}
+                  dangerouslySetInnerHTML={{
+                    __html: cardDetails.description,
+                  }}
                 />
               )}
             </div>
@@ -165,7 +171,7 @@ export function CardModal({
         </div>
         <footer className="card-modal-footer">
           <button
-            className="comment-section-button"
+            className={`comment-section-button ${openSection ? "active" : ""}`}
             onClick={handleCommentSection}
           >
             Comments

@@ -32,15 +32,16 @@
 
 .card-label.closed {
   max-width: 20px;
-  border-radius: 50%;
+  border-radius: 4px;
   padding: 0;
-  transition: max-width 0.25s ease 0s, padding 0.25s ease 0s,
-    border-radius 0.2s ease 0.25s;
+  transition: border-radius 0.15s ease-out 0s, max-width 0.3s ease 0s,
+    padding 0.25s ease 0s;
 }
 
 .card-label.closed .card-label-text {
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
+  transition-delay: 0s;
 }
 
 .card-label.green {

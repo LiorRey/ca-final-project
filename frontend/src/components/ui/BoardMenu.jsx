@@ -169,7 +169,7 @@ export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
         vertical: "top",
         horizontal: "right",
       }}
-      paperProps={{ sx: { mt: 1 } }}
+      paperProps={{ sx: { mt: 1, pt: 0.7 } }}
       slotProps={{ transition: { onExited: () => handleCloseBoardMenu() } }}
     >
       {renderContent()}

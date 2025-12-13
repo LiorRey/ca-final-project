@@ -129,7 +129,7 @@ export function FilterMenu() {
           vertical: "top",
           horizontal: "left",
         }}
-        paperProps={{ sx: { width: 320, p: 2 } }}
+        paperProps={{ sx: { width: 320, px: 1.5, pb: 1.5, pt: 1 } }}
       >
         <Box>
           <Box sx={{ mb: 2 }}>

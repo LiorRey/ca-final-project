@@ -59,6 +59,7 @@ export function CustomAutoComplete({
           {...params}
           label={label}
           name={name}
+          size="small"
           sx={sx}
           onFocus={e => e.target.select()}
           onMouseUp={e => {

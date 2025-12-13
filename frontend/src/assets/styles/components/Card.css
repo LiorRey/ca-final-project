@@ -3,18 +3,20 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-bottom: 10px;
-  cursor: grab;
+  margin-top: 10px;
+  cursor: default !important;
   user-select: none;
 }
 
 .card-container:active {
   cursor: grabbing;
+  cursor: default !important;
 }
 
 .card-container--dragging {
   opacity: 0.5;
   transition: none;
+  cursor: default !important;
 }
 
 .card-content,

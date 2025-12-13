@@ -7,8 +7,8 @@ import Code from "@mui/icons-material/Code";
 import FormatListBulleted from "@mui/icons-material/FormatListBulleted";
 import FormatListNumbered from "@mui/icons-material/FormatListNumbered";
 import FormatQuote from "@mui/icons-material/FormatQuote";
-import Undo from "@mui/icons-material/Undo";
-import Redo from "@mui/icons-material/Redo";
+// import Undo from "@mui/icons-material/Undo";
+// import Redo from "@mui/icons-material/Redo";
 
 const MenuBar = ({ editor }) => {
   const editorState = useEditorState({
@@ -116,7 +116,6 @@ const MenuBar = ({ editor }) => {
         >
           <Code />
         </button>
-        {/* Structure Section */}
         <div className="button-separator"></div>
         <button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -146,7 +145,7 @@ const MenuBar = ({ editor }) => {
         >
           <Code />
         </button>
-        <div className="button-separator"></div>
+        {/* <div className="button-separator"></div>
         <button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editorState.canUndo}
@@ -160,7 +159,7 @@ const MenuBar = ({ editor }) => {
           title="Redo"
         >
           <Redo />
-        </button>
+        </button> */}
       </div>
     </div>
   );

@@ -50,11 +50,13 @@ export function Popover({
           <Typography className="popover-header-title">{title}</Typography>
           {showClose && (
             <Box className="popover-header-close">
-              <SquareIconButton
-                icon={<Close />}
+              <button
+                className="icon-button"
                 aria-label="Close"
                 onClick={onClose}
-              />
+              >
+                <Close />
+              </button>
             </Box>
           )}
         </Box>
