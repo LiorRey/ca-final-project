@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
@@ -26,7 +26,6 @@ import {
   moveAllCards,
   moveCard,
   moveList,
-  setBoardSearch,
 } from "../store/actions/board-actions";
 
 export function BoardDetails() {
@@ -41,7 +40,6 @@ export function BoardDetails() {
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
   const { filters, updateFilters } = useCardFilters();
   const [lists, setLists] = useState(board?.lists || []);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (board) {
@@ -54,7 +52,6 @@ export function BoardDetails() {
     if (!boards || boards.length === 0) {
       loadBoards();
     }
-    dispatch(setBoardSearch(""));
   }, [params.boardId, filters]);
 
   useEffect(() => {

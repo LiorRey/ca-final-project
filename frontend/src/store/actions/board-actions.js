@@ -4,7 +4,6 @@ import {
   ADD_BOARD,
   UPDATE_BOARD,
   DELETE_BOARD,
-  SET_BOARD_SEARCH,
   ADD_LIST,
   MOVE_LIST,
   COPY_LIST,
@@ -102,10 +101,6 @@ export async function deleteBoard(boardId) {
     );
     throw error;
   }
-}
-
-export function setBoardSearch(searchTerm) {
-  return { type: SET_BOARD_SEARCH, payload: searchTerm };
 }
 
 export async function createList(boardId, listData) {
