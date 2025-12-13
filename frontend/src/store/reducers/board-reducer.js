@@ -109,11 +109,22 @@ const handlers = {
   }),
   ...createAsyncHandlers(MOVE_LIST, MOVE_LIST.KEY),
   [MOVE_LIST.SUCCESS]: (state, action) => {
+    let newLists;
+    if (state.board._id !== action.payload.boardId) {
+      newLists = state.board.lists.filter(
+        list => list._id !== action.payload._id
+      );
+    } else {
+      newLists = state.board.lists.map(list =>
+        list._id === action.payload._id ? { ...list, ...action.payload } : list
+      );
+      newLists = sortByPosition(newLists);
+    }
     return {
       ...state,
       board: {
         ...state.board,
-        lists: action.payload,
+        lists: newLists,
       },
     };
   },
