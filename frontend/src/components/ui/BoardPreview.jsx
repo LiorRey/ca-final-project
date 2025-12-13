@@ -8,7 +8,9 @@ export function BoardPreview({ boardTitle, boardAppearance, onOpen }) {
       className={`board-tile board-bg-base ${backgroundClass}`}
       onClick={onOpen}
     >
-      <span className="board-preview-title">{boardTitle}</span>
+      <div className="board-preview-footer">
+        <span className="board-preview-title">{boardTitle}</span>
+      </div>
     </div>
   );
 }
