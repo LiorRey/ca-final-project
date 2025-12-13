@@ -11,7 +11,7 @@ export const boardService = {
   addCard,
   editCard,
   deleteCard,
-  // copyCard,
+  copyCard,
   // moveCard,
   getEmptyList,
   createList,
@@ -92,29 +92,28 @@ async function deleteCard(boardId, cardId, listId) {
   return { cardId };
 }
 
-// async function copyCard(copyData, card) {
-//   const {
-//     destinationBoardId,
-//     destinationListId,
-//     keepLabels,
-//     keepMembers,
-//     position,
-//     title,
-//   } = copyData;
+async function copyCard(copyData, card) {
+  const {
+    destinationBoardId,
+    destinationListId,
+    keepLabels,
+    keepMembers,
+    title,
+    description,
+  } = copyData;
 
-//   const clonedCard = {
-//     title,
-//     description: card.description,
-//     listId: destinationListId,
-//     boardId: destinationBoardId,
-//     assignedTo: keepMembers ? card.assignedTo : [],
-//     labelIds: keepLabels ? card.labelIds : [],
-//     position,
-//   };
+  const copyOptions = {
+    targetBoardId: destinationBoardId,
+    targetListId: destinationListId,
+    title,
+    description: description ?? card.description,
+    copyMembers: keepMembers ?? false,
+    copyLabels: keepLabels ?? false,
+  };
 
-//   const data = await httpService.post("cards", clonedCard);
-//   return data.card;
-// }
+  const data = await httpService.post(`cards/${card._id}/copy`, copyOptions);
+  return data.card;
+}
 
 // async function moveCard(moveData, card) {
 //   const { destinationListId, destinationBoardId, position } = moveData;
