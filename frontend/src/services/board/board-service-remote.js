@@ -144,7 +144,7 @@ async function createList(boardId, listData) {
   };
   const data = await httpService.post("lists", payload);
   if (!data.list.cards) data.list.cards = [];
-  return data;
+  return data.list;
 }
 
 async function moveList(listId, targetBoardId, targetIndex) {
