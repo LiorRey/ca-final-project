@@ -220,17 +220,23 @@ const handlers = {
     loading: { ...state.loading, [MOVE_CARD.KEY]: false },
     board: {
       ...state.board,
-      lists: state.board.lists.map(list =>
-        list._id === action.payload.listId
-          ? {
-              ...list,
-              cards: sortByPosition([...list.cards, action.payload]),
-            }
-          : {
-              ...list,
-              cards: list.cards.filter(card => card._id !== action.payload._id),
-            }
-      ),
+      lists: state.board.lists.map(list => {
+        const filteredCards = list.cards.filter(
+          card => card._id !== action.payload._id
+        );
+
+        if (list._id === action.payload.listId) {
+          return {
+            ...list,
+            cards: sortByPosition([...filteredCards, action.payload]),
+          };
+        }
+
+        return {
+          ...list,
+          cards: filteredCards,
+        };
+      }),
     },
   }),
   ...createAsyncHandlers(CREATE_LABEL, CREATE_LABEL.KEY),
