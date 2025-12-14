@@ -7,6 +7,7 @@ import {
   moveList,
   archiveList,
   deleteList,
+  copyList,
 } from "../controllers/list-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 import { canModifyList, canCreateList } from "../middleware/authorize.js";
@@ -20,5 +21,6 @@ router.put("/:id", authenticate, canModifyList(), updateList);
 router.put("/:id/move", authenticate, canModifyList(), moveList);
 router.put("/:id/archive", authenticate, canModifyList(), archiveList);
 router.delete("/:id", authenticate, canModifyList(), deleteList);
+router.post("/:id/copy", authenticate, canModifyList(), copyList);
 
 export default router;

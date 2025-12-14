@@ -49,3 +49,10 @@ export async function deleteList(req, res) {
 
   res.status(200).json({ id: deletedList._id });
 }
+
+export async function copyList(req, res) {
+  const { id } = req.params;
+  const copyOptions = req.body;
+  const copiedList = await listService.copyList(id, copyOptions);
+  res.status(201).json({ list: copiedList });
+}
