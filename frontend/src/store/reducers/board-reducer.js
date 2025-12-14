@@ -5,7 +5,7 @@ import { sortByPosition } from "../../services/board/fractional-index-service";
 export const SET_BOARDS = "SET_BOARDS";
 export const SET_BOARD = "SET_BOARD";
 export const DELETE_BOARD = "DELETE_BOARD";
-export const ADD_BOARD = "ADD_BOARD";
+export const ADD_BOARD = createAsyncActionTypes("ADD_BOARD");
 export const UPDATE_BOARD = createAsyncActionTypes("UPDATE_BOARD");
 export const ADD_LIST = createAsyncActionTypes("ADD_LIST");
 export const MOVE_ALL_CARDS = createAsyncActionTypes("MOVE_ALL_CARDS");
@@ -101,7 +101,8 @@ const handlers = {
     const boards = state.boards.filter(board => board._id !== action.payload);
     return { ...state, boards };
   },
-  [ADD_BOARD]: (state, action) => ({
+  ...createAsyncHandlers(ADD_BOARD, ADD_BOARD.KEY),
+  [ADD_BOARD.SUCCESS]: (state, action) => ({
     ...state,
     boards: [...state.boards, action.payload],
   }),

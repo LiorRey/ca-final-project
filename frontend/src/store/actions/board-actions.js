@@ -60,18 +60,11 @@ export async function loadBoard(boardId, filterBy = {}) {
   }
 }
 
-export async function createBoard(board) {
-  try {
-    const newBoard = await boardService.createBoard(board);
-    store.dispatch(addBoard(newBoard));
-    return newBoard;
-  } catch (error) {
-    store.dispatch(
-      setError("createBoard", `Error creating board: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const createBoard = createAsyncAction(
+  ADD_BOARD,
+  boardService.createBoard,
+  store
+);
 
 export const updateBoard = createAsyncAction(
   UPDATE_BOARD,
@@ -237,10 +230,6 @@ export function setBoards(boards) {
 
 export function setBoard(board) {
   return { type: SET_BOARD, payload: board };
-}
-
-export function addBoard(board) {
-  return { type: ADD_BOARD, payload: board };
 }
 
 export function deleteBoardAction(boardId) {
