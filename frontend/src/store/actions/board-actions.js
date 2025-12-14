@@ -16,6 +16,8 @@ import {
   DELETE_CARD,
   COPY_CARD,
   MOVE_CARD,
+  ADD_ASSIGNEE,
+  REMOVE_ASSIGNEE,
   CREATE_LABEL,
   EDIT_LABEL,
   DELETE_LABEL,
@@ -183,6 +185,18 @@ export const copyCard = createAsyncAction(
 export const moveCard = createAsyncAction(
   MOVE_CARD,
   boardService.moveCard,
+  store
+);
+
+export const addAssignee = createAsyncAction(
+  ADD_ASSIGNEE,
+  boardService.addAssignee,
+  store
+);
+
+export const removeAssignee = createAsyncAction(
+  REMOVE_ASSIGNEE,
+  boardService.removeAssignee,
   store
 );
 

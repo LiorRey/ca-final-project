@@ -13,6 +13,8 @@ export const boardService = {
   deleteCard,
   copyCard,
   moveCard,
+  addAssignee,
+  removeAssignee,
   getEmptyList,
   createList,
   moveList,
@@ -124,6 +126,18 @@ async function moveCard(moveData, card) {
   };
 
   const data = await httpService.put(`cards/${card._id}/move`, payload);
+  return data.card;
+}
+
+async function addAssignee(cardId, userId) {
+  const data = await httpService.post(`cards/${cardId}/assignees`, {
+    userId,
+  });
+  return data.card;
+}
+
+async function removeAssignee(cardId, userId) {
+  const data = await httpService.delete(`cards/${cardId}/assignees/${userId}`);
   return data.card;
 }
 
