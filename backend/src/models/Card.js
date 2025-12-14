@@ -12,6 +12,10 @@ const commentSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      fullName: {
+        type: String,
+        required: true,
+      },
     },
     text: {
       type: String,
@@ -71,6 +75,10 @@ const cardSchema = new mongoose.Schema(
           required: true,
         },
         username: {
+          type: String,
+          required: true,
+        },
+        fullName: {
           type: String,
           required: true,
         },

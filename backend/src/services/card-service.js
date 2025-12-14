@@ -99,6 +99,7 @@ export async function addComment(cardId, user, text) {
     author: {
       userId: user._id,
       username: user.username,
+      fullName: user.fullName,
     },
     text: text.trim(),
   };
@@ -170,7 +171,11 @@ export async function addCardAssignee(cardId, userId) {
     cardId,
     {
       $addToSet: {
-        assignees: { userId, username: user.username },
+        assignees: {
+          userId,
+          username: user.username,
+          fullName: user.fullName,
+        },
       },
     },
     {

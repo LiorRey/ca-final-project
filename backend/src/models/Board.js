@@ -36,6 +36,10 @@ const boardSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      fullName: {
+        type: String,
+        required: true,
+      },
     },
     members: [
       {
@@ -45,6 +49,10 @@ const boardSchema = new mongoose.Schema(
           required: true,
         },
         username: {
+          type: String,
+          required: true,
+        },
+        fullName: {
           type: String,
           required: true,
         },

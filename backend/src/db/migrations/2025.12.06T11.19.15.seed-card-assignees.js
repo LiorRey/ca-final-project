@@ -23,6 +23,7 @@ export const up = async ({ context }) => {
         userMap[member.username] = {
           userId: user._id,
           username: user.username,
+          fullName: user.fullName,
         };
       }
     }

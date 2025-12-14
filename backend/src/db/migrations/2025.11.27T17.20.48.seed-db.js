@@ -26,14 +26,22 @@ export const up = async ({ _context }) => {
   for (const board of boards) {
     // Resolve owner
     const ownerUser = userMap[board.owner.username];
-    const owner = { userId: ownerUser._id, username: ownerUser.username };
+    const owner = {
+      userId: ownerUser._id,
+      username: ownerUser.username,
+      fullName: ownerUser.fullName,
+    };
 
     // Resolve members
     const members = [];
     for (const m of board.members) {
       const memberUser = userMap[m.username];
       if (memberUser) {
-        members.push({ userId: memberUser._id, username: memberUser.username });
+        members.push({
+          userId: memberUser._id,
+          username: memberUser.username,
+          fullName: memberUser.fullName,
+        });
       }
     }
 
