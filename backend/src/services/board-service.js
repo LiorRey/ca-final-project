@@ -25,6 +25,12 @@ export async function getFullBoardById(id) {
 }
 
 export async function updateBoard(id, data) {
+  // make sure to only set the allowed fields
+  if (data.appearance) {
+    const { background } = data.appearance;
+    data.appearance = { background };
+  }
+
   return await Board.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,

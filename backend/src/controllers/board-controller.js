@@ -48,11 +48,12 @@ export async function getFullBoardById(req, res) {
 
 export async function updateBoard(req, res) {
   try {
-    const { title, description, owner } = req.body;
+    const { title, description, owner, appearance } = req.body;
     const board = await boardService.updateBoard(req.params.id, {
       title,
       description,
       owner,
+      appearance,
     });
     if (!board) return res.status(404).json({ error: "Board not found" });
 
