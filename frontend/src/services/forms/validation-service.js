@@ -22,7 +22,7 @@ export const validationRules = {
     },
   },
 
-  fullName: {
+  fullname: {
     required: "Full name is required",
     minLength: {
       value: 2,

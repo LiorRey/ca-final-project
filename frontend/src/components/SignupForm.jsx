@@ -25,7 +25,7 @@ export function SignupForm({ onSubmit }) {
     mode: "onChange",
     defaultValues: {
       email: "",
-      fullName: "",
+      fullname: "",
       password: "",
     },
   });
@@ -71,12 +71,12 @@ export function SignupForm({ onSubmit }) {
         />
 
         <FormField
-          name="fullName"
+          name="fullname"
           control={control}
           errors={errors}
           label="Full name"
           placeholder="Enter full name"
-          rules={validationRules.fullName}
+          rules={validationRules.fullname}
         />
 
         <Box className="auth-form-field">
@@ -92,7 +92,9 @@ export function SignupForm({ onSubmit }) {
           <PasswordStrengthIndicator
             strength={passwordStrength.strength}
             message={
-              errors.password ? errors.password.message : passwordStrength.message
+              errors.password
+                ? errors.password.message
+                : passwordStrength.message
             }
             neutral={passwordStrength.neutral}
             password={watchedPassword}

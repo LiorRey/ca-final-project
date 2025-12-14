@@ -219,7 +219,7 @@ export function generateActivity(
     byMember = {
       _id: `user-${faker.number.int({ min: 1, max: 20 })}`,
       username: faker.internet.username(),
-      fullname: faker.person.fullName(),
+      fullname: faker.person.fullname(),
     };
   }
 
