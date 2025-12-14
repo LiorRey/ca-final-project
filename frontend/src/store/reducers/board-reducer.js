@@ -129,14 +129,23 @@ const handlers = {
     };
   },
   ...createAsyncHandlers(COPY_LIST, COPY_LIST.KEY),
-  [COPY_LIST.SUCCESS]: (state, action) => ({
-    ...state,
-    loading: { ...state.loading, [COPY_LIST.KEY]: false },
-    board: {
-      ...state.board,
-      lists: action.payload,
-    },
-  }),
+  [COPY_LIST.SUCCESS]: (state, action) => {
+    let newLists;
+    if (state.board._id === action.payload.boardId) {
+      newLists = [...state.board.lists, action.payload];
+      newLists = sortByPosition(newLists);
+      return {
+        ...state,
+        loading: { ...state.loading, [COPY_LIST.KEY]: false },
+        board: {
+          ...state.board,
+          lists: newLists,
+        },
+      };
+    } else {
+      return state;
+    }
+  },
   ...createAsyncHandlers(ADD_CARD, ADD_CARD.KEY),
   [ADD_CARD.SUCCESS]: (state, action) => ({
     ...state,

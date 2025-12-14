@@ -16,7 +16,7 @@ export const boardService = {
   getEmptyList,
   createList,
   moveList,
-  // copyList,
+  copyList,
   // archiveList,
   // unarchiveList,
   // moveAllCards,
@@ -156,31 +156,19 @@ async function moveList(listId, targetBoardId, targetIndex) {
   return data.list;
 }
 
-// async function copyList(boardId, listId, newName) {
-//   const list = await httpService.get(`lists/${listId}`);
-//   const originalList = list.list;
+async function copyList(listId, copyOptions = {}) {
+  const defaultOptions = {
+    copyCards: true,
+    targetBoardId: null,
+    targetIndex: null,
+    title: null,
+  };
 
-//   const clonedList = {
-//     title: newName,
-//     boardId,
-//   };
+  const mergedOptions = { ...defaultOptions, ...copyOptions };
 
-//   const createdList = await httpService.post("lists", clonedList);
-//   const newList = createdList.list;
-
-//   for (const card of originalList.cards || []) {
-//     await httpService.post("cards", {
-//       title: card.title,
-//       description: card.description,
-//       listId: newList._id,
-//       boardId,
-//       labelIds: card.labelIds,
-//       assignedTo: card.assignedTo,
-//     });
-//   }
-
-//   return newList;
-// }
+  const data = await httpService.post(`lists/${listId}/copy`, mergedOptions);
+  return data.list;
+}
 
 // async function archiveList(boardId, listId) {
 //   const data = await httpService.put(`lists/${listId}/archive`);
