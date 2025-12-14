@@ -7,6 +7,7 @@ export async function createBoard(req, res) {
     const owner = {
       userId: req.currentUser._id,
       username: req.currentUser.username,
+      fullname: req.currentUser.fullname,
     };
     const board = await boardService.createBoard({ title, description, owner });
     res.status(201).json({ board });
