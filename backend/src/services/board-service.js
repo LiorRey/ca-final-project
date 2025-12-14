@@ -42,15 +42,16 @@ export async function getBoardLabels(boardId) {
 }
 
 export async function addLabelToBoard(boardId, labelData) {
-  return await Board.findByIdAndUpdate(
+  const board = await Board.findByIdAndUpdate(
     boardId,
     { $push: { labels: labelData } },
     { new: true, runValidators: true }
   );
+  return board.labels.at(-1);
 }
 
 export async function updateLabelInBoard(boardId, labelId, labelData) {
-  return await Board.findOneAndUpdate(
+  const board = await Board.findOneAndUpdate(
     { _id: boardId, "labels._id": labelId },
     {
       $set: {
@@ -60,6 +61,7 @@ export async function updateLabelInBoard(boardId, labelId, labelData) {
     },
     { new: true, runValidators: true }
   );
+  return board.labels.id(labelId);
 }
 
 export async function removeLabelFromBoard(boardId, labelId) {

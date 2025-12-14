@@ -3,10 +3,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { ActionButton } from "./ui/buttons/ActionButton";
 import { CustomAutoComplete } from "./ui/CustomAutoComplete";
+import { useEffect, useState } from "react";
+import { boardService } from "../services/board";
 
 export function MoveListForm({
   currentBoard,
-  boards,
   activeListIndex,
   onSubmit,
   onCancel,
@@ -16,7 +17,32 @@ export function MoveListForm({
     boardId: defaultBoardId,
     position: activeListIndex || 0,
   });
-  const selectedBoard = boards.find(b => b._id === values.boardId);
+  const [boards, setBoards] = useState([]);
+  const [selectedBoardLists, setSelectedBoardLists] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const boardNames = await boardService.getBoardPreviews();
+        setBoards(boardNames);
+      } catch (error) {
+        console.error("Error loading boards:", error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async function () {
+      if (!values.boardId) return;
+      try {
+        const lists = await boardService.getBoardListPreviews(values.boardId);
+        setSelectedBoardLists(lists);
+      } catch (error) {
+        console.error("Error loading lists:", error);
+        setSelectedBoardLists([]);
+      }
+    })();
+  }, [values.boardId]);
 
   // handle position when board changes
   function handleBoardChange(boardId) {
@@ -82,16 +108,13 @@ export function MoveListForm({
             label="Position"
             value={values.position}
             onChange={handlePositionChange}
-            disabled={!selectedBoard.lists || selectedBoard.lists.length === 0}
+            disabled={!selectedBoardLists || selectedBoardLists.length === 0}
             options={
-              selectedBoard.lists && selectedBoard.lists.length > 0
-                ? Array.from(
-                    { length: selectedBoard.lists.length },
-                    (_, i) => ({
-                      _id: i,
-                      title: (i + 1).toString(),
-                    })
-                  )
+              selectedBoardLists && selectedBoardLists.length > 0
+                ? Array.from({ length: selectedBoardLists.length }, (_, i) => ({
+                    _id: i,
+                    title: (i + 1).toString(),
+                  }))
                 : []
             }
           />

@@ -46,7 +46,7 @@ const handlers = {
     loading: { ...state.loading, [ADD_LIST.KEY]: false },
     board: {
       ...state.board,
-      lists: [...state.board.lists, action.payload],
+      lists: sortByPosition([...state.board.lists, action.payload]),
     },
   }),
   ...createAsyncHandlers(MOVE_ALL_CARDS, MOVE_ALL_CARDS.KEY),
@@ -109,23 +109,43 @@ const handlers = {
   }),
   ...createAsyncHandlers(MOVE_LIST, MOVE_LIST.KEY),
   [MOVE_LIST.SUCCESS]: (state, action) => {
+    let newLists;
+    if (state.board._id !== action.payload.boardId) {
+      newLists = state.board.lists.filter(
+        list => list._id !== action.payload._id
+      );
+    } else {
+      newLists = state.board.lists.map(list =>
+        list._id === action.payload._id ? { ...list, ...action.payload } : list
+      );
+      newLists = sortByPosition(newLists);
+    }
     return {
       ...state,
       board: {
         ...state.board,
-        lists: action.payload,
+        lists: newLists,
       },
     };
   },
   ...createAsyncHandlers(COPY_LIST, COPY_LIST.KEY),
-  [COPY_LIST.SUCCESS]: (state, action) => ({
-    ...state,
-    loading: { ...state.loading, [COPY_LIST.KEY]: false },
-    board: {
-      ...state.board,
-      lists: action.payload,
-    },
-  }),
+  [COPY_LIST.SUCCESS]: (state, action) => {
+    let newLists;
+    if (state.board._id === action.payload.boardId) {
+      newLists = [...state.board.lists, action.payload];
+      newLists = sortByPosition(newLists);
+      return {
+        ...state,
+        loading: { ...state.loading, [COPY_LIST.KEY]: false },
+        board: {
+          ...state.board,
+          lists: newLists,
+        },
+      };
+    } else {
+      return state;
+    }
+  },
   ...createAsyncHandlers(ADD_CARD, ADD_CARD.KEY),
   [ADD_CARD.SUCCESS]: (state, action) => ({
     ...state,
@@ -133,7 +153,12 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list._id === action.payload._id ? action.payload : list
+        list._id !== action.payload.listId
+          ? list
+          : {
+              ...list,
+              cards: sortByPosition([...list.cards, action.payload]),
+            }
       ),
     },
   }),
@@ -148,8 +173,8 @@ const handlers = {
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card._id === action.payload.card._id
-                  ? action.payload.card
+                card._id === action.payload._id
+                  ? { ...card, ...action.payload }
                   : card
               ),
             }
@@ -180,7 +205,12 @@ const handlers = {
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
-        list._id === action.payload._id ? action.payload : list
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: sortByPosition([...list.cards, action.payload]),
+            }
+          : list
       ),
     },
   }),
@@ -190,7 +220,23 @@ const handlers = {
     loading: { ...state.loading, [MOVE_CARD.KEY]: false },
     board: {
       ...state.board,
-      lists: action.payload,
+      lists: state.board.lists.map(list => {
+        const filteredCards = list.cards.filter(
+          card => card._id !== action.payload._id
+        );
+
+        if (list._id === action.payload.listId) {
+          return {
+            ...list,
+            cards: sortByPosition([...filteredCards, action.payload]),
+          };
+        }
+
+        return {
+          ...list,
+          cards: filteredCards,
+        };
+      }),
     },
   }),
   ...createAsyncHandlers(CREATE_LABEL, CREATE_LABEL.KEY),

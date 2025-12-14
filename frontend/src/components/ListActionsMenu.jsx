@@ -53,8 +53,8 @@ export function ListActionsMenu({
     onClose();
   }
 
-  function handleCopyList(listId, newName) {
-    onCopyList(listId, newName);
+  function handleCopyList(listId, copyOptions = {}) {
+    onCopyList(listId, copyOptions);
     setActiveAction(null);
     onClose();
   }
@@ -94,7 +94,12 @@ export function ListActionsMenu({
       {activeAction === "copy" ? (
         <CopyListForm
           initialValue={list.title}
-          onCopy={newName => handleCopyList(list._id, newName)}
+          onCopy={newTitle =>
+            handleCopyList(list._id, {
+              title: newTitle,
+              targetIndex: activeListIndex + 1,
+            })
+          }
           onCancel={handleCopyCancel}
         />
       ) : activeAction === "moveAll" ? (

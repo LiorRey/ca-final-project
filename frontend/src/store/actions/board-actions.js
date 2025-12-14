@@ -103,17 +103,11 @@ export async function deleteBoard(boardId) {
   }
 }
 
-export async function createList(boardId, listData) {
-  try {
-    store.dispatch({ type: ADD_LIST.REQUEST });
-    const newList = await boardService.createList(boardId, listData);
-    store.dispatch({ type: ADD_LIST.SUCCESS, payload: newList });
-    return newList;
-  } catch (error) {
-    store.dispatch({ type: ADD_LIST.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const createList = createAsyncAction(
+  ADD_LIST,
+  boardService.createList,
+  store
+);
 
 export const moveList = createAsyncAction(
   MOVE_LIST,
@@ -174,17 +168,11 @@ export const editCard = createAsyncAction(
   store
 );
 
-export async function deleteCard(boardId, cardId, listId) {
-  try {
-    await boardService.deleteCard(boardId, cardId, listId);
-    store.dispatch(deleteCardAction(cardId, listId));
-  } catch (error) {
-    store.dispatch(
-      setError("deleteCard", `Error deleting card: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const deleteCard = createAsyncAction(
+  DELETE_CARD,
+  boardService.deleteCard,
+  store
+);
 
 export const copyCard = createAsyncAction(
   COPY_CARD,
@@ -198,38 +186,23 @@ export const moveCard = createAsyncAction(
   store
 );
 
-export async function createLabel(boardId, label) {
-  try {
-    store.dispatch({ type: CREATE_LABEL.REQUEST });
-    await boardService.createLabel(boardId, label);
-    store.dispatch({ type: CREATE_LABEL.SUCCESS, payload: label });
-  } catch (error) {
-    store.dispatch({ type: CREATE_LABEL.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const createLabel = createAsyncAction(
+  CREATE_LABEL,
+  boardService.createLabel,
+  store
+);
 
-export async function editLabel(boardId, label) {
-  try {
-    store.dispatch({ type: EDIT_LABEL.REQUEST });
-    await boardService.editLabel(boardId, label);
-    store.dispatch({ type: EDIT_LABEL.SUCCESS, payload: label });
-  } catch (error) {
-    store.dispatch({ type: EDIT_LABEL.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const editLabel = createAsyncAction(
+  EDIT_LABEL,
+  boardService.editLabel,
+  store
+);
 
-export async function deleteLabel(boardId, labelId) {
-  try {
-    store.dispatch({ type: DELETE_LABEL.REQUEST });
-    await boardService.deleteLabel(boardId, labelId);
-    store.dispatch({ type: DELETE_LABEL.SUCCESS, payload: labelId });
-  } catch (error) {
-    store.dispatch({ type: DELETE_LABEL.FAILURE, payload: error.message });
-    throw error;
-  }
-}
+export const deleteLabel = createAsyncAction(
+  DELETE_LABEL,
+  boardService.deleteLabel,
+  store
+);
 
 export async function updateCardLabels(
   boardId,
@@ -278,10 +251,6 @@ export function editBoard(board) {
 
 export function deleteBoardAction(boardId) {
   return { type: DELETE_BOARD, payload: boardId };
-}
-
-export function addCardAction(card, listId) {
-  return { type: ADD_CARD, payload: { card, listId } };
 }
 
 export function editCardAction(card, listId) {

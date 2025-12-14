@@ -68,9 +68,9 @@ export function BoardDetails() {
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
 
-  async function onCopyList(listId, newName) {
+  async function onCopyList(listId, copyOptions) {
     try {
-      await copyList(board._id, listId, newName);
+      await copyList(listId, copyOptions);
     } catch (error) {
       console.error("List copy failed:", error);
     }
