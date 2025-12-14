@@ -6,7 +6,7 @@ export const boardService = {
   getFullById,
   // remove,
   // save,
-  // updateBoard,
+  updateBoard,
   getEmptyCard,
   addCard,
   editCard,
@@ -60,10 +60,10 @@ async function getFullById(boardId) {
 //   }
 // }
 
-// async function updateBoard(boardId, updates) {
-//   const data = await httpService.put(`boards/${boardId}`, updates);
-//   return data.board;
-// }
+async function updateBoard(boardId, updates) {
+  const data = await httpService.put(`boards/${boardId}`, updates);
+  return data.board;
+}
 
 function getEmptyCard() {
   return {
