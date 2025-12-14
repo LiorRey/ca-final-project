@@ -3,13 +3,18 @@ import createError from "http-errors";
 
 export async function createBoard(req, res) {
   try {
-    const { title, description } = req.body;
+    const { title, description, appearance } = req.body;
     const owner = {
       userId: req.currentUser._id,
       username: req.currentUser.username,
       fullname: req.currentUser.fullname,
     };
-    const board = await boardService.createBoard({ title, description, owner });
+    const board = await boardService.createBoard({
+      title,
+      description,
+      owner,
+      appearance,
+    });
     res.status(201).json({ board });
   } catch (err) {
     if (err.name === "ValidationError") {
