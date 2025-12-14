@@ -12,7 +12,7 @@ const commentSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
-      fullName: {
+      fullname: {
         type: String,
         required: true,
       },
@@ -78,7 +78,7 @@ const cardSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-        fullName: {
+        fullname: {
           type: String,
           required: true,
         },

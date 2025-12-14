@@ -3,14 +3,14 @@ import jwt from "jsonwebtoken";
 import createError from "http-errors";
 
 export async function signup(req, res) {
-  const { email, username, fullName, password } = req.body;
+  const { email, username, fullname, password } = req.body;
   const existingUser = await User.findOne({ $or: [{ email }, { username }] });
   if (existingUser) throw createError(409, "User already exists");
 
   const user = await User.create({
     email,
     username,
-    fullName,
+    fullname,
     password,
   });
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {

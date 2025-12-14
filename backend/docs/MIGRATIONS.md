@@ -241,7 +241,7 @@ export const up = async ({ context }) => {
   // Rename field across all documents
   await db
     .collection("users")
-    .updateMany({}, { $rename: { fullName: "name" } });
+    .updateMany({}, { $rename: { fullname: "name" } });
 
   // Add new field with default value
   await db
@@ -261,7 +261,7 @@ export const down = async ({ context }) => {
 
   await db
     .collection("users")
-    .updateMany({}, { $rename: { name: "fullName" } });
+    .updateMany({}, { $rename: { name: "fullname" } });
 
   await db.collection("users").updateMany({}, { $unset: { role: "" } });
 };
@@ -318,22 +318,22 @@ export const up = async ({ context }) => {
   const users = await db
     .collection("users")
     .find({
-      fullName: { $exists: false },
+      fullname: { $exists: false },
     })
     .toArray();
 
   for (const user of users) {
-    const fullName = `${user.firstName} ${user.lastName}`;
+    const fullname = `${user.firstName} ${user.lastName}`;
     await db
       .collection("users")
-      .updateOne({ _id: user._id }, { $set: { fullName } });
+      .updateOne({ _id: user._id }, { $set: { fullname } });
   }
 };
 
 export const down = async ({ context }) => {
   const db = context;
 
-  await db.collection("users").updateMany({}, { $unset: { fullName: "" } });
+  await db.collection("users").updateMany({}, { $unset: { fullname: "" } });
 };
 ```
 

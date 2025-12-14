@@ -29,7 +29,7 @@ export const up = async ({ _context }) => {
     const owner = {
       userId: ownerUser._id,
       username: ownerUser.username,
-      fullName: ownerUser.fullName,
+      fullname: ownerUser.fullname,
     };
 
     // Resolve members
@@ -40,7 +40,7 @@ export const up = async ({ _context }) => {
         members.push({
           userId: memberUser._id,
           username: memberUser.username,
-          fullName: memberUser.fullName,
+          fullname: memberUser.fullname,
         });
       }
     }

@@ -3,61 +3,61 @@
     {
       "email": "admin@example.com",
       "username": "admin",
-      "fullName": "System Administrator",
+      "fullname": "System Administrator",
       "password": "FPRsqmZp"
     },
     {
       "email": "test@example.com",
       "username": "testuser",
-      "fullName": "Test User",
+      "fullname": "Test User",
       "password": "test"
     },
     {
       "email": "Chadd.Ullrich@yahoo.com",
       "username": "Robin59",
-      "fullName": "Chadd Ullrich",
+      "fullname": "Chadd Ullrich",
       "password": "pd55bkiN"
     },
     {
       "email": "Gilberto.Nolan@hotmail.com",
       "username": "Godfrey.Wintheiser16",
-      "fullName": "Gilberto Nolan",
+      "fullname": "Gilberto Nolan",
       "password": "NdLbnFlD"
     },
     {
       "email": "Luigi_Cormier13@yahoo.com",
       "username": "Marisol_Lueilwitz",
-      "fullName": "Luigi Cormier",
+      "fullname": "Luigi Cormier",
       "password": "fbaIRmZo"
     },
     {
       "email": "Winifred.Jerde@yahoo.com",
       "username": "Nicholas_Hilpert",
-      "fullName": "Winifred Jerde",
+      "fullname": "Winifred Jerde",
       "password": "vAkrHW6I"
     },
     {
       "email": "Jacquelyn_Stanton@gmail.com",
       "username": "Arden29",
-      "fullName": "Jacquelyn Stanton",
+      "fullname": "Jacquelyn Stanton",
       "password": "x_8R7Aqw"
     },
     {
       "email": "Joelle.Cronin62@hotmail.com",
       "username": "Keyon_Johnson74",
-      "fullName": "Joelle Cronin",
+      "fullname": "Joelle Cronin",
       "password": "vLxHdg3C"
     },
     {
       "email": "Moises_Casper71@hotmail.com",
       "username": "Verna_Jerde46",
-      "fullName": "Moises Casper",
+      "fullname": "Moises Casper",
       "password": "d9dWOWPH"
     },
     {
       "email": "Rosa_Wyman51@hotmail.com",
       "username": "Diana94",
-      "fullName": "Rosa Wyman",
+      "fullname": "Rosa Wyman",
       "password": "kFAtKRAI"
     }
   ],

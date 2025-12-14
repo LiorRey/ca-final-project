@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    fullName: {
+    fullname: {
       type: String,
       required: true,
       trim: true,
@@ -44,7 +44,7 @@ userSchema.methods.getSafeUser = function () {
   return {
     _id: this._id,
     email: this.email,
-    fullName: this.fullName,
+    fullname: this.fullname,
     username: this.username,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,

@@ -1,12 +1,12 @@
 export const up = async ({ context }) => {
-  console.log("Starting migration: Adding fullName to boards and cards...");
+  console.log("Starting migration: Adding fullname to boards and cards...");
 
   const users = await context.collection("users").find({}).toArray();
   const userMap = new Map();
   users.forEach(user => {
     userMap.set(user._id.toString(), {
       username: user.username,
-      fullName: user.fullName,
+      fullname: user.fullname,
     });
   });
 
@@ -16,21 +16,21 @@ export const up = async ({ context }) => {
   for (const board of boards) {
     const updates = {};
 
-    if (board.owner && !board.owner.fullName) {
+    if (board.owner && !board.owner.fullname) {
       const ownerData = userMap.get(board.owner.userId.toString());
       if (ownerData) {
-        updates["owner.fullName"] = ownerData.fullName;
+        updates["owner.fullname"] = ownerData.fullname;
       }
     }
 
     if (board.members && board.members.length > 0) {
       const updatedMembers = board.members.map(member => {
-        if (!member.fullName) {
+        if (!member.fullname) {
           const memberData = userMap.get(member.userId.toString());
           if (memberData) {
             return {
               ...member,
-              fullName: memberData.fullName,
+              fullname: memberData.fullname,
             };
           }
         }
@@ -38,7 +38,7 @@ export const up = async ({ context }) => {
       });
 
       const hasUpdates = updatedMembers.some(
-        (member, idx) => member.fullName !== board.members[idx].fullName
+        (member, idx) => member.fullname !== board.members[idx].fullname
       );
 
       if (hasUpdates) {
@@ -54,7 +54,7 @@ export const up = async ({ context }) => {
     }
   }
 
-  console.log(`✓ Updated ${boardsUpdated} boards with fullName`);
+  console.log(`✓ Updated ${boardsUpdated} boards with fullname`);
 
   const cards = await context.collection("cards").find({}).toArray();
   let cardsUpdated = 0;
@@ -64,12 +64,12 @@ export const up = async ({ context }) => {
 
     if (card.assignees && card.assignees.length > 0) {
       const updatedAssignees = card.assignees.map(assignee => {
-        if (!assignee.fullName) {
+        if (!assignee.fullname) {
           const assigneeData = userMap.get(assignee.userId.toString());
           if (assigneeData) {
             return {
               ...assignee,
-              fullName: assigneeData.fullName,
+              fullname: assigneeData.fullname,
             };
           }
         }
@@ -77,7 +77,7 @@ export const up = async ({ context }) => {
       });
 
       const hasUpdates = updatedAssignees.some(
-        (assignee, idx) => assignee.fullName !== card.assignees[idx]?.fullName
+        (assignee, idx) => assignee.fullname !== card.assignees[idx]?.fullname
       );
 
       if (hasUpdates) {
@@ -87,14 +87,14 @@ export const up = async ({ context }) => {
 
     if (card.comments && card.comments.length > 0) {
       const updatedComments = card.comments.map(comment => {
-        if (comment.author && !comment.author.fullName) {
+        if (comment.author && !comment.author.fullname) {
           const authorData = userMap.get(comment.author.userId.toString());
           if (authorData) {
             return {
               ...comment,
               author: {
                 ...comment.author,
-                fullName: authorData.fullName,
+                fullname: authorData.fullname,
               },
             };
           }
@@ -104,7 +104,7 @@ export const up = async ({ context }) => {
 
       const hasUpdates = updatedComments.some(
         (comment, idx) =>
-          comment.author?.fullName !== card.comments[idx]?.author?.fullName
+          comment.author?.fullname !== card.comments[idx]?.author?.fullname
       );
 
       if (hasUpdates) {
@@ -120,35 +120,35 @@ export const up = async ({ context }) => {
     }
   }
 
-  console.log(`✓ Updated ${cardsUpdated} cards with fullName`);
+  console.log(`✓ Updated ${cardsUpdated} cards with fullname`);
   console.log("✓ Migration completed successfully");
 };
 
 export const down = async ({ context }) => {
-  console.log("Starting rollback: Removing fullName from boards and cards...");
+  console.log("Starting rollback: Removing fullname from boards and cards...");
 
   const boardResult = await context.collection("boards").updateMany(
     {},
     {
       $unset: {
-        "owner.fullName": "",
-        "members.$[].fullName": "",
+        "owner.fullname": "",
+        "members.$[].fullname": "",
       },
     }
   );
 
-  console.log(`✓ Removed fullName from ${boardResult.modifiedCount} boards`);
+  console.log(`✓ Removed fullname from ${boardResult.modifiedCount} boards`);
 
   const cardResult = await context.collection("cards").updateMany(
     {},
     {
       $unset: {
-        "assignees.$[].fullName": "",
-        "comments.$[].author.fullName": "",
+        "assignees.$[].fullname": "",
+        "comments.$[].author.fullname": "",
       },
     }
   );
 
-  console.log(`✓ Removed fullName from ${cardResult.modifiedCount} cards`);
+  console.log(`✓ Removed fullname from ${cardResult.modifiedCount} cards`);
   console.log("✓ Rollback completed successfully");
 };

@@ -36,7 +36,7 @@ export const up = async ({ context }) => {
                 author: {
                   userId: userId,
                   username: user.username,
-                  fullName: user.fullName,
+                  fullname: user.fullname,
                 },
               };
             });
