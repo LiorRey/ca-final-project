@@ -4,10 +4,8 @@ export function BoardPreview({ boardTitle, boardAppearance, onOpen }) {
     : "bg-blue";
 
   return (
-    <div
-      className={`board-tile board-bg-base ${backgroundClass}`}
-      onClick={onOpen}
-    >
+    <div className={`board-preview-container shadow-raised`} onClick={onOpen}>
+      <div className={`board-tile board-bg-base ${backgroundClass}`}></div>
       <div className="board-preview-footer">
         <span className="board-preview-title">{boardTitle}</span>
       </div>
