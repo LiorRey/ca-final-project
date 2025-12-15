@@ -40,5 +40,6 @@
 @import "components/CardFormMenu";
 @import "components/CardModal";
 @import "components/Avatar";
+@import "components/UserMenu";
 
 @import "pages/BoardDetails";

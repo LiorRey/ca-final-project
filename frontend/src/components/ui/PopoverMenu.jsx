@@ -11,6 +11,7 @@ export function PopoverMenu({
   onClose,
   title,
   showClose = true,
+  showHeader = true,
   anchorOrigin,
   transformOrigin,
   paperProps,
@@ -44,20 +45,22 @@ export function PopoverMenu({
       }}
       sx={sx}
     >
-      <Box className="popover-header-container">
-        <Typography className="popover-header-title-text">{title}</Typography>
-        {showClose && (
-          <Box>
-            <button
-              className="icon-button popover-header-close-button"
-              aria-label="Close"
-              onClick={onClose}
-            >
-              <Close />
-            </button>
-          </Box>
-        )}
-      </Box>
+      {showHeader && (
+        <Box className="popover-header-container">
+          <Typography className="popover-header-title-text">{title}</Typography>
+          {showClose && (
+            <Box>
+              <button
+                className="icon-button popover-header-close-button"
+                aria-label="Close"
+                onClick={onClose}
+              >
+                <Close />
+              </button>
+            </Box>
+          )}
+        </Box>
+      )}
       {children}
     </PopoverMUI>
   );

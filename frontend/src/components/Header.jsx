@@ -1,20 +1,24 @@
-import { Link, NavLink } from "react-router-dom";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { logout } from "../store/actions/user-actions";
+import { Avatar } from "./ui/Avatar";
+import { UserMenu } from "./UserMenu";
+import "../assets/styles/components/Header.css";
 
 export function Header() {
-  const user = useSelector(storeState => storeState.users.currentUser);
-  const navigate = useNavigate();
+  const user = useSelector(storeState => storeState.auth.currentUser);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
+  const isUserMenuOpen = Boolean(userMenuAnchorEl);
 
-  async function onLogout() {
-    try {
-      await logout();
-      navigate("/");
-    } catch (err) {
-      console.error("Cannot logout: " + err.message);
-    }
+  function handleOpenUserMenu(event) {
+    setUserMenuAnchorEl(event.currentTarget);
   }
+
+  function handleCloseUserMenu() {
+    setUserMenuAnchorEl(null);
+  }
+
+  console.log("user", user);
 
   return (
     <header className="app-header">
@@ -35,15 +39,22 @@ export function Header() {
 
         {user && (
           <div className="user-info">
-            <Link to={`user/${user._id}`}>
-              {user.imgUrl && <img src={user.imgUrl} />}
-              {user.fullname}
-            </Link>
-            <span className="score">{user.score?.toLocaleString()}</span>
-            <button onClick={onLogout}>logout</button>
+            <button
+              onClick={handleOpenUserMenu}
+              className="user-menu-button"
+              aria-label="User menu"
+            >
+              <Avatar user={user} size={32} />
+            </button>
           </div>
         )}
       </nav>
+      <UserMenu
+        user={user}
+        anchorEl={userMenuAnchorEl}
+        isOpen={isUserMenuOpen}
+        onClose={handleCloseUserMenu}
+      />
     </header>
   );
 }
