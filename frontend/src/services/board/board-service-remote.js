@@ -5,8 +5,8 @@ export const boardService = {
   getById,
   getFullById,
   // remove,
-  // save,
-  // updateBoard,
+  createBoard,
+  updateBoard,
   getEmptyCard,
   addCard,
   editCard,
@@ -50,20 +50,15 @@ async function getFullById(boardId) {
 //   await httpService.delete(`boards/${boardId}`);
 // }
 
-// async function save(board) {
-//   if (board._id) {
-//     const data = await httpService.put(`boards/${board._id}`, board);
-//     return data.board;
-//   } else {
-//     const data = await httpService.post("boards", board);
-//     return data.board;
-//   }
-// }
+async function createBoard(board) {
+  const data = await httpService.post("boards", board);
+  return data.board;
+}
 
-// async function updateBoard(boardId, updates) {
-//   const data = await httpService.put(`boards/${boardId}`, updates);
-//   return data.board;
-// }
+async function updateBoard(boardId, updates) {
+  const data = await httpService.put(`boards/${boardId}`, updates);
+  return data.board;
+}
 
 function getEmptyCard() {
   return {
@@ -265,6 +260,7 @@ async function getBoardPreviews() {
   return data.boards.map(board => ({
     _id: board._id,
     title: board.title,
+    appearance: board.appearance,
   }));
 }
 
