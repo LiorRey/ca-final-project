@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { useSelector } from "react-redux";
 import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -34,17 +33,6 @@ export function CardModal({
   const membersContainerRef = useRef(null);
   const isLabelMenuOpen = Boolean(anchorEl);
   const isMemberMenuOpen = Boolean(memberAnchorEl);
-  const members = useSelector(state => state.boards.board.members);
-
-  function getCardMembers(card) {
-    return card && card.assignedTo && card.assignedTo.length > 0 && members
-      ? card.assignedTo
-          .map(assignee => members.find(member => member._id === assignee))
-          .filter(Boolean)
-      : [];
-  }
-
-  const cardMembers = getCardMembers(cardDetails);
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -133,14 +121,19 @@ export function CardModal({
               </button>
             </div>
             <div className="card-modal-tags-container">
-              {((cardMembers && cardMembers.length > 0) || memberAnchorEl) && (
+              {((card.assignees && card.assignees.length > 0) ||
+                memberAnchorEl) && (
                 <div className="card-modal-members">
                   <h3 className="members-title">Members</h3>
                   <div className="modal-members" ref={membersContainerRef}>
-                    {cardMembers && cardMembers.length > 0 && (
+                    {card.assignees && card.assignees.length > 0 && (
                       <>
-                        {cardMembers.map(member => (
-                          <Avatar key={member._id} user={member} size={36} />
+                        {card.assignees.map(assignee => (
+                          <Avatar
+                            key={assignee.userId}
+                            user={assignee}
+                            size={36}
+                          />
                         ))}
                       </>
                     )}
@@ -222,13 +215,10 @@ export function CardModal({
           </button>
         </footer>
         <AddMemberMenu
-          boardId={boardId}
-          listId={listId}
-          card={cardDetails}
+          card={card}
           anchorEl={memberAnchorEl}
           isMemberMenuOpen={isMemberMenuOpen}
           onCloseMemberMenu={() => setMemberAnchorEl(null)}
-          onUpdateCard={updatedCard => setCardDetails(updatedCard)}
         />
 
         <LabelMenu

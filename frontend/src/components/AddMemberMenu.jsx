@@ -1,84 +1,58 @@
 import { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import { PopoverMenu } from "./ui/PopoverMenu";
 import { Avatar } from "./ui/Avatar";
-import { editCard } from "../store/actions/board-actions";
+import { addAssignee, removeAssignee } from "../store/actions/board-actions";
 import "../assets/styles/components/AddMemberMenu.css";
 
 export function AddMemberMenu({
-  boardId,
-  listId,
   card,
   anchorEl,
   isMemberMenuOpen,
   onCloseMemberMenu,
-  onUpdateCard,
   sx,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const { boardId: paramsBoardId } = useParams();
-  const currentBoardId = boardId || paramsBoardId;
-
   const members = useSelector(state => state.boards.board.members);
 
   const { cardMembers, boardMembers } = useMemo(() => {
-    const filtered = members.filter(
+    const cardAssignees = card.assignees || [];
+
+    const boardMembersList = members.filter(
+      member =>
+        !cardAssignees.some(assignee => assignee.userId === member.userId)
+    );
+
+    const filteredMembers = boardMembersList.filter(
       member =>
         member.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         member.username?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const cardMemberIds = card.assignedTo || [];
-    const cardMembersList = filtered.filter(member =>
-      cardMemberIds.includes(member._id)
-    );
-    const boardMembersList = filtered.filter(
-      member => !cardMemberIds.includes(member._id)
+    const filteredAssignees = cardAssignees.filter(
+      assignee =>
+        assignee.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        assignee.username?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return {
-      cardMembers: cardMembersList,
-      boardMembers: boardMembersList,
+      cardMembers: filteredAssignees,
+      boardMembers: filteredMembers,
     };
-  }, [members, searchTerm, card.assignedTo]);
+  }, [members, searchTerm, card.assignees]);
 
   function handleCloseMemberMenu() {
     setSearchTerm("");
     onCloseMemberMenu();
   }
 
-  function handleAddMember(memberId) {
-    const updatedAssignedTo = card.assignedTo
-      ? [...card.assignedTo, memberId]
-      : [memberId];
-
-    const updatedCard = {
-      ...card,
-      assignedTo: updatedAssignedTo,
-    };
-
-    editCard(currentBoardId, updatedCard, listId);
-    if (onUpdateCard) {
-      onUpdateCard(updatedCard);
-    }
+  function handleAddAssignee(userId) {
+    addAssignee(card._id, userId);
   }
 
-  function handleRemoveMember(memberId) {
-    const updatedAssignedTo = card.assignedTo
-      ? card.assignedTo.filter(id => id !== memberId)
-      : [];
-
-    const updatedCard = {
-      ...card,
-      assignedTo: updatedAssignedTo,
-    };
-
-    editCard(currentBoardId, updatedCard, listId);
-    if (onUpdateCard) {
-      onUpdateCard(updatedCard);
-    }
+  function handleRemoveAssignee(userId) {
+    removeAssignee(card._id, userId);
   }
 
   return (
@@ -117,7 +91,10 @@ export function AddMemberMenu({
                   key={member._id}
                   className="member-menu-item card-member-item"
                 >
-                  <div className="member-item-label">
+                  <div
+                    className="member-item-label"
+                    title={`${member.fullname} (${member.username})`}
+                  >
                     <Avatar user={member} size={32} />
                     <span className="member-name">
                       {member.fullname || member.username}
@@ -125,7 +102,7 @@ export function AddMemberMenu({
                   </div>
                   <button
                     className="member-remove-button"
-                    onClick={() => handleRemoveMember(member._id)}
+                    onClick={() => handleRemoveAssignee(member.userId)}
                     aria-label={`Remove ${member.fullname || member.username}`}
                   >
                     <CloseIcon fontSize="small" />
@@ -143,9 +120,12 @@ export function AddMemberMenu({
               <li
                 key={member._id}
                 className="member-menu-item board-member-item"
-                onClick={() => handleAddMember(member._id)}
+                onClick={() => handleAddAssignee(member.userId)}
               >
-                <div className="member-item-label">
+                <div
+                  className="member-item-label"
+                  title={`${member.fullname} (${member.username})`}
+                >
                   <Avatar user={member} size={32} />
                   <span className="member-name">
                     {member.fullname || member.username}

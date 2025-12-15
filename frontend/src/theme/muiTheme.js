@@ -511,16 +511,13 @@ const muiTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiAvatar-root": {
-            border: "1px solid #1f2937 !important", // dark border, override MUI default
+            border: "1px solid black", // dark border, override MUI default
             boxSizing: "content-box",
           },
           "& .MuiAvatarGroup-avatar": {
-            border: "1px solid #1f2937", // dark border for all avatars
-          },
-          "& .MuiAvatarGroup-avatar.MuiAvatarGroup-extra": {
-            backgroundColor: "#374151 !important", // dark surplus background
-            color: "#000000 !important", // white "+X" text
-            border: "1px solid #1f2937", // dark border for surplus
+            border: "1px solid black", // dark border for all avatars
+            backgroundColor: "var(--gray5)", // dark surplus background
+            color: "var(--grey1)", // white "+X" text
           },
         },
       },

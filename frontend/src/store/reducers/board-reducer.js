@@ -19,6 +19,8 @@ export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
+export const ADD_ASSIGNEE = createAsyncActionTypes("ADD_ASSIGNEE");
+export const REMOVE_ASSIGNEE = createAsyncActionTypes("REMOVE_ASSIGNEE");
 export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
 export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
@@ -237,6 +239,46 @@ const handlers = {
           cards: filteredCards,
         };
       }),
+    },
+  }),
+  ...createAsyncHandlers(ADD_ASSIGNEE, ADD_ASSIGNEE.KEY),
+  [ADD_ASSIGNEE.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [EDIT_CARD.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, ...action.payload }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  ...createAsyncHandlers(REMOVE_ASSIGNEE, REMOVE_ASSIGNEE.KEY),
+  [REMOVE_ASSIGNEE.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [REMOVE_ASSIGNEE.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, ...action.payload }
+                  : card
+              ),
+            }
+          : list
+      ),
     },
   }),
   ...createAsyncHandlers(CREATE_LABEL, CREATE_LABEL.KEY),

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   ChatRounded,
@@ -27,17 +26,6 @@ export function Card({
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
   const { boardId } = useParams();
-  const members = useSelector(state => state.boards.board.members);
-
-  function getCardMembers(card) {
-    return card && card.assignedTo && card.assignedTo.length > 0 && members
-      ? card.assignedTo
-          .map(assignee => members.find(member => member._id === assignee))
-          .filter(Boolean)
-      : [];
-  }
-
-  const cardMembers = getCardMembers(card);
 
   function handleClickCard() {
     onClickCard(card);
@@ -115,10 +103,10 @@ export function Card({
                   <NotesRounded />
                 </div>
                 <div className="card-footer-right">
-                  {cardMembers.length > 0 && (
+                  {card.assignees.length > 0 && (
                     <AvatarGroup max={4}>
-                      {cardMembers.map(member => (
-                        <Avatar key={member._id} user={member} />
+                      {card.assignees.map(assignee => (
+                        <Avatar key={assignee._id} user={assignee} />
                       ))}
                     </AvatarGroup>
                   )}
@@ -161,10 +149,10 @@ export function Card({
                   <NotesRounded />
                 </div>
                 <div className="card-footer-right">
-                  {cardMembers.length > 0 && (
+                  {card.assignees.length > 0 && (
                     <AvatarGroup max={4}>
-                      {cardMembers.map(member => (
-                        <Avatar key={member._id} user={member} />
+                      {card.assignees.map(assignee => (
+                        <Avatar key={assignee._id} user={assignee} />
                       ))}
                     </AvatarGroup>
                   )}
