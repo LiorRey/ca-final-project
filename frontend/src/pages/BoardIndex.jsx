@@ -1,15 +1,13 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import {
-  loadBoards,
-  loadBoard,
-  createBoard,
-} from "../store/actions/board-actions";
+import { loadBoards, loadBoard } from "../store/actions/board-actions";
 import { BoardPreview } from "../components/ui/BoardPreview";
+import { CreateBoardForm } from "../components/CreateBoardForm";
 
 export function BoardIndex() {
+  const [createFormAnchorEl, setCreateFormAnchorEl] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const boards = useSelector(state => state.boards.boards);
@@ -23,16 +21,6 @@ export function BoardIndex() {
   async function onOpenBoard(boardId) {
     await loadBoard(boardId);
     navigate(`/board/${boardId}`);
-  }
-
-  async function onCreateBoard() {
-    const newBoard = await createBoard({
-      title: "New Board",
-      lists: [],
-      appearance: { background: "blue" },
-    });
-
-    onOpenBoard(newBoard._id);
   }
 
   const filteredBoards = useMemo(() => {
@@ -58,12 +46,21 @@ export function BoardIndex() {
             />
           ))}
 
-          <div className="board-tile create-tile" onClick={onCreateBoard}>
+          <div
+            className="board-tile create-tile"
+            onClick={ev => setCreateFormAnchorEl(ev.currentTarget)}
+          >
             <AddIcon />
             <span>Create new board</span>
           </div>
         </div>
       </section>
+
+      <CreateBoardForm
+        anchorEl={createFormAnchorEl}
+        isCreateFormOpen={Boolean(createFormAnchorEl)}
+        onCloseCreateForm={() => setCreateFormAnchorEl(null)}
+      />
     </section>
   );
 }
