@@ -24,12 +24,16 @@ export function AddMemberMenu({
         !cardAssignees.some(assignee => assignee.userId === member.userId)
     );
 
-    const filteredMembers = boardMembersList.filter(member =>
-      member.fullname?.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredMembers = boardMembersList.filter(
+      member =>
+        member.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.username?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredAssignees = cardAssignees.filter(assignee =>
-      assignee.fullname?.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredAssignees = cardAssignees.filter(
+      assignee =>
+        assignee.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        assignee.username?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return {
@@ -87,7 +91,10 @@ export function AddMemberMenu({
                   key={member._id}
                   className="member-menu-item card-member-item"
                 >
-                  <div className="member-item-label">
+                  <div
+                    className="member-item-label"
+                    title={`${member.fullname} (${member.username})`}
+                  >
                     <Avatar user={member} size={32} />
                     <span className="member-name">
                       {member.fullname || member.username}
@@ -115,7 +122,10 @@ export function AddMemberMenu({
                 className="member-menu-item board-member-item"
                 onClick={() => handleAddAssignee(member.userId)}
               >
-                <div className="member-item-label">
+                <div
+                  className="member-item-label"
+                  title={`${member.fullname} (${member.username})`}
+                >
                   <Avatar user={member} size={32} />
                   <span className="member-name">
                     {member.fullname || member.username}
