@@ -6,6 +6,7 @@ import {
   DELETE_BOARD,
   ADD_LIST,
   MOVE_LIST,
+  UPDATE_LIST,
   COPY_LIST,
   ARCHIVE_LIST,
   UNARCHIVE_LIST,
@@ -114,6 +115,12 @@ export const createList = createAsyncAction(
 export const moveList = createAsyncAction(
   MOVE_LIST,
   boardService.moveList,
+  store
+);
+
+export const updateList = createAsyncAction(
+  UPDATE_LIST,
+  boardService.updateList,
   store
 );
 

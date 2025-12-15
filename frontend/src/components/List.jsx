@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddRounded from "@mui/icons-material/AddRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import { TextField } from "@mui/material";
@@ -8,7 +8,7 @@ import { Card } from "./Card";
 import { ListActionsMenu } from "./ListActionsMenu";
 import { SCROLL_DIRECTION, useScrollTo } from "../hooks/useScrollTo";
 import { setActiveListIndex } from "../store/actions/ui-actions";
-import { updateBoard } from "../store/actions/board-actions";
+import { updateList } from "../store/actions/board-actions";
 import { AddCardForm } from "./AddCardForm";
 
 export function List({
@@ -32,7 +32,6 @@ export function List({
   const titleInputRef = useRef(null);
   const scrollListToEdge = useScrollTo(listContentRef);
   const open = Boolean(anchorEl);
-  const { boardId } = useParams();
 
   function handleOpenModal(card) {
     navigate(`${list._id}/${card._id}`, {
@@ -89,13 +88,7 @@ export function List({
     setIsEditingTitle(false);
     if (listTitle.trim() && listTitle !== list.title) {
       try {
-        await updateBoard(
-          boardId,
-          { title: listTitle.trim() },
-          {
-            listId: list._id,
-          }
-        );
+        await updateList(list._id, { title: listTitle });
       } catch (error) {
         console.error("Error updating list title:", error);
         setListTitle(list.title);
