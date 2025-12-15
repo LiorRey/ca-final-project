@@ -14,7 +14,7 @@ export async function signup(req, res) {
     password,
   });
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "24h",
   });
   res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
   res.status(201).json({ user: user.getSafeUser() });
