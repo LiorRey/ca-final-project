@@ -29,16 +29,19 @@
 @import "components/FilterMenu";
 @import "components/auth/AuthFormLayout";
 @import "components/BackgroundSelector";
+@import "components/BackgroundGrid";
 
 @import "components/List";
 @import "components/ListActionsMenu";
 @import "components/AddCardForm";
 @import "components/CopyListForm";
 @import "components/MoveListForm";
+@import "components/CreateBoardForm";
 
 @import "components/Card";
 @import "components/CardFormMenu";
 @import "components/CardModal";
 @import "components/Avatar";
 
+@import "pages/BoardIndex";
 @import "pages/BoardDetails";

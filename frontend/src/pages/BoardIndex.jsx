@@ -1,58 +1,66 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { BoardDetails } from "./BoardDetails";
-import { boardService } from "../services/board";
-import { loadBoard, loadBoards } from "../store/actions/board-actions";
-
-// export function BoardIndex() {
-//   const boards = useSelector(state => state.boards.boards);
-//   const navigate = useNavigate();
-
-//   async function fetchBoard() {
-//     const boards = await boardService.query();
-//     await loadBoard(boards[0]._id);
-//   }
-
-//   useEffect(() => {
-//     loadBoards();
-//   }, []);
-
-//   useEffect(() => {
-//     if (boards.length === 0) return;
-//     fetchBoard();
-//     navigate(`/board/${boards[0]._id}`);
-//   }, [boards, navigate]);
-
-//   return (
-//     <section className="board-index">
-//       <div>Loading boards...</div>
-//     </section>
-//   );
-// }
+import AddIcon from "@mui/icons-material/Add";
+import { loadBoards, loadBoard } from "../store/actions/board-actions";
+import { BoardPreview } from "../components/ui/BoardPreview";
+import { CreateBoardForm } from "../components/CreateBoardForm";
 
 export function BoardIndex() {
-  const boards = useSelector(state => state.boards.boards);
+  const [createFormAnchorEl, setCreateFormAnchorEl] = useState(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const boards = useSelector(state => state.boards.boards);
+
+  const searchTerm = searchParams.get("search")?.toLowerCase() || "";
 
   useEffect(() => {
     loadBoards();
   }, []);
 
-  useEffect(() => {
-    if (boards.length === 0) return;
-
-    navigate(`/board/${boards[0]._id}`);
-  }, [boards]);
-
-  async function fetchBoard() {
-    const boards = await boardService.query();
-    await loadBoard(boards[0]._id);
+  async function onOpenBoard(boardId) {
+    await loadBoard(boardId);
+    navigate(`/board/${boardId}`);
   }
 
+  const filteredBoards = useMemo(() => {
+    return boards.filter(board =>
+      board.title.toLowerCase().includes(searchTerm)
+    );
+  }, [boards, searchTerm]);
+
   return (
-    <section className="board-index">
-      <BoardDetails />
+    <section className="board-index-page">
+      <header className="board-index-header">
+        <h1>All boards</h1>
+      </header>
+
+      <section className="board-section">
+        <div className="boards-list">
+          {filteredBoards.map(board => (
+            <BoardPreview
+              key={board._id}
+              boardTitle={board.title}
+              boardAppearance={board.appearance}
+              onOpen={() => onOpenBoard(board._id)}
+            />
+          ))}
+
+          <div
+            className="board-tile create-tile"
+            onClick={ev => setCreateFormAnchorEl(ev.currentTarget)}
+          >
+            <AddIcon />
+            <span>Create new board</span>
+          </div>
+        </div>
+      </section>
+
+      <CreateBoardForm
+        anchorEl={createFormAnchorEl}
+        isCreateFormOpen={Boolean(createFormAnchorEl)}
+        onCloseCreateForm={() => setCreateFormAnchorEl(null)}
+      />
     </section>
   );
 }

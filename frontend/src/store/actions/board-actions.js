@@ -35,7 +35,7 @@ import { createAsyncAction } from "../utils";
 export async function loadBoards() {
   try {
     store.dispatch(setLoading("loadBoards", true));
-    const boards = await boardService.query();
+    const boards = await boardService.getBoardPreviews();
     store.dispatch(setBoards(boards));
   } catch (error) {
     store.dispatch(
@@ -62,7 +62,7 @@ export async function loadBoard(boardId, filterBy = {}) {
 
 export async function createBoard(board) {
   try {
-    const newBoard = await boardService.save(board);
+    const newBoard = await boardService.createBoard(board);
     store.dispatch(addBoard(newBoard));
     return newBoard;
   } catch (error) {
@@ -232,13 +232,11 @@ export async function updateCardLabels(
       cardId,
       updatedCardLabels
     );
-    console.log("updatedCardLabels", updatedCardLabels);
     store.dispatch({
       type: UPDATE_CARD_LABELS.SUCCESS,
       payload: { listId, cardId, updatedCardLabels },
     });
   } catch (error) {
-    console.error("Error updating card labels:", error);
     store.dispatch({
       type: UPDATE_CARD_LABELS.FAILURE,
       payload: error.message,

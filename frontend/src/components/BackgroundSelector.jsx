@@ -1,106 +1,46 @@
 import { useSelector } from "react-redux";
 import { updateBoard } from "../store/actions/board-actions";
+import { BackgroundGrid } from "./ui/BackgroundGrid";
+import {
+  GRADIENT_BACKGROUNDS,
+  IMAGE_BACKGROUNDS,
+  SOLID_BACKGROUNDS,
+} from "../services/board/board-backgrounds";
 
 export function BackgroundSelector({ currentBackground }) {
   const boardId = useSelector(state => state.boards.board._id);
 
-  const gradientColors = [
-    "midnight",
-    "slate",
-    "wine",
-    "cypress",
-    "mauve",
-    "terracotta",
-    "blush",
-    "deep-teal",
-    "charcoal",
-  ];
-
-  const imageBackgrounds = [
-    "flower",
-    "bubble",
-    "sea",
-    "snow",
-    "volcano",
-    "crystal",
-  ];
-
-  const solidColors = [
-    "blue",
-    "orange",
-    "green",
-    "red",
-    "purple",
-    "pink",
-    "emerald",
-    "turquoise",
-    "gray",
-  ];
-
-  async function handleSelectBackground(selectedColor) {
+  async function handleSelectBackground(bg) {
     await updateBoard(boardId, {
-      appearance: { background: selectedColor },
+      appearance: { background: bg },
     });
   }
 
   return (
     <div className="background-selector-content">
       <label className="background-selector-label">Gradients</label>
-
-      <div className="background-colors-grid">
-        {gradientColors.map(bgColor => (
-          <button
-            key={bgColor}
-            className={`background-color-option bg-${bgColor} ${
-              currentBackground === bgColor ? "selected" : ""
-            }`}
-            onClick={() => handleSelectBackground(bgColor)}
-            aria-label={`Select ${bgColor} background`}
-          >
-            {currentBackground === bgColor && (
-              <span className="checkmark">✓</span>
-            )}
-          </button>
-        ))}
-      </div>
+      <BackgroundGrid
+        backgrounds={GRADIENT_BACKGROUNDS}
+        value={currentBackground}
+        onChange={handleSelectBackground}
+        size="large"
+      />
 
       <label className="background-selector-label">Colors</label>
-
-      <div className="background-colors-grid">
-        {solidColors.map(bgColor => (
-          <button
-            key={bgColor}
-            className={`background-color-option bg-${bgColor} ${
-              currentBackground === bgColor ? "selected" : ""
-            }`}
-            onClick={() => handleSelectBackground(bgColor)}
-            aria-label={`Select ${bgColor} background`}
-          >
-            {currentBackground === bgColor && (
-              <span className="checkmark">✓</span>
-            )}
-          </button>
-        ))}
-      </div>
+      <BackgroundGrid
+        backgrounds={SOLID_BACKGROUNDS}
+        value={currentBackground}
+        onChange={handleSelectBackground}
+        size="large"
+      />
 
       <label className="background-selector-label">Images</label>
-
-      <div className="background-colors-grid">
-        {imageBackgrounds.map(bgColor => (
-          <button
-            key={bgColor}
-            className={`background-color-option bg-${bgColor} ${
-              currentBackground === bgColor ? "selected" : ""
-            }`}
-            onClick={() => handleSelectBackground(bgColor)}
-            aria-label={`Select ${bgColor} background`}
-          >
-            {currentBackground === bgColor && (
-              <span className="checkmark">✓</span>
-            )}
-          </button>
-        ))}
-      </div>
+      <BackgroundGrid
+        backgrounds={IMAGE_BACKGROUNDS}
+        value={currentBackground}
+        onChange={handleSelectBackground}
+        size="large"
+      />
     </div>
   );
 }

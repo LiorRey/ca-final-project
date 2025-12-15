@@ -1,8 +1,9 @@
 .app-header {
   display: flex;
   width: 100%;
-  background: var(--gray4);
+  background-color: var(--ds-surface);
   padding: 0.8rem 1rem;
+  border-block-end: 1px solid var(--t-dark-gray);
 
   & nav {
     display: grid;

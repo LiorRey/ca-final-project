@@ -1,11 +1,27 @@
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { Link, NavLink } from "react-router-dom";
-import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { logout } from "../store/actions/user-actions";
 
 export function Header() {
-  const user = useSelector(storeState => storeState.users.currentUser);
+  const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const user = useSelector(storeState => storeState.users.currentUser);
+
+  const isBoardIndex = location.pathname === "/board";
+
+  const search = isBoardIndex ? searchParams.get("search") || "" : "";
+
+  function onSearchChange(e) {
+    if (!isBoardIndex) return;
+
+    const value = e.target.value;
+
+    if (isBoardIndex) {
+      navigate(value ? `/board?search=${encodeURIComponent(value)}` : "/board");
+    }
+  }
 
   async function onLogout() {
     try {
@@ -19,11 +35,17 @@ export function Header() {
   return (
     <header className="app-header">
       <nav>
-        <NavLink to="/" className="logo">
+        <NavLink to="/board" className="logo">
           Trello
         </NavLink>
 
-        <input className="search-input" type="text" placeholder="Search" />
+        <input
+          className="search-input"
+          type="text"
+          placeholder={isBoardIndex ? "Search boards..." : "Search..."}
+          value={search}
+          onChange={onSearchChange}
+        />
 
         {user?.isAdmin && <NavLink to="/admin">Admin</NavLink>}
 

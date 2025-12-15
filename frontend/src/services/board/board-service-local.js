@@ -640,6 +640,7 @@ async function getBoardPreviews() {
     return boards.map(board => ({
       _id: board._id,
       title: board.title,
+      appearance: board.appearance,
     }));
   } catch (error) {
     console.error("Cannot get board names:", error);
