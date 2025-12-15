@@ -1,0 +1,50 @@
+.background-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.background-grid.large {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.background-grid.small {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.bg-tile {
+  width: 100%;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.background-grid.large .bg-tile {
+  height: 64px;
+}
+
+.background-grid.small .bg-tile {
+  height: 32px;
+}
+
+.bg-tile:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.bg-tile.selected {
+  box-shadow: 0 0 0 2px rgba(87, 157, 255, 0.6);
+}
+
+.bg-tile .checkmark {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.6);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
