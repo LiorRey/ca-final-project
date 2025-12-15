@@ -23,7 +23,6 @@
   --t-green: rgba(0, 255, 0, 0.5);
   --t-purple: rgba(128, 0, 128, 0.5);
   --t-dark-gray: rgba(255, 255, 255, 0.16);
-  --dynamic-text-transparent: var(--t-dark-gray);
 
   --clr1-light: color-mix(in lab, var(--clr1), white 15%);
 

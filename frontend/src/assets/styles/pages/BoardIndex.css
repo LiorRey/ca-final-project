@@ -69,7 +69,7 @@
   border: 2px dashed var(--ds-text);
 
   &:hover {
-    background-color: var(--dynamic-text-transparent);
+    background-color: var(--t-dark-gray);
     transform: none;
   }
 }
