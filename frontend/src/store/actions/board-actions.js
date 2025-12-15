@@ -35,7 +35,7 @@ import { createAsyncAction } from "../utils";
 export async function loadBoards() {
   try {
     store.dispatch(setLoading("loadBoards", true));
-    const boards = await boardService.query();
+    const boards = await boardService.getBoardPreviews();
     store.dispatch(setBoards(boards));
   } catch (error) {
     store.dispatch(
@@ -62,7 +62,7 @@ export async function loadBoard(boardId, filterBy = {}) {
 
 export async function createBoard(board) {
   try {
-    const newBoard = await boardService.save(board);
+    const newBoard = await boardService.createBoard(board);
     store.dispatch(addBoard(newBoard));
     return newBoard;
   } catch (error) {
