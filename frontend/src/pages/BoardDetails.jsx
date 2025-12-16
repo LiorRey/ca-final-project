@@ -42,6 +42,7 @@ export function BoardDetails() {
   useDragToScroll(boardCanvasRef, { sensitivity: 1, enabled: !!board }); //drag to scroll the board experimentall
   const { filters, updateFilters } = useCardFilters();
   const [lists, setLists] = useState(board?.lists || []);
+  const isFromUrlUpdate = useRef(false);
 
   useEffect(() => {
     if (board) {
@@ -50,21 +51,31 @@ export function BoardDetails() {
   }, [board]);
 
   useEffect(() => {
-    loadBoard(params.boardId, filters);
-    if (!boards || boards.length === 0) {
-      loadBoards();
+    if (params.boardId) {
+      const urlFilters = parseFiltersFromSearchParams(searchParams);
+      isFromUrlUpdate.current = true;
+      updateFilters(urlFilters);
+    }
+  }, [params.boardId, updateFilters]);
+
+  useEffect(() => {
+    if (params.boardId && filters && !isFromUrlUpdate.current) {
+      loadBoard(params.boardId, filters);
     }
   }, [params.boardId, filters]);
 
   useEffect(() => {
-    const filterBy = parseFiltersFromSearchParams(searchParams);
-    updateFilters(filterBy);
-  }, []);
+    if (!isFromUrlUpdate.current) {
+      const filterBy = serializeFiltersToSearchParams(filters);
+      setSearchParams(filterBy);
+    }
+  }, [filters, setSearchParams]);
 
   useEffect(() => {
-    const filterBy = serializeFiltersToSearchParams(filters);
-    setSearchParams(filterBy);
-  }, [filters, setSearchParams]);
+    if (isFromUrlUpdate.current) {
+      isFromUrlUpdate.current = false;
+    }
+  }, [filters]);
 
   async function onCopyList(listId, copyOptions) {
     try {
