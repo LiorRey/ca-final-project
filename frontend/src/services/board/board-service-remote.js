@@ -5,11 +5,12 @@ export const boardService = {
   getById,
   getFullById,
   // remove,
-  // save,
-  // updateBoard,
+  createBoard,
+  updateBoard,
   getEmptyCard,
   addCard,
   editCard,
+  upsertCardCover,
   deleteCard,
   copyCard,
   moveCard,
@@ -17,6 +18,7 @@ export const boardService = {
   removeAssignee,
   getEmptyList,
   createList,
+  updateList,
   moveList,
   copyList,
   // archiveList,
@@ -50,20 +52,15 @@ async function getFullById(boardId) {
 //   await httpService.delete(`boards/${boardId}`);
 // }
 
-// async function save(board) {
-//   if (board._id) {
-//     const data = await httpService.put(`boards/${board._id}`, board);
-//     return data.board;
-//   } else {
-//     const data = await httpService.post("boards", board);
-//     return data.board;
-//   }
-// }
+async function createBoard(board) {
+  const data = await httpService.post("boards", board);
+  return data.board;
+}
 
-// async function updateBoard(boardId, updates) {
-//   const data = await httpService.put(`boards/${boardId}`, updates);
-//   return data.board;
-// }
+async function updateBoard(boardId, updates) {
+  const data = await httpService.put(`boards/${boardId}`, updates);
+  return data.board;
+}
 
 function getEmptyCard() {
   return {
@@ -85,6 +82,11 @@ async function addCard(boardId, listId, card) {
 
 async function editCard(_boardId, card, _listId) {
   const data = await httpService.put(`cards/${card._id}`, card);
+  return data.card;
+}
+
+async function upsertCardCover(cardId, coverData) {
+  const data = await httpService.put(`cards/${cardId}/cover`, coverData);
   return data.card;
 }
 
@@ -158,6 +160,11 @@ async function createList(boardId, listData) {
   };
   const data = await httpService.post("lists", payload);
   if (!data.list.cards) data.list.cards = [];
+  return data.list;
+}
+
+async function updateList(listId, listData) {
+  const data = await httpService.put(`lists/${listId}`, listData);
   return data.list;
 }
 
@@ -265,6 +272,7 @@ async function getBoardPreviews() {
   return data.boards.map(board => ({
     _id: board._id,
     title: board.title,
+    appearance: board.appearance,
   }));
 }
 

@@ -43,7 +43,9 @@ export async function moveList(listId, boardId, targetIndex) {
     throw createHttpError(404, "Board not found");
   }
 
-  let lists = await List.find({ boardId }).sort({ position: 1 });
+  let lists = await List.find({ boardId, _id: { $ne: listId } }).sort({
+    position: 1,
+  });
   let newPosition = calculateNewPosition(lists, targetIndex);
 
   return await List.findByIdAndUpdate(

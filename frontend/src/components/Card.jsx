@@ -63,6 +63,9 @@ export function Card({
   const open = Boolean(anchorEl);
   const id = open ? `card-popover` : undefined;
 
+  const shouldShowLabels =
+    labels.length > 0 && card.cover?.textOverlay !== true;
+
   return (
     <Draggable draggableId={card._id} index={index}>
       {(provided, snapshot) => (
@@ -76,96 +79,120 @@ export function Card({
         >
           {open ? (
             <Box
-              className="floating-card-content"
+              className="floating-card-content-container"
               sx={{ zIndex: theme => theme.zIndex.modal + 2 }}
             >
-              {labels.length > 0 && (
-                <div className="card-labels">
-                  {labels.map(label => (
-                    <div
-                      key={`${card._id}-${label._id}`}
-                      className={`card-label ${label.color}`}
-                    >
-                      <span className="card-label-text">{label.title}</span>
-                    </div>
-                  ))}
-                </div>
+              {card.cover?.color && (
+                <div
+                  className="card-cover"
+                  style={{ backgroundColor: card.cover.color }}
+                ></div>
               )}
-              <textarea
-                className="card-title-input"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-              />
-              <div className="card-footer">
-                <div className="card-footer-left">
-                  <RemoveRedEyeOutlined />
-                  <ChatRounded />
-                  <NotesRounded />
+              <div className="card-content">
+                {labels.length > 0 && (
+                  <div className="card-labels">
+                    {labels.map(label => (
+                      <div
+                        key={`${card._id}-${label._id}`}
+                        className={`card-label ${label.color}`}
+                      >
+                        <span className="card-label-text">{label.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <textarea
+                  className="card-title-input"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                />
+                <div className="card-footer">
+                  <div className="card-footer-left">
+                    <RemoveRedEyeOutlined />
+                    <ChatRounded />
+                    <NotesRounded />
+                  </div>
+                  <div className="card-footer-right">
+                    {card.assignees.length > 0 && (
+                      <AvatarGroup max={4}>
+                        {card.assignees.map(assignee => (
+                          <Avatar key={assignee._id} user={assignee} />
+                        ))}
+                      </AvatarGroup>
+                    )}
+                  </div>
                 </div>
-                <div className="card-footer-right">
-                  {card.assignees.length > 0 && (
-                    <AvatarGroup max={4}>
-                      {card.assignees.map(assignee => (
-                        <Avatar key={assignee._id} user={assignee} />
-                      ))}
-                    </AvatarGroup>
-                  )}
-                </div>
+                <button className="card-edit-button" disabled />
+                <Button
+                  onClick={handleSave}
+                  onMouseDown={e => e.preventDefault()}
+                  className="add-submit-button"
+                >
+                  Save
+                </Button>
               </div>
-              <button className="card-edit-button" disabled />
-              <Button
-                onClick={handleSave}
-                onMouseDown={e => e.preventDefault()}
-                className="add-submit-button"
-              >
-                Save
-              </Button>
             </Box>
           ) : (
-            <Box className="card-content" onClick={handleClickCard}>
-              {labels.length > 0 && (
-                <div className="card-labels" onClick={handleClickLabels}>
-                  {labels.map(label => (
-                    <div
-                      key={`${card._id}-${label._id}`}
-                      className={`card-label ${label.color} ${
-                        labelsIsOpen ? "open" : "closed"
-                      }`}
-                    >
-                      <span className="card-label-text">{label.title}</span>
-                    </div>
-                  ))}
-                </div>
+            <Box
+              className="card-content-container"
+              onClick={handleClickCard}
+              sx={
+                card.cover?.textOverlay && { backgroundColor: card.cover.color }
+              }
+            >
+              {card.cover?.color && !card.cover?.textOverlay && (
+                <div
+                  className="card-cover"
+                  style={{ backgroundColor: card.cover.color }}
+                ></div>
               )}
+              <div className="card-content">
+                {shouldShowLabels && (
+                  <div className="card-labels" onClick={handleClickLabels}>
+                    {labels.map(label => (
+                      <div
+                        key={`${card._id}-${label._id}`}
+                        className={`card-label ${label.color} ${
+                          labelsIsOpen ? "open" : "closed"
+                        }`}
+                      >
+                        <span className="card-label-text">{label.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-              <h3 className={`card-title ${labels.length === 0 ? "mr-2" : ""}`}>
-                {card.title}
-              </h3>
+                <h3
+                  className={`card-title ${labels.length === 0 ? "mr-2" : ""}`}
+                >
+                  {card.title}
+                </h3>
 
-              <div className="card-footer">
-                <div className="card-footer-left">
-                  <RemoveRedEyeOutlined />
-                  <ChatRounded />
-                  <NotesRounded />
+                <div className="card-footer">
+                  <div className="card-footer-left">
+                    <RemoveRedEyeOutlined />
+                    <ChatRounded />
+                    <NotesRounded />
+                  </div>
+                  <div className="card-footer-right">
+                    {card.assignees.length > 0 && (
+                      <AvatarGroup max={4}>
+                        {card.assignees.map(assignee => (
+                          <Avatar key={assignee._id} user={assignee} />
+                        ))}
+                      </AvatarGroup>
+                    )}
+                  </div>
                 </div>
-                <div className="card-footer-right">
-                  {card.assignees.length > 0 && (
-                    <AvatarGroup max={4}>
-                      {card.assignees.map(assignee => (
-                        <Avatar key={assignee._id} user={assignee} />
-                      ))}
-                    </AvatarGroup>
-                  )}
-                </div>
+                <button
+                  onClick={handleClick}
+                  aria-describedby={id}
+                  aria-label="Edit card"
+                  className="icon-button card-edit-button"
+                >
+                  <DriveFileRenameOutline />
+                </button>
               </div>
-              <button
-                onClick={handleClick}
-                aria-describedby={id}
-                aria-label="Edit card"
-                className="icon-button card-edit-button"
-              >
-                <DriveFileRenameOutline />
-              </button>
             </Box>
           )}
           <CardPopover

@@ -219,15 +219,40 @@
   opacity: 1;
 }
 
+.card-modal-header-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--gray3);
+}
+
 .card-modal-header {
   display: flex;
   padding: 0.5rem 1rem 0.5rem 1rem;
   color: var(--gray1);
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
+}
+
+.card-modal-cover {
+  flex: 1;
   background: var(--gray4);
-  border-bottom: 1px solid var(--gray3);
-  border-radius: 16px 16px 0 0;
+  width: 100%;
+}
+
+.card-modal-cover.cover {
+  flex: 1;
+  min-height: 116px;
+  background: var(--gray4);
+  width: 100%;
+}
+
+.card-modal-header-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gray1);
 }
 
 .card-modal-header-buttons {

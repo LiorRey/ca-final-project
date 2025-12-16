@@ -25,6 +25,13 @@ const boardSchema = new mongoose.Schema(
       default: "",
       trim: true,
     },
+    appearance: {
+      background: {
+        type: String,
+        default: null,
+        trim: true,
+      },
+    },
     labels: [labelSchema],
     owner: {
       userId: {

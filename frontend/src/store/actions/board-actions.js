@@ -6,6 +6,7 @@ import {
   DELETE_BOARD,
   ADD_LIST,
   MOVE_LIST,
+  UPDATE_LIST,
   COPY_LIST,
   ARCHIVE_LIST,
   UNARCHIVE_LIST,
@@ -13,6 +14,7 @@ import {
   MOVE_ALL_CARDS,
   ADD_CARD,
   EDIT_CARD,
+  UPSERT_CARD_COVER,
   DELETE_CARD,
   COPY_CARD,
   MOVE_CARD,
@@ -35,7 +37,7 @@ import { createAsyncAction } from "../utils";
 export async function loadBoards() {
   try {
     store.dispatch(setLoading("loadBoards", true));
-    const boards = await boardService.query();
+    const boards = await boardService.getBoardPreviews();
     store.dispatch(setBoards(boards));
   } catch (error) {
     store.dispatch(
@@ -46,52 +48,23 @@ export async function loadBoards() {
   }
 }
 
-export async function loadBoard(boardId, filterBy = {}) {
-  try {
-    store.dispatch(setLoading("loadBoard", true));
-    const board = await boardService.getFullById(boardId, filterBy);
-    store.dispatch(setBoard(board));
-  } catch (error) {
-    store.dispatch(
-      setError("loadBoard", `Error loading board: ${error.message}`)
-    );
-  } finally {
-    store.dispatch(setLoading("loadBoard", false));
-  }
-}
+export const loadBoard = createAsyncAction(
+  SET_BOARD,
+  boardService.getFullById,
+  store
+);
 
-export async function createBoard(board) {
-  try {
-    const newBoard = await boardService.save(board);
-    store.dispatch(addBoard(newBoard));
-    return newBoard;
-  } catch (error) {
-    store.dispatch(
-      setError("createBoard", `Error creating board: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const createBoard = createAsyncAction(
+  ADD_BOARD,
+  boardService.createBoard,
+  store
+);
 
-export async function updateBoard(
-  boardId,
-  updates,
-  { listId = null, cardId = null } = {}
-) {
-  try {
-    const updatedBoard = await boardService.updateBoard(boardId, updates, {
-      listId,
-      cardId,
-    });
-    store.dispatch(editBoard(updatedBoard));
-    return updatedBoard;
-  } catch (error) {
-    store.dispatch(
-      setError("updateBoard", `Error updating board: ${error.message}`)
-    );
-    throw error;
-  }
-}
+export const updateBoard = createAsyncAction(
+  UPDATE_BOARD,
+  boardService.updateBoard,
+  store
+);
 
 export async function deleteBoard(boardId) {
   try {
@@ -114,6 +87,12 @@ export const createList = createAsyncAction(
 export const moveList = createAsyncAction(
   MOVE_LIST,
   boardService.moveList,
+  store
+);
+
+export const updateList = createAsyncAction(
+  UPDATE_LIST,
+  boardService.updateList,
   store
 );
 
@@ -167,6 +146,12 @@ export const addCard = createAsyncAction(ADD_CARD, boardService.addCard, store);
 export const editCard = createAsyncAction(
   EDIT_CARD,
   boardService.editCard,
+  store
+);
+
+export const upsertCardCover = createAsyncAction(
+  UPSERT_CARD_COVER,
+  boardService.upsertCardCover,
   store
 );
 
@@ -232,13 +217,11 @@ export async function updateCardLabels(
       cardId,
       updatedCardLabels
     );
-    console.log("updatedCardLabels", updatedCardLabels);
     store.dispatch({
       type: UPDATE_CARD_LABELS.SUCCESS,
       payload: { listId, cardId, updatedCardLabels },
     });
   } catch (error) {
-    console.error("Error updating card labels:", error);
     store.dispatch({
       type: UPDATE_CARD_LABELS.FAILURE,
       payload: error.message,
@@ -253,14 +236,6 @@ export function setBoards(boards) {
 
 export function setBoard(board) {
   return { type: SET_BOARD, payload: board };
-}
-
-export function addBoard(board) {
-  return { type: ADD_BOARD, payload: board };
-}
-
-export function editBoard(board) {
-  return { type: UPDATE_BOARD, payload: board };
 }
 
 export function deleteBoardAction(boardId) {

@@ -200,6 +200,27 @@ export async function removeCardAssignee(cardId, userId) {
   );
 }
 
+export async function updateCover(cardId, coverData) {
+  const { color, img, textOverlay } = coverData;
+  const card = await Card.findByIdAndUpdate(
+    cardId,
+    {
+      $set: {
+        "cover.img": img,
+        "cover.color": color,
+        "cover.textOverlay": textOverlay,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!card) throw createError(404, "Card not found");
+  return card;
+}
+
 export async function copyCard(cardId, copyOptions = {}) {
   const {
     copyLabels = false,

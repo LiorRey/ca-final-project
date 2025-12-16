@@ -13,6 +13,7 @@ import { LabelMenu } from "./LabelMenu";
 import { TextEditor } from "./ui/TextEditor";
 import { Avatar } from "./ui/Avatar";
 import { AddMemberMenu } from "./AddMemberMenu";
+import { AttachmentMenu } from "./AttachmentMenu";
 
 export function CardModal({
   boardId,
@@ -30,9 +31,11 @@ export function CardModal({
   const [cardDetails, setCardDetails] = useState(card);
   const [anchorEl, setAnchorEl] = useState(null);
   const [memberAnchorEl, setMemberAnchorEl] = useState(null);
+  const [attachFileAnchorEl, setAttachFileAnchorEl] = useState(null);
   const membersContainerRef = useRef(null);
   const isLabelMenuOpen = Boolean(anchorEl);
   const isMemberMenuOpen = Boolean(memberAnchorEl);
+  const isAttachFileMenuOpen = Boolean(attachFileAnchorEl);
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -54,25 +57,37 @@ export function CardModal({
     setCardDetails({ ...cardDetails, [key]: value });
   }
 
+  function handleAttachFile(element) {
+    setAttachFileAnchorEl(element);
+  }
+
   if (!card) return null;
 
   return (
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
-        <div className="card-modal-header">
-          {listTitle}
-          <div className="card-modal-header-buttons">
-            <button className="icon-button">
-              <ImageOutlinedIcon />
-            </button>
-            <button className="icon-button">
-              <MoreHorizIcon />
-            </button>
-            <button className="icon-button" onClick={onClose}>
-              <CloseIcon />
-            </button>
+        <div className="card-modal-header-container">
+          <div
+            className={`card-modal-cover ${card.cover?.color ? "cover" : ""}`}
+            style={{ backgroundColor: card.cover?.color }}
+          >
+            <div className="card-modal-header">
+              {listTitle}
+              <div className="card-modal-header-buttons">
+                <button className="icon-button">
+                  <ImageOutlinedIcon />
+                </button>
+                <button className="icon-button">
+                  <MoreHorizIcon />
+                </button>
+                <button className="icon-button" onClick={onClose}>
+                  <CloseIcon />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+
         <div className="card-modal-container">
           <section className="card-modal-content">
             <div className="card-modal-title-container">
@@ -116,7 +131,13 @@ export function CardModal({
               >
                 <PersonAddAltOutlinedIcon /> Members
               </button>
-              <button className="icon-button">
+              <button
+                className="icon-button"
+                onClick={e => {
+                  e.stopPropagation();
+                  handleAttachFile(e.currentTarget);
+                }}
+              >
                 <AttachFileIcon /> Attach
               </button>
             </div>
@@ -214,6 +235,14 @@ export function CardModal({
             Comments
           </button>
         </footer>
+
+        <AttachmentMenu
+          card={card}
+          anchorEl={attachFileAnchorEl}
+          isAttachFileMenuOpen={isAttachFileMenuOpen}
+          onCloseAttachFileMenu={() => setAttachFileAnchorEl(null)}
+        />
+
         <AddMemberMenu
           card={card}
           anchorEl={memberAnchorEl}
