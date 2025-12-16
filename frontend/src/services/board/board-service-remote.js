@@ -18,6 +18,7 @@ export const boardService = {
   removeAssignee,
   getEmptyList,
   createList,
+  updateList,
   moveList,
   copyList,
   // archiveList,
@@ -159,6 +160,11 @@ async function createList(boardId, listData) {
   };
   const data = await httpService.post("lists", payload);
   if (!data.list.cards) data.list.cards = [];
+  return data.list;
+}
+
+async function updateList(listId, listData) {
+  const data = await httpService.put(`lists/${listId}`, listData);
   return data.list;
 }
 
