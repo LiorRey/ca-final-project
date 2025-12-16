@@ -62,14 +62,6 @@ export function BoardDetails() {
   }, []);
 
   useEffect(() => {
-    // Only load board when we have both boardId and filters (after URL parsing)
-    console.log("🚀 ~ BoardDetails ~ filters:", filters);
-    if (params.boardId && filters !== undefined) {
-      loadBoard(params.boardId, filters);
-    }
-  }, [params.boardId, filters]);
-
-  useEffect(() => {
     const filterBy = serializeFiltersToSearchParams(filters);
     setSearchParams(filterBy);
   }, [filters, setSearchParams]);
