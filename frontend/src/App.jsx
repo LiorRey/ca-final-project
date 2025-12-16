@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/Header";
 import { UserMessage } from "./components/UserMessage";
@@ -12,10 +13,15 @@ import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
 import { ThemeComparison } from "./pages/ThemeComparison";
 import { UserDetails } from "./pages/UserDetails";
+import { restoreSession } from "./store/actions/auth-actions";
 
 export function App() {
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
+
+  useEffect(() => {
+    restoreSession();
+  }, []);
 
   return (
     <div className="main-container">

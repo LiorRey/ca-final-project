@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router";
-import { logout } from "../store/actions/user-actions";
+
 import { Avatar } from "./ui/Avatar";
 import { PopoverMenu } from "./ui/PopoverMenu";
 import ListItem from "@mui/material/ListItem";
@@ -9,6 +9,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MuiList from "@mui/material/List";
 import { ExitToApp } from "@mui/icons-material";
+import { logout } from "../store/actions/auth-actions";
 
 function UserMenuItem({ item, onItemClick }) {
   return (

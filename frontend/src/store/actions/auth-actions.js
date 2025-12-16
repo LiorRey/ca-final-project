@@ -1,5 +1,11 @@
-import { SIGNUP, LOGIN } from "../reducers/auth-reducer";
+import {
+  SIGNUP,
+  LOGIN,
+  LOGOUT,
+  RESTORE_SESSION,
+} from "../reducers/auth-reducer";
 import { authService } from "../../services/auth";
+import { userService } from "../../services/user/user-service-remote";
 
 import { store } from "../store";
 
@@ -32,5 +38,37 @@ export async function login(credentials) {
       key: LOGIN.KEY,
     });
     throw error;
+  }
+}
+
+export async function logout() {
+  try {
+    store.dispatch({ type: LOGOUT.REQUEST, key: LOGOUT.KEY });
+    await userService.logout();
+    store.dispatch({ type: LOGOUT.SUCCESS });
+  } catch (error) {
+    store.dispatch({
+      type: LOGOUT.FAILURE,
+      payload: error.message,
+      key: LOGOUT.KEY,
+    });
+    throw error;
+  }
+}
+
+export async function restoreSession() {
+  try {
+    store.dispatch({ type: RESTORE_SESSION.REQUEST, key: RESTORE_SESSION.KEY });
+    const user = await authService.getSession();
+    store.dispatch({ type: RESTORE_SESSION.SUCCESS, payload: user });
+    return user;
+  } catch (error) {
+    store.dispatch({
+      type: RESTORE_SESSION.FAILURE,
+      payload: error.message,
+      key: RESTORE_SESSION.KEY,
+    });
+    // Don't throw error - if there's no session, that's fine
+    return null;
   }
 }

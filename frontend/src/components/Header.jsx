@@ -36,8 +36,6 @@ export function Header() {
     setUserMenuAnchorEl(null);
   }
 
-  console.log("user", user);
-
   return (
     <header className="app-header">
       <nav>
