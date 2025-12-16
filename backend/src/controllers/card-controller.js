@@ -27,10 +27,9 @@ export async function updateCard(req, res) {
   res.json({ card });
 }
 
-export async function upsertCardCover(req, res) {
+export async function updateCover(req, res) {
   const { id } = req.params;
-  const { color, img, textOverlay } = req.body;
-  const card = await cardService.upsertCardCover(id, color, img, textOverlay);
+  const card = await cardService.updateCover(id, req.body);
   if (!card) throw createError(404, "Card not found");
 
   res.status(200).json({ card });

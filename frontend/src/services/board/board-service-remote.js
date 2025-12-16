@@ -85,11 +85,7 @@ async function editCard(_boardId, card, _listId) {
 }
 
 async function upsertCardCover(cardId, coverData) {
-  const data = await httpService.put(`cards/${cardId}/cover`, {
-    img: coverData.img,
-    color: coverData.color,
-    textOverlay: coverData.textOverlay,
-  });
+  const data = await httpService.put(`cards/${cardId}/cover`, coverData);
   return data.card;
 }
 

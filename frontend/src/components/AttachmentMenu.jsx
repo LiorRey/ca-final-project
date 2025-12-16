@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { PopoverMenu } from "./ui/PopoverMenu";
-import "../assets/styles/components/AttachmentMenu.css";
 import { upsertCardCover } from "../store/actions/board-actions";
 import { COVER_COLORS } from "../services/board/board-backgrounds";
 
@@ -10,31 +8,25 @@ export function AttachmentMenu({
   isAttachFileMenuOpen,
   onCloseAttachFileMenu,
 }) {
-  const [textOverlay, setTextOverlay] = useState(card.cover?.textOverlay);
-  const [selectedColor, setSelectedColor] = useState(
-    COVER_COLORS.find(color => color.value === card.cover?.color) || null
-  );
+  const textOverlay = card.cover?.textOverlay;
+  const coverColor = card.cover?.color;
 
   function handleCloseMenu() {
     onCloseAttachFileMenu();
   }
 
   function handleTextOverlay(overlay) {
-    setTextOverlay(overlay);
     upsertCardCover(card._id, {
-      color: selectedColor?.value,
+      color: coverColor,
       textOverlay: overlay,
     });
   }
 
   function handleColorSelect(color) {
-    setSelectedColor(color);
-    upsertCardCover(card._id, { color: color.value });
+    upsertCardCover(card._id, { color: color.value, textOverlay });
   }
 
   function handleRemoveCover() {
-    setTextOverlay(false);
-    setSelectedColor(null);
     upsertCardCover(card._id, { color: null, textOverlay: false });
   }
 
@@ -52,13 +44,9 @@ export function AttachmentMenu({
         vertical: "top",
         horizontal: "left",
       }}
-      paperProps={{ sx: { mt: 1 } }}
-      sx={{
-        zIndex: theme => theme.zIndex.modal + 1,
-      }}
     >
       <div className="attachment-menu-content">
-        {selectedColor && (
+        {coverColor && (
           <div className="cover-section">
             <label className="cover-section-label">Style</label>
             <div className="cover-size-options">
@@ -70,7 +58,7 @@ export function AttachmentMenu({
                 className={`cover-size-preview ${
                   textOverlay === false ? "selected" : ""
                 }`}
-                style={{ backgroundColor: selectedColor?.value }}
+                style={{ backgroundColor: coverColor }}
                 onClick={() => handleTextOverlay(false)}
               >
                 <CoverPreviewSkeleton className="cover-preview-container" />
@@ -83,7 +71,7 @@ export function AttachmentMenu({
                 className={`cover-size-preview ${
                   textOverlay === true ? "selected" : ""
                 }`}
-                style={{ backgroundColor: selectedColor?.value }}
+                style={{ backgroundColor: coverColor }}
                 onClick={() => handleTextOverlay(true)}
               >
                 <CoverPreviewSkeleton className="cover-preview-container-transparent" />
@@ -92,7 +80,7 @@ export function AttachmentMenu({
           </div>
         )}
 
-        {(selectedColor || card.cover?.color) && (
+        {coverColor && (
           <button className="remove-cover-button" onClick={handleRemoveCover}>
             Remove cover
           </button>
@@ -105,7 +93,7 @@ export function AttachmentMenu({
               <button
                 key={color.name}
                 className={`cover-color-swatch ${
-                  selectedColor === color.name ? "selected" : ""
+                  coverColor === color.value ? "selected" : ""
                 }`}
                 style={{ backgroundColor: color.value }}
                 onClick={() => handleColorSelect(color)}

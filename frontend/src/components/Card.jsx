@@ -137,9 +137,7 @@ export function Card({
               className="card-content-container"
               onClick={handleClickCard}
               sx={
-                card.cover?.textOverlay
-                  ? { backgroundColor: card.cover.color }
-                  : undefined
+                card.cover?.textOverlay && { backgroundColor: card.cover.color }
               }
             >
               {card.cover?.color && !card.cover?.textOverlay && (

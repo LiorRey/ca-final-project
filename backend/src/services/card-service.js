@@ -200,14 +200,15 @@ export async function removeCardAssignee(cardId, userId) {
   );
 }
 
-export async function upsertCardCover(cardId, color, img, textOverlay) {
+export async function updateCover(cardId, coverData) {
+  const { color, img, textOverlay } = coverData;
   const card = await Card.findByIdAndUpdate(
     cardId,
     {
       $set: {
-        "cover.img": img !== undefined ? img : null,
-        "cover.color": color !== undefined ? color : null,
-        "cover.textOverlay": textOverlay !== undefined ? textOverlay : false,
+        "cover.img": img,
+        "cover.color": color,
+        "cover.textOverlay": textOverlay,
       },
     },
     {
