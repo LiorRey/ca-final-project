@@ -3,7 +3,7 @@ import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
 import { sortByPosition } from "../../services/board/fractional-index-service";
 
 export const SET_BOARDS = "SET_BOARDS";
-export const SET_BOARD = "SET_BOARD";
+export const SET_BOARD = createAsyncActionTypes("SET_BOARD");
 export const DELETE_BOARD = "DELETE_BOARD";
 export const ADD_BOARD = createAsyncActionTypes("ADD_BOARD");
 export const UPDATE_BOARD = createAsyncActionTypes("UPDATE_BOARD");
@@ -93,7 +93,8 @@ const handlers = {
     ...state,
     boards: action.payload,
   }),
-  [SET_BOARD]: (state, action) => ({
+  ...createAsyncHandlers(SET_BOARD, SET_BOARD.KEY),
+  [SET_BOARD.SUCCESS]: (state, action) => ({
     ...state,
     board: action.payload,
   }),

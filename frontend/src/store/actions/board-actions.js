@@ -46,19 +46,11 @@ export async function loadBoards() {
   }
 }
 
-export async function loadBoard(boardId, filterBy = {}) {
-  try {
-    store.dispatch(setLoading("loadBoard", true));
-    const board = await boardService.getFullById(boardId, filterBy);
-    store.dispatch(setBoard(board));
-  } catch (error) {
-    store.dispatch(
-      setError("loadBoard", `Error loading board: ${error.message}`)
-    );
-  } finally {
-    store.dispatch(setLoading("loadBoard", false));
-  }
-}
+export const loadBoard = createAsyncAction(
+  SET_BOARD,
+  boardService.getFullById,
+  store
+);
 
 export const createBoard = createAsyncAction(
   ADD_BOARD,
