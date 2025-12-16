@@ -3,10 +3,10 @@ import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
 import { sortByPosition } from "../../services/board/fractional-index-service";
 
 export const SET_BOARDS = "SET_BOARDS";
-export const SET_BOARD = "SET_BOARD";
+export const SET_BOARD = createAsyncActionTypes("SET_BOARD");
 export const DELETE_BOARD = "DELETE_BOARD";
-export const ADD_BOARD = "ADD_BOARD";
-export const UPDATE_BOARD = "UPDATE_BOARD";
+export const ADD_BOARD = createAsyncActionTypes("ADD_BOARD");
+export const UPDATE_BOARD = createAsyncActionTypes("UPDATE_BOARD");
 export const ADD_LIST = createAsyncActionTypes("ADD_LIST");
 export const MOVE_ALL_CARDS = createAsyncActionTypes("MOVE_ALL_CARDS");
 export const ARCHIVE_LIST = createAsyncActionTypes("ARCHIVE_LIST");
@@ -94,7 +94,8 @@ const handlers = {
     ...state,
     boards: action.payload,
   }),
-  [SET_BOARD]: (state, action) => ({
+  ...createAsyncHandlers(SET_BOARD, SET_BOARD.KEY),
+  [SET_BOARD.SUCCESS]: (state, action) => ({
     ...state,
     board: action.payload,
   }),
@@ -102,13 +103,15 @@ const handlers = {
     const boards = state.boards.filter(board => board._id !== action.payload);
     return { ...state, boards };
   },
-  [ADD_BOARD]: (state, action) => ({
+  ...createAsyncHandlers(ADD_BOARD, ADD_BOARD.KEY),
+  [ADD_BOARD.SUCCESS]: (state, action) => ({
     ...state,
     boards: [...state.boards, action.payload],
   }),
-  [UPDATE_BOARD]: (state, action) => ({
+  ...createAsyncHandlers(UPDATE_BOARD, UPDATE_BOARD.KEY),
+  [UPDATE_BOARD.SUCCESS]: (state, action) => ({
     ...state,
-    board: action.payload,
+    board: { ...state.board, ...action.payload },
   }),
   ...createAsyncHandlers(MOVE_LIST, MOVE_LIST.KEY),
   [MOVE_LIST.SUCCESS]: (state, action) => {

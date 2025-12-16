@@ -1,6 +1,11 @@
 import { Board } from "../models/Board.js";
 
 export async function createBoard(data) {
+  if (data.appearance) {
+    const { background } = data.appearance;
+    data.appearance = { background };
+  }
+
   return await Board.create(data);
 }
 
@@ -25,6 +30,11 @@ export async function getFullBoardById(id) {
 }
 
 export async function updateBoard(id, data) {
+  if (data.appearance) {
+    const { background } = data.appearance;
+    data.appearance = { background };
+  }
+
   return await Board.findByIdAndUpdate(id, data, {
     new: true,
     runValidators: true,
