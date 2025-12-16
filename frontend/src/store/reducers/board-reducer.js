@@ -16,6 +16,7 @@ export const ARCHIVE_ALL_CARDS_IN_LIST = createAsyncActionTypes(
 );
 export const ADD_CARD = createAsyncActionTypes("ADD_CARD");
 export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
+export const UPSERT_CARD_COVER = createAsyncActionTypes("UPSERT_CARD_COVER");
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
@@ -184,6 +185,28 @@ const handlers = {
       ),
     },
   }),
+
+  ...createAsyncHandlers(UPSERT_CARD_COVER, UPSERT_CARD_COVER.KEY),
+  [UPSERT_CARD_COVER.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [UPSERT_CARD_COVER.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, cover: action.payload.cover }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+
   [DELETE_CARD]: (state, action) => ({
     ...state,
     board: {

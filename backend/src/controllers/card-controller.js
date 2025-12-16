@@ -27,6 +27,15 @@ export async function updateCard(req, res) {
   res.json({ card });
 }
 
+export async function upsertCardCover(req, res) {
+  const { id } = req.params;
+  const { color, img, textOverlay } = req.body;
+  const card = await cardService.upsertCardCover(id, color, img, textOverlay);
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(200).json({ card });
+}
+
 export async function deleteCard(req, res) {
   const card = await cardService.deleteCard(req.params.id);
   if (!card) throw createError(404, "Card not found");

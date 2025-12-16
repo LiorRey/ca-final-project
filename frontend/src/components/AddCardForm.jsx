@@ -40,7 +40,7 @@ export function AddCardForm({
 
   return (
     <form className="add-card-form" onSubmit={handleAddCard}>
-      <div className="card-content">
+      <div className="add-card-content">
         <input
           type="text"
           className="card-title-input"

@@ -200,6 +200,26 @@ export async function removeCardAssignee(cardId, userId) {
   );
 }
 
+export async function upsertCardCover(cardId, color, img, textOverlay) {
+  const card = await Card.findByIdAndUpdate(
+    cardId,
+    {
+      $set: {
+        "cover.img": img !== undefined ? img : null,
+        "cover.color": color !== undefined ? color : null,
+        "cover.textOverlay": textOverlay !== undefined ? textOverlay : false,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  if (!card) throw createError(404, "Card not found");
+  return card;
+}
+
 export async function copyCard(cardId, copyOptions = {}) {
   const {
     copyLabels = false,

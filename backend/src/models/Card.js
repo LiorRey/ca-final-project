@@ -54,6 +54,20 @@ const cardSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    cover: {
+      img: {
+        type: String,
+        default: null,
+      },
+      color: {
+        type: String,
+        default: null,
+      },
+      textOverlay: {
+        type: Boolean,
+        default: false,
+      },
+    },
     description: {
       type: String,
       default: "",

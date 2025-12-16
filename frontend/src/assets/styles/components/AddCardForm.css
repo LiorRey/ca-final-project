@@ -3,20 +3,6 @@
   flex-direction: column;
 }
 
-.card-content .card-title-input {
-  width: 100%;
-  padding: 0.22rem 0.5rem 0.75rem 0.8rem;
-  border: none;
-  color: var(--ds-text);
-  font: var(--ds-font-body);
-  font-size: 16px;
-  font-weight: var(--ds-font-weight-medium);
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .add-card-buttons-container {
   display: flex;
   align-items: center;
@@ -29,4 +15,19 @@
   font: var(--ds-font-body);
   font-size: 16px;
   font-weight: var(--ds-font-weight-medium, 500);
+}
+
+.add-card-content {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray4);
+  color: var(--gray1);
+  border-radius: 6px;
+  padding: 0.5rem;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.add-card-form .card-title-input {
+  background-color: var(--gray4);
 }
