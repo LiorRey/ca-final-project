@@ -25,7 +25,6 @@ import {
   copyList,
   createList,
   loadBoard,
-  loadBoards,
   moveAllCards,
   moveCard,
   moveList,
@@ -37,7 +36,6 @@ export function BoardDetails() {
   const params = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const board = useSelector(state => state.boards.board);
-  const boards = useSelector(state => state.boards.boards);
   const [labelsIsOpen, setLabelsIsOpen] = useState(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
@@ -62,6 +60,14 @@ export function BoardDetails() {
     const filterBy = parseFiltersFromSearchParams(searchParams);
     updateFilters(filterBy);
   }, []);
+
+  useEffect(() => {
+    // Only load board when we have both boardId and filters (after URL parsing)
+    console.log("🚀 ~ BoardDetails ~ filters:", filters);
+    if (params.boardId && filters !== undefined) {
+      loadBoard(params.boardId, filters);
+    }
+  }, [params.boardId, filters]);
 
   useEffect(() => {
     const filterBy = serializeFiltersToSearchParams(filters);
