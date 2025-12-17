@@ -3,7 +3,7 @@ import { createAsyncActionTypes, createAsyncHandlers } from "../utils";
 export const SIGNUP = createAsyncActionTypes("SIGNUP");
 export const LOGIN = createAsyncActionTypes("LOGIN");
 export const LOGOUT = createAsyncActionTypes("LOGOUT");
-export const RESTORE_SESSION = createAsyncActionTypes("RESTORE_SESSION");
+export const VALIDATE_SESSION = createAsyncActionTypes("VALIDATE_SESSION");
 
 const initialState = {
   currentUser: null,
@@ -30,10 +30,10 @@ const handlers = {
     loading: { ...state.loading, [LOGOUT.KEY]: false },
     currentUser: null,
   }),
-  ...createAsyncHandlers(RESTORE_SESSION, RESTORE_SESSION.KEY),
-  [RESTORE_SESSION.SUCCESS]: (state, action) => ({
+  ...createAsyncHandlers(VALIDATE_SESSION, VALIDATE_SESSION.KEY),
+  [VALIDATE_SESSION.SUCCESS]: (state, action) => ({
     ...state,
-    loading: { ...state.loading, [RESTORE_SESSION.KEY]: false },
+    loading: { ...state.loading, [VALIDATE_SESSION.KEY]: false },
     currentUser: action.payload,
   }),
 };
