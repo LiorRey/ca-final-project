@@ -1,5 +1,5 @@
 import createError from "http-errors";
-import * as cloudinaryService from "../services/cloudinary-service.js";
+import * as uploadService from "../services/upload-service.js";
 
 const ALLOWED_FOLDERS = new Set(["card-covers"]);
 
@@ -8,9 +8,8 @@ export async function getUploadSignature(req, res) {
   if (!folder) throw createError(400, "folder is required");
   if (!ALLOWED_FOLDERS.has(folder)) throw createError(400, "Invalid folder");
 
-  const signData = cloudinaryService.generateUploadSignature(folder);
-  if (!signData)
-    throw createError(500, "Failed to generate Cloudinary signature");
+  const signData = uploadService.generateUploadSignature(folder);
+  if (!signData) throw createError(500, "Failed to generate upload signature");
 
-  res.json({ signData });
+  res.status(200).json({ signData });
 }

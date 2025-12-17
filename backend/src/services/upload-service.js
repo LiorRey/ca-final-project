@@ -5,7 +5,7 @@ import { config } from "../config/env.js";
 function ensureConfigured() {
   const { cloudName, apiKey, apiSecret } = config.cloudinary || {};
   if (!cloudName || !apiKey || !apiSecret) {
-    throw createError(500, "Cloudinary is not configured");
+    throw createError(503, "Upload provider is not configured");
   }
 
   cloudinary.config({
