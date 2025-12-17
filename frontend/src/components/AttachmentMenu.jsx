@@ -60,6 +60,12 @@ export function AttachmentMenu({
     }
   }
 
+  const coverStyle = coverImg
+    ? { backgroundImage: `url(${coverImg})` }
+    : coverColor
+    ? { backgroundColor: coverColor }
+    : undefined;
+
   return (
     <PopoverMenu
       anchorEl={anchorEl}
@@ -99,10 +105,7 @@ export function AttachmentMenu({
                 className={`cover-size-preview ${
                   textOverlay === false ? "selected" : ""
                 }`}
-                style={{
-                  backgroundColor: coverImg ? undefined : coverColor,
-                  backgroundImage: coverImg ? `url(${coverImg})` : undefined,
-                }}
+                style={coverStyle}
                 onClick={() => handleTextOverlay(false)}
               >
                 <CoverPreviewSkeleton className="cover-preview-container" />
@@ -115,10 +118,7 @@ export function AttachmentMenu({
                 className={`cover-size-preview ${
                   textOverlay === true ? "selected" : ""
                 }`}
-                style={{
-                  backgroundColor: coverImg ? undefined : coverColor,
-                  backgroundImage: coverImg ? `url(${coverImg})` : undefined,
-                }}
+                style={coverStyle}
                 onClick={() => handleTextOverlay(true)}
               >
                 <CoverPreviewSkeleton className="cover-preview-container-transparent" />

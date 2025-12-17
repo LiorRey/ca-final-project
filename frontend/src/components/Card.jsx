@@ -69,7 +69,6 @@ export function Card({
 
   const shouldShowLabels = labels.length > 0 && !isOverlay;
 
-  // Best practice: image cover takes precedence over color cover.
   const coverStyle = coverImg
     ? {
         backgroundImage: isOverlay

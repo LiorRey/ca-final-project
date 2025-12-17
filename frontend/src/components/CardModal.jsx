@@ -72,10 +72,7 @@ export function CardModal({
               card.cover?.color || card.cover?.img ? "cover" : ""
             }`}
             style={{
-              backgroundColor:
-                card.cover?.img && card.cover?.color
-                  ? undefined
-                  : card.cover?.color,
+              backgroundColor: card.cover?.color,
               backgroundImage: card.cover?.img && `url(${card.cover.img})`,
             }}
           >

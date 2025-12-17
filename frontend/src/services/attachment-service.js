@@ -6,7 +6,7 @@ export const attachmentService = {
 };
 
 async function getUploadSignature(folder = "card-covers") {
-  const res = await httpService.post("cloudinary/sign", { folder });
+  const res = await httpService.post("upload/sign", { folder });
   return res?.signData;
 }
 
