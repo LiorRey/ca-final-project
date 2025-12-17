@@ -112,8 +112,10 @@ export function createAsyncAction(actionTypes, serviceFunction, store) {
       store.dispatch({ type: actionTypes.SUCCESS, payload: result });
       return result;
     } catch (error) {
-      store.dispatch({ type: actionTypes.FAILURE, payload: error.message });
-      throw error;
+      store.dispatch({
+        type: actionTypes.FAILURE,
+        payload: error.response?.data?.error || error.message,
+      });
     }
   };
 }
