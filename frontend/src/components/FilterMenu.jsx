@@ -12,13 +12,11 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Popover } from "./Popover";
 import { useCardFilters } from "../hooks/useCardFilters";
-import {
-  CURRENT_USER_ID_PLACEHOLDER,
-  getMembersFilterOptions,
-} from "../services/filter-service";
+import { getMembersFilterOptions } from "../services/filter-service";
 
 export function FilterMenu() {
   const members = useSelector(state => state.boards.board.members);
+  const currentUser = useSelector(state => state.auth.currentUser);
   const [isOpen, setIsOpen] = useState(false);
   const [localTitle, setLocalTitle] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,19 +60,17 @@ export function FilterMenu() {
     if (checkboxName === "assignedToMe") {
       newMembers = filters.members ? [...filters.members] : [];
       if (checked) {
-        newMembers = [...newMembers, CURRENT_USER_ID_PLACEHOLDER];
+        newMembers = [...newMembers, currentUser._id];
       } else {
-        newMembers = newMembers.filter(
-          id => id !== CURRENT_USER_ID_PLACEHOLDER
-        );
+        newMembers = newMembers.filter(id => id !== currentUser._id);
       }
     } else if (checkboxName === "selectAll") {
       if (checked) {
         newMembers = members
-          .filter(m => m._id !== CURRENT_USER_ID_PLACEHOLDER)
+          .filter(m => m._id !== currentUser._id)
           .map(m => m._id);
-        if (filters.members?.includes(CURRENT_USER_ID_PLACEHOLDER)) {
-          newMembers = [CURRENT_USER_ID_PLACEHOLDER, ...newMembers];
+        if (filters.members?.includes(currentUser._id)) {
+          newMembers = [currentUser._id, ...newMembers];
         }
       } else {
         newMembers = [];
@@ -85,7 +81,7 @@ export function FilterMenu() {
 
   function isSomeMembersSelected() {
     if (!members || members.length === 0) return false;
-    const filtered = members.filter(m => m._id !== CURRENT_USER_ID_PLACEHOLDER);
+    const filtered = members.filter(m => m._id !== currentUser._id);
     const selectedCount = filtered.filter(m =>
       filters.members?.includes(m._id)
     ).length;
@@ -105,8 +101,8 @@ export function FilterMenu() {
 
   function handleMembersAutocompleteChange(_, selected) {
     let newMembers = selected.map(m => m.id);
-    if (filters.members?.includes(CURRENT_USER_ID_PLACEHOLDER)) {
-      newMembers = [CURRENT_USER_ID_PLACEHOLDER, ...newMembers];
+    if (filters.members?.includes(currentUser._id)) {
+      newMembers = [currentUser._id, ...newMembers];
     }
     updateFilter("members", newMembers);
   }
@@ -160,9 +156,7 @@ export function FilterMenu() {
               control={
                 <Checkbox
                   name="assignedToMe"
-                  checked={filters.members?.includes(
-                    CURRENT_USER_ID_PLACEHOLDER
-                  )}
+                  checked={filters.members?.includes(currentUser._id)}
                   onChange={handleMembersChange}
                 />
               }
@@ -178,7 +172,7 @@ export function FilterMenu() {
                   checked={
                     memberOptions.length > 0 &&
                     memberOptions
-                      .filter(m => m.id !== CURRENT_USER_ID_PLACEHOLDER)
+                      .filter(m => m.id !== currentUser._id)
                       .every(m => filters.members?.includes(m.id))
                   }
                   indeterminate={isSomeMembersSelected()}
@@ -198,8 +192,7 @@ export function FilterMenu() {
                 getOptionLabel={option => option.label}
                 value={memberOptions.filter(
                   m =>
-                    filters.members?.includes(m.id) &&
-                    m.id !== CURRENT_USER_ID_PLACEHOLDER
+                    filters.members?.includes(m.id) && m.id !== currentUser._id
                 )}
                 onChange={handleMembersAutocompleteChange}
                 renderOption={renderMemberOption}
