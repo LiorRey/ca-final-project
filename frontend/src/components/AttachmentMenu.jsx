@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { PopoverMenu } from "./ui/PopoverMenu";
-import { upsertCardCover } from "../store/actions/board-actions";
+import { updateCardCover } from "../store/actions/board-actions";
 import { COVER_COLORS } from "../services/board/board-backgrounds";
+import { attachmentService } from "../services/attachment-service";
 
 export function AttachmentMenu({
   card,
@@ -10,24 +12,52 @@ export function AttachmentMenu({
 }) {
   const textOverlay = card.cover?.textOverlay;
   const coverColor = card.cover?.color;
+  const coverImg = card.cover?.img;
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   function handleCloseMenu() {
     onCloseAttachFileMenu();
   }
 
   function handleTextOverlay(overlay) {
-    upsertCardCover(card._id, {
+    updateCardCover(card._id, {
       color: coverColor,
+      img: coverImg,
       textOverlay: overlay,
     });
   }
 
   function handleColorSelect(color) {
-    upsertCardCover(card._id, { color: color.value, textOverlay });
+    updateCardCover(card._id, { color: color.value, textOverlay, img: null });
   }
 
   function handleRemoveCover() {
-    upsertCardCover(card._id, { color: null, textOverlay: false });
+    updateCardCover(card._id, { color: null, textOverlay: false, img: null });
+  }
+
+  async function handleUploadCover(ev) {
+    const file = ev.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+      setUploadError("");
+
+      const uploaded = await attachmentService.uploadImage(file, "card-covers");
+
+      updateCardCover(card._id, {
+        img: uploaded.secure_url,
+        color: null,
+        textOverlay: textOverlay,
+      });
+    } catch (err) {
+      setUploadError(err?.message || "Upload failed");
+    } finally {
+      setIsUploading(false);
+      ev.target.value = "";
+    }
   }
 
   return (
@@ -46,7 +76,18 @@ export function AttachmentMenu({
       }}
     >
       <div className="attachment-menu-content">
-        {coverColor && (
+        <div className="cover-section">
+          <label className="cover-section-label">Upload</label>
+          <input type="file" accept="image/*" onChange={handleUploadCover} />
+          {isUploading && <div style={{ marginTop: 6 }}>Uploading...</div>}
+          {uploadError && (
+            <div style={{ marginTop: 6, color: "crimson", fontSize: 12 }}>
+              {uploadError}
+            </div>
+          )}
+        </div>
+
+        {(coverColor || coverImg) && (
           <div className="cover-section">
             <label className="cover-section-label">Style</label>
             <div className="cover-size-options">
@@ -58,7 +99,10 @@ export function AttachmentMenu({
                 className={`cover-size-preview ${
                   textOverlay === false ? "selected" : ""
                 }`}
-                style={{ backgroundColor: coverColor }}
+                style={{
+                  backgroundColor: coverImg ? undefined : coverColor,
+                  backgroundImage: coverImg ? `url(${coverImg})` : undefined,
+                }}
                 onClick={() => handleTextOverlay(false)}
               >
                 <CoverPreviewSkeleton className="cover-preview-container" />
@@ -71,7 +115,10 @@ export function AttachmentMenu({
                 className={`cover-size-preview ${
                   textOverlay === true ? "selected" : ""
                 }`}
-                style={{ backgroundColor: coverColor }}
+                style={{
+                  backgroundColor: coverImg ? undefined : coverColor,
+                  backgroundImage: coverImg ? `url(${coverImg})` : undefined,
+                }}
                 onClick={() => handleTextOverlay(true)}
               >
                 <CoverPreviewSkeleton className="cover-preview-container-transparent" />
@@ -80,7 +127,7 @@ export function AttachmentMenu({
           </div>
         )}
 
-        {coverColor && (
+        {(coverColor || coverImg) && (
           <button className="remove-cover-button" onClick={handleRemoveCover}>
             Remove cover
           </button>

@@ -29,6 +29,9 @@
   transition: border-color 0.2s;
   display: flex;
   align-items: stretch;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .cover-size-preview:hover {
