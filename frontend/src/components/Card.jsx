@@ -63,8 +63,26 @@ export function Card({
   const open = Boolean(anchorEl);
   const id = open ? `card-popover` : undefined;
 
-  const shouldShowLabels =
-    labels.length > 0 && card.cover?.textOverlay !== true;
+  const coverImg = card.cover?.img || null;
+  const coverColor = card.cover?.color || null;
+  const isOverlay = card.cover?.textOverlay === true;
+
+  const shouldShowLabels = labels.length > 0 && !isOverlay;
+
+  // Best practice: image cover takes precedence over color cover.
+  const coverStyle = coverImg
+    ? {
+        backgroundImage: isOverlay
+          ? `linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000000 100%), url(${coverImg})`
+          : `url(${coverImg})`,
+      }
+    : coverColor
+    ? { backgroundColor: coverColor }
+    : undefined;
+
+  const overlayText = isOverlay
+    ? { fontWeight: 500, fontSize: "16px" }
+    : undefined;
 
   return (
     <Draggable draggableId={card._id} index={index}>
@@ -82,11 +100,8 @@ export function Card({
               className="floating-card-content-container"
               sx={{ zIndex: theme => theme.zIndex.modal + 2 }}
             >
-              {card.cover?.color && (
-                <div
-                  className="card-cover"
-                  style={{ backgroundColor: card.cover.color }}
-                ></div>
+              {(card.cover?.color || card.cover?.img) && (
+                <div className="card-cover" style={coverStyle}></div>
               )}
               <div className="card-content">
                 {labels.length > 0 && (
@@ -105,12 +120,11 @@ export function Card({
                   className="card-title-input"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
+                  style={overlayText}
                 />
                 <div className="card-footer">
                   <div className="card-footer-left">
-                    <RemoveRedEyeOutlined />
-                    <ChatRounded />
-                    <NotesRounded />
+                    {card.description === "<p></p>" ? <NotesRounded /> : null}
                   </div>
                   <div className="card-footer-right">
                     {card.assignees.length > 0 && (
@@ -136,16 +150,12 @@ export function Card({
             <Box
               className="card-content-container"
               onClick={handleClickCard}
-              sx={
-                card.cover?.textOverlay && { backgroundColor: card.cover.color }
-              }
+              sx={card.cover?.textOverlay ? coverStyle : undefined}
             >
-              {card.cover?.color && !card.cover?.textOverlay && (
-                <div
-                  className="card-cover"
-                  style={{ backgroundColor: card.cover.color }}
-                ></div>
-              )}
+              {(card.cover?.color || card.cover?.img) &&
+                !card.cover?.textOverlay && (
+                  <div className="card-cover" style={coverStyle}></div>
+                )}
               <div className="card-content">
                 {shouldShowLabels && (
                   <div className="card-labels" onClick={handleClickLabels}>
@@ -164,15 +174,14 @@ export function Card({
 
                 <h3
                   className={`card-title ${labels.length === 0 ? "mr-2" : ""}`}
+                  style={overlayText}
                 >
                   {card.title}
                 </h3>
 
                 <div className="card-footer">
                   <div className="card-footer-left">
-                    <RemoveRedEyeOutlined />
-                    <ChatRounded />
-                    <NotesRounded />
+                    {card.description === "<p></p>" ? <NotesRounded /> : null}
                   </div>
                   <div className="card-footer-right">
                     {card.assignees.length > 0 && (
