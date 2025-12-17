@@ -8,6 +8,7 @@ import { authService } from "../../services/auth";
 import { userService } from "../../services/user/user-service-remote";
 
 import { store } from "../store";
+import { createAsyncAction } from "../utils";
 
 export async function signup(userData) {
   try {
@@ -41,20 +42,7 @@ export async function login(credentials) {
   }
 }
 
-export async function logout() {
-  try {
-    store.dispatch({ type: LOGOUT.REQUEST, key: LOGOUT.KEY });
-    await userService.logout();
-    store.dispatch({ type: LOGOUT.SUCCESS });
-  } catch (error) {
-    store.dispatch({
-      type: LOGOUT.FAILURE,
-      payload: error.message,
-      key: LOGOUT.KEY,
-    });
-    throw error;
-  }
-}
+export const logout = createAsyncAction(LOGOUT, userService.logout, store);
 
 export async function restoreSession() {
   try {
