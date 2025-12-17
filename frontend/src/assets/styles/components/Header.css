@@ -39,6 +39,7 @@
     .login-link {
       margin-inline-start: auto;
       color: white;
+      font-size: 16px;
     }
 
     & button {
@@ -51,7 +52,12 @@
     align-items: center;
     margin-inline-start: auto;
 
-    color: var(--clr1);
+    .user-menu-button {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
 
     .score {
       padding: 8px;
