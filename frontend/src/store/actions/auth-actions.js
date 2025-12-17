@@ -2,7 +2,7 @@ import {
   SIGNUP,
   LOGIN,
   LOGOUT,
-  RESTORE_SESSION,
+  VALIDATE_SESSION,
 } from "../reducers/auth-reducer";
 import { authService } from "../../services/auth";
 import { userService } from "../../services/user/user-service-remote";
@@ -44,19 +44,8 @@ export async function login(credentials) {
 
 export const logout = createAsyncAction(LOGOUT, userService.logout, store);
 
-export async function restoreSession() {
-  try {
-    store.dispatch({ type: RESTORE_SESSION.REQUEST, key: RESTORE_SESSION.KEY });
-    const user = await authService.getSession();
-    store.dispatch({ type: RESTORE_SESSION.SUCCESS, payload: user });
-    return user;
-  } catch (error) {
-    store.dispatch({
-      type: RESTORE_SESSION.FAILURE,
-      payload: error.message,
-      key: RESTORE_SESSION.KEY,
-    });
-    // Don't throw error - if there's no session, that's fine
-    return null;
-  }
-}
+export const validateSession = createAsyncAction(
+  VALIDATE_SESSION,
+  authService.getSession,
+  store
+);
