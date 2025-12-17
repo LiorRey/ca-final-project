@@ -149,9 +149,9 @@ export const editCard = createAsyncAction(
   store
 );
 
-export const upsertCardCover = createAsyncAction(
+export const updateCardCover = createAsyncAction(
   UPSERT_CARD_COVER,
-  boardService.upsertCardCover,
+  boardService.updateCardCover,
   store
 );
 
