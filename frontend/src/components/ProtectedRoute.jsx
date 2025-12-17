@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CircularProgress, Box } from "@mui/material";
 import { validateSession } from "../store/actions/auth-actions";
 import {
@@ -11,17 +11,16 @@ import {
 export const ProtectedRoute = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const loading = useSelector(selectAuthLoading);
-  const hasCheckedSession = useRef(false);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    // Check session only once when component mounts and user is not authenticated
-    if (!isAuthenticated && !loading && !hasCheckedSession.current) {
-      hasCheckedSession.current = true;
-      validateSession();
-    }
-  }, [isAuthenticated, loading]);
+    (async () => {
+      await validateSession();
+      setInitialized(true);
+    })();
+  }, []);
 
-  if (loading) {
+  if (loading || !initialized) {
     return (
       <Box
         display="flex"

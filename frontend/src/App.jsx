@@ -36,8 +36,8 @@ export function App() {
             <Route path="team" element={<AboutTeam />} />
             <Route path="vision" element={<AboutVision />} />
           </Route>
-          <Route path="board" element={<BoardIndex />} />
           <Route element={<ProtectedRoute />}>
+            <Route path="board" element={<BoardIndex />} />
             <Route path="board/:boardId" element={<BoardDetails />} />
             <Route path="user/:userId" element={<UserDetails />} />
             <Route path="admin" element={<AdminIndex />} />
@@ -52,12 +52,10 @@ export function App() {
         </Routes>
         {backgroundLocation && (
           <Routes>
-            <Route element={<ProtectedRoute />}>
-              <Route
-                path="board/:boardId/:listId/:cardId"
-                element={<CardDetails />}
-              />
-            </Route>
+            <Route
+              path="board/:boardId/:listId/:cardId"
+              element={<CardDetails />}
+            />
           </Routes>
         )}
       </main>
