@@ -17,6 +17,10 @@ export const ARCHIVE_ALL_CARDS_IN_LIST = createAsyncActionTypes(
 export const ADD_CARD = createAsyncActionTypes("ADD_CARD");
 export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const UPSERT_CARD_COVER = createAsyncActionTypes("UPSERT_CARD_COVER");
+export const ADD_CARD_ATTACHMENT = createAsyncActionTypes("ADD_CARD_ATTACHMENT");
+export const REMOVE_CARD_ATTACHMENT = createAsyncActionTypes(
+  "REMOVE_CARD_ATTACHMENT"
+);
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
@@ -214,6 +218,48 @@ const handlers = {
               cards: list.cards.map(card =>
                 card._id === action.payload._id
                   ? { ...card, cover: action.payload.cover }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+
+  ...createAsyncHandlers(ADD_CARD_ATTACHMENT, ADD_CARD_ATTACHMENT.KEY),
+  [ADD_CARD_ATTACHMENT.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [ADD_CARD_ATTACHMENT.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, attachments: action.payload.attachments }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+
+  ...createAsyncHandlers(REMOVE_CARD_ATTACHMENT, REMOVE_CARD_ATTACHMENT.KEY),
+  [REMOVE_CARD_ATTACHMENT.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [REMOVE_CARD_ATTACHMENT.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, attachments: action.payload.attachments }
                   : card
               ),
             }

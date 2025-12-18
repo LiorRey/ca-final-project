@@ -15,6 +15,8 @@ import {
   ADD_CARD,
   EDIT_CARD,
   UPSERT_CARD_COVER,
+  ADD_CARD_ATTACHMENT,
+  REMOVE_CARD_ATTACHMENT,
   DELETE_CARD,
   COPY_CARD,
   MOVE_CARD,
@@ -152,6 +154,18 @@ export const editCard = createAsyncAction(
 export const updateCardCover = createAsyncAction(
   UPSERT_CARD_COVER,
   boardService.updateCardCover,
+  store
+);
+
+export const addCardAttachment = createAsyncAction(
+  ADD_CARD_ATTACHMENT,
+  boardService.addCardAttachment,
+  store
+);
+
+export const removeCardAttachment = createAsyncAction(
+  REMOVE_CARD_ATTACHMENT,
+  boardService.removeCardAttachment,
   store
 );
 

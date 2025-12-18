@@ -11,6 +11,8 @@ export const boardService = {
   addCard,
   editCard,
   updateCardCover,
+  addCardAttachment,
+  removeCardAttachment,
   deleteCard,
   copyCard,
   moveCard,
@@ -87,6 +89,18 @@ async function editCard(_boardId, card, _listId) {
 
 async function updateCardCover(cardId, coverData) {
   const data = await httpService.put(`cards/${cardId}/cover`, coverData);
+  return data.card;
+}
+
+async function addCardAttachment(cardId, attachment) {
+  const data = await httpService.post(`cards/${cardId}/attachments`, attachment);
+  return data.card;
+}
+
+async function removeCardAttachment(cardId, attachmentId) {
+  const data = await httpService.delete(
+    `cards/${cardId}/attachments/${attachmentId}`
+  );
   return data.card;
 }
 
