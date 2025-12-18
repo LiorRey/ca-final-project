@@ -16,3 +16,12 @@ export function loadFromStorage(key) {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : undefined;
 }
+
+export function isValidURL(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch {
+    return false;
+  }
+}

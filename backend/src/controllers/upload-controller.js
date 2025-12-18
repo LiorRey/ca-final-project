@@ -1,7 +1,7 @@
 import createError from "http-errors";
 import * as uploadService from "../services/upload-service.js";
 
-const ALLOWED_FOLDERS = new Set(["card-covers"]);
+const ALLOWED_FOLDERS = new Set(["attachments"]);
 
 export async function getUploadSignature(req, res) {
   const folder = req.body?.folder;

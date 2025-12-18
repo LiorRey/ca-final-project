@@ -1,0 +1,47 @@
+.attachment-sub-label {
+  display: block;
+  font-size: 12px;
+  color: #b6c2cf;
+  margin-bottom: 6px;
+  opacity: 0.9;
+}
+
+.attachment-url-row {
+  display: flex;
+  gap: 8px;
+}
+
+.attachment-url-input {
+  flex: 1;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 4px;
+  border: 1px solid #3f4a54;
+  background-color: #1f2429;
+  color: #b6c2cf;
+}
+
+.attachment-url-input:focus {
+  outline: none;
+  border-color: #579dff;
+}
+
+.attachment-url-add {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 4px;
+  border: none;
+  background-color: #2c333a;
+  color: #b6c2cf;
+  cursor: pointer;
+}
+
+.attachment-url-add:hover {
+  background-color: #3f4a54;
+  color: #ffffff;
+}
+
+.attachment-url-add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

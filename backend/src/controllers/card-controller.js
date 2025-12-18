@@ -35,6 +35,22 @@ export async function updateCover(req, res) {
   res.status(200).json({ card });
 }
 
+export async function addAttachment(req, res) {
+  const { id } = req.params;
+  const card = await cardService.addAttachment(id, req.body);
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(201).json({ card });
+}
+
+export async function removeAttachment(req, res) {
+  const { id, attachmentId } = req.params;
+  const card = await cardService.removeAttachment(id, attachmentId);
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(200).json({ card });
+}
+
 export async function deleteCard(req, res) {
   const card = await cardService.deleteCard(req.params.id);
   if (!card) throw createError(404, "Card not found");
