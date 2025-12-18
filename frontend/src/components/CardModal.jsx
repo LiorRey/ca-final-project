@@ -230,8 +230,6 @@ export function CardModal({
           </section>
           <aside
             className={`card-modal-comments ${openSection ? "open" : "closed"}`}
-            aria-describedby="description-content-description"
-            aria-labelledby="description-content-title"
           >
             <div className="card-modal-comments-content">
               <h3 className="comments-title">Comments</h3>
