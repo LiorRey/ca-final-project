@@ -85,18 +85,21 @@ export function CardModal({
             }}
           >
             <div className="card-modal-header">
-              {listTitle}
+              <div className="card-modal-header-list-title">{listTitle}</div>
               <div className="card-modal-header-buttons">
                 <button
-                  className="icon-button"
+                  className="icon-button  modal-header-buttons"
                   onClick={e => handleOpenCoverMenu(e.currentTarget)}
                 >
                   <ImageOutlinedIcon />
                 </button>
-                <button className="icon-button">
+                <button className="icon-button modal-header-buttons">
                   <MoreHorizIcon />
                 </button>
-                <button className="icon-button" onClick={onClose}>
+                <button
+                  className="icon-button modal-header-buttons"
+                  onClick={onClose}
+                >
                   <CloseIcon />
                 </button>
               </div>

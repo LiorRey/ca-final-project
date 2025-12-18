@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PopoverMenu } from "./ui/PopoverMenu";
 import { attachmentService } from "../services/attachment-service";
 import { isValidURL } from "../services/util-service";
@@ -8,6 +8,7 @@ export function CardAttachmentsMenu({ card, anchorEl, isOpen, onClose }) {
   const [isSaving, setIsSaving] = useState(false);
   const [attachmentUrl, setAttachmentUrl] = useState("");
   const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
   async function handleUploadAttachment(ev) {
     const file = ev.target.files?.[0];
@@ -17,10 +18,7 @@ export function CardAttachmentsMenu({ card, anchorEl, isOpen, onClose }) {
       setIsSaving(true);
       setError("");
 
-      const uploaded = await attachmentService.uploadImage(
-        file,
-        "attachments"
-      );
+      const uploaded = await attachmentService.uploadImage(file, "attachments");
 
       addCardAttachment(card._id, {
         url: uploaded.secure_url,
@@ -76,10 +74,19 @@ export function CardAttachmentsMenu({ card, anchorEl, isOpen, onClose }) {
         <div className="cover-section">
           <label className="cover-section-label">Upload image</label>
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*"
             onChange={handleUploadAttachment}
+            style={{ display: "none" }}
           />
+          <button
+            className="remove-cover-button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isSaving}
+          >
+            {isSaving ? "Uploading..." : "Choose a file"}
+          </button>
         </div>
 
         <div className="cover-section">

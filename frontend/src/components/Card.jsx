@@ -71,9 +71,7 @@ export function Card({
 
   const coverStyle = coverImg
     ? {
-        backgroundImage: isOverlay
-          ? `linear-gradient(180deg, rgba(0, 0, 0, 0.3) 45%, #000000 90%), url(${coverImg})`
-          : `url(${coverImg})`,
+        backgroundImage: isOverlay ? `url(${coverImg})` : `url(${coverImg})`,
         minHeight: "250px",
         marginTop: "auto",
       }
@@ -82,8 +80,19 @@ export function Card({
     : undefined;
 
   const overlayText = isOverlay
-    ? { fontWeight: 500, fontSize: "16px" }
+    ? {
+        fontWeight: 500,
+        fontSize: "16px",
+      }
     : undefined;
+
+  const overlayContentStyle =
+    isOverlay && coverImg
+      ? {
+          background:
+            "linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.9) 100%)",
+        }
+      : undefined;
 
   return (
     <Draggable draggableId={card._id} index={index}>
@@ -159,7 +168,12 @@ export function Card({
                 !card.cover?.textOverlay && (
                   <div className="card-cover" style={coverStyle}></div>
                 )}
-              <div className="card-content">
+              <div
+                className={`card-content ${
+                  isOverlay && coverImg ? "card-content--overlay" : ""
+                }`}
+                style={overlayContentStyle}
+              >
                 {shouldShowLabels && (
                   <div className="card-labels" onClick={handleClickLabels}>
                     {labels.map(label => (

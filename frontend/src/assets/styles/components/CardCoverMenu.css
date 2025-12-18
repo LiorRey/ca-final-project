@@ -134,6 +134,16 @@
   background-color: #3f4a54;
 }
 
+.remove-cover-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.remove-cover-button:disabled:hover {
+  background-color: #2c333a;
+  color: #b6c2cf;
+}
+
 .cover-colors-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

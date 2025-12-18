@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PopoverMenu } from "./ui/PopoverMenu";
 import {
   addCardAttachment,
@@ -14,6 +14,7 @@ export function CardCoverMenu({ card, anchorEl, isOpen, onClose }) {
 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const fileInputRef = useRef(null);
 
   function handleCloseMenu() {
     onClose();
@@ -95,8 +96,20 @@ export function CardCoverMenu({ card, anchorEl, isOpen, onClose }) {
       <div className="attachment-menu-content">
         <div className="cover-section">
           <label className="cover-section-label">Upload</label>
-          <input type="file" accept="image/*" onChange={handleUploadCover} />
-          {isUploading && <div style={{ marginTop: 6 }}>Uploading...</div>}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleUploadCover}
+            style={{ display: "none" }}
+          />
+          <button
+            className="remove-cover-button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+          >
+            {isUploading ? "Uploading..." : "Choose a file"}
+          </button>
           {uploadError && (
             <div style={{ marginTop: 6, color: "crimson", fontSize: 12 }}>
               {uploadError}
