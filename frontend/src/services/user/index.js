@@ -2,7 +2,6 @@ const { DEV, VITE_LOCAL } = import.meta.env;
 
 import { userService as local } from "./user-service-local";
 import { userService as remote } from "./user-service-remote";
-import { userDataGenerator } from "../user/user-data-generator.js";
 
 function getEmptyUser() {
   return {
@@ -22,5 +21,4 @@ export const userService = { ...service, getEmptyUser };
 
 if (DEV) {
   window.userService = userService;
-  window.userDataGenerator = userDataGenerator;
 }
