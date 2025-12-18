@@ -4,8 +4,6 @@ import { removeCardAttachment } from "../store/actions/board-actions";
 import { attachmentService } from "../services/attachment-service";
 
 export function CardAttachments({ card }) {
-  if (!card) return null;
-
   function handleRemoveAttachment(attachmentId) {
     if (!attachmentId) return;
     removeCardAttachment(card._id, attachmentId);
