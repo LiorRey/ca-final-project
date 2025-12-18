@@ -32,6 +32,7 @@ export function CardModal({
   const [anchorEl, setAnchorEl] = useState(null);
   const [memberAnchorEl, setMemberAnchorEl] = useState(null);
   const [attachFileAnchorEl, setAttachFileAnchorEl] = useState(null);
+  const [commentDraft, setCommentDraft] = useState("");
   const membersContainerRef = useRef(null);
   const isLabelMenuOpen = Boolean(anchorEl);
   const isMemberMenuOpen = Boolean(memberAnchorEl);
@@ -192,7 +193,9 @@ export function CardModal({
               {isEditorOpen ? (
                 <>
                   <TextEditor
+                    variant="description"
                     content={cardDetails.description}
+                    placeholder={cardDetails.description}
                     onChange={html => handleChangeCard("description", html)}
                   />
                   <div className="editor-controls">
@@ -218,12 +221,25 @@ export function CardModal({
           >
             <div className="card-modal-comments-content">
               <h3 className="comments-title">Comments</h3>
-              <textarea
-                className="comment-input"
-                placeholder="Add a comment"
-                spellCheck="false"
+              <TextEditor
+                variant="comment"
+                content={commentDraft}
+                placeholder="Write a comment..."
+                onChange={setCommentDraft}
+                // onChange={html => handleChangeCard("description", html)}
               />
-              <button className="add-comment-button">Add</button>
+              <div className="editor-controls">
+                <Button>Save</Button>
+                {/* <Button variant="outlined" onClick={handleCancelCard}>
+                    Cancel
+                  </Button> */}
+              </div>
+              {/* <textarea
+                className="comment-input"
+                placeholder="Add a comment..."
+                spellCheck="false"
+              /> */}
+              {/* <button className="add-comment-button">Add</button> */}
             </div>
           </aside>
         </div>

@@ -157,7 +157,7 @@
   width: 100%;
 }
 
-.add-comment-button {
+/* .add-comment-button {
   background: var(--gray4);
   border: none;
   color: var(--gray1);
@@ -169,7 +169,7 @@
   &:hover {
     background: var(--gray3);
   }
-}
+} */
 
 .card-modal-title-container {
   padding-left: 2rem;

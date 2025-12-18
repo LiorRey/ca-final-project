@@ -1,5 +1,6 @@
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
 import FormatBold from "@mui/icons-material/FormatBold";
 import FormatItalic from "@mui/icons-material/FormatItalic";
 import StrikethroughS from "@mui/icons-material/StrikethroughS";
@@ -165,9 +166,19 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export function TextEditor({ content, onChange }) {
+export function TextEditor({
+  content = "",
+  onChange,
+  placeholder = "",
+  variant = "description", // "description" | "comment"
+}) {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder,
+      }),
+    ],
     content,
     autofocus: false,
     onUpdate: ({ editor }) => {
@@ -191,7 +202,7 @@ export function TextEditor({ content, onChange }) {
   }
 
   return (
-    <div className="tiptap-editor-wrapper">
+    <div className={`tiptap-editor-wrapper ${variant}`}>
       <MenuBar editor={editor} />
       <div className="text-editor-wrapper" onClick={handleEditorClick}>
         <EditorContent editor={editor} className="text-editor" />
