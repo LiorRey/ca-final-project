@@ -8,10 +8,9 @@ import uploadRoutes from "./upload.js";
 
 const router = express.Router();
 
-router.use("/api/auth", authRoutes);
-router.use("/api/boards", boardRoutes);
-router.use("/api/lists", listRoutes);
-router.use("/api/cards", cardRoutes);
-router.use("/api/upload", uploadRoutes);
-
+router.use("/auth", authRoutes);
+router.use("/boards", boardRoutes);
+router.use("/lists", listRoutes);
+router.use("/cards", cardRoutes);
+router.use("/upload", uploadRoutes);
 export default router;
