@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { PopoverMenu } from "./ui/PopoverMenu";
-import { updateCardCover } from "../store/actions/board-actions";
+import {
+  addCardAttachment,
+  updateCardCover,
+} from "../store/actions/board-actions";
 import { COVER_COLORS } from "../services/board/board-backgrounds";
 import { attachmentService } from "../services/attachment-service";
 
-export function AttachmentMenu({
-  card,
-  anchorEl,
-  isAttachFileMenuOpen,
-  onCloseAttachFileMenu,
-}) {
+export function CardCoverMenu({ card, anchorEl, isOpen, onClose }) {
   const textOverlay = card.cover?.textOverlay;
   const coverColor = card.cover?.color;
   const coverImg = card.cover?.img;
@@ -18,7 +16,7 @@ export function AttachmentMenu({
   const [uploadError, setUploadError] = useState("");
 
   function handleCloseMenu() {
-    onCloseAttachFileMenu();
+    onClose();
   }
 
   function handleTextOverlay(overlay) {
@@ -37,6 +35,14 @@ export function AttachmentMenu({
     updateCardCover(card._id, { color: null, textOverlay: false, img: null });
   }
 
+  function handleSelectAttachmentAsCover(attachmentUrl) {
+    updateCardCover(card._id, {
+      img: attachmentUrl,
+      color: null,
+      textOverlay: textOverlay,
+    });
+  }
+
   async function handleUploadCover(ev) {
     const file = ev.target.files?.[0];
     if (!file) return;
@@ -45,12 +51,17 @@ export function AttachmentMenu({
       setIsUploading(true);
       setUploadError("");
 
-      const uploaded = await attachmentService.uploadImage(file, "card-covers");
+      const uploaded = await attachmentService.uploadImage(file, "attachments");
 
       updateCardCover(card._id, {
         img: uploaded.secure_url,
         color: null,
         textOverlay: textOverlay,
+      });
+      addCardAttachment(card._id, {
+        url: uploaded.secure_url,
+        publicId: uploaded.public_id,
+        name: uploaded.original_filename || file.name,
       });
     } catch (err) {
       setUploadError(err?.message || "Upload failed");
@@ -69,7 +80,7 @@ export function AttachmentMenu({
   return (
     <PopoverMenu
       anchorEl={anchorEl}
-      isOpen={isAttachFileMenuOpen}
+      isOpen={isOpen}
       onClose={handleCloseMenu}
       title="Cover"
       anchorOrigin={{
@@ -149,6 +160,38 @@ export function AttachmentMenu({
             ))}
           </div>
         </div>
+
+        {card.attachments && card.attachments.length > 0 && (
+          <div className="cover-section">
+            <label className="cover-section-label">Attachments</label>
+            <div className="attachment-cover-grid">
+              {card.attachments.map(att => {
+                const isSelected = coverImg === att.url;
+                return (
+                  <button
+                    key={att._id || att.url}
+                    type="button"
+                    className={`attachment-cover-thumbnail ${
+                      isSelected ? "selected" : ""
+                    }`}
+                    onClick={() => handleSelectAttachmentAsCover(att.url)}
+                    aria-label={`Select ${att.name || "attachment"} as cover`}
+                  >
+                    <img
+                      src={
+                        att.publicId
+                          ? attachmentService.getThumbnailUrl(att.publicId)
+                          : att.url
+                      }
+                      alt={att.name || "attachment"}
+                      loading="lazy"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </PopoverMenu>
   );

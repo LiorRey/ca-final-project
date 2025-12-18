@@ -166,3 +166,40 @@
   outline: none;
   border-color: #579dff;
 }
+
+.attachment-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.attachment-cover-thumbnail {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 3px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 0;
+  background-color: #2c333a;
+  transition: border-color 0.2s, transform 0.1s;
+  position: relative;
+}
+
+.attachment-cover-thumbnail.selected {
+  border-color: #579dff;
+  border-width: 3px;
+}
+
+.attachment-cover-thumbnail:focus {
+  outline: none;
+  border-color: #579dff;
+}
+
+.attachment-cover-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
