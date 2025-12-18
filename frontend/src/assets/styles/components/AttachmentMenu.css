@@ -14,7 +14,6 @@
   margin-bottom: 8px;
 }
 
-/* Size Options */
 .cover-size-options {
   display: flex;
   gap: 12px;
@@ -29,6 +28,9 @@
   transition: border-color 0.2s;
   display: flex;
   align-items: stretch;
+  background-origin: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .cover-size-preview:hover {
@@ -43,7 +45,6 @@
   outline: none;
 }
 
-/* Left button container - transparent like right, but lines section has background */
 .cover-preview-container {
   width: 100%;
   display: flex;
@@ -52,7 +53,6 @@
   background: transparent;
 }
 
-/* Right button container - transparent to show button's background color */
 .cover-preview-container-transparent {
   width: 100%;
   display: flex;
@@ -90,31 +90,26 @@
   width: 40%;
 }
 
-/* Grey background for lines section in left button - blocks button background */
 .cover-preview-container .cover-preview-lines {
   background-color: #2d2d2d;
   border-radius: 3px;
   padding: 4px;
 }
 
-/* Grey lines for left button */
 .cover-preview-container .cover-preview-line {
   background-color: #737373;
 }
 
-/* Lines section in right button - same styling as left but transparent background */
 .cover-preview-container-transparent .cover-preview-lines {
   background: transparent;
   border-radius: 3px;
   padding: 4px;
 }
 
-/* Semi-transparent white lines for right button - shows button background through */
 .cover-preview-container-transparent .cover-preview-line {
   background-color: rgba(255, 255, 255, 0.56);
 }
 
-/* Remove Cover Button */
 .remove-cover-button {
   width: 100%;
   padding: 10px 12px;
@@ -139,7 +134,6 @@
   background-color: #3f4a54;
 }
 
-/* Colors Grid */
 .cover-colors-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

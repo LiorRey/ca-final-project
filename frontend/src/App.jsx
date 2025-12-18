@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Header } from "./components/Header";
 import { UserMessage } from "./components/UserMessage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminIndex } from "./pages/AdminIndex";
 import { AboutUs, AboutTeam, AboutVision } from "./pages/AboutUs";
 import { BoardDetails } from "./pages/BoardDetails";
@@ -13,15 +14,10 @@ import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
 import { ThemeComparison } from "./pages/ThemeComparison";
 import { UserDetails } from "./pages/UserDetails";
-import { restoreSession } from "./store/actions/auth-actions";
 
 export function App() {
   const location = useLocation();
   const backgroundLocation = location.state?.backgroundLocation;
-
-  useEffect(() => {
-    restoreSession();
-  }, []);
 
   return (
     <div className="main-container">
@@ -35,16 +31,18 @@ export function App() {
             <Route path="team" element={<AboutTeam />} />
             <Route path="vision" element={<AboutVision />} />
           </Route>
-          <Route path="board" element={<BoardIndex />} />
-          <Route path="board/:boardId" element={<BoardDetails />} />
-          <Route path="user/:userId" element={<UserDetails />} />
-          <Route path="admin" element={<AdminIndex />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="board" element={<BoardIndex />} />
+            <Route path="board/:boardId" element={<BoardDetails />} />
+            <Route path="user/:userId" element={<UserDetails />} />
+            <Route path="admin" element={<AdminIndex />} />
+            <Route
+              path="board/:boardId/:listId/:cardId"
+              element={<CardDetails />}
+            />
+          </Route>
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route
-            path="board/:boardId/:listId/:cardId"
-            element={<CardDetails />}
-          />
           <Route path="theme-comparison" element={<ThemeComparison />} />
         </Routes>
         {backgroundLocation && (

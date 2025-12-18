@@ -9,6 +9,11 @@ export function getConfig() {
 
   const frontendUrl = process.env.CORS_ORIGIN;
 
+  const cloudinaryFolder = process.env.CLOUDINARY_FOLDER;
+  const cloudinaryCloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
+  const cloudinaryApiSecret = process.env.CLOUDINARY_API_SECRET;
+
   return {
     app: {
       env,
@@ -20,6 +25,12 @@ export function getConfig() {
     },
     cors: {
       origin: frontendUrl,
+    },
+    cloudinary: {
+      cloudName: cloudinaryCloudName,
+      apiKey: cloudinaryApiKey,
+      apiSecret: cloudinaryApiSecret,
+      defaultFolder: cloudinaryFolder,
     },
   };
 }

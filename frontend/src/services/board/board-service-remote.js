@@ -10,7 +10,7 @@ export const boardService = {
   getEmptyCard,
   addCard,
   editCard,
-  upsertCardCover,
+  updateCardCover,
   deleteCard,
   copyCard,
   moveCard,
@@ -85,7 +85,7 @@ async function editCard(_boardId, card, _listId) {
   return data.card;
 }
 
-async function upsertCardCover(cardId, coverData) {
+async function updateCardCover(cardId, coverData) {
   const data = await httpService.put(`cards/${cardId}/cover`, coverData);
   return data.card;
 }

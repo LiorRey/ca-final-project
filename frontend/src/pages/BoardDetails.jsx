@@ -39,7 +39,7 @@ export function BoardDetails() {
   const [labelsIsOpen, setLabelsIsOpen] = useState(false);
   const boardCanvasRef = useRef(null);
   const scrollBoardToEnd = useScrollTo(boardCanvasRef);
-  useDragToScroll(boardCanvasRef, { sensitivity: 1, enabled: !!board }); //drag to scroll the board experimentall
+  useDragToScroll(boardCanvasRef, { sensitivity: 1, enabled: !!board });
   const { filters, updateFilters } = useCardFilters();
   const [lists, setLists] = useState(board?.lists || []);
   const isFromUrlUpdate = useRef(false);

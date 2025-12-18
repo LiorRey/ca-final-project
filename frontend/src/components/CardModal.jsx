@@ -69,8 +69,13 @@ export function CardModal({
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
         <div className="card-modal-header-container">
           <div
-            className={`card-modal-cover ${card.cover?.color ? "cover" : ""}`}
-            style={{ backgroundColor: card.cover?.color }}
+            className={`card-modal-cover ${
+              card.cover?.color || card.cover?.img ? "cover" : ""
+            }`}
+            style={{
+              backgroundColor: card.cover?.color,
+              backgroundImage: card.cover?.img && `url(${card.cover.img})`,
+            }}
           >
             <div className="card-modal-header">
               {listTitle}
