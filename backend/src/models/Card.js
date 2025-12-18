@@ -111,6 +111,29 @@ const cardSchema = new mongoose.Schema(
       default: null,
     },
     comments: [commentSchema],
+    attachments: [
+      {
+        url: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        name: {
+          type: String,
+          default: "",
+          trim: true,
+        },
+        publicId: {
+          type: String,
+          default: "",
+          trim: true,
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
