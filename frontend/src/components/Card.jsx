@@ -123,7 +123,9 @@ export function Card({
                 />
                 <div className="card-footer">
                   <div className="card-footer-left">
-                    {card.description === "<p></p>" ? <NotesRounded /> : null}
+                    {card.description && card.description !== "<p></p>" && (
+                      <NotesRounded />
+                    )}
                   </div>
                   <div className="card-footer-right">
                     {card.assignees.length > 0 && (
@@ -180,7 +182,9 @@ export function Card({
 
                 <div className="card-footer">
                   <div className="card-footer-left">
-                    {card.description === "<p></p>" ? <NotesRounded /> : null}
+                    {card.description && card.description !== "<p></p>" && (
+                      <NotesRounded />
+                    )}
                   </div>
                   <div className="card-footer-right">
                     {card.assignees.length > 0 && (

@@ -172,7 +172,8 @@ export function TextEditor({ content, onChange }) {
     autofocus: false,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      onChange?.(html);
+      const text = editor.getText().trim();
+      onChange?.(text.length !== 0 ? html : null);
     },
     editorProps: {
       attributes: {
