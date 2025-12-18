@@ -28,8 +28,9 @@ export function FilterMenu() {
     hasActiveFilters,
   } = useCardFilters();
   const memberOptions = useMemo(
-    () => getMembersFilterOptions(members),
-    [members]
+    () =>
+      getMembersFilterOptions(members).filter(m => m.id !== currentUser._id),
+    [members, currentUser]
   );
 
   function handleClearFilters() {
@@ -66,26 +67,26 @@ export function FilterMenu() {
       }
     } else if (checkboxName === "selectAll") {
       if (checked) {
-        newMembers = members
-          .filter(m => m._id !== currentUser._id)
-          .map(m => m._id);
+        newMembers = memberOptions.map(m => m.id);
         if (filters.members?.includes(currentUser._id)) {
           newMembers = [currentUser._id, ...newMembers];
         }
       } else {
         newMembers = [];
+        if (filters.members?.includes(currentUser._id)) {
+          newMembers = [currentUser._id];
+        }
       }
     }
     updateFilter("members", newMembers);
   }
 
   function isSomeMembersSelected() {
-    if (!members || members.length === 0) return false;
-    const filtered = members.filter(m => m._id !== currentUser._id);
-    const selectedCount = filtered.filter(m =>
-      filters.members?.includes(m._id)
+    if (!memberOptions || memberOptions.length === 0) return false;
+    const selectedCount = memberOptions.filter(m =>
+      filters.members?.includes(m.id)
     ).length;
-    return selectedCount > 0 && selectedCount < filtered.length;
+    return selectedCount > 0 && selectedCount < memberOptions.length;
   }
 
   function renderMemberOption(props, option, { selected }) {
@@ -171,9 +172,7 @@ export function FilterMenu() {
                   name="selectAll"
                   checked={
                     memberOptions.length > 0 &&
-                    memberOptions
-                      .filter(m => m.id !== currentUser._id)
-                      .every(m => filters.members?.includes(m.id))
+                    memberOptions.every(m => filters.members?.includes(m.id))
                   }
                   indeterminate={isSomeMembersSelected()}
                   onChange={handleMembersChange}
@@ -190,9 +189,8 @@ export function FilterMenu() {
                 disableClearable
                 options={memberOptions}
                 getOptionLabel={option => option.label}
-                value={memberOptions.filter(
-                  m =>
-                    filters.members?.includes(m.id) && m.id !== currentUser._id
+                value={memberOptions.filter(m =>
+                  filters.members?.includes(m.id)
                 )}
                 onChange={handleMembersAutocompleteChange}
                 renderOption={renderMemberOption}
