@@ -29,6 +29,8 @@
 }
 
 .card-content-container {
+  display: flex;
+  flex-direction: column;
   background-color: var(--gray4);
   border: 1px solid var(--black);
   border-radius: 6px;
@@ -49,6 +51,7 @@
 
 .card-content {
   display: flex;
+  flex: 1;
   flex-direction: column;
   color: var(--gray1);
   border-radius: 0 0 6px 6px;
@@ -92,6 +95,7 @@
 .card-title,
 .card-title-input {
   margin: 0;
+  margin-top: auto;
   font-size: 1.15em;
   font-weight: normal;
   font-family: inherit;

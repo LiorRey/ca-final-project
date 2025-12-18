@@ -72,8 +72,10 @@ export function Card({
   const coverStyle = coverImg
     ? {
         backgroundImage: isOverlay
-          ? `linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000000 100%), url(${coverImg})`
+          ? `linear-gradient(180deg, rgba(0, 0, 0, 0.3) 45%, #000000 90%), url(${coverImg})`
           : `url(${coverImg})`,
+        minHeight: "250px",
+        marginTop: "auto",
       }
     : coverColor
     ? { backgroundColor: coverColor }
