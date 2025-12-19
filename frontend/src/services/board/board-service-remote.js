@@ -45,8 +45,31 @@ async function getById(boardId) {
   return data.board;
 }
 
-async function getFullById(boardId) {
-  const data = await httpService.get(`boards/${boardId}/full`);
+async function getFullById(boardId, filterBy = {}) {
+  const params = new URLSearchParams();
+
+  if (filterBy.title) {
+    params.set("title", filterBy.title);
+  }
+  if (filterBy.labels && filterBy.labels.length > 0) {
+    params.set("labels", filterBy.labels.join(","));
+  }
+  if (filterBy.members && filterBy.members.length > 0) {
+    params.set("members", filterBy.members.join(","));
+  }
+  if (filterBy.noMembers) {
+    params.set("noMembers", "1");
+  }
+  if (filterBy.includeNoLabels) {
+    params.set("includeNoLabels", "1");
+  }
+
+  const queryString = params.toString();
+  const url = queryString
+    ? `boards/${boardId}/full?${queryString}`
+    : `boards/${boardId}/full`;
+
+  const data = await httpService.get(url);
   return data.board;
 }
 
@@ -93,7 +116,10 @@ async function updateCardCover(cardId, coverData) {
 }
 
 async function addCardAttachment(cardId, attachment) {
-  const data = await httpService.post(`cards/${cardId}/attachments`, attachment);
+  const data = await httpService.post(
+    `cards/${cardId}/attachments`,
+    attachment
+  );
   return data.card;
 }
 
