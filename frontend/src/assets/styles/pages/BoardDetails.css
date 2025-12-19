@@ -25,15 +25,9 @@
 }
 
 .MuiButtonBase-root.add-submit-button {
-  background-color: var(--ds-background-brand-bold, #0c66e4);
-  color: var(--ds-text-inverse, #ffffff);
   text-transform: none;
   font-weight: 500;
   padding: 0.375rem 0.75rem;
-}
-
-.MuiButtonBase-root.add-submit-button:hover {
-  background-color: var(--ds-background-brand-bold-hovered, #0055cc);
 }
 
 .MuiIconButton-root.add-close-button {
