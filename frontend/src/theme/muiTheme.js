@@ -403,6 +403,7 @@ const muiTheme = createTheme({
           minWidth: 0, // Remove default min-width
           lineHeight: "20px", // Line height
           margin: "0.5rem 0rem 0", // Remove default margin
+          boxShadow: "none", // Remove default box shadow
           "&:hover": {
             backgroundColor: token(
               "color.background.brand.bold.hovered",
