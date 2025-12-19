@@ -51,20 +51,10 @@ export function CopyListForm({ initialValue, onCopy, onCancel }) {
         autoFocus
       />
       <Box display="flex" gap={1}>
-        <ActionButton
-          type="submit"
-          variant="contained"
-          size="small"
-          disabled={!textareaValue.trim()}
-        >
+        <Button type="submit" disabled={!textareaValue.trim()}>
           Create list
-        </ActionButton>
-        <Button
-          type="button"
-          variant="contained"
-          size="small"
-          onClick={onCancel}
-        >
+        </Button>
+        <Button type="button" onClick={onCancel}>
           Back
         </Button>
       </Box>
