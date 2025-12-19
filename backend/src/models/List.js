@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Card } from "./Card.js";
 
 const listSchema = new mongoose.Schema(
   {
@@ -38,6 +39,13 @@ listSchema.virtual("cards", {
   ref: "Card",
   localField: "_id",
   foreignField: "listId",
+});
+
+// Cascade delete cards when a list is deleted
+listSchema.pre("findOneAndDelete", async function (next) {
+  const listId = this.getQuery()._id;
+  await Card.deleteMany({ listId });
+  next();
 });
 
 export const List = mongoose.model("List", listSchema);

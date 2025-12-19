@@ -23,9 +23,8 @@ export const boardService = {
   updateList,
   moveList,
   copyList,
+  deleteList,
   // archiveList,
-  // unarchiveList,
-  // moveAllCards,
   // archiveAllCardsInList,
   updateCardLabels,
   createLabel,
@@ -229,6 +228,11 @@ async function copyList(listId, copyOptions = {}) {
 
   const data = await httpService.post(`lists/${listId}/copy`, mergedOptions);
   return data.list;
+}
+
+async function deleteList(boardId, listId) {
+  const data = await httpService.delete(`lists/${listId}`);
+  return data.id;
 }
 
 // async function archiveList(boardId, listId) {
