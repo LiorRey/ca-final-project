@@ -288,9 +288,8 @@ async function updateCardLabels(_boardId, _listId, cardId, updatedCardLabels) {
   const payload = {
     labelIds: updatedCardLabels,
   };
-  const data = await httpService.put(`cards/${cardId}`, payload);
-  console.log("data card", data);
-  return updatedCardLabels;
+  const data = await httpService.put(`cards/${cardId}/labels`, payload);
+  return data.card;
 }
 
 async function createLabel(boardId, label) {

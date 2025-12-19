@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { boardService } from "../services/board";
 
 const colors = [
   "green",
@@ -21,13 +20,14 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
   );
 
   function handleSave() {
-    const label = labelToEdit._id ? labelToEdit : boardService.getEmptyLabel();
-
     const updatedLabel = {
-      ...label,
       title,
       color: selectedColor,
     };
+
+    if (labelToEdit._id) {
+      updatedLabel._id = labelToEdit._id;
+    }
 
     onSaveLabel(updatedLabel);
   }

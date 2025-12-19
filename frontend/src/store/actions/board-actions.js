@@ -224,32 +224,11 @@ export const deleteLabel = createAsyncAction(
   store
 );
 
-export async function updateCardLabels(
-  boardId,
-  listId,
-  cardId,
-  updatedCardLabels
-) {
-  try {
-    store.dispatch({ type: UPDATE_CARD_LABELS.REQUEST });
-    await boardService.updateCardLabels(
-      boardId,
-      listId,
-      cardId,
-      updatedCardLabels
-    );
-    store.dispatch({
-      type: UPDATE_CARD_LABELS.SUCCESS,
-      payload: { listId, cardId, updatedCardLabels },
-    });
-  } catch (error) {
-    store.dispatch({
-      type: UPDATE_CARD_LABELS.FAILURE,
-      payload: error.message,
-    });
-    throw error;
-  }
-}
+export const updateCardLabels = createAsyncAction(
+  UPDATE_CARD_LABELS,
+  boardService.updateCardLabels,
+  store
+);
 
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };

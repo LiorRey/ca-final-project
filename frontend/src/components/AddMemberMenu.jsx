@@ -88,7 +88,7 @@ export function AddMemberMenu({
             <ul className="members-list">
               {cardMembers.map(member => (
                 <li
-                  key={member._id}
+                  key={member.userId}
                   className="member-menu-item card-member-item"
                 >
                   <div
@@ -118,7 +118,7 @@ export function AddMemberMenu({
           {boardMembers.length > 0 ? (
             boardMembers.map(member => (
               <li
-                key={member._id}
+                key={member.userId}
                 className="member-menu-item board-member-item"
                 onClick={() => handleAddAssignee(member.userId)}
               >

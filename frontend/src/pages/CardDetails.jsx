@@ -51,21 +51,11 @@ export function CardDetails() {
     return <section className={`card-details-container ${backgroundClass}`} />;
   }
 
-  const cardLabels =
-    board.labels && card.labelIds && card.labelIds.length > 0
-      ? card.labelIds
-          .map(labelId => board.labels.find(l => l._id === labelId))
-          .filter(Boolean)
-      : [];
-
   return (
     <section className={`card-details-container ${backgroundClass}`}>
       <CardModal
-        boardId={boardId}
-        listId={list._id}
         listTitle={list.title}
         card={card}
-        cardLabels={cardLabels}
         onEditCard={handleEditCard}
         onDeleteCard={handleDeleteCard}
         onClose={handleCloseModal}

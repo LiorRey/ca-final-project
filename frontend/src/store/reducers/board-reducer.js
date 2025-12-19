@@ -338,7 +338,7 @@ const handlers = {
   ...createAsyncHandlers(ADD_ASSIGNEE, ADD_ASSIGNEE.KEY),
   [ADD_ASSIGNEE.SUCCESS]: (state, action) => ({
     ...state,
-    loading: { ...state.loading, [EDIT_CARD.KEY]: false },
+    loading: { ...state.loading, [ADD_ASSIGNEE.KEY]: false },
     board: {
       ...state.board,
       lists: state.board.lists.map(list =>
@@ -347,7 +347,7 @@ const handlers = {
               ...list,
               cards: list.cards.map(card =>
                 card._id === action.payload._id
-                  ? { ...card, ...action.payload }
+                  ? { ...card, assignees: action.payload.assignees }
                   : card
               ),
             }
@@ -367,7 +367,7 @@ const handlers = {
               ...list,
               cards: list.cards.map(card =>
                 card._id === action.payload._id
-                  ? { ...card, ...action.payload }
+                  ? { ...card, assignees: action.payload.assignees }
                   : card
               ),
             }
@@ -422,10 +422,10 @@ const handlers = {
           ? {
               ...list,
               cards: list.cards.map(card =>
-                card._id === action.payload.cardId
+                card._id === action.payload._id
                   ? {
                       ...card,
-                      labelIds: action.payload.updatedCardLabels,
+                      labelIds: action.payload.labelIds,
                     }
                   : card
               ),

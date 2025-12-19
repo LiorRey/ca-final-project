@@ -11,8 +11,6 @@ import {
 } from "../store/actions/board-actions";
 
 export function LabelMenu({
-  boardId,
-  listId,
   card,
   anchorEl,
   isLabelMenuOpen,
@@ -45,19 +43,21 @@ export function LabelMenu({
   }
 
   async function handleCreateLabel(label) {
-    await createLabel(boardId, label);
-    handleToggleLabel(label._id);
+    const createdLabel = await createLabel(card.boardId, label);
+    if (createdLabel && createdLabel._id) {
+      handleToggleLabel(createdLabel._id);
+    }
     setSearchTerm("");
     handleBack();
   }
 
   function handleEditLabel(label) {
-    editLabel(boardId, label);
+    editLabel(card.boardId, label);
     handleBack();
   }
 
   async function handleDeleteLabel(labelId) {
-    await deleteLabel(boardId, labelId);
+    await deleteLabel(card.boardId, labelId);
     handleBack();
   }
 
@@ -71,7 +71,7 @@ export function LabelMenu({
       updatedCardLabels = [];
     }
 
-    updateCardLabels(boardId, listId, card._id, updatedCardLabels);
+    updateCardLabels(card.boardId, card.listId, card._id, updatedCardLabels);
   }
 
   function getPopoverTitle() {
