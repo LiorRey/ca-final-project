@@ -71,12 +71,12 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
           {labelToEdit._id ? "Save" : "Create"}
         </Button>
         {labelToEdit._id && (
-          <button
+          <Button
             className="delete-btn"
             onClick={() => onDeleteLabel(labelToEdit._id)}
           >
             Delete
-          </button>
+          </Button>
         )}
       </div>
     </div>
