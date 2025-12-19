@@ -38,5 +38,4 @@ export const boardService = {
 
 if (DEV) {
   window.boardService = boardService;
-  window.boardDataGenerator = boardDataGenerator;
 }
