@@ -23,7 +23,7 @@ export const ADD_CARD_ATTACHMENT = createAsyncActionTypes(
 export const REMOVE_CARD_ATTACHMENT = createAsyncActionTypes(
   "REMOVE_CARD_ATTACHMENT"
 );
-export const DELETE_CARD = "DELETE_CARD";
+export const DELETE_CARD = createAsyncActionTypes("DELETE_CARD");
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
 export const ADD_ASSIGNEE = createAsyncActionTypes("ADD_ASSIGNEE");
@@ -280,8 +280,10 @@ const handlers = {
     },
   }),
 
-  [DELETE_CARD]: (state, action) => ({
+  ...createAsyncHandlers(DELETE_CARD, DELETE_CARD.KEY),
+  [DELETE_CARD.SUCCESS]: (state, action) => ({
     ...state,
+    loading: { ...state.loading, [DELETE_CARD.KEY]: false },
     board: {
       ...state.board,
       lists: state.board.lists.map(list => {
