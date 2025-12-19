@@ -120,9 +120,7 @@ export function MoveListForm({
           />
         </Box>
         <Box display="flex" gap={2} mt={3}>
-          <ActionButton type="submit" variant="contained" color="primary">
-            Move
-          </ActionButton>
+          <Button type="submit">Move</Button>
           <Button type="button" variant="outlined" onClick={onCancel}>
             Cancel
           </Button>
