@@ -17,7 +17,9 @@ export const ARCHIVE_ALL_CARDS_IN_LIST = createAsyncActionTypes(
 export const ADD_CARD = createAsyncActionTypes("ADD_CARD");
 export const EDIT_CARD = createAsyncActionTypes("EDIT_CARD");
 export const UPSERT_CARD_COVER = createAsyncActionTypes("UPSERT_CARD_COVER");
-export const ADD_CARD_ATTACHMENT = createAsyncActionTypes("ADD_CARD_ATTACHMENT");
+export const ADD_CARD_ATTACHMENT = createAsyncActionTypes(
+  "ADD_CARD_ATTACHMENT"
+);
 export const REMOVE_CARD_ATTACHMENT = createAsyncActionTypes(
   "REMOVE_CARD_ATTACHMENT"
 );
@@ -29,6 +31,7 @@ export const REMOVE_ASSIGNEE = createAsyncActionTypes("REMOVE_ASSIGNEE");
 export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
 export const UPDATE_LIST = createAsyncActionTypes("UPDATE_LIST");
 export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
+export const DELETE_LIST = createAsyncActionTypes("DELETE_LIST");
 export const CREATE_LABEL = createAsyncActionTypes("CREATE_LABEL");
 export const EDIT_LABEL = createAsyncActionTypes("EDIT_LABEL");
 export const DELETE_LABEL = createAsyncActionTypes("DELETE_LABEL");
@@ -157,6 +160,15 @@ const handlers = {
       return state;
     }
   },
+  ...createAsyncHandlers(DELETE_LIST, DELETE_LIST.KEY),
+  [DELETE_LIST.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [DELETE_LIST.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.filter(list => list._id !== action.payload),
+    },
+  }),
   ...createAsyncHandlers(UPDATE_LIST, UPDATE_LIST.KEY),
   [UPDATE_LIST.SUCCESS]: (state, action) => ({
     ...state,
@@ -272,16 +284,12 @@ const handlers = {
     ...state,
     board: {
       ...state.board,
-      lists: state.board.lists.map(list =>
-        list._id === action.payload.listId
-          ? {
-              ...list,
-              cards: list.cards.filter(
-                card => card._id !== action.payload.cardId
-              ),
-            }
-          : list
-      ),
+      lists: state.board.lists.map(list => {
+        return {
+          ...list,
+          cards: list.cards.filter(card => card._id !== action.payload.cardId),
+        };
+      }),
     },
   }),
   ...createAsyncHandlers(COPY_CARD, COPY_CARD.KEY),
