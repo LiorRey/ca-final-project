@@ -40,7 +40,7 @@ export function Header() {
     <header className="app-header">
       <nav>
         <NavLink to="/board" className="logo">
-          Trello
+          Kanbox
         </NavLink>
 
         <input

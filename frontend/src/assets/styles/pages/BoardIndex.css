@@ -1,5 +1,5 @@
 .board-index-page {
-  min-height: 100vh;
+  height: 100%;
   padding: 2rem;
   background-color: var(--ds-surface);
   color: var(--ds-text);
