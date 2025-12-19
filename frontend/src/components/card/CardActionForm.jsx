@@ -292,14 +292,9 @@ export function CardActionForm({
       </Box>
 
       <Box display="flex" justifyContent="flex-end">
-        <ActionButton
-          type="submit"
-          variant="contained"
-          size="small"
-          disabled={isCopyMode && !values.title.trim()}
-        >
+        <Button type="submit" disabled={isCopyMode && !values.title.trim()}>
           {submitButtonText}
-        </ActionButton>
+        </Button>
       </Box>
     </form>
   );
