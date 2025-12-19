@@ -50,6 +50,6 @@
 }
 
 .footer-button.active {
-  border: 1px solid var(--blue-neon);
-  background-color: var(--t-blue);
+  background-color: var(--ds-background-selected, #e9f2ff);
+  color: var(--ds-icon-selected, #0c66e4);
 }
