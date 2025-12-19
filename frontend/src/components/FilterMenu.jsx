@@ -209,12 +209,7 @@ export function FilterMenu() {
             >
               Clear All
             </Button>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleClose}
-              sx={{ ml: "auto" }}
-            >
+            <Button onClick={handleClose} sx={{ ml: "auto" }}>
               Done
             </Button>
           </Box>
