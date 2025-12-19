@@ -8,6 +8,7 @@ import {
   MOVE_LIST,
   UPDATE_LIST,
   COPY_LIST,
+  DELETE_LIST,
   ARCHIVE_LIST,
   UNARCHIVE_LIST,
   ARCHIVE_ALL_CARDS_IN_LIST,
@@ -101,6 +102,12 @@ export const updateList = createAsyncAction(
 export const copyList = createAsyncAction(
   COPY_LIST,
   boardService.copyList,
+  store
+);
+
+export const deleteList = createAsyncAction(
+  DELETE_LIST,
+  boardService.deleteList,
   store
 );
 
