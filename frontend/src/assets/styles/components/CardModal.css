@@ -186,8 +186,8 @@
   word-wrap: break-word;
   word-break: break-word;
   color: var(--gray1);
-  background-color: var(--gray5, #040a10);
-  border: 1px solid var(--form-input-border-color, #4a9eff);
+  border: none;
+  outline: none;
   border-radius: 4px;
   resize: none;
   overflow: hidden;
@@ -203,9 +203,7 @@
 }
 
 .card-modal-title-input:focus {
-  outline: none;
-  border: none;
-  border-color: var(--form-input-border-color, #4a9eff);
+  outline: 2px solid var(--form-input-border-color, #4a9eff);
 }
 
 .card-modal-title-input::placeholder {
