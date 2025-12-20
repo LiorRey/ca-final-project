@@ -2,7 +2,7 @@ import PopoverMUI from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Close from "@mui/icons-material/Close";
-import { SquareIconButton } from "./buttons/SquareIconButton";
+import IconButton from "@mui/material/IconButton";
 
 export function PopoverMenu({
   children,
@@ -50,13 +50,13 @@ export function PopoverMenu({
           <Typography className="popover-header-title-text">{title}</Typography>
           {showClose && (
             <Box>
-              <button
-                className="icon-button popover-header-close-button"
+              <IconButton
+                className="popover-header-close-button"
                 aria-label="Close"
                 onClick={onClose}
               >
                 <Close />
-              </button>
+              </IconButton>
             </Box>
           )}
         </Box>

@@ -1,5 +1,9 @@
 import { useState, useRef } from "react";
-import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -87,21 +91,15 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
             <div className="card-modal-header">
               <div className="card-modal-header-list-title">{listTitle}</div>
               <div className="card-modal-header-buttons">
-                <button
-                  className="icon-button  modal-header-buttons"
-                  onClick={e => handleOpenCoverMenu(e.currentTarget)}
-                >
+                <IconButton onClick={e => handleOpenCoverMenu(e.currentTarget)}>
                   <ImageOutlinedIcon />
-                </button>
-                <button className="icon-button modal-header-buttons">
+                </IconButton>
+                <IconButton>
                   <MoreHorizIcon />
-                </button>
-                <button
-                  className="icon-button modal-header-buttons"
-                  onClick={onClose}
-                >
+                </IconButton>
+                <IconButton onClick={onClose}>
                   <CloseIcon />
-                </button>
+                </IconButton>
               </div>
             </div>
           </div>
@@ -131,34 +129,37 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
               )}
             </div>
             <div className="card-modal-controls">
-              <button
-                className="icon-button"
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
                 onClick={e => setLabelEl(e.currentTarget)}
                 selected={isLabelMenuOpen}
               >
-                <AddIcon /> Add
-              </button>
-              <button className="icon-button">
-                <AccessTimeOutlinedIcon /> Dates
-              </button>
-              <button className="icon-button">
-                <TaskAltOutlinedIcon /> Checklist
-              </button>
-              <button
-                className="icon-button"
+                Add
+              </Button>
+              <Button variant="outlined" startIcon={<AccessTimeOutlinedIcon />}>
+                Dates
+              </Button>
+              <Button variant="outlined" startIcon={<TaskAltOutlinedIcon />}>
+                Checklist
+              </Button>
+              <Button
+                variant="outlined"
                 onClick={e => setMemberEl(e.currentTarget)}
+                startIcon={<PersonAddAltOutlinedIcon />}
               >
-                <PersonAddAltOutlinedIcon /> Members
-              </button>
-              <button
-                className="icon-button"
+                Members
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<AttachFileIcon />}
                 onClick={e => {
                   e.stopPropagation();
                   handleOpenAttachmentsMenu(e.currentTarget);
                 }}
               >
-                <AttachFileIcon /> Attach
-              </button>
+                Attach
+              </Button>
             </div>
             <div className="card-modal-tags-container">
               {((card.assignees && card.assignees.length > 0) || memberEl) && (

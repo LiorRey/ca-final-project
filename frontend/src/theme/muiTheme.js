@@ -395,6 +395,9 @@ const muiTheme = createTheme({
       },
     },
     MuiButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
       styleOverrides: {
         root: {
           backgroundColor: token("color.background.brand.bold", "#8fb8f6"), // Button background color (light blue, matching card-save-button)
@@ -523,6 +526,46 @@ const muiTheme = createTheme({
             color: "var(--grey1)", // white "+X" text
           },
         },
+      },
+    },
+    MuiIconButton: {
+      defaultProps: {
+        disableRipple: true,
+        size: "small",
+      },
+      styleOverrides: {
+        root: {
+          width: "32px",
+          height: "32px",
+          borderRadius: token("radius.large"),
+          color: token("color.icon"),
+          backgroundColor: token("color.background.neutral.subtle"),
+          "&:hover": {
+            backgroundColor: token("color.background.neutral.hovered"),
+            color: token("color.icon"),
+          },
+          "&.Mui-selected": {
+            color: token("color.text.inverse"),
+            backgroundColor: token("color.background.selected"),
+            "&:hover": {
+              backgroundColor: token("color.background.selected.hovered"),
+              color: token("color.text.inverse"),
+            },
+          },
+          variants: [
+            {
+              props: { variant: "square" },
+              style: {
+                borderRadius: token("radius.small"),
+              },
+            },
+          ],
+        },
+      },
+    },
+    MuiSvgIcon: {
+      defaultProps: {
+        fontSize: "small",
       },
     },
   },

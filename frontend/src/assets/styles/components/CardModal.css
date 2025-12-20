@@ -264,13 +264,6 @@
   gap: 0.5rem;
 }
 
-.card-modal-header .icon-button {
-  color: var(--gray1);
-  &:hover {
-    background-color: var(--gray3);
-  }
-}
-
 .card-modal-footer {
   position: relative;
   display: flex;
@@ -299,17 +292,13 @@
   background-color: var(--bg-blue);
 }
 
-.card-modal-controls .icon-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--gray1);
-  padding: 0.5rem;
-  border-radius: 4px;
-  background: transparent;
-  border: 1px solid var(--gray3);
+.card-modal-controls .MuiButton-root {
+  color: var(--ds-text-subtle);
+  border: 1px solid var(--ds-border);
   &:hover {
-    background-color: var(--gray3);
+    background-color: var(--ds-background-neutral-subtle-hovered);
+    color: var(--ds-text-subtle);
+    border: 1px solid var(--ds-border);
   }
 }
 
@@ -402,9 +391,9 @@
   font-size: 0.85rem;
 }
 
-.modal-header-buttons {
+/* .modal-header-buttons {
   background: var(--gray4);
-}
+} */
 
 /* ====================== Headings ====================== */
 .description-content h1 {
