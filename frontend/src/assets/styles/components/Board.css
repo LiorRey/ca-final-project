@@ -72,6 +72,14 @@
   gap: 0.5rem;
 }
 
+.board-header-right .MuiIconButton-root {
+  color: #ffffff;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+}
+
 .board-members {
   display: flex;
   gap: 0.25rem;
