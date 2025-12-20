@@ -1,15 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import {
-  ChatRounded,
-  DriveFileRenameOutline,
-  NotesRounded,
-  RemoveRedEyeOutlined,
-} from "@mui/icons-material";
-import { Box } from "@mui/material";
-import { AvatarGroup } from "./ui/AvatarGroup";
+import DriveFileRenameOutline from "@mui/icons-material/DriveFileRenameOutline";
+import NotesRounded from "@mui/icons-material/NotesRounded";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
+import { AvatarGroup } from "./ui/AvatarGroup";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
@@ -27,6 +23,7 @@ export function Card({
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
   const { boardId } = useParams();
+  const editCardRef = useRef(null);
 
   function handleClickCard() {
     onClickCard(card);
@@ -35,7 +32,7 @@ export function Card({
 
   function handleClick(e) {
     e.stopPropagation();
-    setAnchorEl(e.currentTarget);
+    setAnchorEl(editCardRef.current);
   }
 
   function handleClickLabels(e) {
@@ -170,6 +167,7 @@ export function Card({
                   <div className="card-cover" style={coverStyle}></div>
                 )}
               <div
+                ref={editCardRef}
                 className={`card-content ${
                   isOverlay && coverImg ? "card-content--overlay" : ""
                 }`}
@@ -217,6 +215,7 @@ export function Card({
                   onClick={handleClick}
                   aria-describedby={id}
                   aria-label="Edit card"
+                  className="card-edit-button"
                 >
                   <DriveFileRenameOutline />
                 </IconButton>
