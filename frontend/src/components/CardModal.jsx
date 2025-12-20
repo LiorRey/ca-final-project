@@ -71,6 +71,8 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
 
   if (!card) return null;
 
+  console.log(cardDetails.description);
+
   return (
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>
@@ -204,7 +206,15 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
             </div>
             <div className="card-modal-description">
               <NotesIcon fontSize="small" />
-              <h3 className="description-title">Description</h3>
+              <div className="description-title-container">
+                <h3 className="description-title">Description</h3>
+                <button
+                  className="edit-description-button"
+                  onClick={() => setIsEditorOpen(true)}
+                >
+                  Edit
+                </button>
+              </div>
               {isEditorOpen ? (
                 <>
                   <TextEditor
@@ -220,10 +230,14 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
                 </>
               ) : (
                 <div
-                  className="description-content"
+                  className={`description-content ${
+                    !cardDetails.description ? "no-description" : ""
+                  }`}
                   onClick={() => setIsEditorOpen(true)}
                   dangerouslySetInnerHTML={{
-                    __html: cardDetails.description,
+                    __html: cardDetails.description
+                      ? cardDetails.description
+                      : "Write a clever description...",
                   }}
                 />
               )}

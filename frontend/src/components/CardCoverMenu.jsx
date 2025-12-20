@@ -54,7 +54,13 @@ export function CardCoverMenu({ card, anchorEl, isOpen, onClose }) {
 
       const uploaded = await attachmentService.uploadImage(file, "attachments");
 
+      console.log(uploaded);
       updateCardCover(card._id, {
+        // img: attachmentService.getThumbnailUrl(uploaded.public_id, {
+        //   width: 670,
+        //   height: 670,
+        //   crop: "limitFit",
+        // }),
         img: uploaded.secure_url,
         color: null,
         textOverlay: textOverlay,

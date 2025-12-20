@@ -1,6 +1,12 @@
 import { httpService } from "./http-service";
 import { Cloudinary } from "@cloudinary/url-gen";
-import { thumbnail, fill, scale } from "@cloudinary/url-gen/actions/resize";
+import {
+  thumbnail,
+  fill,
+  scale,
+  fit,
+  limitFit,
+} from "@cloudinary/url-gen/actions/resize";
 import { quality, format } from "@cloudinary/url-gen/actions/delivery";
 
 // Get cloud name from Vite environment variable
@@ -105,19 +111,19 @@ function getThumbnailUrl(publicId, options = {}, cloudName = null) {
   if (crop === "fill") {
     image.resize(fill().width(width).height(height));
   } else if (crop === "thumbnail") {
-    image.resize(thumbnail().width(width).height(height));
+    image.resize(thumbnail().width(width));
   } else if (crop === "scale") {
     image.resize(scale().width(width));
+  } else if (crop === "fit") {
+    image.resize(fit().width(width));
+  } else if (crop === "limitFit") {
+    image.resize(limitFit().width(width).height(height));
   } else {
-    image.resize(thumbnail().width(width).height(height));
+    image.resize(thumbnail().width(width));
   }
 
-  if (qualityValue !== "auto") {
-    image.delivery(quality(qualityValue));
-  }
-  if (formatValue !== "auto") {
-    image.delivery(format(formatValue));
-  }
+  image.delivery(quality(qualityValue));
+  image.delivery(format(formatValue));
 
   return image.toURL();
 }

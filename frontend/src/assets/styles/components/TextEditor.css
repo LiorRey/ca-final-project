@@ -1,9 +1,11 @@
 /* ====================== Parent wrapper ====================== */
 .tiptap-editor-wrapper {
   width: 100%;
-  background: var(--darkNeutral200);
+  background: var(--gray6);
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
+  border: 1px solid var(--gray6);
+  border-radius: 8px;
 }
 
 /* ====================== Menu Bar / Control Group ====================== */
@@ -24,7 +26,7 @@
   flex-direction: row;
   gap: 0.5rem;
   padding: 0.75rem;
-  background: var(--gray5);
+  background: var(--gray3);
   border-bottom: 1px solid var(--gray3);
   border-radius: var(--ds-radius-small);
   margin-bottom: 1rem;
@@ -181,7 +183,7 @@
 }
 
 .tiptap-editor-wrapper .button-group .heading-dropdown option {
-  background: var(--gray5);
+  background: var(--gray4);
   color: var(--gray1);
   padding: 8px;
 }
@@ -189,12 +191,16 @@
 /* ====================== Editor Container ====================== */
 .tiptap-editor-wrapper .text-editor-wrapper {
   cursor: default;
-  background: var(--gray5);
+  background: var(--gray6);
   border-radius: 0 0 var(--ds-radius-small) var(--ds-radius-small);
   border: 1px solid var(--black);
-  border-top: none;
   box-sizing: border-box;
   min-height: 180px;
+  transition: border-color 0.2s ease;
+}
+
+.tiptap-editor-wrapper .text-editor-wrapper:focus-within {
+  border-color: var(--form-input-border-color, #4a9eff);
 }
 
 .text-editor-wrapper {
@@ -205,7 +211,7 @@
 /* ====================== Editor Body ====================== */
 .tiptap-editor-wrapper .text-editor {
   padding: 12px;
-  background: var(--gray5);
+  background: var(--gray6);
   color: var(--ds-text);
   font-size: 14px;
   line-height: 1.6;
@@ -216,7 +222,7 @@
 
 .text-editor {
   padding: 1rem;
-  background: var(--ds-color-background-accent-purple-subtlest);
+  background: var(--gray4);
   border-radius: var(--ds-radius-small);
   color: var(--gray1);
   height: auto;
