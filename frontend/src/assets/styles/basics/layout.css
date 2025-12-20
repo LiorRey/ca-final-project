@@ -1,17 +1,14 @@
-.main {
-  display: grid;
-  height: 100%;
-}
-
 .main-container {
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .main-container main {
-  height: 100%;
   overflow: hidden;
+  min-height: 0;
 }
 
 .sample-grid-layout {

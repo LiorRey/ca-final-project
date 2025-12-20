@@ -21,7 +21,7 @@ export function App() {
     <div className="main">
       <UserMessage />
 
-      <main>
+      <main className="main-container">
         <Routes location={backgroundLocation || location}>
           <Route path="" element={<HomePage />} />
           <Route path="about" element={<AboutUs />}>
