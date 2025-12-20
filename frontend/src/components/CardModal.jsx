@@ -109,7 +109,9 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
                 className="card-modal-title-input"
                 value={cardDetails.title}
                 onChange={e => handleChangeCard("title", e.target.value)}
-                onBlur={() => onEditCard(cardDetails)}
+                onBlur={e =>
+                  e.target.value !== card.title && onEditCard(cardDetails)
+                }
               />
             </div>
             <div className="card-modal-controls">
