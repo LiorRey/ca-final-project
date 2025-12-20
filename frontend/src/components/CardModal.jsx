@@ -71,8 +71,6 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
 
   if (!card) return null;
 
-  console.log(cardDetails.description);
-
   return (
     <Modal open={isOpen} onClose={onClose}>
       <Box className={`card-modal-box ${openSection ? "open" : "closed"}`}>

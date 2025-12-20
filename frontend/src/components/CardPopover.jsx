@@ -41,7 +41,6 @@ export function CardPopover({
   }
 
   function handleArchive() {
-    console.log("archive");
     handleDelete();
   }
 
