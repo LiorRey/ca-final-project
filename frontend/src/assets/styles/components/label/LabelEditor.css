@@ -80,41 +80,25 @@
   .save-btn {
     flex: 1;
     padding: 8px 16px;
-    background-color: #579dff;
     border: none;
-    border-radius: 4px;
-    color: #1d2125;
     font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-
-    &:hover {
-      background-color: #4c8fef;
-    }
-
-    &:active {
-      background-color: #3f7cdb;
-    }
   }
 
   .delete-btn {
     padding: 8px 16px;
-    background-color: #ca3521;
+    background-color: var(--ds-background-danger-bold, #ca3521);
     border: none;
-    border-radius: 4px;
-    color: #ffffff;
+    color: var(--ds-text-inverse, #ffffff);
     font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
 
     &:hover {
-      background-color: #ae2a19;
+      background-color: var(--ds-background-danger-bold-hovered, #ae2a19);
     }
 
     &:active {
-      background-color: #932116;
+      background-color: var(--ds-background-danger-bold-pressed, #601e16);
     }
   }
 }

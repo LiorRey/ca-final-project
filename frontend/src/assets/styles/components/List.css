@@ -121,5 +121,5 @@
 .list-footer button {
   justify-content: start;
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--ds-radius-small, 4px);
 }

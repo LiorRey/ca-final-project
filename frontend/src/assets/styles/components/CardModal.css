@@ -159,17 +159,10 @@
 }
 
 .add-comment-button {
-  background: var(--gray4);
   border: none;
-  color: var(--gray1);
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 0.9rem;
   align-self: flex-start;
-  &:hover {
-    background: var(--gray3);
-  }
 }
 
 .card-modal-title-container {
