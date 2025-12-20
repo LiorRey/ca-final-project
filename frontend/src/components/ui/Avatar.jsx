@@ -1,25 +1,26 @@
 import React from "react";
 import { Avatar as MuiAvatar } from "@mui/material";
 
+const TRELLO_COLORS = [
+  "#0066FF", // Bold Blue
+  "#E53935", // Bold Red
+  "#FFB300", // Bold Orange-Yellow
+  "#43A047", // Bold Green
+  "#00ACC1", // Bold Cyan
+  "#8E24AA", // Bold Purple
+  "#E91E63", // Bold Pink-Magenta
+  "#FDD835", // Bold Yellow-Gold
+  "#424242", // Bold Dark Gray
+  "#616161", // Bold Medium Gray
+];
+
 export function Avatar({ user, size = 24 }) {
-  const trelloColors = [
-    "#0055CC", // Deep Blue
-    "#C9372C", // Deep Red
-    "#F5A623", // Deep Orange-Yellow
-    "#26890C", // Deep Green
-    "#0E97A0", // Deep Cyan
-    "#6E36B4", // Deep Purple
-    "#B83280", // Deep Pink-Magenta
-    "#A87F00", // Deep Yellow-Gold
-    "#596773", // Deep Gray
-    "#7E8A97", // Cool Gray
-  ];
   function stringToColor(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
-    return trelloColors[Math.abs(hash) % trelloColors.length];
+    return TRELLO_COLORS[Math.abs(hash) % TRELLO_COLORS.length];
   }
 
   function stringAvatar(name) {
