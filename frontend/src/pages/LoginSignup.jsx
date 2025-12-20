@@ -43,7 +43,7 @@ export function Login() {
 
     if (!credentials.username) return;
     await login(credentials);
-    navigate("/");
+    navigate("/board");
   }
 
   function handleChange(ev) {
@@ -94,7 +94,7 @@ export function Signup() {
       return;
     await signup(credentials);
     clearState();
-    navigate("/");
+    navigate("/login");
   }
 
   function onUploaded(imgUrl) {

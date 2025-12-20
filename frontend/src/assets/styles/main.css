@@ -7,7 +7,7 @@
 @import "basics/specials";
 
 @import "components/AboutUs";
-@import "components/HomePage";
+@import "pages/HomePage";
 @import "components/UserDetails";
 @import "components/LoginSignup";
 @import "components/Chat";

@@ -47,6 +47,40 @@
     }
   }
 
+  @media (max-width: 768px) {
+    padding: 0.6rem 0.8rem;
+
+    & nav {
+      gap: 0.5em;
+
+      .logo {
+        font-size: 1.8em;
+        margin-inline-end: 0.5em;
+      }
+
+      .search-input {
+        max-width: 150px;
+        font-size: 0.9em;
+      }
+
+      .login-link {
+        font-size: 14px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    & nav {
+      .search-input {
+        display: none;
+      }
+
+      .logo {
+        margin-inline-end: auto;
+      }
+    }
+  }
+
   .user-info {
     display: flex;
     align-items: center;

@@ -1,12 +1,13 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CircularProgress, Box } from "@mui/material";
 import { validateSession } from "../store/actions/auth-actions";
 import {
   selectIsAuthenticated,
   selectAuthLoading,
 } from "../store/selectors/auth-selectors";
+import { Header } from "./Header";
 
 export const ProtectedRoute = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -33,5 +34,14 @@ export const ProtectedRoute = () => {
     );
   }
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuthenticated ? (
+    <div className="main-container">
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  ) : (
+    <Navigate to="/login" replace />
+  );
 };
