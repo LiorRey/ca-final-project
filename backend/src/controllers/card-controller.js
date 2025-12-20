@@ -94,10 +94,12 @@ export async function updateComment(req, res) {
 }
 
 export async function deleteComment(req, res) {
-  const { cardId, commentId } = req.params;
+  const { id, commentId } = req.params;
 
-  await cardService.deleteComment(cardId, commentId);
-  res.status(204).send();
+  const card = await cardService.deleteComment(id, commentId);
+  if (!card) throw createError(404, "Card not found");
+
+  res.status(200).send({ card });
 }
 
 export async function getComments(req, res) {

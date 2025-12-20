@@ -133,7 +133,7 @@ export async function deleteComment(cardId, commentId) {
   card.comments.pull(commentId);
   await card.save();
 
-  return true;
+  return card;
 }
 
 export async function getComments(cardId) {

@@ -39,7 +39,7 @@ router.put(
   updateComment
 );
 router.delete(
-  "/:cardId/comments/:commentId",
+  "/:id/comments/:commentId",
   authenticate,
   canModifyCard(),
   deleteComment
