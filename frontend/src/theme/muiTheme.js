@@ -397,15 +397,17 @@ const muiTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: token("color.text.brand", "#8fb8f6"), // Button background color (light blue, matching card-save-button)
+          backgroundColor: token("color.background.brand.bold", "#8fb8f6"), // Button background color (light blue, matching card-save-button)
           color: token("color.text.inverse", "#000000"), // Button text color (inverse text token)
           padding: "6px 12px",
           minWidth: 0, // Remove default min-width
           lineHeight: "20px", // Line height
           margin: "0.5rem 0rem 0", // Remove default margin
+          boxShadow: "none", // Remove default box shadow
+          borderRadius: token("radius.small", "4px"),
           "&:hover": {
             backgroundColor: token(
-              "color.background.brand.bold.pressed",
+              "color.background.brand.bold.hovered",
               "#6f9ce6"
             ), // Button background on hover (darker blue, matching card-save-button)
             color: token("color.text.inverse", "#000000"), // Button text color on hover (inverse text token)
@@ -511,11 +513,12 @@ const muiTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiAvatar-root": {
-            border: "1px solid black", // dark border, override MUI default
-            boxSizing: "content-box",
+            border: "transparent",
+            fontWeight: 500,
+            lineHeight: "24px",
           },
           "& .MuiAvatarGroup-avatar": {
-            border: "1px solid black", // dark border for all avatars
+            border: "0px solid transparent", // dark border, override MUI default
             backgroundColor: "var(--gray5)", // dark surplus background
             color: "var(--grey1)", // white "+X" text
           },

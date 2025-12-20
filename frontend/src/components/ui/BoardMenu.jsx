@@ -10,6 +10,8 @@ import ListItemText from "@mui/material/ListItemText";
 import Chip from "@mui/material/Chip";
 import { Popover } from "../Popover";
 import { BackgroundSelector } from "../BackgroundSelector";
+import { Avatar } from "./Avatar";
+import { AvatarGroup } from "./AvatarGroup";
 
 import {
   PersonAdd,
@@ -55,6 +57,15 @@ function BoardMenuItem({ item, onItemClick, currentBackground }) {
           )}
         </ListItemIcon>
         <ListItemText primary={item.label} />
+        {item.members && item.members.length > 0 && (
+          <Box className="board-menu-badges-container">
+            <AvatarGroup size={24} max={3}>
+              {item.members.map((member, memberIndex) => (
+                <Avatar key={memberIndex} user={member} size={24} />
+              ))}
+            </AvatarGroup>
+          </Box>
+        )}
         {item.badges && (
           <Box className="board-menu-badges-container">
             {item.badges.map((badge, badgeIndex) => (
@@ -79,17 +90,13 @@ function BoardMenuItem({ item, onItemClick, currentBackground }) {
   );
 }
 
-function createMenuItems() {
+function createMenuItems(members = []) {
   return [
     {
       id: "share",
       label: "Share",
       icon: <PersonAdd />,
-      badges: [
-        { label: "VG", color: "#1565c0" },
-        { label: "L", color: "#c62828" },
-        { label: "SS", color: "#e65100" },
-      ],
+      members: members,
     },
     { type: MENU_ITEM_TYPES.SEPARATOR },
     { id: "about", label: "About this board", icon: <Info /> },
@@ -120,7 +127,11 @@ function createMenuItems() {
 
 export function BoardMenu({ anchorEl, isBoardMenuOpen, onCloseBoardMenu }) {
   const [menuItemId, setMenuItemId] = useState("");
-  const menuItems = useMemo(() => createMenuItems(), []);
+  const boardMembers = useSelector(state => state.boards.board?.members || []);
+  const menuItems = useMemo(
+    () => createMenuItems(boardMembers),
+    [boardMembers]
+  );
   const currentBackground = useSelector(
     state => state.boards.board?.appearance?.background
   );

@@ -241,7 +241,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
                 placeholder="Add a comment"
                 spellCheck="false"
               />
-              <button className="add-comment-button">Add</button>
+              <Button className="add-comment-button">Add</Button>
             </div>
           </aside>
         </div>
