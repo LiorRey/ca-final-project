@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
 import AddRounded from "@mui/icons-material/AddRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import { TextField } from "@mui/material";
@@ -133,9 +134,13 @@ export function List({
               </h2>
             )}
 
-            <button className="icon-button" onClick={handleMoreClick}>
+            <IconButton
+              aria-label="List options"
+              onClick={handleMoreClick}
+              variant="rounder"
+            >
               <MoreHoriz />
-            </button>
+            </IconButton>
           </div>
           {isAddingCard && !addCardToEnd && (
             <div className="list-add-card-header">

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import LockOutlineRounded from "@mui/icons-material/LockOutlineRounded";
 import MoreHoriz from "@mui/icons-material/MoreHoriz";
 import StarBorderRounded from "@mui/icons-material/StarBorderRounded";
+import IconButton from "@mui/material/IconButton";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { AddList } from "../components/AddList";
 import { FilterMenu } from "../components/FilterMenu";
@@ -201,15 +202,15 @@ export function BoardDetails() {
             </AvatarGroup>
           )}
           <FilterMenu />
-          <button className="icon-button">
+          <IconButton>
             <StarBorderRounded />
-          </button>
-          <button className="icon-button">
+          </IconButton>
+          <IconButton>
             <LockOutlineRounded />
-          </button>
-          <button className="icon-button" onClick={handleOpenBoardMenu}>
+          </IconButton>
+          <IconButton aria-label="Board options" onClick={handleOpenBoardMenu}>
             <MoreHoriz />
-          </button>
+          </IconButton>
         </div>
       </header>
       <div className="board-canvas" ref={boardCanvasRef}>

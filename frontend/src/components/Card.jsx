@@ -9,6 +9,7 @@ import {
 import { Box } from "@mui/material";
 import { AvatarGroup } from "./ui/AvatarGroup";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
@@ -212,14 +213,13 @@ export function Card({
                     )}
                   </div>
                 </div>
-                <button
+                <IconButton
                   onClick={handleClick}
                   aria-describedby={id}
                   aria-label="Edit card"
-                  className="icon-button card-edit-button"
                 >
                   <DriveFileRenameOutline />
-                </button>
+                </IconButton>
               </div>
             </Box>
           )}
