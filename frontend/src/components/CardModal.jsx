@@ -1,5 +1,4 @@
 import { useState, useRef } from "react";
-import { useSelector } from "react-redux";
 import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -36,12 +35,9 @@ export function CardModal({
   const [attachFileAnchorEl, setAttachFileAnchorEl] = useState(null);
   const [commentDraft, setCommentDraft] = useState("");
   const membersContainerRef = useRef(null);
-  const user = useSelector(storeState => storeState.auth.currentUser);
   const isLabelMenuOpen = Boolean(anchorEl);
   const isMemberMenuOpen = Boolean(memberAnchorEl);
   const isAttachFileMenuOpen = Boolean(attachFileAnchorEl);
-
-  console.log("card.comments", card.comments);
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -50,28 +46,8 @@ export function CardModal({
   async function handleSaveComment() {
     if (!commentDraft || commentDraft === "<p></p>") return;
 
-    // const newComment = {
-    //   // _id: crypto.randomUUID(),
-    //   text: commentDraft,
-    //   // createdAt: Date.now(),
-    //   // author: {
-    //   //   userId: user._id,
-    //   //   fullname: user.fullname,
-    //   //   username: user.username,
-    //   // },
-    // };
+    await addComment(card._id, commentDraft);
 
-    console.log("typeof commentDraft", typeof commentDraft); // string
-    addComment(card._id, commentDraft);
-
-    // const updatedCard = {
-    //   ...card,
-    //   comments: [...(card.comments || []), newComment],
-    // };
-
-    // await onEditCard(updatedCard);
-
-    // setCardDetails(updatedCard);
     setCommentDraft("");
   }
 
@@ -268,30 +244,14 @@ export function CardModal({
               />
               <div className="editor-controls">
                 <Button onClick={handleSaveComment}>Save</Button>
-                {/* <Button variant="outlined" onClick={handleCancelCard}>
-                    Cancel
-                  </Button> */}
               </div>
-              {/* <textarea
-                className="comment-input"
-                placeholder="Add a comment..."
-                spellCheck="false"
-              /> */}
-              {/* <button className="add-comment-button">Add</button> */}
               <div className="comments-list">
                 {(card.comments || [])
                   .slice()
                   .reverse()
                   .map(comment => (
                     <div key={comment._id} className="comment-item">
-                      <Avatar
-                        user={comment.author}
-                        // user={{
-                        //   fullname: comment.author.fullname,
-                        //   initials: comment.author.initials,
-                        // }}
-                        size={32}
-                      />
+                      <Avatar user={comment.author} size={32} />
 
                       <div className="comment-body">
                         <div className="comment-header">
