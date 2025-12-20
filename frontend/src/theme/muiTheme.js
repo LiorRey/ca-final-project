@@ -395,6 +395,9 @@ const muiTheme = createTheme({
       },
     },
     MuiButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
       styleOverrides: {
         root: {
           backgroundColor: token("color.background.brand.bold", "#8fb8f6"), // Button background color (light blue, matching card-save-button)
