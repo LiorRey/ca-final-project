@@ -575,3 +575,63 @@
     width: calc(100vw - 1rem);
   }
 }
+
+/* ===== COMMENTS ===== */
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.comment-body {
+  background: var(--gray5);
+  padding: 8px 12px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.comment-author {
+  font-weight: 600;
+}
+
+.comment-time {
+  color: var(--gray2);
+  font-size: 12px;
+}
+
+.comment-text {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--gray2);
+  margin-top: 4px;
+}
+
+.comment-actions span {
+  cursor: pointer;
+}
+
+.comment-actions span:hover {
+  text-decoration: underline;
+}

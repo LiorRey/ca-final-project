@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
@@ -14,6 +15,7 @@ import { TextEditor } from "./ui/TextEditor";
 import { Avatar } from "./ui/Avatar";
 import { AddMemberMenu } from "./AddMemberMenu";
 import { AttachmentMenu } from "./AttachmentMenu";
+import { addComment } from "../store/actions/board-actions";
 
 export function CardModal({
   boardId,
@@ -34,12 +36,43 @@ export function CardModal({
   const [attachFileAnchorEl, setAttachFileAnchorEl] = useState(null);
   const [commentDraft, setCommentDraft] = useState("");
   const membersContainerRef = useRef(null);
+  const user = useSelector(storeState => storeState.auth.currentUser);
   const isLabelMenuOpen = Boolean(anchorEl);
   const isMemberMenuOpen = Boolean(memberAnchorEl);
   const isAttachFileMenuOpen = Boolean(attachFileAnchorEl);
 
+  console.log("card.comments", card.comments);
+
   function handleCommentSection() {
     setOpenSection(!openSection);
+  }
+
+  async function handleSaveComment() {
+    if (!commentDraft || commentDraft === "<p></p>") return;
+
+    // const newComment = {
+    //   // _id: crypto.randomUUID(),
+    //   text: commentDraft,
+    //   // createdAt: Date.now(),
+    //   // author: {
+    //   //   userId: user._id,
+    //   //   fullname: user.fullname,
+    //   //   username: user.username,
+    //   // },
+    // };
+
+    console.log("typeof commentDraft", typeof commentDraft); // string
+    addComment(card._id, commentDraft);
+
+    // const updatedCard = {
+    //   ...card,
+    //   comments: [...(card.comments || []), newComment],
+    // };
+
+    // await onEditCard(updatedCard);
+
+    // setCardDetails(updatedCard);
+    setCommentDraft("");
   }
 
   function handleSaveCard() {
@@ -234,7 +267,7 @@ export function CardModal({
                 // onChange={html => handleChangeCard("description", html)}
               />
               <div className="editor-controls">
-                <Button>Save</Button>
+                <Button onClick={handleSaveComment}>Save</Button>
                 {/* <Button variant="outlined" onClick={handleCancelCard}>
                     Cancel
                   </Button> */}
@@ -245,6 +278,55 @@ export function CardModal({
                 spellCheck="false"
               /> */}
               {/* <button className="add-comment-button">Add</button> */}
+              <div className="comments-list">
+                {(card.comments || [])
+                  .slice()
+                  .reverse()
+                  .map(comment => (
+                    <div key={comment._id} className="comment-item">
+                      <Avatar
+                        user={comment.author}
+                        // user={{
+                        //   fullname: comment.author.fullname,
+                        //   initials: comment.author.initials,
+                        // }}
+                        size={32}
+                      />
+
+                      <div className="comment-body">
+                        <div className="comment-header">
+                          <span className="comment-author">
+                            {comment.author.fullname}
+                          </span>
+                          {/* <span className="comment-text">{comment.text}</span> */}
+                          {/* <span className="comment-time">
+                            {new Date(comment.createdAt).toLocaleString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "2-digit",
+                                hour12: true,
+                              }
+                            )}
+                          </span> */}
+                        </div>
+
+                        <div
+                          className="comment-text"
+                          dangerouslySetInnerHTML={{ __html: comment.text }}
+                        />
+
+                        <div className="comment-actions">
+                          <span>Edit</span>
+                          <span>Delete</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
             </div>
           </aside>
         </div>

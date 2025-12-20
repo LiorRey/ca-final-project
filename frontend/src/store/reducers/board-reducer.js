@@ -20,6 +20,7 @@ export const UPSERT_CARD_COVER = createAsyncActionTypes("UPSERT_CARD_COVER");
 export const DELETE_CARD = "DELETE_CARD";
 export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
+export const ADD_COMMENT = createAsyncActionTypes("ADD_COMMENT");
 export const ADD_ASSIGNEE = createAsyncActionTypes("ADD_ASSIGNEE");
 export const REMOVE_ASSIGNEE = createAsyncActionTypes("REMOVE_ASSIGNEE");
 export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
@@ -277,6 +278,26 @@ const handlers = {
           cards: filteredCards,
         };
       }),
+    },
+  }),
+  ...createAsyncHandlers(ADD_COMMENT, ADD_COMMENT.KEY),
+  [ADD_COMMENT.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [ADD_COMMENT.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, ...action.payload }
+                  : card
+              ),
+            }
+          : list
+      ),
     },
   }),
   ...createAsyncHandlers(ADD_ASSIGNEE, ADD_ASSIGNEE.KEY),
