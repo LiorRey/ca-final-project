@@ -1,4 +1,8 @@
 import { Board } from "../models/Board.js";
+import {
+  validateFilterParams,
+  buildCardFilterQuery,
+} from "./filter-service.js";
 
 export async function createBoard(data) {
   if (data.appearance) {
@@ -17,16 +21,55 @@ export async function getBoardById(id) {
   return await Board.findById(id);
 }
 
-export async function getFullBoardById(id) {
-  const board = await Board.findById(id).populate({
-    path: "lists",
-    options: { sort: { position: 1 } },
-    populate: {
-      path: "cards",
+export async function getFullBoardById(id, filterBy = {}) {
+  const validatedFilters = validateFilterParams(filterBy);
+  const hasFilters = Object.keys(validatedFilters).length > 0;
+
+  if (!hasFilters) {
+    const board = await Board.findById(id).populate({
+      path: "lists",
       options: { sort: { position: 1 } },
+      populate: {
+        path: "cards",
+        options: { sort: { position: 1 } },
+      },
+    });
+    return board;
+  }
+
+  const ObjectId = (await import("mongoose")).default.Types.ObjectId;
+
+  const pipeline = [
+    { $match: { _id: new ObjectId(id) } },
+    {
+      $lookup: {
+        from: "lists",
+        localField: "_id",
+        foreignField: "boardId",
+        as: "lists",
+        pipeline: [
+          { $sort: { position: 1 } },
+          {
+            $lookup: {
+              from: "cards",
+              localField: "_id",
+              foreignField: "listId",
+              as: "cards",
+              pipeline: [
+                { $match: buildCardFilterQuery(validatedFilters) },
+                { $sort: { position: 1 } },
+              ],
+            },
+          },
+        ],
+      },
     },
-  });
-  return board;
+  ];
+
+  const [board] = await Board.aggregate(pipeline);
+  if (!board) return null;
+
+  return Board.hydrate(board);
 }
 
 export async function updateBoard(id, data) {

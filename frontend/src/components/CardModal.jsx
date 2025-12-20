@@ -1,5 +1,9 @@
 import { useState, useRef } from "react";
-import { Modal, Box, Button, TextareaAutosize } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -13,31 +17,27 @@ import { LabelMenu } from "./LabelMenu";
 import { TextEditor } from "./ui/TextEditor";
 import { Avatar } from "./ui/Avatar";
 import { AddMemberMenu } from "./AddMemberMenu";
-import { AttachmentMenu } from "./AttachmentMenu";
+import { CardCoverMenu } from "./CardCoverMenu";
+import { CardAttachments } from "./CardAttachments";
+import { CardAttachmentsMenu } from "./CardAttachmentMenu";
+import { useSelector } from "react-redux";
 import { addComment, deleteComment } from "../store/actions/board-actions";
 
-export function CardModal({
-  boardId,
-  listId,
-  listTitle,
-  card,
-  cardLabels = [],
-  onEditCard,
-  onClose,
-  isOpen,
-}) {
+export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
+  const board = useSelector(state => state.boards.board);
   const [openSection, setOpenSection] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [memberAnchorEl, setMemberAnchorEl] = useState(null);
-  const [attachFileAnchorEl, setAttachFileAnchorEl] = useState(null);
+  const [labelEl, setLabelEl] = useState(null);
+  const [memberEl, setMemberEl] = useState(null);
+  const [coverEl, setCoverEl] = useState(null);
+  const [attachmentsEl, setAttachmentsEl] = useState(null);
   const [commentDraft, setCommentDraft] = useState("");
   const membersContainerRef = useRef(null);
-  const isLabelMenuOpen = Boolean(anchorEl);
-  const isMemberMenuOpen = Boolean(memberAnchorEl);
-  const isAttachFileMenuOpen = Boolean(attachFileAnchorEl);
+  const isLabelMenuOpen = Boolean(labelEl);
+  const isMemberMenuOpen = Boolean(memberEl);
+  const isCoverMenuOpen = Boolean(coverEl);
+  const isAttachmentsMenuOpen = Boolean(attachmentsEl);
 
   function handleCommentSection() {
     setOpenSection(!openSection);
@@ -58,12 +58,10 @@ export function CardModal({
   function handleSaveCard() {
     setIsEditorOpen(false);
     onEditCard(cardDetails);
-    setIsEditing(false);
   }
 
   function handleCancelCard() {
     setIsEditorOpen(false);
-    setIsEditing(false);
     setCardDetails(card);
   }
 
@@ -71,9 +69,20 @@ export function CardModal({
     setCardDetails({ ...cardDetails, [key]: value });
   }
 
-  function handleAttachFile(element) {
-    setAttachFileAnchorEl(element);
+  function handleOpenCoverMenu(element) {
+    setCoverEl(element);
   }
+
+  function handleOpenAttachmentsMenu(element) {
+    setAttachmentsEl(element);
+  }
+
+  const cardLabels =
+    board.labels && card.labelIds && card.labelIds.length > 0
+      ? card.labelIds
+          .map(labelId => board.labels.find(l => l._id === labelId))
+          .filter(Boolean)
+      : [];
 
   if (!card) return null;
 
@@ -91,17 +100,17 @@ export function CardModal({
             }}
           >
             <div className="card-modal-header">
-              {listTitle}
+              <div className="card-modal-header-list-title">{listTitle}</div>
               <div className="card-modal-header-buttons">
-                <button className="icon-button">
+                <IconButton onClick={e => handleOpenCoverMenu(e.currentTarget)}>
                   <ImageOutlinedIcon />
-                </button>
-                <button className="icon-button">
+                </IconButton>
+                <IconButton>
                   <MoreHorizIcon />
-                </button>
-                <button className="icon-button" onClick={onClose}>
+                </IconButton>
+                <IconButton onClick={onClose}>
                   <CloseIcon />
-                </button>
+                </IconButton>
               </div>
             </div>
           </div>
@@ -110,59 +119,50 @@ export function CardModal({
         <div className="card-modal-container">
           <section className="card-modal-content">
             <div className="card-modal-title-container">
-              {!isEditing ? (
-                <h1
-                  className="card-modal-title"
-                  onClick={() => setIsEditing(true)}
-                >
-                  {cardDetails.title}
-                </h1>
-              ) : (
-                <TextareaAutosize
-                  className="card-modal-title-input"
-                  value={cardDetails.title}
-                  onChange={e => handleChangeCard("title", e.target.value)}
-                  onBlur={() => {
-                    setIsEditing(false);
-                    onEditCard(cardDetails);
-                  }}
-                  autoFocus
-                />
-              )}
+              <TextareaAutosize
+                className="card-modal-title-input"
+                value={cardDetails.title}
+                onChange={e => handleChangeCard("title", e.target.value)}
+                onBlur={e =>
+                  e.target.value !== card.title && onEditCard(cardDetails)
+                }
+              />
             </div>
             <div className="card-modal-controls">
-              <button
-                className="icon-button"
-                onClick={e => setAnchorEl(e.currentTarget)}
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={e => setLabelEl(e.currentTarget)}
                 selected={isLabelMenuOpen}
               >
-                <AddIcon /> Add
-              </button>
-              <button className="icon-button">
-                <AccessTimeOutlinedIcon /> Dates
-              </button>
-              <button className="icon-button">
-                <TaskAltOutlinedIcon /> Checklist
-              </button>
-              <button
-                className="icon-button"
-                onClick={e => setMemberAnchorEl(e.currentTarget)}
+                Add
+              </Button>
+              <Button variant="outlined" startIcon={<AccessTimeOutlinedIcon />}>
+                Dates
+              </Button>
+              <Button variant="outlined" startIcon={<TaskAltOutlinedIcon />}>
+                Checklist
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={e => setMemberEl(e.currentTarget)}
+                startIcon={<PersonAddAltOutlinedIcon />}
               >
-                <PersonAddAltOutlinedIcon /> Members
-              </button>
-              <button
-                className="icon-button"
+                Members
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<AttachFileIcon />}
                 onClick={e => {
                   e.stopPropagation();
-                  handleAttachFile(e.currentTarget);
+                  handleOpenAttachmentsMenu(e.currentTarget);
                 }}
               >
-                <AttachFileIcon /> Attach
-              </button>
+                Attach
+              </Button>
             </div>
             <div className="card-modal-tags-container">
-              {((card.assignees && card.assignees.length > 0) ||
-                memberAnchorEl) && (
+              {((card.assignees && card.assignees.length > 0) || memberEl) && (
                 <div className="card-modal-members">
                   <h3 className="members-title">Members</h3>
                   <div className="modal-members" ref={membersContainerRef}>
@@ -179,9 +179,7 @@ export function CardModal({
                     )}
                     <button
                       className="add-member-button"
-                      onClick={() =>
-                        setMemberAnchorEl(membersContainerRef.current)
-                      }
+                      onClick={() => setMemberEl(membersContainerRef.current)}
                     >
                       <AddIcon fontSize="small" />
                     </button>
@@ -207,7 +205,15 @@ export function CardModal({
             </div>
             <div className="card-modal-description">
               <NotesIcon fontSize="small" />
-              <h3 className="description-title">Description</h3>
+              <div className="description-title-container">
+                <h3 className="description-title">Description</h3>
+                <button
+                  className="edit-description-button"
+                  onClick={() => setIsEditorOpen(true)}
+                >
+                  Edit
+                </button>
+              </div>
               {isEditorOpen ? (
                 <>
                   <TextEditor
@@ -225,14 +231,20 @@ export function CardModal({
                 </>
               ) : (
                 <div
-                  className="description-content"
+                  className={`description-content ${
+                    !cardDetails.description ? "no-description" : ""
+                  }`}
                   onClick={() => setIsEditorOpen(true)}
                   dangerouslySetInnerHTML={{
-                    __html: cardDetails.description,
+                    __html: cardDetails.description
+                      ? cardDetails.description
+                      : "Write a clever description...",
                   }}
                 />
               )}
             </div>
+
+            <CardAttachments card={card} />
           </section>
           <aside
             className={`card-modal-comments ${openSection ? "open" : "closed"}`}
@@ -307,27 +319,32 @@ export function CardModal({
           </button>
         </footer>
 
-        <AttachmentMenu
+        <CardCoverMenu
           card={card}
-          anchorEl={attachFileAnchorEl}
-          isAttachFileMenuOpen={isAttachFileMenuOpen}
-          onCloseAttachFileMenu={() => setAttachFileAnchorEl(null)}
+          anchorEl={coverEl}
+          isOpen={isCoverMenuOpen}
+          onClose={() => setCoverEl(null)}
+        />
+
+        <CardAttachmentsMenu
+          card={card}
+          anchorEl={attachmentsEl}
+          isOpen={isAttachmentsMenuOpen}
+          onClose={() => setAttachmentsEl(null)}
         />
 
         <AddMemberMenu
           card={card}
-          anchorEl={memberAnchorEl}
+          anchorEl={memberEl}
           isMemberMenuOpen={isMemberMenuOpen}
-          onCloseMemberMenu={() => setMemberAnchorEl(null)}
+          onCloseMemberMenu={() => setMemberEl(null)}
         />
 
         <LabelMenu
-          boardId={boardId}
-          listId={listId}
           card={card}
-          anchorEl={anchorEl}
+          anchorEl={labelEl}
           isLabelMenuOpen={isLabelMenuOpen}
-          onCloseLabelMenu={() => setAnchorEl(null)}
+          onCloseLabelMenu={() => setLabelEl(null)}
         />
       </Box>
     </Modal>

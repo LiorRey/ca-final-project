@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { boardService } from "../services/board";
+import Button from "@mui/material/Button";
 
 const colors = [
   "green",
@@ -21,13 +21,14 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
   );
 
   function handleSave() {
-    const label = labelToEdit._id ? labelToEdit : boardService.getEmptyLabel();
-
     const updatedLabel = {
-      ...label,
       title,
       color: selectedColor,
     };
+
+    if (labelToEdit._id) {
+      updatedLabel._id = labelToEdit._id;
+    }
 
     onSaveLabel(updatedLabel);
   }
@@ -66,16 +67,16 @@ export function LabelEditor({ labelToEdit, onSaveLabel, onDeleteLabel }) {
       </div>
 
       <div className="label-editor-actions">
-        <button className="save-btn" onClick={handleSave}>
+        <Button className="save-btn" onClick={handleSave}>
           {labelToEdit._id ? "Save" : "Create"}
-        </button>
+        </Button>
         {labelToEdit._id && (
-          <button
+          <Button
             className="delete-btn"
             onClick={() => onDeleteLabel(labelToEdit._id)}
           >
             Delete
-          </button>
+          </Button>
         )}
       </div>
     </div>

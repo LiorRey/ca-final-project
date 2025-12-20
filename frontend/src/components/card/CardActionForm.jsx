@@ -9,7 +9,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Typography from "@mui/material/Typography";
 import { useFormState } from "../../hooks/useFormState";
-import { ActionButton } from "../ui/buttons/ActionButton";
 import { CustomAutoComplete } from "../ui/CustomAutoComplete";
 import { boardService } from "../../services/board";
 
@@ -292,14 +291,9 @@ export function CardActionForm({
       </Box>
 
       <Box display="flex" justifyContent="flex-end">
-        <ActionButton
-          type="submit"
-          variant="contained"
-          size="small"
-          disabled={isCopyMode && !values.title.trim()}
-        >
+        <Button type="submit" disabled={isCopyMode && !values.title.trim()}>
           {submitButtonText}
-        </ActionButton>
+        </Button>
       </Box>
     </form>
   );

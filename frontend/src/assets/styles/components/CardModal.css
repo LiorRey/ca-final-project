@@ -50,15 +50,25 @@
 
 .description-content {
   grid-column: body;
-  background: var(--gray5);
-  padding: 1rem 1rem 1rem 1rem;
-  min-height: 210px;
-  border: 1px solid var(--gray3);
+  background: var(--gray4);
+  padding: 0rem 0.5rem 0.5rem 0rem;
+  min-height: 56px;
   font-size: 14px;
   cursor: pointer;
-  border-radius: var(--ds-radius-small);
+  border-radius: 8px;
   word-break: break-word;
   overflow-wrap: anywhere;
+  transition: background-color 0.2s;
+}
+
+.description-content.no-description {
+  padding: 0.5rem;
+  color: var(--gray2);
+  border: 1px solid var(--gray3);
+}
+
+.description-content.no-description:hover {
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
 .card-modal-controls {
@@ -84,19 +94,42 @@
 }
 
 .card-modal-description > svg {
-  margin-top: 0.5rem;
+  margin-top: 0.3rem;
   margin-left: 0.25rem;
   grid-column: icon;
 }
 
-.description-title {
+.description-title-container {
   grid-column: body;
-  grid-row: 1;
-  font-weight: 653;
-  font-size: 16px;
-  size: 1rem;
-  padding: 0.5rem 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.description-title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
   margin: 0;
+  color: var(--gray1);
+}
+
+.edit-description-button {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-radius: 3px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  transition: background 0.2s;
+  color: var(--gray1);
+  margin-left: auto;
+}
+
+.edit-description-button:hover {
+  background: rgba(255, 255, 255, 0.16);
 }
 
 .description-input {
@@ -162,10 +195,7 @@
 /* .add-comment-button {
   background: var(--gray4);
   border: none;
-  color: var(--gray1);
   padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
   font-size: 0.9rem;
   align-self: flex-start;
   &:hover {
@@ -194,8 +224,8 @@
   word-wrap: break-word;
   word-break: break-word;
   color: var(--gray1);
-  background-color: var(--gray5, #040a10);
-  border: 1px solid var(--form-input-border-color, #4a9eff);
+  border: none;
+  outline: none;
   border-radius: 4px;
   resize: none;
   overflow: hidden;
@@ -211,9 +241,7 @@
 }
 
 .card-modal-title-input:focus {
-  outline: none;
-  border: none;
-  border-color: var(--form-input-border-color, #4a9eff);
+  outline: 2px solid var(--form-input-border-color, #4a9eff);
 }
 
 .card-modal-title-input::placeholder {
@@ -254,6 +282,13 @@
   width: 100%;
 }
 
+.card-modal-header-list-title {
+  background: var(--gray4);
+  color: var(--gray1);
+  padding: 0.125rem 0.25rem;
+  border-radius: 6px;
+}
+
 .card-modal-header-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -263,13 +298,6 @@
 .card-modal-header-buttons {
   display: flex;
   gap: 0.5rem;
-}
-
-.card-modal-header .icon-button {
-  color: var(--gray1);
-  &:hover {
-    background-color: var(--gray3);
-  }
 }
 
 .card-modal-footer {
@@ -300,17 +328,13 @@
   background-color: var(--bg-blue);
 }
 
-.card-modal-controls .icon-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--gray1);
-  padding: 0.5rem;
-  border-radius: 4px;
-  background: transparent;
-  border: 1px solid var(--gray3);
+.card-modal-controls .MuiButton-root {
+  color: var(--ds-text-subtle);
+  border: 1px solid var(--ds-border);
   &:hover {
-    background-color: var(--gray3);
+    background-color: var(--ds-background-neutral-subtle-hovered);
+    color: var(--ds-text-subtle);
+    border: 1px solid var(--ds-border);
   }
 }
 
@@ -402,6 +426,10 @@
   padding: 0;
   font-size: 0.85rem;
 }
+
+/* .modal-header-buttons {
+  background: var(--gray4);
+} */
 
 /* ====================== Headings ====================== */
 .description-content h1 {

@@ -1,8 +1,7 @@
 const { DEV, VITE_LOCAL } = import.meta.env;
 
-import { boardService as local } from "./board-service-local";
 import { boardService as remote } from "./board-service-remote";
-import { boardDataGenerator } from "../board/board-data-generator.js";
+import { boardDataGenerator } from "./board-data-generator";
 
 function getEmptyBoard() {
   return {
@@ -28,7 +27,7 @@ export function getEmptyLabel() {
   };
 }
 
-const service = VITE_LOCAL === "true" ? local : remote; // "true" ? local : remote;
+const service = VITE_LOCAL === "true" ? remote : remote; // "true" ? local : remote;
 export const boardService = {
   getEmptyBoard,
   getEmptyLabel,
@@ -40,5 +39,4 @@ export const boardService = {
 
 if (DEV) {
   window.boardService = boardService;
-  window.boardDataGenerator = boardDataGenerator;
 }

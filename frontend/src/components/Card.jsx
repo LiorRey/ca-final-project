@@ -1,14 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import {
-  ChatRounded,
-  DriveFileRenameOutline,
-  NotesRounded,
-  RemoveRedEyeOutlined,
-} from "@mui/icons-material";
-import { Box } from "@mui/material";
-import { AvatarGroup } from "./ui/AvatarGroup";
+import DriveFileRenameOutline from "@mui/icons-material/DriveFileRenameOutline";
+import NotesRounded from "@mui/icons-material/NotesRounded";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import { AvatarGroup } from "./ui/AvatarGroup";
 import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
@@ -26,6 +23,7 @@ export function Card({
   const [anchorEl, setAnchorEl] = useState(null);
   const [title, setTitle] = useState(card.title);
   const { boardId } = useParams();
+  const editCardRef = useRef(null);
 
   function handleClickCard() {
     onClickCard(card);
@@ -34,7 +32,7 @@ export function Card({
 
   function handleClick(e) {
     e.stopPropagation();
-    setAnchorEl(e.currentTarget);
+    setAnchorEl(editCardRef.current);
   }
 
   function handleClickLabels(e) {
@@ -71,17 +69,28 @@ export function Card({
 
   const coverStyle = coverImg
     ? {
-        backgroundImage: isOverlay
-          ? `linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000000 100%), url(${coverImg})`
-          : `url(${coverImg})`,
+        backgroundImage: isOverlay ? `url(${coverImg})` : `url(${coverImg})`,
+        minHeight: "250px",
+        marginTop: "auto",
       }
     : coverColor
     ? { backgroundColor: coverColor }
     : undefined;
 
   const overlayText = isOverlay
-    ? { fontWeight: 500, fontSize: "16px" }
+    ? {
+        fontWeight: 500,
+        fontSize: "16px",
+      }
     : undefined;
+
+  const overlayContentStyle =
+    isOverlay && coverImg
+      ? {
+          background:
+            "linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 1) 100%)",
+        }
+      : undefined;
 
   return (
     <Draggable draggableId={card._id} index={index}>
@@ -157,7 +166,13 @@ export function Card({
                 !card.cover?.textOverlay && (
                   <div className="card-cover" style={coverStyle}></div>
                 )}
-              <div className="card-content">
+              <div
+                ref={editCardRef}
+                className={`card-content ${
+                  isOverlay && coverImg ? "card-content--overlay" : ""
+                }`}
+                style={overlayContentStyle}
+              >
                 {shouldShowLabels && (
                   <div className="card-labels" onClick={handleClickLabels}>
                     {labels.map(label => (
@@ -196,14 +211,14 @@ export function Card({
                     )}
                   </div>
                 </div>
-                <button
+                <IconButton
                   onClick={handleClick}
                   aria-describedby={id}
                   aria-label="Edit card"
-                  className="icon-button card-edit-button"
+                  className="card-edit-button"
                 >
                   <DriveFileRenameOutline />
-                </button>
+                </IconButton>
               </div>
             </Box>
           )}

@@ -29,6 +29,8 @@
 }
 
 .card-content-container {
+  display: flex;
+  flex-direction: column;
   background-color: var(--gray4);
   border: 1px solid var(--black);
   border-radius: 6px;
@@ -37,6 +39,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .floating-card-content-container {
@@ -47,8 +50,29 @@
   position: relative;
 }
 
+.card-content--overlay::before {
+  content: "";
+  position: absolute;
+  top: -2rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2rem;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  mix-blend-mode: normal;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .card-content {
+  position: relative;
   display: flex;
+  margin-top: auto;
   flex-direction: column;
   color: var(--gray1);
   border-radius: 0 0 6px 6px;
@@ -67,7 +91,7 @@
   left: 0;
 }
 
-.card-edit-button {
+.card-edit-button.MuiIconButton-root {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -92,6 +116,7 @@
 .card-title,
 .card-title-input {
   margin: 0;
+  margin-top: auto;
   font-size: 1.15em;
   font-weight: normal;
   font-family: inherit;
@@ -157,8 +182,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 0 0 0 1.1rem;
   background-color: transparent;
+  padding-top: 8px;
+  padding-left: 5px;
 }
 
 .card-menu-button {

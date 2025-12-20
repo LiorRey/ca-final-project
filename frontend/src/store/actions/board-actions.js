@@ -8,6 +8,7 @@ import {
   MOVE_LIST,
   UPDATE_LIST,
   COPY_LIST,
+  DELETE_LIST,
   ARCHIVE_LIST,
   UNARCHIVE_LIST,
   ARCHIVE_ALL_CARDS_IN_LIST,
@@ -15,6 +16,8 @@ import {
   ADD_CARD,
   EDIT_CARD,
   UPSERT_CARD_COVER,
+  ADD_CARD_ATTACHMENT,
+  REMOVE_CARD_ATTACHMENT,
   DELETE_CARD,
   COPY_CARD,
   MOVE_CARD,
@@ -104,6 +107,12 @@ export const copyList = createAsyncAction(
   store
 );
 
+export const deleteList = createAsyncAction(
+  DELETE_LIST,
+  boardService.deleteList,
+  store
+);
+
 export const archiveList = createAsyncAction(
   ARCHIVE_LIST,
   boardService.archiveList,
@@ -154,6 +163,18 @@ export const editCard = createAsyncAction(
 export const updateCardCover = createAsyncAction(
   UPSERT_CARD_COVER,
   boardService.updateCardCover,
+  store
+);
+
+export const addCardAttachment = createAsyncAction(
+  ADD_CARD_ATTACHMENT,
+  boardService.addCardAttachment,
+  store
+);
+
+export const removeCardAttachment = createAsyncAction(
+  REMOVE_CARD_ATTACHMENT,
+  boardService.removeCardAttachment,
   store
 );
 
@@ -217,32 +238,11 @@ export const deleteLabel = createAsyncAction(
   store
 );
 
-export async function updateCardLabels(
-  boardId,
-  listId,
-  cardId,
-  updatedCardLabels
-) {
-  try {
-    store.dispatch({ type: UPDATE_CARD_LABELS.REQUEST });
-    await boardService.updateCardLabels(
-      boardId,
-      listId,
-      cardId,
-      updatedCardLabels
-    );
-    store.dispatch({
-      type: UPDATE_CARD_LABELS.SUCCESS,
-      payload: { listId, cardId, updatedCardLabels },
-    });
-  } catch (error) {
-    store.dispatch({
-      type: UPDATE_CARD_LABELS.FAILURE,
-      payload: error.message,
-    });
-    throw error;
-  }
-}
+export const updateCardLabels = createAsyncAction(
+  UPDATE_CARD_LABELS,
+  boardService.updateCardLabels,
+  store
+);
 
 export function setBoards(boards) {
   return { type: SET_BOARDS, payload: boards };

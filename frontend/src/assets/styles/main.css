@@ -7,7 +7,7 @@
 @import "basics/specials";
 
 @import "components/AboutUs";
-@import "components/HomePage";
+@import "pages/HomePage";
 @import "components/UserDetails";
 @import "components/LoginSignup";
 @import "components/Chat";
@@ -41,9 +41,11 @@
 @import "components/Card";
 @import "components/CardFormMenu";
 @import "components/CardModal";
+@import "components/CardAttachments";
 @import "components/Avatar";
 @import "components/UserMenu";
-@import "components/AttachmentMenu";
+@import "components/CardCoverMenu";
+@import "components/CardAttachmentsMenu";
 
 @import "pages/BoardIndex";
 @import "pages/BoardDetails";

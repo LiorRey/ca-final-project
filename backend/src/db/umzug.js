@@ -2,6 +2,7 @@ import { Umzug, MongoDBStorage } from "umzug";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
+import { config } from "../config/env.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +13,7 @@ const __dirname = path.dirname(__filename);
  */
 export async function getUmzug() {
   if (mongoose.connection.readyState !== 1) {
-    const mongoURI = process.env.MONGODB_URI;
+    const mongoURI = config.database.url;
     await mongoose.connect(mongoURI);
   }
 

@@ -12,13 +12,11 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { Popover } from "./Popover";
 import { useCardFilters } from "../hooks/useCardFilters";
-import {
-  CURRENT_USER_ID_PLACEHOLDER,
-  getMembersFilterOptions,
-} from "../services/filter-service";
+import { getMembersFilterOptions } from "../services/filter-service";
 
 export function FilterMenu() {
   const members = useSelector(state => state.boards.board.members);
+  const currentUser = useSelector(state => state.auth.currentUser);
   const [isOpen, setIsOpen] = useState(false);
   const [localTitle, setLocalTitle] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -30,8 +28,9 @@ export function FilterMenu() {
     hasActiveFilters,
   } = useCardFilters();
   const memberOptions = useMemo(
-    () => getMembersFilterOptions(members),
-    [members]
+    () =>
+      getMembersFilterOptions(members).filter(m => m.id !== currentUser._id),
+    [members, currentUser]
   );
 
   function handleClearFilters() {
@@ -62,34 +61,32 @@ export function FilterMenu() {
     if (checkboxName === "assignedToMe") {
       newMembers = filters.members ? [...filters.members] : [];
       if (checked) {
-        newMembers = [...newMembers, CURRENT_USER_ID_PLACEHOLDER];
+        newMembers = [...newMembers, currentUser._id];
       } else {
-        newMembers = newMembers.filter(
-          id => id !== CURRENT_USER_ID_PLACEHOLDER
-        );
+        newMembers = newMembers.filter(id => id !== currentUser._id);
       }
     } else if (checkboxName === "selectAll") {
       if (checked) {
-        newMembers = members
-          .filter(m => m._id !== CURRENT_USER_ID_PLACEHOLDER)
-          .map(m => m._id);
-        if (filters.members?.includes(CURRENT_USER_ID_PLACEHOLDER)) {
-          newMembers = [CURRENT_USER_ID_PLACEHOLDER, ...newMembers];
+        newMembers = memberOptions.map(m => m.id);
+        if (filters.members?.includes(currentUser._id)) {
+          newMembers = [currentUser._id, ...newMembers];
         }
       } else {
         newMembers = [];
+        if (filters.members?.includes(currentUser._id)) {
+          newMembers = [currentUser._id];
+        }
       }
     }
     updateFilter("members", newMembers);
   }
 
   function isSomeMembersSelected() {
-    if (!members || members.length === 0) return false;
-    const filtered = members.filter(m => m._id !== CURRENT_USER_ID_PLACEHOLDER);
-    const selectedCount = filtered.filter(m =>
-      filters.members?.includes(m._id)
+    if (!memberOptions || memberOptions.length === 0) return false;
+    const selectedCount = memberOptions.filter(m =>
+      filters.members?.includes(m.id)
     ).length;
-    return selectedCount > 0 && selectedCount < filtered.length;
+    return selectedCount > 0 && selectedCount < memberOptions.length;
   }
 
   function renderMemberOption(props, option, { selected }) {
@@ -105,17 +102,17 @@ export function FilterMenu() {
 
   function handleMembersAutocompleteChange(_, selected) {
     let newMembers = selected.map(m => m.id);
-    if (filters.members?.includes(CURRENT_USER_ID_PLACEHOLDER)) {
-      newMembers = [CURRENT_USER_ID_PLACEHOLDER, ...newMembers];
+    if (filters.members?.includes(currentUser._id)) {
+      newMembers = [currentUser._id, ...newMembers];
     }
     updateFilter("members", newMembers);
   }
 
   return (
     <>
-      <button className="icon-button" onClick={handleOpen}>
+      <IconButton variant="square" onClick={handleOpen}>
         <FilterList />
-      </button>
+      </IconButton>
       <Popover
         isOpen={isOpen}
         anchorEl={anchorEl}
@@ -160,9 +157,7 @@ export function FilterMenu() {
               control={
                 <Checkbox
                   name="assignedToMe"
-                  checked={filters.members?.includes(
-                    CURRENT_USER_ID_PLACEHOLDER
-                  )}
+                  checked={filters.members?.includes(currentUser._id)}
                   onChange={handleMembersChange}
                 />
               }
@@ -177,9 +172,7 @@ export function FilterMenu() {
                   name="selectAll"
                   checked={
                     memberOptions.length > 0 &&
-                    memberOptions
-                      .filter(m => m.id !== CURRENT_USER_ID_PLACEHOLDER)
-                      .every(m => filters.members?.includes(m.id))
+                    memberOptions.every(m => filters.members?.includes(m.id))
                   }
                   indeterminate={isSomeMembersSelected()}
                   onChange={handleMembersChange}
@@ -196,10 +189,8 @@ export function FilterMenu() {
                 disableClearable
                 options={memberOptions}
                 getOptionLabel={option => option.label}
-                value={memberOptions.filter(
-                  m =>
-                    filters.members?.includes(m.id) &&
-                    m.id !== CURRENT_USER_ID_PLACEHOLDER
+                value={memberOptions.filter(m =>
+                  filters.members?.includes(m.id)
                 )}
                 onChange={handleMembersAutocompleteChange}
                 renderOption={renderMemberOption}
@@ -218,12 +209,7 @@ export function FilterMenu() {
             >
               Clear All
             </Button>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleClose}
-              sx={{ ml: "auto" }}
-            >
+            <Button onClick={handleClose} sx={{ ml: "auto" }}>
               Done
             </Button>
           </Box>

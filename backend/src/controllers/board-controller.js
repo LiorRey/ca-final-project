@@ -45,7 +45,30 @@ export async function getBoardById(req, res) {
 }
 
 export async function getFullBoardById(req, res) {
-  const fullBoard = await boardService.getFullBoardById(req.params.id);
+  const { title, labels, members, noMembers, includeNoLabels } = req.query;
+
+  const filterBy = {
+    title,
+    labels: labels
+      ? labels
+          .split(",")
+          .map(id => id.trim())
+          .filter(id => id)
+      : undefined,
+    members: members
+      ? members
+          .split(",")
+          .map(id => id.trim())
+          .filter(id => id)
+      : undefined,
+    noMembers: noMembers === "true" || noMembers === "1",
+    includeNoLabels: includeNoLabels === "true" || includeNoLabels === "1",
+  };
+
+  const fullBoard = await boardService.getFullBoardById(
+    req.params.id,
+    filterBy
+  );
   if (!fullBoard) throw createError(404, "Board not found");
 
   res.json({ board: fullBoard });

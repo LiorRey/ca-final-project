@@ -61,7 +61,7 @@ export function getDefaultFilter() {
 export function getMembersFilterOptions(members) {
   if (!members) return [];
   return members.map(member => ({
-    id: member._id,
+    id: member.userId,
     label: member.fullname,
     fullname: member.fullname,
     username: member.username,

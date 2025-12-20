@@ -1,7 +1,6 @@
 import { useFormState } from "../hooks/useFormState";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { ActionButton } from "./ui/buttons/ActionButton";
 import { CustomAutoComplete } from "./ui/CustomAutoComplete";
 import { useEffect, useState } from "react";
 import { boardService } from "../services/board";
@@ -120,9 +119,7 @@ export function MoveListForm({
           />
         </Box>
         <Box display="flex" gap={2} mt={3}>
-          <ActionButton type="submit" variant="contained" color="primary">
-            Move
-          </ActionButton>
+          <Button type="submit">Move</Button>
           <Button type="button" variant="outlined" onClick={onCancel}>
             Cancel
           </Button>

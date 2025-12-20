@@ -23,6 +23,7 @@ dist/
 dist-ssr/
 build/
 *.tsbuildinfo
+public/
 
 # Vite (Frontend)
 .vite/

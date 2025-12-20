@@ -1,9 +1,9 @@
 import PopoverMUI from "@mui/material/Popover";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import Close from "@mui/icons-material/Close";
 import { useState } from "react";
-import { SquareIconButton } from "../ui/buttons/SquareIconButton";
 import { PopoverMenuContext } from "./PopoverMenuContext";
 
 export function PopoverMenuProvider({
@@ -76,11 +76,9 @@ export function PopoverMenuProvider({
           <Typography className="popover-header-title">{menuTitle}</Typography>
           {showClose && (
             <Box className="popover-header-close">
-              <SquareIconButton
-                icon={<Close />}
-                aria-label="Close"
-                onClick={onClose}
-              />
+              <IconButton aria-label="Close" onClick={onClose}>
+                <Close />
+              </IconButton>
             </Box>
           )}
         </Box>

@@ -17,6 +17,8 @@ import {
   removeAssignee,
   copyCard,
   updateCover,
+  addAttachment,
+  removeAttachment,
 } from "../controllers/card-controller.js";
 import { authenticate } from "../middleware/authenticate.js";
 import { canModifyCard, canCreateCard } from "../middleware/authorize.js";
@@ -31,6 +33,13 @@ router.delete("/:id", authenticate, canModifyCard(), deleteCard);
 router.put("/:id/move", authenticate, canModifyCard(), moveCard);
 router.put("/:id/labels", authenticate, canModifyCard(), updateLabels);
 router.put("/:id/cover", authenticate, canModifyCard(), updateCover);
+router.post("/:id/attachments", authenticate, canModifyCard(), addAttachment);
+router.delete(
+  "/:id/attachments/:attachmentId",
+  authenticate,
+  canModifyCard(),
+  removeAttachment
+);
 router.post("/:id/comments", authenticate, canModifyCard(), addComment);
 router.put(
   "/:cardId/comments/:commentId",

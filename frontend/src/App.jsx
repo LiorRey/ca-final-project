@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { Header } from "./components/Header";
 import { UserMessage } from "./components/UserMessage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AdminIndex } from "./pages/AdminIndex";
@@ -20,11 +18,10 @@ export function App() {
   const backgroundLocation = location.state?.backgroundLocation;
 
   return (
-    <div className="main-container">
-      <Header />
+    <div className="main">
       <UserMessage />
 
-      <main>
+      <main className="main-container">
         <Routes location={backgroundLocation || location}>
           <Route path="" element={<HomePage />} />
           <Route path="about" element={<AboutUs />}>

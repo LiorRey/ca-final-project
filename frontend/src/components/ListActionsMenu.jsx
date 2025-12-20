@@ -12,8 +12,7 @@ import { MoveListForm } from "./MoveListForm";
 import {
   moveList,
   loadBoards,
-  archiveList,
-  archiveAllCardsInList,
+  deleteList,
 } from "../store/actions/board-actions";
 
 export function ListActionsMenu({
@@ -38,10 +37,7 @@ export function ListActionsMenu({
       setActiveAction(null);
       onClose();
     } else if (key === "archiveList") {
-      archiveList(currentBoard._id, list._id);
-      onClose();
-    } else if (key === "archiveAllCards") {
-      archiveAllCardsInList(currentBoard._id, list._id);
+      deleteList(currentBoard._id, list._id);
       onClose();
     } else {
       setActiveAction(key);
@@ -147,6 +143,5 @@ function listActionsMenuItems() {
     { label: "Sort list...", key: "sort" },
     { label: "Watch", key: "watch" },
     { label: "Archive this list", key: "archiveList" },
-    { label: "Archive all cards in this list", key: "archiveAllCards" },
   ];
 }

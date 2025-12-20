@@ -41,7 +41,6 @@ export function CardPopover({
   }
 
   function handleArchive() {
-    console.log("archive");
     handleDelete();
   }
 
@@ -162,7 +161,7 @@ export function CardPopover({
           horizontal: "left",
         }}
         sx={{
-          zIndex: theme => theme.zIndex.modal + 1,
+          zIndex: theme => theme.zIndex.modal + 2,
         }}
         slotProps={{
           paper: {

@@ -221,6 +221,36 @@ export async function updateCover(cardId, coverData) {
   return card;
 }
 
+export async function addAttachment(cardId, attachmentData) {
+  const { url, name = "", publicId = "" } = attachmentData || {};
+  if (!url) throw createError(400, "url is required");
+
+  const card = await Card.findById(cardId);
+  if (!card) throw createError(404, "Card not found");
+
+  card.attachments.push({
+    url: String(url).trim(),
+    name: String(name || "").trim(),
+    publicId: String(publicId || "").trim(),
+  });
+  await card.save();
+
+  return card;
+}
+
+export async function removeAttachment(cardId, attachmentId) {
+  const card = await Card.findById(cardId);
+  if (!card) throw createError(404, "Card not found");
+
+  const attachment = card.attachments.id(attachmentId);
+  if (!attachment) throw createError(404, "Attachment not found");
+
+  attachment.deleteOne();
+  await card.save();
+
+  return card;
+}
+
 export async function copyCard(cardId, copyOptions = {}) {
   const {
     copyLabels = false,
