@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import PopoverMUI from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-import { SquareIconButton } from "./ui/buttons/SquareIconButton";
+import IconButton from "@mui/material/IconButton";
 
 export function Popover({
   anchorEl,
@@ -40,23 +40,17 @@ export function Popover({
         <Box className="popover-header">
           {showBack && (
             <Box className="popover-header-back">
-              <SquareIconButton
-                icon={<ArrowBack />}
-                aria-label="Back"
-                onClick={onBack}
-              />
+              <IconButton aria-label="Back" onClick={onBack}>
+                <ArrowBack />
+              </IconButton>
             </Box>
           )}
           <Typography className="popover-header-title">{title}</Typography>
           {showClose && (
             <Box className="popover-header-close">
-              <button
-                className="icon-button"
-                aria-label="Close"
-                onClick={onClose}
-              >
+              <IconButton aria-label="Close" onClick={onClose} size="small">
                 <Close />
-              </button>
+              </IconButton>
             </Box>
           )}
         </Box>

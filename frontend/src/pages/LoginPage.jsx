@@ -8,7 +8,7 @@ export function LoginPage() {
   async function handleLogin(credentials) {
     try {
       await login(credentials);
-      navigate("/");
+      navigate("/board");
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
