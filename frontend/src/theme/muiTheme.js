@@ -537,11 +537,11 @@ const muiTheme = createTheme({
         root: {
           width: "32px",
           height: "32px",
-          borderRadius: token("radius.small"),
+          borderRadius: token("radius.large"),
           color: token("color.icon"),
           backgroundColor: token("color.background.neutral.subtle"),
           "&:hover": {
-            backgroundColor: token("color.background.neutral.subtle.hovered"),
+            backgroundColor: token("color.background.neutral.hovered"),
             color: token("color.icon"),
           },
           "&.Mui-selected": {
@@ -554,9 +554,9 @@ const muiTheme = createTheme({
           },
           variants: [
             {
-              props: { variant: "rounder" },
+              props: { variant: "square" },
               style: {
-                borderRadius: token("radius.large"),
+                borderRadius: token("radius.small"),
               },
             },
           ],

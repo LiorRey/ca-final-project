@@ -110,7 +110,7 @@ export function FilterMenu() {
 
   return (
     <>
-      <IconButton onClick={handleOpen}>
+      <IconButton variant="square" onClick={handleOpen}>
         <FilterList />
       </IconButton>
       <Popover

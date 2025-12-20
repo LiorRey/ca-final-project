@@ -202,13 +202,17 @@ export function BoardDetails() {
             </AvatarGroup>
           )}
           <FilterMenu />
-          <IconButton>
+          <IconButton variant="square">
             <StarBorderRounded />
           </IconButton>
-          <IconButton>
+          <IconButton variant="square">
             <LockOutlineRounded />
           </IconButton>
-          <IconButton aria-label="Board options" onClick={handleOpenBoardMenu}>
+          <IconButton
+            variant="square"
+            aria-label="Board options"
+            onClick={handleOpenBoardMenu}
+          >
             <MoreHoriz />
           </IconButton>
         </div>

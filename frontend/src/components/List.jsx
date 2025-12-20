@@ -134,11 +134,7 @@ export function List({
               </h2>
             )}
 
-            <IconButton
-              aria-label="List options"
-              onClick={handleMoreClick}
-              variant="rounder"
-            >
+            <IconButton aria-label="List options" onClick={handleMoreClick}>
               <MoreHoriz />
             </IconButton>
           </div>
