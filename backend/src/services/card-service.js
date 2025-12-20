@@ -107,7 +107,7 @@ export async function addComment(cardId, user, text) {
   card.comments.push(newComment);
   await card.save();
 
-  return card.comments[card.comments.length - 1];
+  return card;
 }
 
 export async function updateComment(cardId, commentId, text) {

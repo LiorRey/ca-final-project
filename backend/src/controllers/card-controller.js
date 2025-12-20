@@ -78,11 +78,11 @@ export async function updateLabels(req, res) {
 }
 
 export async function addComment(req, res) {
-  const { cardId } = req.params;
+  const { id } = req.params;
   const { text } = req.body;
 
-  const comment = await cardService.addComment(cardId, req.currentUser, text);
-  res.status(201).json({ comment });
+  const card = await cardService.addComment(id, req.currentUser, text);
+  res.status(201).json({ card });
 }
 
 export async function updateComment(req, res) {
