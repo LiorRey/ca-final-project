@@ -29,11 +29,21 @@
     }
 
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-size: 2.5em;
       font-weight: bold;
       margin-inline-end: 2em;
       text-decoration: none;
       color: white;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+      display: block;
     }
 
     .login-link {

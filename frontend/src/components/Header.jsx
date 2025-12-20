@@ -40,7 +40,8 @@ export function Header() {
     <header className="app-header">
       <nav>
         <NavLink to="/board" className="logo">
-          Kanbox
+          <img className="logo-icon" src="/icon.svg" alt="Kanbox logo" />
+          <span className="logo-text">Kanbox</span>
         </NavLink>
 
         <input
