@@ -5,20 +5,13 @@ export function AvatarGroup({ size = 24, max = 3, children, sx, ...props }) {
     "& .MuiAvatarGroup-avatar": {
       width: size,
       height: size,
-      fontSize: size * 0.45,
+      fontSize: 12,
     },
-
-    "& .MuiAvatarGroup-avatar.MuiAvatarGroup-extra": {
-      width: size,
-      height: size,
-      fontSize: size * 0.45,
-    },
-
     ...sx,
   };
 
   return (
-    <MuiAvatarGroup max={max} sx={defaultSx} {...props}>
+    <MuiAvatarGroup spacing={5} max={max} sx={defaultSx} {...props}>
       {children}
     </MuiAvatarGroup>
   );

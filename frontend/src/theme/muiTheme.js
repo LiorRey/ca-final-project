@@ -513,11 +513,12 @@ const muiTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiAvatar-root": {
-            border: "1px solid black", // dark border, override MUI default
-            boxSizing: "content-box",
+            border: "transparent",
+            fontWeight: 500,
+            lineHeight: "24px",
           },
           "& .MuiAvatarGroup-avatar": {
-            border: "1px solid black", // dark border for all avatars
+            border: "0px solid transparent", // dark border, override MUI default
             backgroundColor: "var(--gray5)", // dark surplus background
             color: "var(--grey1)", // white "+X" text
           },

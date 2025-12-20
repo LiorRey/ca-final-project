@@ -39,6 +39,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .floating-card-content-container {
@@ -61,7 +62,7 @@
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.7) 100%
+    rgba(0, 0, 0, 0.5) 100%
   );
   mix-blend-mode: normal;
   pointer-events: none;
