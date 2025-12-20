@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   InboxRounded,
   CalendarMonthRounded,
@@ -18,7 +17,7 @@ export function Footer() {
           <CalendarMonthRounded />
           Planer
         </FooterButton>
-        <FooterButton>
+        <FooterButton active={true}>
           <ViewWeekOutlined />
           Board
         </FooterButton>
@@ -32,19 +31,13 @@ export function Footer() {
   );
 }
 
-function FooterButton(props) {
-  const [isActive, setIsActive] = useState(false);
-
-  function onToggle() {
-    setIsActive(!isActive);
-  }
-
+function FooterButton({ active = false, onClick, children }) {
   return (
     <button
-      className={`footer-button ${isActive ? "active" : ""}`}
-      onClick={onToggle}
+      className={`footer-button ${active ? "active" : ""}`}
+      onClick={onClick}
     >
-      {props.children}
+      {children}
     </button>
   );
 }

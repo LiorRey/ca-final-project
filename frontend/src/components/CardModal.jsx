@@ -16,17 +16,10 @@ import { AddMemberMenu } from "./AddMemberMenu";
 import { CardCoverMenu } from "./CardCoverMenu";
 import { CardAttachments } from "./CardAttachments";
 import { CardAttachmentsMenu } from "./CardAttachmentMenu";
+import { useSelector } from "react-redux";
 
-export function CardModal({
-  boardId,
-  listId,
-  listTitle,
-  card,
-  cardLabels = [],
-  onEditCard,
-  onClose,
-  isOpen,
-}) {
+export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
+  const board = useSelector(state => state.boards.board);
   const [openSection, setOpenSection] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -68,6 +61,13 @@ export function CardModal({
   function handleOpenAttachmentsMenu(element) {
     setAttachmentsEl(element);
   }
+
+  const cardLabels =
+    board.labels && card.labelIds && card.labelIds.length > 0
+      ? card.labelIds
+          .map(labelId => board.labels.find(l => l._id === labelId))
+          .filter(Boolean)
+      : [];
 
   if (!card) return null;
 
@@ -276,8 +276,6 @@ export function CardModal({
         />
 
         <LabelMenu
-          boardId={boardId}
-          listId={listId}
           card={card}
           anchorEl={labelEl}
           isLabelMenuOpen={isLabelMenuOpen}
