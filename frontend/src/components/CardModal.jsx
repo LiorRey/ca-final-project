@@ -14,7 +14,7 @@ import { TextEditor } from "./ui/TextEditor";
 import { Avatar } from "./ui/Avatar";
 import { AddMemberMenu } from "./AddMemberMenu";
 import { AttachmentMenu } from "./AttachmentMenu";
-import { addComment } from "../store/actions/board-actions";
+import { addComment, deleteComment } from "../store/actions/board-actions";
 
 export function CardModal({
   boardId,
@@ -49,6 +49,10 @@ export function CardModal({
     await addComment(card._id, commentDraft);
 
     setCommentDraft("");
+  }
+
+  async function handleDeleteComment(commentId) {
+    await deleteComment(card._id, commentId);
   }
 
   function handleSaveCard() {
@@ -281,7 +285,11 @@ export function CardModal({
 
                         <div className="comment-actions">
                           <span>Edit</span>
-                          <span>Delete</span>
+                          <span
+                            onClick={() => handleDeleteComment(comment._id)}
+                          >
+                            Delete
+                          </span>
                         </div>
                       </div>
                     </div>

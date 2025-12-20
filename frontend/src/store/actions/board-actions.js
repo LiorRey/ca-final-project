@@ -29,6 +29,7 @@ import {
   CLEAR_ALL_FILTERS,
   SET_LOADING,
   SET_ERROR,
+  DELETE_COMMENT,
 } from "../reducers/board-reducer";
 
 import { store } from "../store";
@@ -177,6 +178,12 @@ export const moveCard = createAsyncAction(
 export const addComment = createAsyncAction(
   ADD_COMMENT,
   boardService.addComment,
+  store
+);
+
+export const deleteComment = createAsyncAction(
+  DELETE_COMMENT,
+  boardService.deleteComment,
   store
 );
 

@@ -15,6 +15,7 @@ export const boardService = {
   copyCard,
   moveCard,
   addComment,
+  deleteComment,
   addAssignee,
   removeAssignee,
   getEmptyList,
@@ -138,6 +139,13 @@ async function addComment(cardId, text) {
   };
 
   const data = await httpService.post(`cards/${cardId}/comments`, payload);
+  return data.card;
+}
+
+async function deleteComment(cardId, commentId) {
+  const data = await httpService.delete(
+    `cards/${cardId}/comments/${commentId}`
+  );
   return data.card;
 }
 
