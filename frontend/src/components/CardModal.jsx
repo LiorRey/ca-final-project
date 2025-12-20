@@ -25,7 +25,6 @@ import { useSelector } from "react-redux";
 export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
   const board = useSelector(state => state.boards.board);
   const [openSection, setOpenSection] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
   const [labelEl, setLabelEl] = useState(null);
@@ -45,12 +44,10 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
   function handleSaveCard() {
     setIsEditorOpen(false);
     onEditCard(cardDetails);
-    setIsEditing(false);
   }
 
   function handleCancelCard() {
     setIsEditorOpen(false);
-    setIsEditing(false);
     setCardDetails(card);
   }
 
@@ -108,25 +105,12 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
         <div className="card-modal-container">
           <section className="card-modal-content">
             <div className="card-modal-title-container">
-              {!isEditing ? (
-                <h1
-                  className="card-modal-title"
-                  onClick={() => setIsEditing(true)}
-                >
-                  {cardDetails.title}
-                </h1>
-              ) : (
-                <TextareaAutosize
-                  className="card-modal-title-input"
-                  value={cardDetails.title}
-                  onChange={e => handleChangeCard("title", e.target.value)}
-                  onBlur={() => {
-                    setIsEditing(false);
-                    onEditCard(cardDetails);
-                  }}
-                  autoFocus
-                />
-              )}
+              <TextareaAutosize
+                className="card-modal-title-input"
+                value={cardDetails.title}
+                onChange={e => handleChangeCard("title", e.target.value)}
+                onBlur={() => onEditCard(cardDetails)}
+              />
             </div>
             <div className="card-modal-controls">
               <Button
