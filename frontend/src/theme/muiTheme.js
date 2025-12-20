@@ -525,6 +525,46 @@ const muiTheme = createTheme({
         },
       },
     },
+    MuiIconButton: {
+      defaultProps: {
+        disableRipple: true,
+        size: "small",
+      },
+      styleOverrides: {
+        root: {
+          width: "32px",
+          height: "32px",
+          borderRadius: token("radius.small"),
+          color: token("color.icon"),
+          backgroundColor: token("color.background.neutral.subtle"),
+          "&:hover": {
+            backgroundColor: token("color.background.neutral.subtle.hovered"),
+            color: token("color.icon"),
+          },
+          "&.Mui-selected": {
+            color: token("color.text.inverse"),
+            backgroundColor: token("color.background.selected"),
+            "&:hover": {
+              backgroundColor: token("color.background.selected.hovered"),
+              color: token("color.text.inverse"),
+            },
+          },
+          variants: [
+            {
+              props: { variant: "rounder" },
+              style: {
+                borderRadius: token("radius.large"),
+              },
+            },
+          ],
+        },
+      },
+    },
+    MuiSvgIcon: {
+      defaultProps: {
+        fontSize: "small",
+      },
+    },
   },
 });
 
