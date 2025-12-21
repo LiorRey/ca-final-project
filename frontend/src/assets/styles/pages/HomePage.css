@@ -84,6 +84,10 @@ body:has(.landing-page) {
   transition: all 0.3s ease;
 }
 
+.header-logo:hover {
+  text-decoration: none;
+}
+
 .header-logo:hover .logo-icon {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(99, 102, 241, 0.5);
@@ -112,6 +116,7 @@ body:has(.landing-page) {
 
 .header-link:hover {
   color: #fff;
+  text-decoration: none;
 }
 
 .header-btn {
@@ -128,6 +133,7 @@ body:has(.landing-page) {
 
 .header-btn:hover {
   background: #f1f5f9;
+  text-decoration: none;
 }
 
 /* ========== Background Elements ========== */
@@ -435,6 +441,7 @@ body:has(.landing-page) {
 .btn-primary:hover {
   background-color: #3f38bc;
   box-shadow: 1px 1px 10px rgba(79, 70, 229, 0.6);
+  text-decoration: none;
 }
 
 .btn-secondary {
@@ -448,6 +455,7 @@ body:has(.landing-page) {
   background-color: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
+  text-decoration: none;
 }
 
 .btn-icon {
