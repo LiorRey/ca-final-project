@@ -40,6 +40,7 @@
   max-height: calc(100vh - 200px);
   box-sizing: border-box;
   transition: opacity 0.4s ease-in-out;
+  scrollbar-width: thin;
 }
 
 .comments-title {

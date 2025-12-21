@@ -161,7 +161,7 @@ export function CardPopover({
           horizontal: "left",
         }}
         sx={{
-          zIndex: theme => theme.zIndex.modal + 2,
+          zIndex: theme => theme.zIndex.modal + 1,
         }}
         slotProps={{
           paper: {
