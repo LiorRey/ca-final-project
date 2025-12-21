@@ -20,6 +20,7 @@ import { AddMemberMenu } from "./AddMemberMenu";
 import { CardCoverMenu } from "./CardCoverMenu";
 import { CardAttachments } from "./CardAttachments";
 import { CardAttachmentsMenu } from "./CardAttachmentMenu";
+import { CardComments } from "./CardComments";
 import { useSelector } from "react-redux";
 
 export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
@@ -244,15 +245,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
           <aside
             className={`card-modal-comments ${openSection ? "open" : "closed"}`}
           >
-            <div className="card-modal-comments-content">
-              <h3 className="comments-title">Comments</h3>
-              <textarea
-                className="comment-input"
-                placeholder="Add a comment"
-                spellCheck="false"
-              />
-              <Button className="add-comment-button">Add</Button>
-            </div>
+            <CardComments card={card} />
           </aside>
         </div>
         <footer className="card-modal-footer">

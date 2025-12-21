@@ -28,6 +28,9 @@ export const COPY_CARD = createAsyncActionTypes("COPY_CARD");
 export const MOVE_CARD = createAsyncActionTypes("MOVE_CARD");
 export const ADD_ASSIGNEE = createAsyncActionTypes("ADD_ASSIGNEE");
 export const REMOVE_ASSIGNEE = createAsyncActionTypes("REMOVE_ASSIGNEE");
+export const ADD_COMMENT = createAsyncActionTypes("ADD_COMMENT");
+export const UPDATE_COMMENT = createAsyncActionTypes("UPDATE_COMMENT");
+export const DELETE_COMMENT = createAsyncActionTypes("DELETE_COMMENT");
 export const MOVE_LIST = createAsyncActionTypes("MOVE_LIST");
 export const UPDATE_LIST = createAsyncActionTypes("UPDATE_LIST");
 export const COPY_LIST = createAsyncActionTypes("COPY_LIST");
@@ -368,6 +371,66 @@ const handlers = {
               cards: list.cards.map(card =>
                 card._id === action.payload._id
                   ? { ...card, assignees: action.payload.assignees }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  ...createAsyncHandlers(ADD_COMMENT, ADD_COMMENT.KEY),
+  [ADD_COMMENT.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [ADD_COMMENT.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, comments: action.payload.comments }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  ...createAsyncHandlers(UPDATE_COMMENT, UPDATE_COMMENT.KEY),
+  [UPDATE_COMMENT.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [UPDATE_COMMENT.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, comments: action.payload.comments }
+                  : card
+              ),
+            }
+          : list
+      ),
+    },
+  }),
+  ...createAsyncHandlers(DELETE_COMMENT, DELETE_COMMENT.KEY),
+  [DELETE_COMMENT.SUCCESS]: (state, action) => ({
+    ...state,
+    loading: { ...state.loading, [DELETE_COMMENT.KEY]: false },
+    board: {
+      ...state.board,
+      lists: state.board.lists.map(list =>
+        list._id === action.payload.listId
+          ? {
+              ...list,
+              cards: list.cards.map(card =>
+                card._id === action.payload._id
+                  ? { ...card, comments: action.payload.comments }
                   : card
               ),
             }

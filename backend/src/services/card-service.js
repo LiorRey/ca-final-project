@@ -107,7 +107,7 @@ export async function addComment(cardId, user, text) {
   card.comments.push(newComment);
   await card.save();
 
-  return card.comments[card.comments.length - 1];
+  return card;
 }
 
 export async function updateComment(cardId, commentId, text) {
@@ -120,7 +120,7 @@ export async function updateComment(cardId, commentId, text) {
   comment.text = text.trim();
   await card.save();
 
-  return comment;
+  return card;
 }
 
 export async function deleteComment(cardId, commentId) {
@@ -133,7 +133,7 @@ export async function deleteComment(cardId, commentId) {
   card.comments.pull(commentId);
   await card.save();
 
-  return true;
+  return card;
 }
 
 export async function getComments(cardId) {

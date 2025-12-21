@@ -18,6 +18,9 @@ export const boardService = {
   moveCard,
   addAssignee,
   removeAssignee,
+  addComment,
+  updateComment,
+  deleteComment,
   getEmptyList,
   createList,
   updateList,
@@ -179,6 +182,25 @@ async function addAssignee(cardId, userId) {
 
 async function removeAssignee(cardId, userId) {
   const data = await httpService.delete(`cards/${cardId}/assignees/${userId}`);
+  return data.card;
+}
+
+async function addComment(cardId, text) {
+  const data = await httpService.post(`cards/${cardId}/comments`, { text });
+  return data.card;
+}
+
+async function updateComment(cardId, commentId, text) {
+  const data = await httpService.put(`cards/${cardId}/comments/${commentId}`, {
+    text,
+  });
+  return data.card;
+}
+
+async function deleteComment(cardId, commentId) {
+  const data = await httpService.delete(
+    `cards/${cardId}/comments/${commentId}`
+  );
   return data.card;
 }
 

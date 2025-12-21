@@ -10,7 +10,7 @@ import FormatQuote from "@mui/icons-material/FormatQuote";
 // import Undo from "@mui/icons-material/Undo";
 // import Redo from "@mui/icons-material/Redo";
 
-const MenuBar = ({ editor }) => {
+const MenuBar = ({ editor, compact = false }) => {
   const editorState = useEditorState({
     editor,
     selector: ctx => {
@@ -69,21 +69,25 @@ const MenuBar = ({ editor }) => {
   return (
     <div className="control-group">
       <div className="button-group">
-        <select
-          value={getCurrentHeading()}
-          onChange={handleHeadingChange}
-          className="heading-dropdown"
-          title="Heading"
-        >
-          <option value="paragraph">Paragraph</option>
-          <option value="1">Heading 1</option>
-          <option value="2">Heading 2</option>
-          <option value="3">Heading 3</option>
-          <option value="4">Heading 4</option>
-          <option value="5">Heading 5</option>
-          <option value="6">Heading 6</option>
-        </select>
-        <div className="button-separator"></div>
+        {!compact && (
+          <>
+            <select
+              value={getCurrentHeading()}
+              onChange={handleHeadingChange}
+              className="heading-dropdown"
+              title="Heading"
+            >
+              <option value="paragraph">Paragraph</option>
+              <option value="1">Heading 1</option>
+              <option value="2">Heading 2</option>
+              <option value="3">Heading 3</option>
+              <option value="4">Heading 4</option>
+              <option value="5">Heading 5</option>
+              <option value="6">Heading 6</option>
+            </select>
+            <div className="button-separator"></div>
+          </>
+        )}
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={!editorState.canBold}
@@ -165,7 +169,12 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export function TextEditor({ content, onChange }) {
+export function TextEditor({
+  content,
+  onChange,
+  compact = false,
+  placeholder,
+}) {
   const editor = useEditor({
     extensions: [StarterKit],
     content,
@@ -178,6 +187,7 @@ export function TextEditor({ content, onChange }) {
     editorProps: {
       attributes: {
         spellcheck: "false",
+        ...(placeholder && { "data-placeholder": placeholder }),
       },
     },
   });
@@ -191,9 +201,13 @@ export function TextEditor({ content, onChange }) {
     }
   }
 
+  const wrapperClass = compact
+    ? "tiptap-editor-wrapper compact"
+    : "tiptap-editor-wrapper";
+
   return (
-    <div className="tiptap-editor-wrapper">
-      <MenuBar editor={editor} />
+    <div className={wrapperClass}>
+      <MenuBar editor={editor} compact={compact} />
       <div className="text-editor-wrapper" onClick={handleEditorClick}>
         <EditorContent editor={editor} className="text-editor" />
       </div>
