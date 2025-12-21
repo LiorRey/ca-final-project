@@ -213,7 +213,7 @@
 .tiptap-editor-wrapper .text-editor {
   padding: 12px;
   background: var(--gray6);
-  color: var(--ds-text);
+  color: var(--ds-text-subtlest);
   font-size: 14px;
   line-height: 1.6;
   outline: none;
@@ -225,7 +225,7 @@
   padding: 1rem;
   background: var(--gray4);
   border-radius: var(--ds-radius-small);
-  color: var(--gray1);
+  color: var(--ds-text-subtlest);
   height: auto;
   min-height: auto;
 }
@@ -252,7 +252,6 @@
   color: var(--gray2);
   pointer-events: none;
   height: 0;
-  font-style: italic;
   font-weight: 400;
 }
 

@@ -21,7 +21,6 @@ import { AddMemberMenu } from "./AddMemberMenu";
 import { CardCoverMenu } from "./CardCoverMenu";
 import { CardAttachments } from "./CardAttachments";
 import { CardAttachmentsMenu } from "./CardAttachmentMenu";
-import { useSelector } from "react-redux";
 import { addComment, deleteComment } from "../store/actions/board-actions";
 
 export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {

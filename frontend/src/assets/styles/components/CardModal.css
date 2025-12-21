@@ -606,6 +606,23 @@
 
 /* ===== COMMENTS ===== */
 
+.comment-placeholder {
+  padding: 8px 12px;
+  width: 100%;
+  height: 36px;
+  border-radius: var(--ds-radius-large, 8px);
+  background-color: var(--ds-background-input);
+  color: var(--ds-text-subtlest);
+  box-shadow: var(--ds-shadow-raised);
+
+  &:hover {
+    color: var(--ds-text);
+    background-color: var(--ds-background-input-hovered);
+    border: none;
+    cursor: pointer;
+  }
+}
+
 .comments-list {
   display: flex;
   flex-direction: column;
