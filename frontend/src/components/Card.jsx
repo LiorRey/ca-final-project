@@ -10,11 +10,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
 import { Avatar } from "./ui/Avatar";
-import {
-  AttachFile,
-  Comment,
-  ChatBubbleOutlineOutlined,
-} from "@mui/icons-material";
+import { AttachFile, ChatBubbleOutlineOutlined } from "@mui/icons-material";
 
 export function Card({
   card,
