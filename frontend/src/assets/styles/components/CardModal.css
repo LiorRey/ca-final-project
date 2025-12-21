@@ -276,6 +276,9 @@
   min-height: 116px;
   background: var(--gray4);
   width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .card-modal-header-list-title {
@@ -294,6 +297,13 @@
 .card-modal-header-buttons {
   display: flex;
   gap: 0.5rem;
+}
+
+.card-modal-header-buttons .card-modal-header-button {
+  background-color: var(--gray4);
+  &:hover {
+    background-color: var(--gray3);
+  }
 }
 
 .card-modal-footer {

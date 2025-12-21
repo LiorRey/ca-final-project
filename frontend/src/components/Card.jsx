@@ -10,6 +10,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
 import { Avatar } from "./ui/Avatar";
+import { AttachFile } from "@mui/icons-material";
 
 export function Card({
   card,
@@ -69,8 +70,8 @@ export function Card({
 
   const coverStyle = coverImg
     ? {
-        backgroundImage: isOverlay ? `url(${coverImg})` : `url(${coverImg})`,
-        minHeight: "250px",
+        backgroundImage: `url(${coverImg})`,
+        minHeight: isOverlay ? "275px" : "175px",
         marginTop: "auto",
       }
     : coverColor
@@ -198,7 +199,13 @@ export function Card({
                 <div className="card-footer">
                   <div className="card-footer-left">
                     {card.description && card.description !== "<p></p>" && (
-                      <NotesRounded />
+                      <NotesRounded fontSize="medium" />
+                    )}
+                    {card.attachments && card.attachments.length > 0 && (
+                      <div className="card-footer-left-attachments">
+                        <AttachFile />
+                        {card.attachments.length}
+                      </div>
                     )}
                   </div>
                   <div className="card-footer-right">
