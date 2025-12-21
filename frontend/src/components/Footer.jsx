@@ -15,7 +15,7 @@ export function Footer() {
         </FooterButton>
         <FooterButton>
           <CalendarMonthRounded />
-          Planner
+          Plannner
         </FooterButton>
         <FooterButton active={true}>
           <ViewWeekOutlined />
