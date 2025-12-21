@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -192,6 +193,14 @@ export function TextEditor({
       },
     },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    if (!content) {
+      editor.commands.clearContent();
+    }
+  }, [content, editor]);
 
   function handleEditorClick() {
     if (!editor) return;

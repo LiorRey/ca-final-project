@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -27,6 +28,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
   const board = useSelector(state => state.boards.board);
   const [openSection, setOpenSection] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [isCommentEditorOpen, setIsCommentEditorOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
   const [labelEl, setLabelEl] = useState(null);
   const [memberEl, setMemberEl] = useState(null);
@@ -34,6 +36,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
   const [attachmentsEl, setAttachmentsEl] = useState(null);
   const [commentDraft, setCommentDraft] = useState("");
   const membersContainerRef = useRef(null);
+  const user = useSelector(storeState => storeState.auth.currentUser);
   const isLabelMenuOpen = Boolean(labelEl);
   const isMemberMenuOpen = Boolean(memberEl);
   const isCoverMenuOpen = Boolean(coverEl);
@@ -49,6 +52,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
     await addComment(card._id, commentDraft);
 
     setCommentDraft("");
+    setIsCommentEditorOpen(false);
   }
 
   async function handleDeleteComment(commentId) {
@@ -251,16 +255,32 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
           >
             <div className="card-modal-comments-content">
               <h3 className="comments-title">Comments</h3>
-              <TextEditor
-                variant="comment"
-                content={commentDraft}
-                placeholder="Write a comment..."
-                onChange={setCommentDraft}
-                // onChange={html => handleChangeCard("description", html)}
-              />
-              <div className="editor-controls">
-                <Button onClick={handleSaveComment}>Save</Button>
-              </div>
+              {isCommentEditorOpen ? (
+                <>
+                  <TextEditor
+                    variant="comment"
+                    content={commentDraft}
+                    placeholder="Write a comment..."
+                    onChange={setCommentDraft}
+                  />
+
+                  <div className="editor-controls">
+                    <Button
+                      onClick={handleSaveComment}
+                      disabled={!commentDraft}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div
+                  className="comment-placeholder"
+                  onClick={() => setIsCommentEditorOpen(true)}
+                >
+                  Write a comment…
+                </div>
+              )}
               <div className="comments-list">
                 {(card.comments || [])
                   .slice()
@@ -294,15 +314,16 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
                           className="comment-text"
                           dangerouslySetInnerHTML={{ __html: comment.text }}
                         />
-
-                        <div className="comment-actions">
-                          <span>Edit</span>
-                          <span
-                            onClick={() => handleDeleteComment(comment._id)}
-                          >
-                            Delete
-                          </span>
-                        </div>
+                        {user && user._id === comment.author.userId && (
+                          <div className="comment-actions">
+                            <span>Edit</span>
+                            <span
+                              onClick={() => handleDeleteComment(comment._id)}
+                            >
+                              Delete
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
