@@ -1,7 +1,6 @@
 const { DEV, VITE_LOCAL } = import.meta.env;
 
 import { boardService as remote } from "./board-service-remote";
-import { boardDataGenerator } from "./board-data-generator";
 
 function getEmptyBoard() {
   return {
