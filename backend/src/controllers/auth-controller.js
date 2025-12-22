@@ -29,7 +29,7 @@ export async function login(req, res) {
   if (!passwordMatch) throw createError(401, "Invalid credentials");
 
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "24h",
   });
   res.cookie("token", token, { httpOnly: true, sameSite: "strict" });
   res.json({ user: user.getSafeUser() });
