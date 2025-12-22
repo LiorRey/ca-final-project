@@ -88,13 +88,19 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
             <div className="card-modal-header">
               <div className="card-modal-header-list-title">{listTitle}</div>
               <div className="card-modal-header-buttons">
-                <IconButton onClick={e => handleOpenCoverMenu(e.currentTarget)}>
+                <IconButton
+                  className="card-modal-header-button"
+                  onClick={e => handleOpenCoverMenu(e.currentTarget)}
+                >
                   <ImageOutlinedIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton className="card-modal-header-button">
                   <MoreHorizIcon />
                 </IconButton>
-                <IconButton onClick={onClose}>
+                <IconButton
+                  className="card-modal-header-button"
+                  onClick={onClose}
+                >
                   <CloseIcon />
                 </IconButton>
               </div>
@@ -228,7 +234,12 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
               )}
             </div>
 
-            <CardAttachments card={card} />
+            {card.attachments && card.attachments.length > 0 && (
+              <CardAttachments
+                card={card}
+                onOpenAttachmentsMenu={handleOpenAttachmentsMenu}
+              />
+            )}
           </section>
           <aside
             className={`card-modal-comments ${openSection ? "open" : "closed"}`}

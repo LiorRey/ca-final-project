@@ -10,8 +10,9 @@
 }
 
 .card-label-text {
-  font-size: 0.65rem;
   font-weight: 500;
+  font-size: 0.7em;
+  line-height: 16px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }

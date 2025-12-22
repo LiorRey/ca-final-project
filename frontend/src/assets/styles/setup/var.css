@@ -47,7 +47,7 @@
   /* Label Colors */
   --label-green-bg: #15803d;
   --label-green-border: #16a34a;
-  --label-green-text: #e0f2f1;
+  --label-green-text: #ecfffe;
 
   --label-yellow-bg: #a16207;
   --label-yellow-border: #ca8a04;
@@ -79,11 +79,11 @@
 
   --label-pink-bg: #c026d3;
   --label-pink-border: #d946ef;
-  --label-pink-text: #fdf2f8;
+  --label-pink-text: #fff1f9;
 
   --label-gray-bg: #475569;
   --label-gray-border: #64748b;
-  --label-gray-text: #f8fafc;
+  --label-gray-text: #edf6ff;
 
   /* Button Colors */
   --button-soft-blue-bg: rgb(102, 157, 241);
