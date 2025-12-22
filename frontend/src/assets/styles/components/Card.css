@@ -159,10 +159,20 @@
   display: flex;
   align-items: center;
   > svg {
-    font-size: 18px;
+    font-size: 17px;
+    transform: rotate(45deg);
   }
 }
 
+.card-footer-left-comments {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  > svg {
+    margin-top: 2px;
+    font-size: 17px;
+  }
+}
 .card-footer-right {
   display: flex;
   gap: 0.5rem;

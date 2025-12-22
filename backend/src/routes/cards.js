@@ -40,20 +40,20 @@ router.delete(
   canModifyCard(),
   removeAttachment
 );
-router.post("/:cardId/comments", authenticate, canModifyCard(), addComment);
+router.post("/:id/comments", authenticate, canModifyCard(), addComment);
 router.put(
-  "/:cardId/comments/:commentId",
+  "/:id/comments/:commentId",
   authenticate,
   canModifyCard(),
   updateComment
 );
 router.delete(
-  "/:cardId/comments/:commentId",
+  "/:id/comments/:commentId",
   authenticate,
   canModifyCard(),
   deleteComment
 );
-router.get("/:cardId/comments", authenticate, getComments);
+router.get("/:id/comments", authenticate, getComments);
 
 // router.get("/label/:labelId", getCardsByLabel);
 // router.get("/assigned/:userId", getCardsByAssignedUser);

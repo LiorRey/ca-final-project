@@ -30,13 +30,6 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-commentSchema.pre("save", function (next) {
-  if (!this.isNew && this.isModified("text")) {
-    this.isEdited = true;
-  }
-  next();
-});
-
 const attachmentSchema = new mongoose.Schema(
   {
     url: {

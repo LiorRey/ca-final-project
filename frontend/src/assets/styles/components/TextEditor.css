@@ -489,3 +489,54 @@
   border-top: 1px solid var(--gray2);
   margin: 2rem 0;
 }
+
+/* ====================== Compact Mode ====================== */
+.tiptap-editor-wrapper.compact {
+  border-radius: 6px;
+}
+
+.tiptap-editor-wrapper.compact .control-group {
+  padding: 4px 6px;
+  gap: 1px;
+}
+
+.tiptap-editor-wrapper.compact .button-group {
+  gap: 1px;
+}
+
+.tiptap-editor-wrapper.compact .button-group button {
+  padding: 3px 5px;
+  min-width: 24px;
+  height: 24px;
+}
+
+.tiptap-editor-wrapper.compact .button-group button svg {
+  font-size: 18px;
+}
+
+.tiptap-editor-wrapper.compact .button-separator {
+  height: 1.2rem;
+  margin: 0 3px;
+}
+
+.tiptap-editor-wrapper.compact .text-editor-wrapper {
+  min-height: 40px;
+}
+
+.tiptap-editor-wrapper.compact .text-editor {
+  padding: 8px 10px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.tiptap-editor-wrapper.compact .text-editor p {
+  margin: 4px 0;
+}
+
+.tiptap-editor-wrapper.compact .text-editor p:first-child {
+  margin-top: 0;
+}
+
+.tiptap-editor-wrapper.compact .text-editor p:last-child {
+  margin-bottom: 0;
+}

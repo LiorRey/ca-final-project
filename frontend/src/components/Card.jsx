@@ -10,7 +10,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { CardPopover } from "./CardPopover";
 import { deleteCard, editCard } from "../store/actions/board-actions";
 import { Avatar } from "./ui/Avatar";
-import { AttachFile } from "@mui/icons-material";
+import { AttachFile, ChatBubbleOutlineOutlined } from "@mui/icons-material";
 
 export function Card({
   card,
@@ -200,6 +200,11 @@ export function Card({
                   <div className="card-footer-left">
                     {card.description && card.description !== "<p></p>" && (
                       <NotesRounded fontSize="medium" />
+                    )}
+                    {card.comments && card.comments.length > 0 && (
+                      <div className="card-footer-left-comments">
+                        <ChatBubbleOutlineOutlined /> {card.comments.length}
+                      </div>
                     )}
                     {card.attachments && card.attachments.length > 0 && (
                       <div className="card-footer-left-attachments">

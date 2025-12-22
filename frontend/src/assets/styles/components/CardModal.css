@@ -44,8 +44,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: 1.5rem 2.5rem 2rem 1.25rem;
+  padding: 1.5rem 1.7rem 2rem 1.25rem;
   overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .description-content {
@@ -147,56 +148,6 @@
   grid-column: body;
   display: flex;
   gap: 0.5rem;
-}
-
-.card-modal-comments.closed {
-  width: 0;
-}
-
-.card-modal-comments.open {
-  width: 460px;
-}
-
-.card-modal-comments {
-  background: var(--gray6);
-  overflow: hidden;
-  transition: width 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.card-modal-comments-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem;
-  width: 460px;
-}
-
-.comments-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--gray1);
-  padding: 0.5rem 0 0.5rem 0;
-  margin: 0 0 0.5rem 0;
-}
-
-.comment-input {
-  padding: 0.5rem;
-  border: 1px solid var(--gray2);
-  border-radius: 4px;
-  background: var(--gray4);
-  color: var(--gray1);
-  overflow: hidden;
-  width: 100%;
-}
-
-.add-comment-button {
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  align-self: flex-start;
 }
 
 .card-modal-title-container {
@@ -314,26 +265,6 @@
   background: transparent;
 }
 
-.comment-section-button {
-  position: absolute;
-  background: var(--black);
-  border: none;
-  bottom: -4rem;
-  color: var(--gray1);
-  font-size: 1em;
-  cursor: pointer;
-  padding: 0.75rem;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  &:hover {
-    border: 1px solid var(--action-btn-bg-default);
-  }
-}
-
-.comment-section-button.active {
-  background-color: var(--bg-blue);
-}
-
 .card-modal-controls .MuiButton-root {
   color: var(--ds-text-subtle);
   border: 1px solid var(--ds-border);
@@ -432,10 +363,6 @@
   padding: 0;
   font-size: 0.85rem;
 }
-
-/* .modal-header-buttons {
-  background: var(--gray4);
-} */
 
 /* ====================== Headings ====================== */
 .description-content h1 {
@@ -573,35 +500,9 @@
   .card-modal-box.closed {
     width: calc(100vw - 1rem);
   }
-
-  .card-modal-comments {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    z-index: 10;
-  }
-
-  .card-modal-comments.open {
-    width: 100%;
-  }
-
-  .comment-input {
-    min-height: 80px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    resize: vertical;
-    outline: none;
-    &:focus {
-      border-color: var(--gray1);
-    }
-  }
 }
 
 @media only screen and (min-width: 637px) and (max-width: 1095px) {
-  .card-modal-comments.open {
-    width: 45%;
-  }
   .card-modal-box.open {
     width: calc(100vw - 1rem);
   }

@@ -23,6 +23,9 @@ import {
   MOVE_CARD,
   ADD_ASSIGNEE,
   REMOVE_ASSIGNEE,
+  ADD_COMMENT,
+  UPDATE_COMMENT,
+  DELETE_COMMENT,
   CREATE_LABEL,
   EDIT_LABEL,
   DELETE_LABEL,
@@ -203,6 +206,24 @@ export const addAssignee = createAsyncAction(
 export const removeAssignee = createAsyncAction(
   REMOVE_ASSIGNEE,
   boardService.removeAssignee,
+  store
+);
+
+export const addComment = createAsyncAction(
+  ADD_COMMENT,
+  boardService.addComment,
+  store
+);
+
+export const updateComment = createAsyncAction(
+  UPDATE_COMMENT,
+  boardService.updateComment,
+  store
+);
+
+export const deleteComment = createAsyncAction(
+  DELETE_COMMENT,
+  boardService.deleteComment,
   store
 );
 

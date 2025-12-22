@@ -41,6 +41,7 @@
 @import "components/Card";
 @import "components/CardFormMenu";
 @import "components/CardModal";
+@import "components/CardComments";
 @import "components/CardAttachments";
 @import "components/Avatar";
 @import "components/UserMenu";

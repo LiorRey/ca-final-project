@@ -107,7 +107,7 @@ export async function addComment(cardId, user, text) {
   card.comments.push(newComment);
   await card.save();
 
-  return card.comments[card.comments.length - 1];
+  return card;
 }
 
 export async function updateComment(cardId, commentId, text) {
@@ -117,10 +117,14 @@ export async function updateComment(cardId, commentId, text) {
   const comment = card.comments.id(commentId);
   if (!comment) throw createError(404, "Comment not found");
 
-  comment.text = text.trim();
+  const trimmedText = text.trim();
+  if (comment.text !== trimmedText) {
+    comment.text = trimmedText;
+    comment.isEdited = true;
+  }
   await card.save();
 
-  return comment;
+  return card;
 }
 
 export async function deleteComment(cardId, commentId) {
@@ -133,7 +137,7 @@ export async function deleteComment(cardId, commentId) {
   card.comments.pull(commentId);
   await card.save();
 
-  return true;
+  return card;
 }
 
 export async function getComments(cardId) {
