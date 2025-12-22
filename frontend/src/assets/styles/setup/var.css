@@ -101,6 +101,9 @@
   --form-input-border-color: #4a9eff;
   --form-input-placeholder-color: var(--gray2);
 
+  /* App Background */
+  --bg-charcoal: #1d2125;
+
   /* Board Background Preset Colors */
   --bg-blue: #0079bf;
   --bg-orange: #d29034;

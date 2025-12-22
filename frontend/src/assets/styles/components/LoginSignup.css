@@ -4,14 +4,31 @@
   width: min(80%, 300px);
   margin: auto;
 
-  padding: 1em;
-  background-color: var(--clr4);
+  padding: 1.5em;
+  background-color: #22272b;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 10px;
 }
 
 .signup-form {
   > input {
     width: 100%;
     margin: 0.4em 0;
+    padding: 0.6em 0.8em;
+    background-color: #282e33;
+    border: 1px solid #3d4750;
+    border-radius: 3px;
+    color: #b6c2cf;
+    font-size: 0.9em;
+
+    &::placeholder {
+      color: #8c9bab;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #579dff;
+    }
   }
 
   .admin-toggle {
@@ -21,8 +38,30 @@
 
     > span {
       font-size: 0.8em;
+      color: #9fadbc;
     }
   }
+
+  button {
+    margin-top: 0.8em;
+    padding: 0.6em 1em;
+    background-color: #579dff;
+    color: #1d2125;
+    border: none;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: #85b8ff;
+    }
+  }
+}
+
+.login-page {
+  min-height: 100vh;
+  background-color: #1d2125;
 }
 
 .login-page nav {
@@ -34,16 +73,62 @@
   margin-block: 100px 0.5em;
 
   > a {
-    font-size: 0.8em;
-    color: var(--clr4);
+    font-size: 0.9em;
+    color: #9fadbc;
+    text-decoration: none;
+    padding: 0.4em 0.8em;
+    border-radius: 3px;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      color: var(--clr1);
+      color: #b6c2cf;
+      background-color: rgba(255, 255, 255, 0.05);
     }
 
     &.active {
-      text-decoration: underline;
-      color: var(--clr2);
+      text-decoration: none;
+      color: #579dff;
+      background-color: rgba(87, 157, 255, 0.1);
+    }
+  }
+}
+
+.login-form {
+  select {
+    width: 100%;
+    margin: 0.4em 0;
+    padding: 0.6em 0.8em;
+    background-color: #282e33;
+    border: 1px solid #3d4750;
+    border-radius: 3px;
+    color: #b6c2cf;
+    font-size: 0.9em;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+      border-color: #579dff;
+    }
+
+    option {
+      background-color: #282e33;
+      color: #b6c2cf;
+    }
+  }
+
+  button {
+    margin-top: 0.8em;
+    padding: 0.6em 1em;
+    background-color: #579dff;
+    color: #1d2125;
+    border: none;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: #85b8ff;
     }
   }
 }

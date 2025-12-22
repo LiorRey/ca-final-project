@@ -28,6 +28,7 @@ export const ProtectedRoute = () => {
         justifyContent="center"
         alignItems="center"
         minHeight="100vh"
+        sx={{ backgroundColor: "#1d2125" }}
       >
         <CircularProgress />
       </Box>

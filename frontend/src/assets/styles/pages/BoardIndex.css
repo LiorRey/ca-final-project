@@ -4,6 +4,100 @@
   background-color: var(--ds-surface);
   color: var(--ds-text);
 
+  .board-index-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .workspace-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+
+    .workspace-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .workspace-name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      h1 {
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin: 0;
+        color: var(--ds-text);
+      }
+
+      .edit-workspace-btn {
+        background: transparent;
+        border: none;
+        color: var(--ds-text-subtle, #9fadbc);
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: var(
+            --ds-background-neutral-hovered,
+            rgba(255, 255, 255, 0.1)
+          );
+        }
+      }
+    }
+
+    .workspace-visibility {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--ds-text-subtle, #9fadbc);
+
+      svg {
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  .workspace-divider {
+    border: none;
+    border-top: 1px solid var(--ds-border, rgba(255, 255, 255, 0.1));
+    margin: 0 0 2rem 0;
+  }
+
+  .board-section {
+    margin-bottom: 2.5rem;
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--ds-text);
+
+      svg {
+        font-size: 1.25rem;
+        opacity: 0.8;
+      }
+    }
+
+    .boards-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+  }
+
   .board-index-header {
     display: flex;
     justify-content: space-between;
@@ -12,16 +106,6 @@
 
     h1 {
       font-size: 1.8rem;
-    }
-  }
-
-  .board-section {
-    margin-bottom: 2.5rem;
-
-    .boards-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
     }
   }
 }
@@ -74,16 +158,31 @@
 
 .create-tile {
   height: 150px;
-  color: var(--ds-text);
+  color: var(--ds-text-subtle, #9fadbc);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 2px dashed var(--ds-text);
+  gap: 0.25rem;
+  background-color: var(--ds-background-neutral, rgba(255, 255, 255, 0.04));
+  border: none;
   border-radius: 8px;
+  transition: background-color 0.15s ease;
+
+  span {
+    font-size: 0.9rem;
+  }
+
+  .remaining-count {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
 
   &:hover {
-    background-color: var(--t-dark-gray);
+    background-color: var(
+      --ds-background-neutral-hovered,
+      rgba(255, 255, 255, 0.08)
+    );
     transform: none;
   }
 }

@@ -1,32 +1,38 @@
 {
   "users": [
     {
-      "email": "admin@example.com",
-      "username": "admin",
-      "fullname": "System Administrator",
-      "password": "FPRsqmZp"
-    },
-    {
       "email": "test@example.com",
       "username": "testuser",
       "fullname": "Test User",
-      "password": "test"
+      "password": "test123"
     },
     {
-      "email": "Chadd.Ullrich@yahoo.com",
-      "username": "Robin59",
-      "fullname": "Chadd Ullrich",
-      "password": "pd55bkiN"
+      "email": "sav@gmail.com",
+      "username": "saveliy",
+      "fullname": "Saveliy Shiryaev",
+      "password": "test123"
     },
     {
-      "email": "Gilberto.Nolan@hotmail.com",
-      "username": "Godfrey.Wintheiser16",
+      "email": "vlad@gmail.com",
+      "username": "vladg",
+      "fullname": "Vlad Grey",
+      "password": "test123"
+    },
+    {
+      "email": "lior@gmail.com",
+      "username": "liorRay",
+      "fullname": "Lior Raytan",
+      "password": "test123"
+    },
+    {
+      "email": "gilberto@gmail.com",
+      "username": "gilbertoN",
       "fullname": "Gilberto Nolan",
-      "password": "NdLbnFlD"
+      "password": "test123"
     },
     {
-      "email": "Luigi_Cormier13@yahoo.com",
-      "username": "Marisol_Lueilwitz",
+      "email": "luigi@gmail.com",
+      "username": "luigiC",
       "fullname": "Luigi Cormier",
       "password": "fbaIRmZo"
     },
@@ -59,6 +65,18 @@
       "username": "Diana94",
       "fullname": "Rosa Wyman",
       "password": "kFAtKRAI"
+    },
+    {
+      "email": "diana@gmail.com",
+      "username": "diana94",
+      "fullname": "Diana Smith",
+      "password": "test123"
+    },
+    {
+      "email": "sapir@gmail.com",
+      "username": "sapirM",
+      "fullname": "Sapir Miller",
+      "password": "tkFAtKRAIt23"
     }
   ],
   "boards": [
@@ -96,23 +114,23 @@
         }
       ],
       "owner": {
-        "username": "admin"
+        "username": "saveliy"
       },
       "members": [
         {
           "username": "testuser"
         },
         {
-          "username": "Robin59"
+          "username": "vladg"
         },
         {
-          "username": "admin"
+          "username": "saveliy"
         },
         {
-          "username": "Godfrey.Wintheiser16"
+          "username": "liorRay"
         },
         {
-          "username": "Marisol_Lueilwitz"
+          "username": "gilbertoN"
         }
       ]
     },
@@ -200,13 +218,13 @@
       },
       "members": [
         {
-          "username": "Robin59"
+          "username": "vladg"
         },
         {
-          "username": "Godfrey.Wintheiser16"
+          "username": "liorRay"
         },
         {
-          "username": "Marisol_Lueilwitz"
+          "username": "gilbertoN"
         },
         {
           "username": "testuser"
@@ -323,10 +341,7 @@
               "archivedAt": null,
               "comments": [],
               "labels": ["enhancement", "frontend", "priority:low"],
-              "assignees": [
-                { "username": "testuser" },
-                { "username": "Robin59" }
-              ]
+              "assignees": [{ "username": "testuser" }, { "username": "vladg" }]
             },
             {
               "title": "QA",
@@ -338,13 +353,13 @@
               "comments": [
                 {
                   "author": {
-                    "userId": "admin"
+                    "userId": "saveliy"
                   },
                   "text": "This needs more testing before deployment",
                   "isEdited": false
                 }
               ],
-              "assignees": [{ "username": "admin" }]
+              "assignees": [{ "username": "saveliy" }]
             },
             {
               "title": "grow viral metrics",
@@ -362,7 +377,7 @@
                 },
                 {
                   "author": {
-                    "userId": "Robin59"
+                    "userId": "vladg"
                   },
                   "text": "Consider adding more unit tests to ensure stability",
                   "isEdited": false
@@ -378,8 +393,8 @@
               "comments": [],
               "labels": ["frontend"],
               "assignees": [
-                { "username": "Godfrey.Wintheiser16" },
-                { "username": "Marisol_Lueilwitz" }
+                { "username": "liorRay" },
+                { "username": "gilbertoN" }
               ]
             },
             {
@@ -397,21 +412,21 @@
               "comments": [
                 {
                   "author": {
-                    "userId": "admin"
+                    "userId": "saveliy"
                   },
                   "text": "The architecture team should review this proposal",
                   "isEdited": false
                 },
                 {
                   "author": {
-                    "userId": "Godfrey.Wintheiser16"
+                    "userId": "liorRay"
                   },
                   "text": "Make sure to update documentation after changes",
                   "isEdited": false
                 },
                 {
                   "author": {
-                    "userId": "Marisol_Lueilwitz"
+                    "userId": "gilbertoN"
                   },
                   "text": "Let's schedule a planning meeting for next week",
                   "isEdited": false
@@ -419,8 +434,8 @@
               ],
               "assignees": [
                 { "username": "testuser" },
-                { "username": "admin" },
-                { "username": "Robin59" }
+                { "username": "saveliy" },
+                { "username": "vladg" }
               ]
             },
             {
@@ -449,20 +464,20 @@
               "comments": [
                 {
                   "author": {
-                    "userId": "Robin59"
+                    "userId": "vladg"
                   },
                   "text": "Deployment went smoothly, great job team!",
                   "isEdited": false
                 },
                 {
                   "author": {
-                    "userId": "admin"
+                    "userId": "saveliy"
                   },
                   "text": "Need to monitor performance metrics post-launch",
                   "isEdited": false
                 }
               ],
-              "assignees": [{ "username": "Marisol_Lueilwitz" }]
+              "assignees": [{ "username": "gilbertoN" }]
             },
             {
               "title": "integrate intuitive applications",
@@ -473,7 +488,7 @@
               "labels": ["frontend", "enhancement"],
               "assignees": [
                 { "username": "testuser" },
-                { "username": "Godfrey.Wintheiser16" }
+                { "username": "liorRay" }
               ]
             }
           ]
@@ -489,13 +504,13 @@
               "comments": [
                 {
                   "author": {
-                    "userId": "Robin59"
+                    "userId": "vladg"
                   },
                   "text": "Architecture looks solid, ready for review",
                   "isEdited": false
                 }
               ],
-              "assignees": [{ "username": "Robin59" }, { "username": "admin" }]
+              "assignees": [{ "username": "vladg" }, { "username": "saveliy" }]
             },
             {
               "title": "grow cross-media supply-chains",
@@ -519,7 +534,7 @@
               "comments": [
                 {
                   "author": {
-                    "userId": "admin"
+                    "userId": "saveliy"
                   },
                   "text": "Excellent work on the community engagement feature",
                   "isEdited": false
@@ -551,7 +566,7 @@
               "description": "Dummy card description",
               "position": "a1",
               "labels": ["enhancement", "documentation", "priority:low"],
-              "assignees": [{ "username": "Godfrey.Wintheiser16" }]
+              "assignees": [{ "username": "liorRay" }]
             },
             {
               "title": "unleash scalable ROI",
@@ -565,14 +580,17 @@
               "description": "Dummy card description",
               "position": "a3",
               "labels": ["design", "frontend"],
-              "assignees": [{ "username": "admin" }, { "username": "testuser" }]
+              "assignees": [
+                { "username": "saveliy" },
+                { "username": "testuser" }
+              ]
             },
             {
               "title": "seize plug-and-play solutions",
               "description": "Dummy card description",
               "position": "a4",
               "labels": ["enhancement", "frontend", "design", "review"],
-              "assignees": [{ "username": "Robin59" }]
+              "assignees": [{ "username": "vladg" }]
             },
             {
               "title": "evolve sustainable blockchains",
@@ -593,7 +611,7 @@
                 "documentation"
               ],
               "assignees": [
-                { "username": "Marisol_Lueilwitz" },
+                { "username": "gilbertoN" },
                 { "username": "testuser" }
               ]
             },
@@ -602,7 +620,7 @@
               "description": "Dummy card description",
               "position": "a7",
               "labels": ["design"],
-              "assignees": [{ "username": "admin" }]
+              "assignees": [{ "username": "saveliy" }]
             },
             {
               "title": "reinvent 24/7 ROI",
@@ -618,8 +636,8 @@
               "labels": ["frontend", "enhancement", "documentation", "review"],
               "assignees": [
                 { "username": "testuser" },
-                { "username": "Robin59" },
-                { "username": "Godfrey.Wintheiser16" }
+                { "username": "vladg" },
+                { "username": "liorRay" }
               ]
             }
           ]
@@ -633,8 +651,8 @@
               "position": "a0",
               "labels": ["frontend", "enhancement", "blocked"],
               "assignees": [
-                { "username": "admin" },
-                { "username": "Marisol_Lueilwitz" }
+                { "username": "saveliy" },
+                { "username": "gilbertoN" }
               ]
             }
           ]
@@ -681,10 +699,7 @@
                 "documentation",
                 "review"
               ],
-              "assignees": [
-                { "username": "Robin59" },
-                { "username": "Godfrey.Wintheiser16" }
-              ]
+              "assignees": [{ "username": "vladg" }, { "username": "liorRay" }]
             },
             {
               "title": "brand magnetic AI",
@@ -698,7 +713,7 @@
               "description": "Dummy card description",
               "position": "a6",
               "labels": ["enhancement", "frontend"],
-              "assignees": [{ "username": "admin" }]
+              "assignees": [{ "username": "saveliy" }]
             }
           ]
         }
