@@ -86,9 +86,8 @@ export function CardAttachments({ card, onOpenAttachmentsMenu }) {
                       rel="noreferrer"
                       aria-label="Open attachment in new tab"
                       onClick={e => e.stopPropagation()}
-                      size="small"
                     >
-                      <OpenInNewIcon fontSize="small" />
+                      <OpenInNewIcon />
                     </IconButton>
                     <IconButton
                       className="attachment-action-btn attachment-remove-btn"
@@ -99,9 +98,8 @@ export function CardAttachments({ card, onOpenAttachmentsMenu }) {
                         handleRemoveAttachment(att._id);
                       }}
                       disabled={!att._id}
-                      size="small"
                     >
-                      <DeleteOutlineIcon fontSize="small" />
+                      <DeleteOutlineIcon />
                     </IconButton>
                   </div>
                 </div>

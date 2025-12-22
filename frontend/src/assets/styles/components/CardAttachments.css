@@ -33,8 +33,6 @@
   padding: 0.5rem 0;
 }
 
-/* Attachments "Add" button uses `.edit-description-button` from `CardModal.css` for consistent styling */
-
 .attachments-content {
   grid-column: body;
   word-break: break-word;
