@@ -28,6 +28,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
   const [openSection, setOpenSection] = useState(false);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isCommentEditorOpen, setIsCommentEditorOpen] = useState(false);
+  const [isCommentEditorOpen, setIsCommentEditorOpen] = useState(false);
   const [cardDetails, setCardDetails] = useState(card);
   const [labelEl, setLabelEl] = useState(null);
   const [memberEl, setMemberEl] = useState(null);
@@ -51,6 +52,7 @@ export function CardModal({ listTitle, card, onEditCard, onClose, isOpen }) {
     await addComment(card._id, commentDraft);
 
     setCommentDraft("");
+    setIsCommentEditorOpen(false);
     setIsCommentEditorOpen(false);
   }
 
